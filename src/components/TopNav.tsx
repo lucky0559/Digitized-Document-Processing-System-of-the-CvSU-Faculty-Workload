@@ -47,9 +47,8 @@ const CvsuLogo = styled.img`
   height: 45px;
 `;
 
-const TopNavTitleText = styled.text`
+const TopNavTitleText = styled.h5`
   margin-left: 20px;
-  font-size: 12px;
   color: ${Colors.primary};
   font-family: HurmeGeometricSans3Bold;
 `;
@@ -67,8 +66,7 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const ButtonText = styled.text<{ isActive: boolean }>`
-  font-size: 20px;
+const ButtonText = styled.h3<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3SemiBold;
   color: ${p => (p.isActive ? Colors.active : Colors.white)};
 `;

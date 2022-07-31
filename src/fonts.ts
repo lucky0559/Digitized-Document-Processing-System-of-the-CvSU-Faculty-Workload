@@ -5,7 +5,7 @@ import HurmeGeometricSans3SemiBold from "./fonts/HurmeGeometricSans3SemiBold.otf
 
 const fonts = css`
   @font-face {
-    font-family: "HurmeGeometricSans3Bold";
+    font-family: "PlutoSansBold";
     font-style: normal;
     src: url(${HurmeGeometricSans3Bold}) format("truetype");
   }
