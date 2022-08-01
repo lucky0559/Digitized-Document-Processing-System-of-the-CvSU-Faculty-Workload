@@ -26,7 +26,7 @@ export default function TopNav() {
 }
 
 const Container = styled.div`
-  background: #3d5a80;
+  background: ${Colors.primary};
   width: 100%;
   height: 54px;
   flex-direction: row;
@@ -47,10 +47,12 @@ const CvsuLogo = styled.img`
   height: 45px;
 `;
 
-const TopNavTitleText = styled.h5`
+const TopNavTitleText = styled.text`
+  font-size: 12px;
   margin-left: 20px;
-  color: ${Colors.primary};
+  color: ${Colors.primaryHeaderText};
   font-family: HurmeGeometricSans3Bold;
+  font-weight: 700;
 `;
 
 const TopNavRightContent = styled.div`
@@ -66,7 +68,13 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const ButtonText = styled.h3<{ isActive: boolean }>`
+const ButtonText = styled.text<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3SemiBold;
   color: ${p => (p.isActive ? Colors.active : Colors.white)};
+  font-weight: 600;
+  font-size: 20px;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.6;
+  }
 `;

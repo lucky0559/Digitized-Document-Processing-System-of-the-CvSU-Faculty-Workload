@@ -5,6 +5,7 @@ import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
 import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import { Form, Formik } from "formik";
 import TextField from "../../components/TextField";
+import Button from "../../components/Button";
 
 export default function LoginScreen() {
   const width = window.innerWidth;
@@ -29,13 +30,17 @@ export default function LoginScreen() {
           onSubmit={() => console.log("Submitted")}
         >
           {({ isSubmitting }) => (
-            <Form>
+            <FormStyled>
               <TextField type="text" name="username" label="Username" />
               <TextField type="password" name="password" label="Password" />
               <ForgotPasswordContainer>
                 <ForgotPasswordText>Forgot Password</ForgotPasswordText>
               </ForgotPasswordContainer>
-            </Form>
+              <ButtonsContainer>
+                <Button text="Log In" color={Colors.buttonPrimary} />
+                <Button text="Register" color={Colors.buttonSecondary} />
+              </ButtonsContainer>
+            </FormStyled>
           )}
         </Formik>
       </FormContainer>
@@ -80,13 +85,32 @@ const FormContainer = styled.div`
 
 const ForgotPasswordContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  align-self: flex-end;
+  margin: 15px 0px 20px 0px;
 `;
 
-const ForgotPasswordText = styled.h2`
+const ForgotPasswordText = styled.text`
   font-size: 11px;
+  font-weight: 600;
   font-family: HurmeGeometricSans3SemiBold;
   text-decoration-line: underline;
   cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.6;
+  }
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FormStyled = styled(Form)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
