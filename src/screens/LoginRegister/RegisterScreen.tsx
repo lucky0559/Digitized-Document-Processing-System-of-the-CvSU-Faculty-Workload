@@ -251,6 +251,7 @@ export default function RegisterScreen({
                       : ""
                   }
                   name="middleInitial"
+                  maxLength={1}
                 />
                 <ErrorMessageStyle
                   component="div"
