@@ -8,32 +8,8 @@ import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
 import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import Dropdown from "../../components/Dropdown";
-import { ErrorMessages } from "../../constants/Strings";
+import { DROPDOWN_LISTS, ErrorMessages } from "../../constants/Strings";
 import { Default } from "../../constants/Defaults";
-
-const CAMPUS = ["Indang", "Trece", "Bacoor", "Silang"];
-const DEPARTMENT = ["DIT", "CAS", "CED"];
-const NATURE_OF_APPOINTMENT = ["Online", "Face to face"];
-const ACADEMIC_RANK = [
-  "Instructor I",
-  "Instructor II",
-  "Instructor III",
-  "Assistant Professor I",
-  "Assistant Professor II",
-  "Assistant Professor III",
-  "Assistant Professor IV",
-  "Associate Professor I",
-  "Associate Professor II",
-  "Associate Professor III",
-  "Associate Professor IV",
-  "Associate Professor V",
-  "Professor I",
-  "Professor II",
-  "Professor III",
-  "Professor IV",
-  "Professor V",
-  "Professor VI"
-];
 
 type RegisterScreenProps = {
   onLoginButtonClick?: () => void;
@@ -126,10 +102,11 @@ export default function RegisterScreen({
     const finalValues = RegisterFormSchema.cast(
       values
     ) as Required<RegisterFormValueType>;
-    finalValues.campus = campus || "Indang";
-    finalValues.department = department || "DIT";
-    finalValues.natureOfAppointment = natureOfAppointment || "Online";
-    finalValues.academicRank = academicRank || "Instructor I";
+    finalValues.campus = campus || DROPDOWN_LISTS.CAMPUS[0];
+    finalValues.department = department || DROPDOWN_LISTS.DEPARTMENT[0];
+    finalValues.natureOfAppointment =
+      natureOfAppointment || DROPDOWN_LISTS.NATURE_OF_APPOINTMENT[0];
+    finalValues.academicRank = academicRank || DROPDOWN_LISTS.ACADEMIC_RANK[0];
     // const {
     //   username,
     //   email,
@@ -292,22 +269,22 @@ export default function RegisterScreen({
                 />
               </FieldGroup>
               <Dropdown
-                option={CAMPUS}
+                option={DROPDOWN_LISTS.CAMPUS}
                 label="Campus"
                 onSelect={campusHandler}
               />
               <Dropdown
-                option={DEPARTMENT}
+                option={DROPDOWN_LISTS.DEPARTMENT}
                 label="Department"
                 onSelect={departmentHandler}
               />
               <Dropdown
-                option={NATURE_OF_APPOINTMENT}
+                option={DROPDOWN_LISTS.NATURE_OF_APPOINTMENT}
                 label="Nature of Appointment"
                 onSelect={natureOfAppointmentHandler}
               />
               <Dropdown
-                option={ACADEMIC_RANK}
+                option={DROPDOWN_LISTS.ACADEMIC_RANK}
                 label="Academic Rank"
                 onSelect={academicRankHandler}
               />
