@@ -25,7 +25,6 @@ type RegisterFormValueType = {
   middleInitial: string;
   campus: string;
   department: string;
-  natureOfAppointment: string;
   academicRank: string;
 };
 
@@ -39,7 +38,6 @@ const initialFormValues: RegisterFormValueType = {
   middleInitial: "",
   campus: "",
   department: "",
-  natureOfAppointment: "",
   academicRank: ""
 };
 
@@ -62,7 +60,6 @@ const RegisterFormSchema = Yup.object().shape({
   middleInitial: Yup.string().trim().required(ErrorMessages.REQUIRED),
   campus: Yup.string().trim(),
   department: Yup.string().trim(),
-  natureOfAppointment: Yup.string().trim(),
   academicRank: Yup.string().trim()
 });
 
@@ -73,7 +70,6 @@ export default function RegisterScreen({
   const height = window.innerHeight;
   const [campus, setCampus] = useState("");
   const [department, setDepartment] = useState("");
-  const [natureOfAppointment, setNatureOfAppointment] = useState("");
   const [academicRank, setAcademicRank] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -83,10 +79,6 @@ export default function RegisterScreen({
 
   const departmentHandler = (departmentValue: string) => {
     setDepartment(departmentValue);
-  };
-
-  const natureOfAppointmentHandler = (natureOfAppointmentValue: string) => {
-    setNatureOfAppointment(natureOfAppointmentValue);
   };
 
   const academicRankHandler = (academicRankValue: string) => {
@@ -104,8 +96,6 @@ export default function RegisterScreen({
     ) as Required<RegisterFormValueType>;
     finalValues.campus = campus || DROPDOWN_LISTS.CAMPUS[0];
     finalValues.department = department || DROPDOWN_LISTS.DEPARTMENT[0];
-    finalValues.natureOfAppointment =
-      natureOfAppointment || DROPDOWN_LISTS.NATURE_OF_APPOINTMENT[0];
     finalValues.academicRank = academicRank || DROPDOWN_LISTS.ACADEMIC_RANK[0];
     // const {
     //   username,
@@ -277,11 +267,6 @@ export default function RegisterScreen({
                 option={DROPDOWN_LISTS.DEPARTMENT}
                 label="Department"
                 onSelect={departmentHandler}
-              />
-              <Dropdown
-                option={DROPDOWN_LISTS.NATURE_OF_APPOINTMENT}
-                label="Nature of Appointment"
-                onSelect={natureOfAppointmentHandler}
               />
               <Dropdown
                 option={DROPDOWN_LISTS.ACADEMIC_RANK}
