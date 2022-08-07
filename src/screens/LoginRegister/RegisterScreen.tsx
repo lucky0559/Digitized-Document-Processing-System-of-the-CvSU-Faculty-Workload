@@ -72,6 +72,7 @@ export default function RegisterScreen({
   const [department, setDepartment] = useState("");
   const [academicRank, setAcademicRank] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isDesktopTablet = window.innerWidth > 801;
 
   const campusHandler = (campusValue: string) => {
     setCampus(campusValue);
@@ -114,7 +115,7 @@ export default function RegisterScreen({
   };
 
   return (
-    <Container width={width} height={height}>
+    <Container width={width} height={height} isDesktopTablet={isDesktopTablet}>
       <Header>
         <CvsuDroneShotImg src={CvsuDroneShot} />
         <CvsuLogoImg src={CvsuLogo} />
@@ -296,10 +297,14 @@ export default function RegisterScreen({
   );
 }
 
-const Container = styled.div<{ width: number; height: number }>`
+const Container = styled.div<{
+  width: number;
+  height: number;
+  isDesktopTablet: boolean;
+}>`
   border: 1px solid ${Colors.black};
   margin: 100px 0px 100px 0px;
-  width: ${p => p.width / 3}px;
+  width: ${p => (p.isDesktopTablet ? p.width / 3 + "px" : 80 + "%")};
   height: auto;
   align-self: center;
   border-radius: 15px;
