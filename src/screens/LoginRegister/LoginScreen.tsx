@@ -35,7 +35,7 @@ export default function LoginScreen({
 }: LoginScreenProps) {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const isDesktopTablet = window.innerWidth > 1025;
+  const isDesktopTablet = window.innerWidth > 1201;
 
   const onSubmit = () => {};
 
