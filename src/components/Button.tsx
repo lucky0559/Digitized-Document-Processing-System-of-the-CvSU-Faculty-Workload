@@ -5,17 +5,23 @@ import Colors from "../constants/Colors";
 type ButtonProps = {
   text: string;
   color: string;
+  onClick?: () => void;
+  type: "submit" | "button" | "reset";
 };
 
-export default function Button({ text, color }: ButtonProps) {
+export default function Button({ text, color, onClick, type }: ButtonProps) {
   return (
-    <ButtonContainer color={color}>
+    <ButtonContainer
+      color={color}
+      onClick={() => onClick && onClick()}
+      type={type}
+    >
       <ButtonText>{text}</ButtonText>
     </ButtonContainer>
   );
 }
 
-const ButtonContainer = styled.div<{ color: string }>`
+const ButtonContainer = styled.button<{ color: string }>`
   background-color: ${p => p.color};
   width: 200px;
   height: 37px;
@@ -26,6 +32,7 @@ const ButtonContainer = styled.div<{ color: string }>`
   cursor: pointer;
   margin: 10px;
   transition: opacity 0.2s ease-in-out;
+  border: none;
   &:hover {
     opacity: 0.9;
   }

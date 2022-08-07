@@ -1,16 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import * as Yup from "yup";
+import { ErrorMessage, Form, Formik } from "formik";
+
 import Colors from "../../constants/Colors";
 import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
 import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
-import { Form, Formik } from "formik";
-import TextField from "../../components/TextField";
 import Button from "../../components/Button";
+import { ErrorMessages } from "../../constants/Strings";
 
-export default function LoginScreen() {
+type LoginScreenProps = {
+  onLoginButtonClick?: () => void;
+  onRegisterButtonClick?: () => void;
+};
+
+type LoginFormValueType = {
+  username: string;
+  password: string;
+};
+
+const initialFormValues: LoginFormValueType = {
+  username: "",
+  password: ""
+};
+
+const LoginFormSchema = Yup.object().shape({
+  username: Yup.string().trim().required(ErrorMessages.REQUIRED),
+  password: Yup.string().trim().required(ErrorMessages.REQUIRED)
+});
+
+export default function LoginScreen({
+  onLoginButtonClick,
+  onRegisterButtonClick
+}: LoginScreenProps) {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const [username, setUsername] = useState("");
+
+  const onSubmit = () => {};
+
   return (
     <Container width={width} height={height}>
       <Header>
@@ -19,26 +46,62 @@ export default function LoginScreen() {
       </Header>
       <FormContainer>
         <Formik
-          initialValues={{ username: "", password: "" }}
-          // validate={values => {
-          //   const errors = { username: "" };
-          //   if (!values.username) {
-          //     errors.username = "Required";
-          //   }
-          //   return errors;
-          // }}
-          onSubmit={() => console.log("Submitted")}
+          initialValues={initialFormValues}
+          validationSchema={LoginFormSchema}
+          onSubmit={onSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ values, errors, handleSubmit, touched, handleChange }) => (
             <FormStyled>
-              <TextField type="text" name="username" label="Username" />
-              <TextField type="password" name="password" label="Password" />
+              <FieldGroup>
+                <Label>Username</Label>
+                <TextInput
+                  type="text"
+                  name="username"
+                  value={values.username}
+                  onChange={handleChange}
+                  className={
+                    touched.username && errors.username ? "is-invalid" : ""
+                  }
+                />
+                <ErrorMessageStyle
+                  component="div"
+                  name="username"
+                  className="invalid-feedback"
+                />
+              </FieldGroup>
+              <FieldGroup>
+                <Label>Password</Label>
+                <TextInput
+                  type="password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  className={
+                    touched.password && errors.password ? "is-invalid" : ""
+                  }
+                />
+                <ErrorMessageStyle
+                  component="div"
+                  name="password"
+                  className="invalid-feedback"
+                />
+              </FieldGroup>
               <ForgotPasswordContainer>
                 <ForgotPasswordText>Forgot Password</ForgotPasswordText>
               </ForgotPasswordContainer>
               <ButtonsContainer>
-                <Button text="Log In" color={Colors.buttonPrimary} />
-                <Button text="Register" color={Colors.buttonSecondary} />
+                <Button
+                  type="submit"
+                  text="Log In"
+                  color={Colors.buttonPrimary}
+                  onClick={() => handleSubmit}
+                />
+                <Button
+                  type="button"
+                  text="Register"
+                  color={Colors.buttonSecondary}
+                  onClick={onRegisterButtonClick}
+                />
               </ButtonsContainer>
             </FormStyled>
           )}
@@ -50,9 +113,9 @@ export default function LoginScreen() {
 
 const Container = styled.div<{ width: number; height: number }>`
   border: 1px solid ${Colors.black};
-  margin-top: 100px;
+  margin: 100px 0px 100px 0px;
   width: ${p => p.width / 3}px;
-  height: ${p => p.height / 2}px;
+  height: auto;
   align-self: center;
   border-radius: 15px;
 `;
@@ -113,4 +176,29 @@ const FormStyled = styled(Form)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+`;
+
+const ErrorMessageStyle = styled(ErrorMessage)`
+  font-size: 12px;
+  width: 180px;
+  text-transform: uppercase;
+`;
+
+const TextInput = styled.input`
+  width: 180px;
+  background-color: ${Colors.textFieldBackground};
+  border-width: 1px;
+`;
+
+const FieldGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+`;
+
+const Label = styled.label`
+  font-size: 12px;
+  font-family: HurmeGeometricSans3;
+  align-self: flex-start;
+  font-weight: 400;
 `;

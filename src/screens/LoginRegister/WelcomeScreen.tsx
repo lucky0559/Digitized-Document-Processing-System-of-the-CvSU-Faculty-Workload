@@ -7,11 +7,19 @@ import RegisterScreen from "./RegisterScreen";
 
 const WelcomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState("login");
+
   return (
     <WelcomeScreenContainer>
       <TopNav />
       <LoginRegisterContainer>
-        {activeScreen === "login" ? <LoginScreen /> : <RegisterScreen />}
+        {activeScreen === "login" ? (
+          <LoginScreen
+            onLoginButtonClick={() => setActiveScreen("login")}
+            onRegisterButtonClick={() => setActiveScreen("register")}
+          />
+        ) : (
+          <RegisterScreen onLoginButtonClick={() => setActiveScreen("login")} />
+        )}
       </LoginRegisterContainer>
       <FooterContainer>
         <Footer />

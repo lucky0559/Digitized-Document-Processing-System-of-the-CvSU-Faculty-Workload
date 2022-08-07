@@ -13,14 +13,6 @@ export default function TopNav() {
           Digitized Document Processing System of the CvSU Faculty Workload
         </TopNavTitleText>
       </TopNavLeftContent>
-      <TopNavRightContent>
-        <ButtonContainer>
-          <ButtonText isActive={true}>Login</ButtonText>
-        </ButtonContainer>
-        <ButtonContainer>
-          <ButtonText isActive={false}>Register</ButtonText>
-        </ButtonContainer>
-      </TopNavRightContent>
     </Container>
   );
 }
@@ -53,28 +45,4 @@ const TopNavTitleText = styled.text`
   color: ${Colors.primaryHeaderText};
   font-family: HurmeGeometricSans3Bold;
   font-weight: 700;
-`;
-
-const TopNavRightContent = styled.div`
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  display: flex;
-  margin-right: 80px;
-  width: 200px;
-`;
-
-const ButtonContainer = styled.div`
-  cursor: pointer;
-`;
-
-const ButtonText = styled.text<{ isActive: boolean }>`
-  font-family: HurmeGeometricSans3SemiBold;
-  color: ${p => (p.isActive ? Colors.active : Colors.white)};
-  font-weight: 600;
-  font-size: 20px;
-  transition: opacity 0.2s ease-in-out;
-  &:hover {
-    opacity: 0.6;
-  }
 `;
