@@ -169,6 +169,7 @@ const ButtonsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0px 0px 30px 0px;
 `;
 
 const FormStyled = styled(Form)`

@@ -349,7 +349,7 @@ const ButtonsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 30px 0px 20px 0px;
+  margin: 30px 0px 30px 0px;
 `;
 
 const FormStyled = styled(Form)`
