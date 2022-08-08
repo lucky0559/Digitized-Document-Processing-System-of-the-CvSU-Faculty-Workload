@@ -262,7 +262,7 @@ export default function RegisterScreen({
               </FieldGroup>
               <Dropdown
                 option={DROPDOWN_LISTS.CAMPUS}
-                label="Campus"
+                label="College/Campus"
                 onSelect={campusHandler}
               />
               <Dropdown

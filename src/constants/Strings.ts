@@ -6,7 +6,7 @@ export enum ErrorMessages {
 
 export const DROPDOWN_LISTS = {
   CAMPUS: [
-    "Indang Campus",
+    "Main Campus",
     "Bacoor Campus",
     "Carmona Campus",
     "Cavite City Campus",
@@ -27,7 +27,6 @@ export const DROPDOWN_LISTS = {
     "CSPEAR",
     "CVMBS"
   ],
-  NATURE_OF_APPOINTMENT: ["Online", "Face to face"],
   ACADEMIC_RANK: [
     "Instructor I",
     "Instructor II",
