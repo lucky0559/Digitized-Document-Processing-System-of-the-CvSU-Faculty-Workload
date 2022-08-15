@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 import Colors from "../../constants/Colors";
 import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
@@ -10,6 +11,7 @@ import Button from "../../components/Button";
 import Dropdown from "../../components/Dropdown";
 import { DROPDOWN_LISTS, ErrorMessages } from "../../constants/Strings";
 import { Default } from "../../constants/Defaults";
+import axios from "../../api/axios";
 
 type RegisterScreenProps = {
   onLoginButtonClick?: () => void;
@@ -71,8 +73,11 @@ export default function RegisterScreen({
   const [campus, setCampus] = useState("");
   const [department, setDepartment] = useState("");
   const [academicRank, setAcademicRank] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isDesktopTablet = window.innerWidth > 801;
+
+  let navigate = useNavigate();
 
   const campusHandler = (campusValue: string) => {
     setCampus(campusValue);
@@ -110,7 +115,12 @@ export default function RegisterScreen({
     //   natureOfAppointment,
     //   academicRank
     // } = finalValues;
-    console.log(finalValues);
+    try {
+      const response = await axios.post("user/register", finalValues);
+      console.log(response.data);
+    } catch {
+      // do nothing
+    }
     setIsSubmitting(false);
   };
 
