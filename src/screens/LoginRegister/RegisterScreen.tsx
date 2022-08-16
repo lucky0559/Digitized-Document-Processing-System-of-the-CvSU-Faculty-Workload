@@ -12,6 +12,7 @@ import Dropdown from "../../components/Dropdown";
 import { DROPDOWN_LISTS, ErrorMessages } from "../../constants/Strings";
 import { Default } from "../../constants/Defaults";
 import axios from "../../api/axios";
+import { Register } from "../../lib/user.hooks";
 
 type RegisterScreenProps = {
   onLoginButtonClick?: () => void;
@@ -103,25 +104,13 @@ export default function RegisterScreen({
     finalValues.campus = campus || DROPDOWN_LISTS.CAMPUS[0];
     finalValues.department = department || DROPDOWN_LISTS.DEPARTMENT[0];
     finalValues.academicRank = academicRank || DROPDOWN_LISTS.ACADEMIC_RANK[0];
-    // const {
-    //   username,
-    //   email,
-    //   password,
-    //   surname,
-    //   firstName,
-    //   middleInitial,
-    //   campus,
-    //   department,
-    //   natureOfAppointment,
-    //   academicRank
-    // } = finalValues;
     try {
-      const response = await axios.post("user/register", finalValues);
-      console.log(response.data);
+      setIsSubmitting(true);
+      await Register(finalValues);
+      setIsSubmitting(false);
     } catch {
       // do nothing
     }
-    setIsSubmitting(false);
   };
 
   return (
@@ -139,14 +128,7 @@ export default function RegisterScreen({
           validateOnChange
           enableReinitialize
         >
-          {({
-            isSubmitting,
-            handleSubmit,
-            values,
-            touched,
-            errors,
-            handleChange
-          }) => (
+          {({ handleSubmit, values, touched, errors, handleChange }) => (
             <FormStyled>
               <FieldGroup>
                 <Label>Username</Label>
@@ -291,6 +273,7 @@ export default function RegisterScreen({
                   text="Register"
                   color={Colors.buttonPrimary}
                   onClick={() => handleSubmit}
+                  isSubmitting={isSubmitting}
                 />
                 <Button
                   type="button"

@@ -1,22 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type ButtonProps = {
   text: string;
   color: string;
   onClick?: () => void;
   type: "submit" | "button" | "reset";
+  isSubmitting?: boolean;
 };
 
-export default function Button({ text, color, onClick, type }: ButtonProps) {
+export default function Button({
+  text,
+  color,
+  onClick,
+  type,
+  isSubmitting
+}: ButtonProps) {
   return (
     <ButtonContainer
       color={color}
       onClick={() => onClick && onClick()}
       type={type}
     >
-      <ButtonText>{text}</ButtonText>
+      {isSubmitting ? <LoadingSpinner /> : <ButtonText>{text}</ButtonText>}
     </ButtonContainer>
   );
 }

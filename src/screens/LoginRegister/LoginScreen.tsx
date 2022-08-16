@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -33,6 +33,7 @@ export default function LoginScreen({
   onLoginButtonClick,
   onRegisterButtonClick
 }: LoginScreenProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const width = window.innerWidth;
   const height = window.innerHeight;
   const isDesktopTablet = window.innerWidth > 1201;
@@ -96,12 +97,14 @@ export default function LoginScreen({
                   text="Log In"
                   color={Colors.buttonPrimary}
                   onClick={() => handleSubmit}
+                  isSubmitting={isSubmitting}
                 />
                 <Button
                   type="button"
                   text="Register"
                   color={Colors.buttonSecondary}
                   onClick={onRegisterButtonClick}
+                  isSubmitting={isSubmitting}
                 />
               </ButtonsContainer>
             </FormStyled>

@@ -1,5 +1,4 @@
 export type User = {
-  id: string;
   username: string;
   email: string;
   surname: string;
@@ -7,5 +6,5 @@ export type User = {
   middleInitial: string;
   campus: string;
   department: string;
-  role: string;
-}
+  role?: string;
+};
