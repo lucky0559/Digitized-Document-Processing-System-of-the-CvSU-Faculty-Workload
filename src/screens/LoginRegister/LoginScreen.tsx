@@ -8,6 +8,7 @@ import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
 import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
+import { useNavigate } from "react-router-dom";
 
 type LoginScreenProps = {
   onLoginButtonClick?: () => void;
@@ -38,7 +39,12 @@ export default function LoginScreen({
   const height = window.innerHeight;
   const isDesktopTablet = window.innerWidth > 1201;
 
-  const onSubmit = () => {};
+  const navigate = useNavigate();
+
+  const onSubmit = async (values: any) => {
+    localStorage.setItem("user", values);
+    navigate("teaching-workload", { replace: true });
+  };
 
   return (
     <Container width={width} height={height} isDesktopTablet={isDesktopTablet}>
@@ -104,7 +110,6 @@ export default function LoginScreen({
                   text="Register"
                   color={Colors.buttonSecondary}
                   onClick={onRegisterButtonClick}
-                  isSubmitting={isSubmitting}
                 />
               </ButtonsContainer>
             </FormStyled>

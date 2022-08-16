@@ -3,11 +3,18 @@ import styled from "styled-components";
 import CVSU_LOGO from "../assets/cvsu_logo/cvsu_logo.png";
 import Colors from "../constants/Colors";
 import "../index.css";
+import { FaBars } from "react-icons/fa";
 
 export default function TopNav() {
+  const user = localStorage.getItem("user");
   return (
     <Container>
       <TopNavLeftContent>
+        {user && (
+          <BurgerContainer>
+            <FaBars size={20} color="white" />
+          </BurgerContainer>
+        )}
         <CvsuLogo src={CVSU_LOGO} />
         <TopNavTitleText>
           Digitized Document Processing System of the CvSU Faculty Workload
@@ -45,4 +52,8 @@ const TopNavTitleText = styled.text`
   color: ${Colors.primaryHeaderText};
   font-family: HurmeGeometricSans3Bold;
   font-weight: 700;
+`;
+
+const BurgerContainer = styled.div`
+  margin: 0px 20px 0px 10px;
 `;

@@ -11,7 +11,6 @@ import Button from "../../components/Button";
 import Dropdown from "../../components/Dropdown";
 import { DROPDOWN_LISTS, ErrorMessages } from "../../constants/Strings";
 import { Default } from "../../constants/Defaults";
-import axios from "../../api/axios";
 import { Register } from "../../lib/user.hooks";
 
 type RegisterScreenProps = {
