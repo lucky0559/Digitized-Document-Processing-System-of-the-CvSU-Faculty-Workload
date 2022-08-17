@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 type ScreenTitleProps = {
   title: string;
@@ -6,10 +7,21 @@ type ScreenTitleProps = {
 
 const ScreenTitle = ({ title }: ScreenTitleProps) => {
   return (
-    <div>
-      <h1>{title}</h1>
-    </div>
+    <Container>
+      <TitleText>{title}</TitleText>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  margin: 20px;
+`;
+
+const TitleText = styled.h1`
+  font-size: 32px;
+  font-weight: 700;
+  font-family: HurmeGeometricSans3;
+  line-height: 41px;
+`;
 
 export default ScreenTitle;

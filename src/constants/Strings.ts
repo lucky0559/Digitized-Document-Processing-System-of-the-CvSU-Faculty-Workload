@@ -49,3 +49,7 @@ export const DROPDOWN_LISTS = {
     "Professor VI"
   ]
 };
+
+export enum WorkloadType {
+  TEACHING_WORKLOAD = "Teaching Work Load (TWL)"
+}

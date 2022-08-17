@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import TeachingWorkLoad from "./screens/FacultyWorkload/TeachingWorkload/TeachingWorkLoad";
+import FacultyWorkloadScreen from "./screens/FacultyWorkload/FacultyWorkloadScreen";
 import WelcomeScreen from "./screens/LoginRegister/WelcomeScreen";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<WelcomeScreen />} />
-        <Route path="teaching-workload" element={<TeachingWorkLoad />} />
+        <Route path="faculty-workload" element={<FacultyWorkloadScreen />} />
       </Routes>
     </BrowserRouter>
   );

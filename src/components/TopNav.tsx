@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CVSU_LOGO from "../assets/cvsu_logo/cvsu_logo.png";
 import Colors from "../constants/Colors";
 import "../index.css";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaUserCircle } from "react-icons/fa";
 
 export default function TopNav() {
   const user = localStorage.getItem("user");
@@ -20,6 +20,9 @@ export default function TopNav() {
           Digitized Document Processing System of the CvSU Faculty Workload
         </TopNavTitleText>
       </TopNavLeftContent>
+      <TopNavRightContent>
+        <FaUserCircle size={25} color="white" />
+      </TopNavRightContent>
     </Container>
   );
 }
@@ -56,4 +59,11 @@ const TopNavTitleText = styled.text`
 
 const BurgerContainer = styled.div`
   margin: 0px 20px 0px 10px;
+`;
+
+const TopNavRightContent = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding-right: 40px;
 `;

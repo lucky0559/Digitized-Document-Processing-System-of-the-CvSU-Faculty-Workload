@@ -359,6 +359,7 @@ const TextInput = styled.input`
   width: 180px;
   background-color: ${Colors.textFieldBackground};
   border-width: 1px;
+  font-family: HurmeGeometricSans3;
 `;
 
 const FieldGroup = styled.div`
