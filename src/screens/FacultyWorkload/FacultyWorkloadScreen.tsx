@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import FormButton from "../../components/FormButton";
+import Menu from "../../components/Menu";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
@@ -16,6 +16,8 @@ const FacultyWorkloadScreen = () => {
   const [teachingWorkLoad, setTeachingWorkLoad] =
     useState<TeachingWorkLoadProps>();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const teachingWorkLoadHandler = (values?: TeachingWorkLoadProps) => {
     setTeachingWorkLoad(values);
   };
@@ -24,9 +26,14 @@ const FacultyWorkloadScreen = () => {
     console.log(teachingWorkLoad);
   }, [teachingWorkLoad]);
 
+  // const menuHandler = () => {
+
+  // }
+
   return (
     <Container>
-      <TopNav />
+      <TopNav menuHandler={() => setIsMenuOpen(!isMenuOpen)} />
+      {isMenuOpen && <Menu />}
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
         <TeachingWorkLoad teachingWorkLoadHandler={teachingWorkLoadHandler} />
@@ -43,5 +50,7 @@ const BodyContainer = styled.div`
   justify-content: center;
   flex-direction: column;
 `;
+
+const MenuContainer = styled.div``;
 
 export default FacultyWorkloadScreen;

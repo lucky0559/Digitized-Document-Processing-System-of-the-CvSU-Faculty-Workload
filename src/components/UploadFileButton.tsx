@@ -41,9 +41,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
 `;
 
 const ButtonText = styled.label`

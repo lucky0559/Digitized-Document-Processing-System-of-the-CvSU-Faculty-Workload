@@ -1,5 +1,6 @@
 export default {
   primary: "#3D5A80",
+  secondary: "#293241",
   primaryHeaderText: "#e0fbfc",
   active: "#EE6C4D",
   white: "#FFFFFF",

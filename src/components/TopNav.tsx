@@ -5,13 +5,17 @@ import Colors from "../constants/Colors";
 import "../index.css";
 import { FaBars, FaUserCircle } from "react-icons/fa";
 
-export default function TopNav() {
+type TopNavProps = {
+  menuHandler?: () => void;
+};
+
+export default function TopNav({ menuHandler }: TopNavProps) {
   const user = localStorage.getItem("user");
   return (
     <Container>
       <TopNavLeftContent>
         {user && (
-          <BurgerContainer>
+          <BurgerContainer onClick={() => menuHandler && menuHandler()}>
             <FaBars size={20} color="white" />
           </BurgerContainer>
         )}
@@ -20,9 +24,11 @@ export default function TopNav() {
           Digitized Document Processing System of the CvSU Faculty Workload
         </TopNavTitleText>
       </TopNavLeftContent>
-      <TopNavRightContent>
-        <FaUserCircle size={25} color="white" />
-      </TopNavRightContent>
+      {user && (
+        <TopNavRightContent>
+          <FaUserCircle size={25} color="white" />
+        </TopNavRightContent>
+      )}
     </Container>
   );
 }
@@ -59,6 +65,11 @@ const TopNavTitleText = styled.text`
 
 const BurgerContainer = styled.div`
   margin: 0px 20px 0px 10px;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const TopNavRightContent = styled.div`

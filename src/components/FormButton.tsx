@@ -24,6 +24,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
   &:hover {
     opacity: 0.7;
   }
