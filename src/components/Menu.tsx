@@ -34,7 +34,7 @@ const slideOutAnimation = keyframes`
 
 const Container = styled.div<{ isMenuOpen: boolean }>`
   width: 248px;
-  height: 94.2%;
+  height: calc(100% - 54px);
   background-color: ${Colors.secondary};
   position: absolute;
   left: ${p => (p.isMenuOpen ? 0 : -248)}px;
