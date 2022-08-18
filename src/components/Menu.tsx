@@ -1,10 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Colors from "../constants/Colors";
 
-const Menu = () => {
+type MenuProps = {
+  isMenuOpen: boolean;
+};
+
+const Menu = ({ isMenuOpen }: MenuProps) => {
   return (
-    <Container>
+    <Container isMenuOpen={isMenuOpen}>
       <NavButtonContainer>
         <NavButtonText isActive={true}>Faculty Workload</NavButtonText>
       </NavButtonContainer>
@@ -18,12 +22,24 @@ const Menu = () => {
   );
 };
 
-const Container = styled.div`
+const slideInAnimation = keyframes`
+ 0% { left: -248px }
+ 100% { left: 0; }
+ `;
+
+const slideOutAnimation = keyframes`
+ 0% { left: 0 }
+ 100% { left: -248px; }
+ `;
+
+const Container = styled.div<{ isMenuOpen: boolean }>`
   width: 248px;
   height: 94.2%;
   background-color: ${Colors.secondary};
   position: absolute;
-  left: 0;
+  left: ${p => (p.isMenuOpen ? 0 : -248)}px;
+  animation-name: ${p => (p.isMenuOpen ? slideInAnimation : slideOutAnimation)};
+  animation-duration: 0.5s;
 `;
 
 const NavButtonContainer = styled.div`

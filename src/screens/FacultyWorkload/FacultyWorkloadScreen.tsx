@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Menu from "../../components/Menu";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
@@ -33,7 +33,7 @@ const FacultyWorkloadScreen = () => {
   return (
     <Container>
       <TopNav menuHandler={() => setIsMenuOpen(!isMenuOpen)} />
-      {isMenuOpen && <Menu />}
+      <Menu isMenuOpen={isMenuOpen} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
         <TeachingWorkLoad teachingWorkLoadHandler={teachingWorkLoadHandler} />
@@ -41,6 +41,16 @@ const FacultyWorkloadScreen = () => {
     </Container>
   );
 };
+
+const slideInAnimation = keyframes`
+ 0% { left: -248px }
+ 100% { left: 0; }
+ `;
+
+const slideOutAnimation = keyframes`
+ 0% { left: 0 }
+ 100% { left: -248px; }
+ `;
 
 const Container = styled.div``;
 
