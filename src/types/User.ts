@@ -7,4 +7,5 @@ export type User = {
   campus: string;
   department: string;
   role?: string;
+  verified: boolean;
 };
