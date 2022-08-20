@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -9,6 +9,7 @@ import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
 import { useNavigate } from "react-router-dom";
+import { Login, LoginDTO } from "../../lib/user.hooks";
 
 type LoginScreenProps = {
   onLoginButtonClick?: () => void;
@@ -35,15 +36,28 @@ export default function LoginScreen({
   onRegisterButtonClick
 }: LoginScreenProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const width = window.innerWidth;
   const height = window.innerHeight;
   const isDesktopTablet = window.innerWidth > 1201;
 
   const navigate = useNavigate();
 
-  const onSubmit = async (values: any) => {
-    localStorage.setItem("user", values);
-    navigate("faculty-workload", { replace: true });
+  const onSubmit = async (values: LoginDTO) => {
+    setIsSubmitting(true);
+    await Login(values)
+      .then(res => {
+        console.log(res.data);
+        setIsSubmitting(false);
+        navigate("faculty-workload", { replace: true });
+        setErrorMessage("");
+      })
+      .catch(error => {
+        setErrorMessage(error.response.data.message);
+        setIsSubmitting(false);
+      });
+    // console.log(data);
+    // localStorage.setItem("user", values);
   };
 
   return (
@@ -94,6 +108,11 @@ export default function LoginScreen({
                   className="invalid-feedback"
                 />
               </FieldGroup>
+              {errorMessage && (
+                <ErrorMessageContainer>
+                  <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                </ErrorMessageContainer>
+              )}
               <ForgotPasswordContainer>
                 <ForgotPasswordText>Forgot Password</ForgotPasswordText>
               </ForgotPasswordContainer>
@@ -216,4 +235,18 @@ const Label = styled.label`
   font-family: HurmeGeometricSans3;
   align-self: flex-start;
   font-weight: 400;
+`;
+
+const ErrorMessageContainer = styled.div`
+  display: flex;
+  align-self: flex-start;
+  margin: 10px 0px 0px 17px;
+`;
+
+const ErrorMessageText = styled.text`
+  font-size: 12px;
+  font-family: HurmeGeometricSans3SemiBold;
+  align-self: flex-start;
+  font-weight: 400;
+  color: red;
 `;
