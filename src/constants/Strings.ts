@@ -1,8 +1,9 @@
 export enum ErrorMessages {
-  INVALID_EMAIL = "Username already taken",
+  INVALID_EMAIL = "Email already used",
   REQUIRED = "Required",
   PASSWORD_NOT_MATCH = "Password not match",
-  INVALID_SESSION = "Invalid session"
+  INVALID_SESSION = "Invalid session",
+  INVALID_USERNAME = "Username already taken"
 }
 
 export const DROPDOWN_LISTS = {

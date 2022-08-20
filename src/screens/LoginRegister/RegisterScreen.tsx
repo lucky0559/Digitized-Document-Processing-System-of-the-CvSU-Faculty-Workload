@@ -75,6 +75,7 @@ export default function RegisterScreen({
   const [academicRank, setAcademicRank] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
   const isDesktopTablet = window.innerWidth > 801;
 
   let navigate = useNavigate();
@@ -95,7 +96,10 @@ export default function RegisterScreen({
   //   console.log(campus);
   // }, [campus]);
 
-  const onSubmit = async (values: RegisterFormValueType) => {
+  const onSubmit = async (
+    values: RegisterFormValueType,
+    { resetForm }: any
+  ) => {
     setIsSubmitting(true);
     const finalValues = RegisterFormSchema.cast(
       values
@@ -103,13 +107,18 @@ export default function RegisterScreen({
     finalValues.campus = campus || DROPDOWN_LISTS.CAMPUS[0];
     finalValues.department = department || DROPDOWN_LISTS.DEPARTMENT[0];
     finalValues.academicRank = academicRank || DROPDOWN_LISTS.ACADEMIC_RANK[0];
-    try {
-      setIsSubmitting(true);
-      await Register(finalValues);
-      setIsSubmitting(false);
-    } catch {
-      // do nothing
-    }
+    await Register(finalValues)
+      .then(() => {
+        setIsSubmitting(false);
+        setIsRegisterSuccess(true);
+        setErrorMessage("");
+        resetForm();
+      })
+      .catch(error => {
+        setIsRegisterSuccess(false);
+        setErrorMessage(error.response.data.message);
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -127,7 +136,14 @@ export default function RegisterScreen({
           validateOnChange
           enableReinitialize
         >
-          {({ handleSubmit, values, touched, errors, handleChange }) => (
+          {({
+            handleSubmit,
+            values,
+            touched,
+            errors,
+            handleChange,
+            resetForm
+          }) => (
             <FormStyled>
               <FieldGroup>
                 <Label>Username</Label>
@@ -145,6 +161,11 @@ export default function RegisterScreen({
                   name="username"
                   className="invalid-feedback"
                 />
+                {errorMessage === ErrorMessages.INVALID_USERNAME && (
+                  <ErrorMessageContainer>
+                    <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                  </ErrorMessageContainer>
+                )}
               </FieldGroup>
               <FieldGroup>
                 <Label>CvSU Email</Label>
@@ -160,6 +181,11 @@ export default function RegisterScreen({
                   name="email"
                   className="invalid-feedback"
                 />
+                {errorMessage === ErrorMessages.INVALID_EMAIL && (
+                  <ErrorMessageContainer>
+                    <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                  </ErrorMessageContainer>
+                )}
               </FieldGroup>
               <FieldGroup>
                 <Label>Password</Label>
@@ -266,12 +292,19 @@ export default function RegisterScreen({
                 label="Academic Rank"
                 onSelect={academicRankHandler}
               />
+              {isRegisterSuccess && (
+                <ErrorMessageContainer>
+                  <SuccessMessageText>
+                    Registration Successfully, Please Verify your email first
+                  </SuccessMessageText>
+                </ErrorMessageContainer>
+              )}
               <ButtonsContainer>
                 <Button
                   type="submit"
                   text="Register"
                   color={Colors.buttonPrimary}
-                  onClick={() => handleSubmit}
+                  onClick={handleSubmit}
                   isSubmitting={isSubmitting}
                 />
                 <Button
@@ -366,4 +399,22 @@ const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 15px;
+`;
+
+const ErrorMessageContainer = styled.div``;
+
+const ErrorMessageText = styled.text`
+  font-size: 12px;
+  font-family: HurmeGeometricSans3SemiBold;
+  align-self: flex-start;
+  font-weight: 400;
+  color: red;
+`;
+
+const SuccessMessageText = styled.text`
+  font-size: 12px;
+  font-family: HurmeGeometricSans3SemiBold;
+  align-self: flex-start;
+  font-weight: 400;
+  color: green;
 `;

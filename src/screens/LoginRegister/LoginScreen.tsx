@@ -47,7 +47,6 @@ export default function LoginScreen({
     setIsSubmitting(true);
     await Login(values)
       .then(res => {
-        console.log(res.data);
         setIsSubmitting(false);
         navigate("faculty-workload", { replace: true });
         setErrorMessage("");
@@ -56,8 +55,6 @@ export default function LoginScreen({
         setErrorMessage(error.response.data.message);
         setIsSubmitting(false);
       });
-    // console.log(data);
-    // localStorage.setItem("user", values);
   };
 
   return (
