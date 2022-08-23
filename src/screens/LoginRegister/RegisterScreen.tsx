@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
-import { useNavigate } from "react-router-dom";
 
 import Colors from "../../constants/Colors";
 import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
@@ -78,8 +77,6 @@ export default function RegisterScreen({
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
   const isDesktopTablet = window.innerWidth > 801;
 
-  let navigate = useNavigate();
-
   const campusHandler = (campusValue: string) => {
     setCampus(campusValue);
   };
@@ -92,15 +89,12 @@ export default function RegisterScreen({
     setAcademicRank(academicRankValue);
   };
 
-  // useEffect(() => {
-  //   console.log(campus);
-  // }, [campus]);
-
   const onSubmit = async (
     values: RegisterFormValueType,
     { resetForm }: any
   ) => {
     setIsSubmitting(true);
+    setIsRegisterSuccess(false);
     const finalValues = RegisterFormSchema.cast(
       values
     ) as Required<RegisterFormValueType>;
@@ -136,14 +130,7 @@ export default function RegisterScreen({
           validateOnChange
           enableReinitialize
         >
-          {({
-            handleSubmit,
-            values,
-            touched,
-            errors,
-            handleChange,
-            resetForm
-          }) => (
+          {({ handleSubmit, values, touched, errors, handleChange }) => (
             <FormStyled>
               <FieldGroup>
                 <Label>Username</Label>
@@ -299,6 +286,11 @@ export default function RegisterScreen({
                   </SuccessMessageText>
                 </ErrorMessageContainer>
               )}
+              {errorMessage === "Response error" && (
+                <ErrorMessageContainer>
+                  <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                </ErrorMessageContainer>
+              )}
               <ButtonsContainer>
                 <Button
                   type="submit"
@@ -386,6 +378,8 @@ const ErrorMessageStyle = styled(ErrorMessage)`
   font-size: 12px;
   width: 180px;
   text-transform: uppercase;
+  font-family: HurmeGeometricSans3SemiBold;
+  color: red;
 `;
 
 const TextInput = styled.input`

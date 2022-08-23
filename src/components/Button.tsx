@@ -19,11 +19,7 @@ export default function Button({
   isSubmitting
 }: ButtonProps) {
   return (
-    <ButtonContainer
-      color={color}
-      onClick={() => onClick && onClick()}
-      type={type}
-    >
+    <ButtonContainer color={color} onClick={onClick} type={type}>
       {isSubmitting ? <LoadingSpinner /> : <ButtonText>{text}</ButtonText>}
     </ButtonContainer>
   );
