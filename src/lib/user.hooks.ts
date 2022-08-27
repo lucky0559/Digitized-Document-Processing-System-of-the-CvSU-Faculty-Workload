@@ -17,3 +17,8 @@ export const Login = async (user: LoginDTO) => {
   );
   return { data, request };
 };
+
+export const VerifyEmail = async (token?: string) => {
+  const { data } = await axios.get(`user/verify/${token}`);
+  return { data };
+};
