@@ -48,6 +48,7 @@ export default function LoginScreen({
     await Login(values)
       .then(res => {
         setIsSubmitting(false);
+        localStorage.setItem("user", res.data);
         navigate("faculty-workload", { replace: true });
         setErrorMessage("");
       })
