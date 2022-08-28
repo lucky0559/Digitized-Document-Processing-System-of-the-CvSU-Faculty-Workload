@@ -34,7 +34,9 @@ const TeachingWorkLoad = ({
   };
 
   useEffect(() => {
-    teachingWorkLoadHandler(teachingWorkLoadValues);
+    if (teachingWorkLoadValues) {
+      teachingWorkLoadHandler(teachingWorkLoadValues);
+    }
   }, [teachingWorkLoadValues]);
 
   return (

@@ -18,17 +18,12 @@ const FacultyWorkloadScreen = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const [steps, setSteps] = useState(1);
+
   const teachingWorkLoadHandler = (values?: TeachingWorkLoadProps) => {
     setTeachingWorkLoad(values);
+    setSteps(steps + 1);
   };
-
-  useEffect(() => {
-    console.log(teachingWorkLoad);
-  }, [teachingWorkLoad]);
-
-  // const menuHandler = () => {
-
-  // }
 
   return (
     <Container>
@@ -36,21 +31,13 @@ const FacultyWorkloadScreen = () => {
       <Menu isMenuOpen={isMenuOpen} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
-        <TeachingWorkLoad teachingWorkLoadHandler={teachingWorkLoadHandler} />
+        {steps === 1 && (
+          <TeachingWorkLoad teachingWorkLoadHandler={teachingWorkLoadHandler} />
+        )}
       </BodyContainer>
     </Container>
   );
 };
-
-const slideInAnimation = keyframes`
- 0% { left: -248px }
- 100% { left: 0; }
- `;
-
-const slideOutAnimation = keyframes`
- 0% { left: 0 }
- 100% { left: -248px; }
- `;
 
 const Container = styled.div``;
 
@@ -60,7 +47,5 @@ const BodyContainer = styled.div`
   justify-content: center;
   flex-direction: column;
 `;
-
-const MenuContainer = styled.div``;
 
 export default FacultyWorkloadScreen;
