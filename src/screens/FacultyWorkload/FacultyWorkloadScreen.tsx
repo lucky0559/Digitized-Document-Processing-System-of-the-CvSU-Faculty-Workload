@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Menu from "../../components/Menu";
+import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
@@ -17,6 +18,7 @@ const FacultyWorkloadScreen = () => {
     useState<TeachingWorkLoadProps>();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const [steps, setSteps] = useState(1);
 
@@ -27,8 +29,12 @@ const FacultyWorkloadScreen = () => {
 
   return (
     <Container>
-      <TopNav menuHandler={() => setIsMenuOpen(!isMenuOpen)} />
+      <TopNav
+        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
+        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      />
       <Menu isMenuOpen={isMenuOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
         {steps === 1 && (

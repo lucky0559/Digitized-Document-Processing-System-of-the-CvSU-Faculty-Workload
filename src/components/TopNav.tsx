@@ -7,15 +7,16 @@ import { FaBars, FaUserCircle } from "react-icons/fa";
 
 type TopNavProps = {
   menuHandler?: () => void;
+  profileHandler?: () => void;
 };
 
-export default function TopNav({ menuHandler }: TopNavProps) {
+export default function TopNav({ menuHandler, profileHandler }: TopNavProps) {
   const user = localStorage.getItem("user");
   return (
     <Container>
       <TopNavLeftContent>
         {user && (
-          <BurgerContainer onClick={() => menuHandler && menuHandler()}>
+          <BurgerContainer onClick={menuHandler}>
             <FaBars size={20} color="white" />
           </BurgerContainer>
         )}
@@ -26,7 +27,7 @@ export default function TopNav({ menuHandler }: TopNavProps) {
       </TopNavLeftContent>
       {user && (
         <TopNavRightContent>
-          <FaUserCircle size={25} color="white" />
+          <FaUserCircle size={25} color="white" onClick={profileHandler} />
         </TopNavRightContent>
       )}
     </Container>
@@ -40,6 +41,8 @@ const Container = styled.div`
   flex-direction: row;
   display: flex;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 `;
 
 const TopNavLeftContent = styled.div`
@@ -77,4 +80,9 @@ const TopNavRightContent = styled.div`
   align-items: center;
   display: flex;
   padding-right: 40px;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
