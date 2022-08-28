@@ -210,8 +210,10 @@ const FormStyled = styled(Form)`
 
 const ErrorMessageStyle = styled(ErrorMessage)`
   font-size: 12px;
-  width: 180px;
-  text-transform: uppercase;
+  font-family: HurmeGeometricSans3SemiBold;
+  align-self: flex-start;
+  font-weight: 400;
+  color: red;
 `;
 
 const TextInput = styled.input`
