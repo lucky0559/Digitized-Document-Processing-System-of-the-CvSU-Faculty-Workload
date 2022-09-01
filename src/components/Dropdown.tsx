@@ -6,9 +6,15 @@ type DropdownProps = {
   option: string[];
   label: string;
   onSelect: (option: string) => void;
+  val?: string;
 };
 
-export default function Dropdown({ option, label, onSelect }: DropdownProps) {
+export default function Dropdown({
+  option,
+  label,
+  onSelect,
+  val
+}: DropdownProps) {
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -19,14 +25,14 @@ export default function Dropdown({ option, label, onSelect }: DropdownProps) {
     <Container>
       <Label>{label}</Label>
       <Select
-        value={value}
         onChange={e => {
           setValue(e.target.value);
         }}
+        style={{ width: "100%" }}
       >
         {option.map((item, index) => {
           return (
-            <option key={index} value={item}>
+            <option key={index} value={item} selected={val === item}>
               {item}
             </option>
           );
@@ -40,6 +46,7 @@ const Container = styled.div`
   flex-direction: column;
   display: flex;
   margin-top: 15px;
+  width: 100%;
 `;
 
 const Select = styled.select`

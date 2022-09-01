@@ -3,15 +3,19 @@ import styled from "styled-components";
 import Colors from "../constants/Colors";
 
 type fileHandlerProps = {
-  fileHandler?: (file?: File) => void;
+  fileHandler: (file?: File) => void;
+  workloadFileName?: string;
 };
 
-const UploadFileButton = ({ fileHandler }: fileHandlerProps) => {
+const UploadFileButton = ({
+  fileHandler,
+  workloadFileName
+}: fileHandlerProps) => {
   const [fileName, setFileName] = useState("");
 
   return (
     <>
-      {!fileName ? (
+      {!fileName && !workloadFileName ? (
         <Container>
           <ButtonText>
             <FileInput
@@ -25,7 +29,7 @@ const UploadFileButton = ({ fileHandler }: fileHandlerProps) => {
           </ButtonText>
         </Container>
       ) : (
-        <FileName> {fileName} </FileName>
+        <FileName> {fileName || workloadFileName} </FileName>
       )}
     </>
   );
@@ -63,7 +67,7 @@ const FileInput = styled.input`
 `;
 
 const FileName = styled.text`
-  font-family: PlutoSansBold;
+  font-family: HurmeGeometricSans3Bold;
   font-size: 12px;
   line-height: 15px;
   margin-left: 10px;

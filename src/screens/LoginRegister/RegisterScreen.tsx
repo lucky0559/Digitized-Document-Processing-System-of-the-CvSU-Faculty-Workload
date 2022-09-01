@@ -264,21 +264,23 @@ export default function RegisterScreen({
                   className="invalid-feedback"
                 />
               </FieldGroup>
-              <Dropdown
-                option={DROPDOWN_LISTS.CAMPUS}
-                label="College/Campus"
-                onSelect={campusHandler}
-              />
-              <Dropdown
-                option={DROPDOWN_LISTS.DEPARTMENT}
-                label="Department"
-                onSelect={departmentHandler}
-              />
-              <Dropdown
-                option={DROPDOWN_LISTS.ACADEMIC_RANK}
-                label="Academic Rank"
-                onSelect={academicRankHandler}
-              />
+              <FieldGroup>
+                <Dropdown
+                  option={DROPDOWN_LISTS.CAMPUS}
+                  label="College/Campus"
+                  onSelect={campusHandler}
+                />
+                <Dropdown
+                  option={DROPDOWN_LISTS.DEPARTMENT}
+                  label="Department"
+                  onSelect={departmentHandler}
+                />
+                <Dropdown
+                  option={DROPDOWN_LISTS.ACADEMIC_RANK}
+                  label="Academic Rank"
+                  onSelect={academicRankHandler}
+                />
+              </FieldGroup>
               {isRegisterSuccess && (
                 <ErrorMessageContainer>
                   <SuccessMessageText>
@@ -383,7 +385,7 @@ const ErrorMessageStyle = styled(ErrorMessage)`
 `;
 
 const TextInput = styled.input`
-  width: 180px;
+  width: 100%;
   background-color: ${Colors.textFieldBackground};
   border-width: 1px;
   font-family: HurmeGeometricSans3;
@@ -393,6 +395,7 @@ const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 15px;
+  width: 180px;
 `;
 
 const ErrorMessageContainer = styled.div``;

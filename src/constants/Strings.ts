@@ -48,9 +48,16 @@ export const DROPDOWN_LISTS = {
     "Professor IV",
     "Professor V",
     "Professor VI"
+  ],
+  FUNDING_OF_STUDY: ["CvSU Research Grant", "Externally Funded"],
+  DESIGNATION_IN_THE_STUDY: [
+    "Program Leader/Co-Program Leader",
+    "Project Leader/Co-Project Leader",
+    "Study Leader/Co-Study Leader"
   ]
 };
 
 export enum WorkloadType {
-  TEACHING_WORKLOAD = "Teaching Work Load (TWL)"
+  TEACHING_WORKLOAD = "Teaching Work Load (TWL)",
+  RESEARCH_WORKLOAD = "Research Work Load (RWL)"
 }

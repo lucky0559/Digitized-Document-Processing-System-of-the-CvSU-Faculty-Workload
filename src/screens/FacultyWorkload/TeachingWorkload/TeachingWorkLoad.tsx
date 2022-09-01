@@ -4,40 +4,37 @@ import FormButton from "../../../components/FormButton";
 import UploadFileButton from "../../../components/UploadFileButton";
 import Colors from "../../../constants/Colors";
 import { WorkloadType } from "../../../constants/Strings";
-import { TeachingWorkLoadProps } from "../FacultyWorkloadScreen";
 
 type TeachingWorkLoadScreenProps = {
-  teachingWorkLoadHandler: (values?: TeachingWorkLoadProps) => void;
+  teachingWorkLoadHandler: () => void;
+  numberOfPreparationsHandler: (value: string) => void;
+  contactHoursHandler: (value: string) => void;
+  totalNoOfHoursHandler: (value: string) => void;
+  twlFileHandler: (value?: File) => void;
+  numberOfPreparations: string;
+  contactHours: string;
+  totalNoOfHours: string;
+  twlFileName?: string;
 };
 
 const TeachingWorkLoad = ({
-  teachingWorkLoadHandler
+  teachingWorkLoadHandler,
+  numberOfPreparations,
+  contactHours,
+  totalNoOfHours,
+  twlFileName,
+  numberOfPreparationsHandler,
+  contactHoursHandler,
+  totalNoOfHoursHandler,
+  twlFileHandler
 }: TeachingWorkLoadScreenProps) => {
-  const [numberOfPreparations, setNumberOfPreparations] = useState("");
-  const [contactHours, setContactHours] = useState("");
-  const [totalNoOfHours, setTotalNoOfHours] = useState("");
-  const [teachingWorkLoadValues, setTeachingWorkLoadValues] =
-    useState<TeachingWorkLoadProps>();
-  const [file, setFile] = useState<File>();
-
   const nextHandler = () => {
-    setTeachingWorkLoadValues({
-      numberOfPreparations,
-      contactHours,
-      totalNoOfHours,
-      twlFile: file
-    });
+    teachingWorkLoadHandler();
   };
 
   const fileHandler = (file?: File) => {
-    setFile(file);
+    twlFileHandler(file);
   };
-
-  useEffect(() => {
-    if (teachingWorkLoadValues) {
-      teachingWorkLoadHandler(teachingWorkLoadValues);
-    }
-  }, [teachingWorkLoadValues]);
 
   return (
     <Container>
@@ -50,7 +47,7 @@ const TeachingWorkLoad = ({
           <TextInput
             type="text"
             value={numberOfPreparations}
-            onChange={e => setNumberOfPreparations(e.target.value)}
+            onChange={e => numberOfPreparationsHandler(e.target.value)}
           />
         </TextInputContainer>
         <TextInputContainer>
@@ -58,7 +55,7 @@ const TeachingWorkLoad = ({
           <TextInput
             type="text"
             value={contactHours}
-            onChange={e => setContactHours(e.target.value)}
+            onChange={e => contactHoursHandler(e.target.value)}
           />
         </TextInputContainer>
         <TextInputContainer>
@@ -66,12 +63,15 @@ const TeachingWorkLoad = ({
           <TextInput
             type="text"
             value={totalNoOfHours}
-            onChange={e => setTotalNoOfHours(e.target.value)}
+            onChange={e => totalNoOfHoursHandler(e.target.value)}
           />
         </TextInputContainer>
         <UploadFileContainer>
           <Label>Upload class schedule here:</Label>
-          <UploadFileButton fileHandler={fileHandler} />
+          <UploadFileButton
+            fileHandler={fileHandler}
+            workloadFileName={twlFileName}
+          />
         </UploadFileContainer>
       </InputsContainer>
       <ButtonContainer>
