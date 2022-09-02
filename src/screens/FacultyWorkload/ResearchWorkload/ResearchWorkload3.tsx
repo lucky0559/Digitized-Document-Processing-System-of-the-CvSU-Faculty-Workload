@@ -1,39 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
-import Colors from "../../../constants/Colors";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
-import { VscCircleLargeOutline, VscCircleLargeFilled } from "react-icons/vsc";
 import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
 
-type ResearchWorkload1Props = {
-  researchWorkLoadHandler1: () => void;
-  typeOfStudyHandler: (value: string) => void;
-  designationStudyHandler: (value?: string) => void;
+type ResearchWorkload3Props = {
+  researchWorkLoadHandler3: () => void;
   backHandler: () => void;
-  rwlFileHandler: (value?: File) => void;
-  typeOfStudy: string;
-  designationStudy?: string;
-  rwlFileName?: string;
+  disseminatedResearchHandler: (value?: string) => void;
+  rwlFile2Handler: (value?: File) => void;
+  disseminatedResearch?: string;
+  rwlFile2Name?: string;
 };
 
-const ResearchWorkload1 = ({
-  researchWorkLoadHandler1,
-  typeOfStudyHandler,
-  designationStudyHandler,
+const ResearchWorkload3 = ({
+  researchWorkLoadHandler3,
   backHandler,
-  rwlFileHandler,
-  typeOfStudy,
-  designationStudy,
-  rwlFileName
-}: ResearchWorkload1Props) => {
+  disseminatedResearchHandler,
+  rwlFile2Handler,
+  disseminatedResearch,
+  rwlFile2Name
+}: ResearchWorkload3Props) => {
   const fileHandler = (file?: File) => {
-    rwlFileHandler(file);
+    rwlFile2Handler(file);
   };
 
-  const setDesignationStudy = (designationStudyValue?: string) => {
-    designationStudyHandler(designationStudyValue);
+  const setDisseminatedResearch = (disseminatedResearchValue?: string) => {
+    disseminatedResearchHandler(disseminatedResearchValue);
   };
 
   return (
@@ -42,50 +36,29 @@ const ResearchWorkload1 = ({
         <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
       </WorkloadTextContainer>
       <InputsContainer>
-        <TextInputContainer>
-          <Label>Type of Study:</Label>
-          <RadioInputContainer>
-            {typeOfStudy === "Approved Proposal" ? (
-              <VscCircleLargeFilled color={Colors.active} />
-            ) : (
-              <VscCircleLargeOutline
-                onClick={() => typeOfStudyHandler("Approved Proposal")}
-              />
-            )}
-            <Label>Approved Proposal</Label>
-          </RadioInputContainer>
-          <RadioInputContainer>
-            {typeOfStudy === "On-going Study" ? (
-              <VscCircleLargeFilled color={Colors.active} />
-            ) : (
-              <VscCircleLargeOutline
-                onClick={() => typeOfStudyHandler("On-going Study")}
-              />
-            )}
-            <Label>On-going Study</Label>
-          </RadioInputContainer>
-        </TextInputContainer>
         <Dropdown
-          option={DROPDOWN_LISTS.DESIGNATION_IN_THE_STUDY}
-          label="Designation in the Study"
-          onSelect={setDesignationStudy}
-          val={designationStudy}
+          option={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+          label="Disseminated research output in College or University In-House Review/Conferences"
+          onSelect={setDisseminatedResearch}
+          val={disseminatedResearch}
         />
       </InputsContainer>
       <UploadContainer>
         <UploadTextDescription>
-          Upload Proposal (for Approved Proposal) or Progress Report (for
-          On-going Study) here:
+          Upload certificate of presentation here:
         </UploadTextDescription>
         <UploadFileContainer>
           <UploadFileButton
             fileHandler={fileHandler}
-            workloadFileName={rwlFileName}
+            workloadFileName={rwlFile2Name}
           />
         </UploadFileContainer>
       </UploadContainer>
       <AddStudyContainer>
-        <AddStudyText>Add Another Study</AddStudyText>
+        <AddStudyText>
+          Add another disseminated research output in College or University
+          In-House Review/Conferences
+        </AddStudyText>
       </AddStudyContainer>
       <Buttons>
         <ButtonContainer>
@@ -94,7 +67,7 @@ const ResearchWorkload1 = ({
         <ButtonContainer>
           <FormButton
             text="Next"
-            onClicked={researchWorkLoadHandler1}
+            onClicked={researchWorkLoadHandler3}
           ></FormButton>
         </ButtonContainer>
       </Buttons>
@@ -130,26 +103,7 @@ const InputsContainer = styled.div`
   align-items: center;
   flex-direction: column;
   width: auto;
-`;
-
-const TextInputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  font-family: HurmeGeometricSans3;
-`;
-
-const RadioInputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 15px 15px 0px 0px;
+  max-width: 350px;
 `;
 
 const UploadContainer = styled.div`
@@ -178,6 +132,7 @@ const ButtonContainer = styled.div`
 const AddStudyContainer = styled.div`
   display: flex;
   align-self: flex-start;
+  max-width: 400px;
   margin-top: 50px;
 `;
 
@@ -201,4 +156,4 @@ const UploadFileContainer = styled.div`
   max-width: 100px;
 `;
 
-export default ResearchWorkload1;
+export default ResearchWorkload3;

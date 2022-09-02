@@ -54,6 +54,17 @@ export const DROPDOWN_LISTS = {
     "Program Leader/Co-Program Leader",
     "Project Leader/Co-Project Leader",
     "Study Leader/Co-Study Leader"
+  ],
+  FUND_GENERATED_PER_SEMESTER: [
+    "Above 1,000,000.00",
+    "500,001.00 - 1,000,000.00",
+    "500,000.00 and below"
+  ],
+  DISSEMINATED_RESEARCH_OUTPUT: [
+    "International",
+    "National",
+    "Regional",
+    "Local"
   ]
 };
 

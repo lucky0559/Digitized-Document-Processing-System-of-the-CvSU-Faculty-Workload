@@ -6,6 +6,8 @@ import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import ResearchWorkload from "./ResearchWorkload/ResearchWorkload";
 import ResearchWorkload1 from "./ResearchWorkload/ResearchWorkload1";
+import ResearchWorkload2 from "./ResearchWorkload/ResearchWorkload2";
+import ResearchWorkload3 from "./ResearchWorkload/ResearchWorkload3";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
 
 export type TeachingWorkLoadProps = {
@@ -20,6 +22,11 @@ type ResearchWorkLoadProps = {
   fundingOfStudy?: string;
   typeOfStudy?: string;
   designationStudy?: string;
+  fundGenerated?: string;
+  disseminatedResearch?: string;
+  rwlFile?: File;
+  rwlFile1?: File;
+  rwlFile2?: File;
 };
 
 const FacultyWorkloadScreen = () => {
@@ -36,20 +43,21 @@ const FacultyWorkloadScreen = () => {
   const [contactHours, setContactHours] = useState("");
   const [totalNoOfHours, setTotalNoOfHours] = useState("");
   const [twlFile, setTwlFile] = useState<File>();
-  const [twlFileName, setTwlFileName] = useState<string | undefined>("");
 
   //RWL
   const [titleOfStudy, setTitleOfStudy] = useState("");
   const [fundingOfStudy, setFundingOfStudy] = useState<string | undefined>("");
-  const [displayFundingOfStudy, setDisplayFundingOfStudy] = useState<
-    string | undefined
-  >("");
   const [typeOfStudy, setTypeOfStudy] = useState("");
   const [designationStudy, setDesignationStudy] = useState<string | undefined>(
     ""
   );
+  const [disseminatedResearch, setDisseminatedResearch] = useState<
+    string | undefined
+  >("");
   const [rwlFile, setRwlFile] = useState<File>();
-  const [rwlFileName, setRwlFileName] = useState<string | undefined>("");
+  const [rwlFile1, setRwlFile1] = useState<File>();
+  const [rwlFile2, setRwlFile2] = useState<File>();
+  const [fundGenerated, setFundGenerated] = useState<string | undefined>("");
 
   const [steps, setSteps] = useState(1);
 
@@ -80,10 +88,6 @@ const FacultyWorkloadScreen = () => {
     setTwlFile(value);
   };
 
-  useEffect(() => {
-    setTwlFileName(twlFile?.name);
-  }, [twlFile]);
-
   //RWL
   const researchWorkLoadHandler = () => {
     if (fundingOfStudy) {
@@ -110,10 +114,6 @@ const FacultyWorkloadScreen = () => {
     setFundingOfStudy(value);
   };
 
-  useEffect(() => {
-    setDisplayFundingOfStudy(fundingOfStudy);
-  }, [fundingOfStudy]);
-
   const backHandler = () => {
     if (steps > 1) {
       setSteps(steps - 1);
@@ -126,12 +126,14 @@ const FacultyWorkloadScreen = () => {
       setResearchWorkLoad({
         ...researchWorkLoad,
         typeOfStudy,
-        designationStudy
+        designationStudy,
+        rwlFile
       });
     } else {
       setResearchWorkLoad({
         typeOfStudy,
         designationStudy,
+        rwlFile,
         ...researchWorkLoad
       });
     }
@@ -150,9 +152,49 @@ const FacultyWorkloadScreen = () => {
     setRwlFile(value);
   };
 
-  useEffect(() => {
-    setRwlFileName(rwlFile?.name);
-  }, [rwlFile]);
+  //RWL2
+  const researchWorkLoadHandler2 = () => {
+    if (fundGenerated) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        fundGenerated,
+        rwlFile1
+      });
+    } else {
+      setResearchWorkLoad({
+        fundGenerated,
+        rwlFile1,
+        ...researchWorkLoad
+      });
+    }
+    setSteps(steps + 1);
+  };
+
+  const fundGeneratedHandler = (value?: string) => {
+    setFundGenerated(value);
+  };
+
+  const rwlFile1Handler = (value?: File) => {
+    setRwlFile1(value);
+  };
+
+  //RWL3
+  const researchWorkLoadHandler3 = () => {
+    setResearchWorkLoad({
+      ...researchWorkLoad,
+      disseminatedResearch,
+      rwlFile2
+    });
+    setSteps(steps + 1);
+  };
+
+  const disseminatedResearchHandler = (value?: string) => {
+    setDisseminatedResearch(value);
+  };
+
+  const rwlFile2Handler = (value?: File) => {
+    setRwlFile2(value);
+  };
 
   return (
     <Container>
@@ -174,7 +216,7 @@ const FacultyWorkloadScreen = () => {
             numberOfPreparations={numberOfPreparations}
             contactHours={contactHours}
             totalNoOfHours={totalNoOfHours}
-            twlFileName={twlFileName}
+            twlFileName={teachingWorkLoad?.twlFile?.name}
           />
         )}
         {steps === 2 && (
@@ -195,20 +237,28 @@ const FacultyWorkloadScreen = () => {
             backHandler={backHandler}
             rwlFileHandler={rwlFileHandler}
             typeOfStudy={typeOfStudy}
-            designationStudy={designationStudy}
-            rwlFileName={rwlFileName}
+            designationStudy={researchWorkLoad?.designationStudy}
+            rwlFileName={researchWorkLoad?.rwlFile?.name}
           />
         )}
         {steps === 4 && (
-          <ResearchWorkload1
-            researchWorkLoadHandler1={researchWorkLoadHandler1}
-            typeOfStudyHandler={typeOfStudyHandler}
-            designationStudyHandler={designationStudyHandler}
+          <ResearchWorkload2
+            researchWorkLoadHandler2={researchWorkLoadHandler2}
+            fundGeneratedHandler={fundGeneratedHandler}
+            rwlFile1Handler={rwlFile1Handler}
             backHandler={backHandler}
-            rwlFileHandler={rwlFileHandler}
-            typeOfStudy={typeOfStudy}
-            designationStudy={designationStudy}
-            rwlFileName={rwlFileName}
+            fundGenerated={researchWorkLoad?.fundGenerated}
+            rwlFileName1={researchWorkLoad?.rwlFile1?.name}
+          />
+        )}
+        {steps === 5 && (
+          <ResearchWorkload3
+            researchWorkLoadHandler3={researchWorkLoadHandler3}
+            backHandler={backHandler}
+            disseminatedResearchHandler={disseminatedResearchHandler}
+            rwlFile2Handler={rwlFile2Handler}
+            disseminatedResearch={disseminatedResearch}
+            rwlFile2Name={researchWorkLoad?.rwlFile2?.name}
           />
         )}
       </BodyContainer>

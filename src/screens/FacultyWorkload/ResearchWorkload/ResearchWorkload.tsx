@@ -47,15 +47,17 @@ const ResearchWorkload = ({
           val={fundingOfStudy}
         />
       </InputsContainer>
-      <ButtonContainer>
-        <FormButton text="Back" onClicked={backHandler}></FormButton>
-      </ButtonContainer>
-      <ButtonContainer>
-        <FormButton
-          text="Next"
-          onClicked={researchWorkLoadHandler}
-        ></FormButton>
-      </ButtonContainer>
+      <Buttons>
+        <ButtonContainer>
+          <FormButton text="Back" onClicked={backHandler}></FormButton>
+        </ButtonContainer>
+        <ButtonContainer>
+          <FormButton
+            text="Next"
+            onClicked={researchWorkLoadHandler}
+          ></FormButton>
+        </ButtonContainer>
+      </Buttons>
     </Container>
   );
 };
@@ -116,6 +118,14 @@ const ButtonContainer = styled.div`
   display: flex;
   align-self: flex-end;
   margin: 20px 20px 0px 0px;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 80px;
 `;
 
 export default ResearchWorkload;

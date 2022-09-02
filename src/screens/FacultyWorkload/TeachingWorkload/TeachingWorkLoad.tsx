@@ -68,10 +68,12 @@ const TeachingWorkLoad = ({
         </TextInputContainer>
         <UploadFileContainer>
           <Label>Upload class schedule here:</Label>
-          <UploadFileButton
-            fileHandler={fileHandler}
-            workloadFileName={twlFileName}
-          />
+          <UploadFileButtonContainer>
+            <UploadFileButton
+              fileHandler={fileHandler}
+              workloadFileName={twlFileName}
+            />
+          </UploadFileButtonContainer>
         </UploadFileContainer>
       </InputsContainer>
       <ButtonContainer>
@@ -142,6 +144,10 @@ const ButtonContainer = styled.div`
   display: flex;
   align-self: flex-end;
   margin: 20px 20px 0px 0px;
+`;
+
+const UploadFileButtonContainer = styled.div`
+  max-width: 100px;
 `;
 
 export default TeachingWorkLoad;
