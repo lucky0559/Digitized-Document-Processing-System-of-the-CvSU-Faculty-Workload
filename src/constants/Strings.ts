@@ -65,10 +65,19 @@ export const DROPDOWN_LISTS = {
     "National",
     "Regional",
     "Local"
-  ]
+  ],
+  DESIGNATION_EXTENSION_ACTIVITY: [
+    "Project Leader",
+    "Project Coordinator",
+    "Project Facilitator",
+    "Project Assistants"
+  ],
+  RESOURCE_PERSON: ["International", "National", "Regional", "Local"]
 };
 
 export enum WorkloadType {
   TEACHING_WORKLOAD = "Teaching Work Load (TWL)",
-  RESEARCH_WORKLOAD = "Research Work Load (RWL)"
+  RESEARCH_WORKLOAD = "Research Work Load (RWL)",
+  EXTENSION_WORKLOAD = "Extension Work Load (EWL)",
+  STRATEGIC_FUNCTION = "Strategic Function (SF)"
 }

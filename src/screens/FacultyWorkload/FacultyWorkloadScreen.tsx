@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
+import ExtensionWorkload from "./ExtensionWorkload/ExtensionWorkload";
 import ResearchWorkload from "./ResearchWorkload/ResearchWorkload";
 import ResearchWorkload1 from "./ResearchWorkload/ResearchWorkload1";
 import ResearchWorkload2 from "./ResearchWorkload/ResearchWorkload2";
 import ResearchWorkload3 from "./ResearchWorkload/ResearchWorkload3";
+import StrategicFunction from "./StrategicFunction/StrategicFunction";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
 
 export type TeachingWorkLoadProps = {
@@ -29,11 +32,29 @@ type ResearchWorkLoadProps = {
   rwlFile2?: File;
 };
 
+type ExtensionWorkloadProps = {
+  designationExtensionActivity?: string;
+  extensionActivityFile?: File;
+  resourcePerson?: string;
+  certificateFile?: File;
+  totalNumberHours?: string;
+  summaryOfHoursFile?: File;
+};
+
+type StrategicFunctionProps = {
+  designationUniversityLevel?: string[];
+  approvedUniversityDesignationFile?: File;
+};
+
 const FacultyWorkloadScreen = () => {
   const [teachingWorkLoad, setTeachingWorkLoad] =
     useState<TeachingWorkLoadProps>();
   const [researchWorkLoad, setResearchWorkLoad] =
     useState<ResearchWorkLoadProps>();
+  const [extensionWorkload, setExtensionWorkload] =
+    useState<ExtensionWorkloadProps>();
+  const [strategicFunction, setStrategicFunction] =
+    useState<StrategicFunctionProps>();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -58,6 +79,27 @@ const FacultyWorkloadScreen = () => {
   const [rwlFile1, setRwlFile1] = useState<File>();
   const [rwlFile2, setRwlFile2] = useState<File>();
   const [fundGenerated, setFundGenerated] = useState<string | undefined>("");
+
+  //EWL
+  const [designationExtensionActivity, setDesignationExtensionActivity] =
+    useState<string | undefined>("");
+  const [extensionActivityFile, setExtensionActivityFile] = useState<File>();
+  const [resourcePerson, setResourcePerson] = useState<string | undefined>("");
+  const [certificateFile, setCertificateFile] = useState<File>();
+  const [totalNumberHours, setTotalNumberHours] = useState<string | undefined>(
+    ""
+  );
+  const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
+
+  //SF
+  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
+    string[] | undefined
+  >([]);
+
+  const [
+    approvedUniversityDesignationFile,
+    setApprovedUniversityDesignationFile
+  ] = useState<File>();
 
   const [steps, setSteps] = useState(1);
 
@@ -196,6 +238,59 @@ const FacultyWorkloadScreen = () => {
     setRwlFile2(value);
   };
 
+  //EWL
+  const extensionWorkloadHandler = () => {
+    setExtensionWorkload({
+      designationExtensionActivity,
+      extensionActivityFile,
+      resourcePerson,
+      certificateFile,
+      totalNumberHours,
+      summaryOfHoursFile
+    });
+    setSteps(steps + 1);
+  };
+
+  const designationExtensionActivityHandler = (value?: string) => {
+    setDesignationExtensionActivity(value);
+  };
+
+  const extensionActivityFileHandler = (value?: File) => {
+    setExtensionActivityFile(value);
+  };
+
+  const resourcePersonHandler = (value?: string) => {
+    setResourcePerson(value);
+  };
+
+  const certificateFileHandler = (value?: File) => {
+    setCertificateFile(value);
+  };
+
+  const totalNumberHoursHandler = (value?: string) => {
+    setTotalNumberHours(value);
+  };
+
+  const summaryOfHoursFileHandler = (value?: File) => {
+    setSummaryOfHoursFile(value);
+  };
+
+  //SF
+  const setStrategicFunctionHandler = () => {
+    setStrategicFunction({
+      designationUniversityLevel,
+      approvedUniversityDesignationFile
+    });
+  };
+
+  const designationUniversityLevelHandler = (value?: string[]) => {
+    setDesignationUniversityLevel(value);
+  };
+
+  const approvedUniversityDesignationFileHandler = (value?: File) => {
+    setApprovedUniversityDesignationFile(value);
+  };
+
   return (
     <Container>
       <TopNav
@@ -257,22 +352,75 @@ const FacultyWorkloadScreen = () => {
             backHandler={backHandler}
             disseminatedResearchHandler={disseminatedResearchHandler}
             rwlFile2Handler={rwlFile2Handler}
-            disseminatedResearch={disseminatedResearch}
+            disseminatedResearch={researchWorkLoad?.disseminatedResearch}
             rwlFile2Name={researchWorkLoad?.rwlFile2?.name}
           />
         )}
+        {steps === 6 && (
+          <ExtensionWorkload
+            extensionWorkloadHandler={extensionWorkloadHandler}
+            designationExtensionActivityHandler={
+              designationExtensionActivityHandler
+            }
+            extensionActivityFileHandler={extensionActivityFileHandler}
+            resourcePersonHandler={resourcePersonHandler}
+            certificateFileHandler={certificateFileHandler}
+            totalNumberHoursHandler={totalNumberHoursHandler}
+            summaryOfHoursFileHandler={summaryOfHoursFileHandler}
+            backHandler={backHandler}
+            designationExtensionActivity={
+              extensionWorkload?.designationExtensionActivity
+            }
+            extensionActivityFileName={
+              extensionWorkload?.extensionActivityFile?.name
+            }
+            resourcePerson={extensionWorkload?.resourcePerson}
+            certificateFileName={extensionWorkload?.certificateFile?.name}
+            totalNumberHours={extensionWorkload?.totalNumberHours}
+            summaryOfHoursFileName={extensionWorkload?.summaryOfHoursFile?.name}
+          />
+        )}
+        {steps === 7 && (
+          <StrategicFunction
+            strategicFunctionHandler={setStrategicFunctionHandler}
+            designationUniversityLevelHandler={
+              designationUniversityLevelHandler
+            }
+            approvedUniversityDesignationFileHandler={
+              approvedUniversityDesignationFileHandler
+            }
+            backHandler={backHandler}
+            designationUniversityLevel={
+              strategicFunction?.designationUniversityLevel
+            }
+            approvedUniversityDesignationFileName={
+              strategicFunction?.approvedUniversityDesignationFile?.name
+            }
+          />
+        )}
       </BodyContainer>
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
 
 const BodyContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+`;
+
+const FooterContainer = styled.div`
+  margin-top: auto;
 `;
 
 export default FacultyWorkloadScreen;
