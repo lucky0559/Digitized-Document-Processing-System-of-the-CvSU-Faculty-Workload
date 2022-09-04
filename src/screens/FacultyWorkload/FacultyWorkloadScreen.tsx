@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
+import {
+  SaveResearchWorkload,
+  SaveTeachingWorkload
+} from "../../lib/faculty-workload.hooks";
+import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
+import { ResearchWorkLoadType } from "../../types/ResearchWorkLoad";
+import { StrategicFunctionType } from "../../types/StrategicFunction";
+import { TeachingWorkLoadType } from "../../types/TeachingWorkload";
 import ExtensionWorkload from "./ExtensionWorkload/ExtensionWorkload";
 import ResearchWorkload from "./ResearchWorkload/ResearchWorkload";
 import ResearchWorkload1 from "./ResearchWorkload/ResearchWorkload1";
@@ -13,48 +21,15 @@ import ResearchWorkload3 from "./ResearchWorkload/ResearchWorkload3";
 import StrategicFunction from "./StrategicFunction/StrategicFunction";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
 
-export type TeachingWorkLoadProps = {
-  numberOfPreparations?: string;
-  contactHours?: string;
-  totalNoOfHours?: string;
-  twlFile?: File;
-};
-
-type ResearchWorkLoadProps = {
-  titleOfStudy?: string;
-  fundingOfStudy?: string;
-  typeOfStudy?: string;
-  designationStudy?: string;
-  fundGenerated?: string;
-  disseminatedResearch?: string;
-  rwlFile?: File;
-  rwlFile1?: File;
-  rwlFile2?: File;
-};
-
-type ExtensionWorkloadProps = {
-  designationExtensionActivity?: string;
-  extensionActivityFile?: File;
-  resourcePerson?: string;
-  certificateFile?: File;
-  totalNumberHours?: string;
-  summaryOfHoursFile?: File;
-};
-
-type StrategicFunctionProps = {
-  designationUniversityLevel?: string[];
-  approvedUniversityDesignationFile?: File;
-};
-
 const FacultyWorkloadScreen = () => {
   const [teachingWorkLoad, setTeachingWorkLoad] =
-    useState<TeachingWorkLoadProps>();
+    useState<TeachingWorkLoadType>();
   const [researchWorkLoad, setResearchWorkLoad] =
-    useState<ResearchWorkLoadProps>();
+    useState<ResearchWorkLoadType>();
   const [extensionWorkload, setExtensionWorkload] =
-    useState<ExtensionWorkloadProps>();
+    useState<ExtensionWorkloadType>();
   const [strategicFunction, setStrategicFunction] =
-    useState<StrategicFunctionProps>();
+    useState<StrategicFunctionType>();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -104,7 +79,7 @@ const FacultyWorkloadScreen = () => {
   const [steps, setSteps] = useState(1);
 
   //TWL
-  const teachingWorkLoadHandler = () => {
+  const teachingWorkLoadHandler = async () => {
     setTeachingWorkLoad({
       numberOfPreparations,
       contactHours,
@@ -230,6 +205,14 @@ const FacultyWorkloadScreen = () => {
     setSteps(steps + 1);
   };
 
+  // useEffect(() => {
+  //   if (steps === 6) {
+  //     (async () => {
+  //       await SaveResearchWorkload(researchWorkLoad as any);
+  //     })();
+  //   }
+  // }, [researchWorkLoad]);
+
   const disseminatedResearchHandler = (value?: string) => {
     setDisseminatedResearch(value);
   };
@@ -276,11 +259,32 @@ const FacultyWorkloadScreen = () => {
   };
 
   //SF
-  const setStrategicFunctionHandler = () => {
+  const setStrategicFunctionHandler = async () => {
     setStrategicFunction({
       designationUniversityLevel,
       approvedUniversityDesignationFile
     });
+    if (
+      teachingWorkLoad?.contactHours &&
+      teachingWorkLoad.numberOfPreparations &&
+      teachingWorkLoad.totalNoOfHours &&
+      teachingWorkLoad.twlFile
+    ) {
+      await SaveTeachingWorkload(teachingWorkLoad);
+    }
+    if (
+      researchWorkLoad?.designationStudy &&
+      researchWorkLoad.disseminatedResearch &&
+      researchWorkLoad.fundGenerated &&
+      researchWorkLoad.fundingOfStudy &&
+      researchWorkLoad.rwlFile1 &&
+      researchWorkLoad.rwlFile2 &&
+      researchWorkLoad.rwlFile &&
+      researchWorkLoad.titleOfStudy &&
+      researchWorkLoad.typeOfStudy
+    ) {
+      return;
+    }
   };
 
   const designationUniversityLevelHandler = (value?: string[]) => {

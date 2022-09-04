@@ -5,3 +5,36 @@ export const Default = {
   // API_URL: "https://ddps-cvsu.herokuapp.com/"
   API_URL: "http://localhost:3000/"
 };
+
+const AWS_CONFIG = {
+  ACCESS_KEY_ID: "AKIARXPIJAABWWF427VJ",
+  SECRET_ACCESS_KEY: "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"
+};
+
+export const twlAwsConfig = {
+  bucketName: "teaching-workload",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const rwlAwsConfig = {
+  bucketName: "research-workload",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const rwl1AwsConfig = {
+  bucketName: "research-workload1",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const rwl2AwsConfig = {
+  bucketName: "research-workload2",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
