@@ -6,6 +6,7 @@ import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import {
+  SaveExtensionWorkload,
   SaveResearchWorkload,
   SaveTeachingWorkload
 } from "../../lib/faculty-workload.hooks";
@@ -205,14 +206,6 @@ const FacultyWorkloadScreen = () => {
     setSteps(steps + 1);
   };
 
-  // useEffect(() => {
-  //   if (steps === 6) {
-  //     (async () => {
-  //       await SaveResearchWorkload(researchWorkLoad as any);
-  //     })();
-  //   }
-  // }, [researchWorkLoad]);
-
   const disseminatedResearchHandler = (value?: string) => {
     setDisseminatedResearch(value);
   };
@@ -233,6 +226,14 @@ const FacultyWorkloadScreen = () => {
     });
     setSteps(steps + 1);
   };
+
+  // useEffect(() => {
+  //   if (steps === 7) {
+  //     (async () => {
+  //       await SaveExtensionWorkload(extensionWorkload as any);
+  //     })();
+  //   }
+  // }, [extensionWorkload]);
 
   const designationExtensionActivityHandler = (value?: string) => {
     setDesignationExtensionActivity(value);

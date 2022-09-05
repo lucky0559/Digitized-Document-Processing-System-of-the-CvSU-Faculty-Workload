@@ -1,11 +1,15 @@
 import ReactS3Client from "react-aws-s3-typescript";
 import axios from "../api/axios";
 import {
+  extensionActivityAwsConfig,
+  extensionCertificateFileAwsConfig,
+  extensionSummaryHoursAwsConfig,
   rwl1AwsConfig,
   rwl2AwsConfig,
   rwlAwsConfig,
   twlAwsConfig
 } from "../constants/Defaults";
+import { ExtensionWorkloadType } from "../types/ExtensionWorkload";
 import { ResearchWorkLoadType } from "../types/ResearchWorkLoad";
 import { TeachingWorkLoadType } from "../types/TeachingWorkload";
 
@@ -53,6 +57,48 @@ export const SaveResearchWorkload = async (
       const { data } = await axios.post(
         `research-workload/${userId}/save`,
         researchWorkload
+      );
+      return { data };
+    } catch (exception) {
+      console.log(exception);
+    }
+  }
+};
+
+export const SaveExtensionWorkload = async (
+  extensionWorkload: ExtensionWorkloadType
+) => {
+  const userId = "123";
+  const extensionActivityS3 = new ReactS3Client(extensionActivityAwsConfig);
+  const extensionCertificateFileS3 = new ReactS3Client(
+    extensionCertificateFileAwsConfig
+  );
+  const extensionSummaryHoursS3 = new ReactS3Client(
+    extensionSummaryHoursAwsConfig
+  );
+
+  if (
+    extensionWorkload.certificateFile &&
+    extensionWorkload.extensionActivityFile &&
+    extensionWorkload.summaryOfHoursFile
+  ) {
+    try {
+      const certificateFile = await extensionActivityS3.uploadFile(
+        extensionWorkload.certificateFile
+      );
+      const extensionActivityFile = await extensionCertificateFileS3.uploadFile(
+        extensionWorkload.extensionActivityFile
+      );
+      const summaryOfHoursFile = await extensionSummaryHoursS3.uploadFile(
+        extensionWorkload.summaryOfHoursFile
+      );
+      extensionWorkload.certificateFilePath = certificateFile.location;
+      extensionWorkload.extensionActivityFilePath =
+        extensionActivityFile.location;
+      extensionWorkload.summaryOfHoursFilePath = summaryOfHoursFile.location;
+      const { data } = await axios.post(
+        `extension-workload/${userId}/save`,
+        extensionWorkload
       );
       return { data };
     } catch (exception) {

@@ -38,3 +38,24 @@ export const rwl2AwsConfig = {
   accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
   secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
 };
+
+export const extensionActivityAwsConfig = {
+  bucketName: "extension-activity",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const extensionCertificateFileAwsConfig = {
+  bucketName: "extension-certificate-file",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const extensionSummaryHoursAwsConfig = {
+  bucketName: "extension-summary-hours",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
