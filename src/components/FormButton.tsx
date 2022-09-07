@@ -1,16 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type FormButtonProps = {
   text: string;
   onClicked?: () => void;
+  isSubmitting?: boolean;
 };
 
-const FormButton = ({ text, onClicked }: FormButtonProps) => {
+const FormButton = ({ text, isSubmitting, onClicked }: FormButtonProps) => {
   return (
     <Container onClick={() => onClicked && onClicked()}>
-      <ButtonText>{text}</ButtonText>
+      {isSubmitting ? (
+        <LoadingSpinner color={Colors.primary} />
+      ) : (
+        <ButtonText>{text}</ButtonText>
+      )}
     </Container>
   );
 };

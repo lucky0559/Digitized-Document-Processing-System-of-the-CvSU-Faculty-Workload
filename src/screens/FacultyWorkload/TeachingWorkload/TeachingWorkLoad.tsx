@@ -45,7 +45,7 @@ const TeachingWorkLoad = ({
         <TextInputContainer>
           <Label>Number of preparations</Label>
           <TextInput
-            type="text"
+            type="number"
             value={numberOfPreparations}
             onChange={e => numberOfPreparationsHandler(e.target.value)}
           />
@@ -53,7 +53,7 @@ const TeachingWorkLoad = ({
         <TextInputContainer>
           <Label>Contact Hours</Label>
           <TextInput
-            type="text"
+            type="number"
             value={contactHours}
             onChange={e => contactHoursHandler(e.target.value)}
           />
@@ -61,7 +61,7 @@ const TeachingWorkLoad = ({
         <TextInputContainer>
           <Label>Total No. of Hours</Label>
           <TextInput
-            type="text"
+            type="number"
             value={totalNoOfHours}
             onChange={e => totalNoOfHoursHandler(e.target.value)}
           />

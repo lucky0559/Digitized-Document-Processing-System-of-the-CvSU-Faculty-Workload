@@ -11,7 +11,7 @@ const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     navigate("/");
   };
 

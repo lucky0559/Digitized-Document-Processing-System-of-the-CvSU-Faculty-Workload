@@ -7,16 +7,18 @@ import {
   rwl1AwsConfig,
   rwl2AwsConfig,
   rwlAwsConfig,
+  strategicApprovedUniversityDesignationAwsConfig,
   twlAwsConfig
 } from "../constants/Defaults";
 import { ExtensionWorkloadType } from "../types/ExtensionWorkload";
 import { ResearchWorkLoadType } from "../types/ResearchWorkLoad";
+import { StrategicFunctionType } from "../types/StrategicFunction";
 import { TeachingWorkLoadType } from "../types/TeachingWorkload";
 
 export const SaveTeachingWorkload = async (
   teachingWorkload: TeachingWorkLoadType
 ) => {
-  const userId = "123";
+  const userId = localStorage.getItem("userId");
   const s3 = new ReactS3Client(twlAwsConfig);
 
   if (teachingWorkload.twlFile) {
@@ -37,7 +39,7 @@ export const SaveTeachingWorkload = async (
 export const SaveResearchWorkload = async (
   researchWorkload: ResearchWorkLoadType
 ) => {
-  const userId = "123";
+  const userId = localStorage.getItem("userId");
   const rwlAwsConfigS3 = new ReactS3Client(rwlAwsConfig);
   const rwl1AwsConfigS3 = new ReactS3Client(rwl1AwsConfig);
   const rwl2AwsConfigS3 = new ReactS3Client(rwl2AwsConfig);
@@ -68,7 +70,7 @@ export const SaveResearchWorkload = async (
 export const SaveExtensionWorkload = async (
   extensionWorkload: ExtensionWorkloadType
 ) => {
-  const userId = "123";
+  const userId = localStorage.getItem("userId");
   const extensionActivityS3 = new ReactS3Client(extensionActivityAwsConfig);
   const extensionCertificateFileS3 = new ReactS3Client(
     extensionCertificateFileAwsConfig
@@ -99,6 +101,36 @@ export const SaveExtensionWorkload = async (
       const { data } = await axios.post(
         `extension-workload/${userId}/save`,
         extensionWorkload
+      );
+      return { data };
+    } catch (exception) {
+      console.log(exception);
+    }
+  }
+};
+
+export const SaveStrategicFunctionWorkload = async (
+  strategicFunctionWorkload: StrategicFunctionType
+) => {
+  const userId = localStorage.getItem("userId");
+  const approvedUniversityDesignationS3 = new ReactS3Client(
+    strategicApprovedUniversityDesignationAwsConfig
+  );
+
+  if (
+    strategicFunctionWorkload.approvedUniversityDesignationFile &&
+    strategicFunctionWorkload.designationUniversityLevel
+  ) {
+    try {
+      const approvedUniversityDesignationFile =
+        await approvedUniversityDesignationS3.uploadFile(
+          strategicFunctionWorkload.approvedUniversityDesignationFile
+        );
+      strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+        approvedUniversityDesignationFile.location;
+      const { data } = await axios.post(
+        `strategic-function-workload/${userId}/save`,
+        strategicFunctionWorkload
       );
       return { data };
     } catch (exception) {

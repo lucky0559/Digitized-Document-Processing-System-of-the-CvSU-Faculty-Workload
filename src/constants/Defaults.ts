@@ -59,3 +59,10 @@ export const extensionSummaryHoursAwsConfig = {
   accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
   secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
 };
+
+export const strategicApprovedUniversityDesignationAwsConfig = {
+  bucketName: "approved-university-designation",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};

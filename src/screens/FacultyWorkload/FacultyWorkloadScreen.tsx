@@ -8,6 +8,7 @@ import TopNav from "../../components/TopNav";
 import {
   SaveExtensionWorkload,
   SaveResearchWorkload,
+  SaveStrategicFunctionWorkload,
   SaveTeachingWorkload
 } from "../../lib/faculty-workload.hooks";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
@@ -29,11 +30,12 @@ const FacultyWorkloadScreen = () => {
     useState<ResearchWorkLoadType>();
   const [extensionWorkload, setExtensionWorkload] =
     useState<ExtensionWorkloadType>();
-  const [strategicFunction, setStrategicFunction] =
+  const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
     useState<StrategicFunctionType>();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //TWL
   const [numberOfPreparations, setNumberOfPreparations] = useState("");
@@ -227,14 +229,6 @@ const FacultyWorkloadScreen = () => {
     setSteps(steps + 1);
   };
 
-  // useEffect(() => {
-  //   if (steps === 7) {
-  //     (async () => {
-  //       await SaveExtensionWorkload(extensionWorkload as any);
-  //     })();
-  //   }
-  // }, [extensionWorkload]);
-
   const designationExtensionActivityHandler = (value?: string) => {
     setDesignationExtensionActivity(value);
   };
@@ -261,36 +255,91 @@ const FacultyWorkloadScreen = () => {
 
   //SF
   const setStrategicFunctionHandler = async () => {
-    setStrategicFunction({
+    setStrategicFunctionWorkload({
       designationUniversityLevel,
       approvedUniversityDesignationFile
     });
-    if (
-      teachingWorkLoad?.contactHours &&
-      teachingWorkLoad.numberOfPreparations &&
-      teachingWorkLoad.totalNoOfHours &&
-      teachingWorkLoad.twlFile
-    ) {
-      await SaveTeachingWorkload(teachingWorkLoad);
-    }
-    if (
-      researchWorkLoad?.designationStudy &&
-      researchWorkLoad.disseminatedResearch &&
-      researchWorkLoad.fundGenerated &&
-      researchWorkLoad.fundingOfStudy &&
-      researchWorkLoad.rwlFile1 &&
-      researchWorkLoad.rwlFile2 &&
-      researchWorkLoad.rwlFile &&
-      researchWorkLoad.titleOfStudy &&
-      researchWorkLoad.typeOfStudy
-    ) {
-      return;
-    }
+    setIsSubmitting(true);
   };
 
   const designationUniversityLevelHandler = (value?: string[]) => {
     setDesignationUniversityLevel(value);
   };
+
+  const clearStates = () => {
+    setTeachingWorkLoad({});
+    setResearchWorkLoad({});
+    setExtensionWorkload({});
+    setStrategicFunctionWorkload({});
+    setNumberOfPreparations("");
+    setContactHours("");
+    setTotalNoOfHours("");
+    setTwlFile(undefined);
+    setTitleOfStudy("");
+    setFundingOfStudy("");
+    setTypeOfStudy("");
+    setDesignationStudy("");
+    setDisseminatedResearch("");
+    setRwlFile(undefined);
+    setRwlFile1(undefined);
+    setRwlFile2(undefined);
+    setFundGenerated("");
+    setDesignationExtensionActivity("");
+    setExtensionActivityFile(undefined);
+    setResourcePerson("");
+    setCertificateFile(undefined);
+    setTotalNumberHours("");
+    setSummaryOfHoursFile(undefined);
+    setDesignationUniversityLevel([]);
+    setApprovedUniversityDesignationFile(undefined);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (isSubmitting) {
+        if (
+          teachingWorkLoad?.contactHours &&
+          teachingWorkLoad.numberOfPreparations &&
+          teachingWorkLoad.totalNoOfHours &&
+          teachingWorkLoad.twlFile
+        ) {
+          await SaveTeachingWorkload(teachingWorkLoad);
+        }
+        if (
+          researchWorkLoad?.titleOfStudy &&
+          researchWorkLoad.fundingOfStudy &&
+          researchWorkLoad.typeOfStudy &&
+          researchWorkLoad.designationStudy &&
+          researchWorkLoad.fundGenerated &&
+          researchWorkLoad.disseminatedResearch &&
+          researchWorkLoad.rwlFile &&
+          researchWorkLoad.rwlFile1 &&
+          researchWorkLoad.rwlFile2
+        ) {
+          await SaveResearchWorkload(researchWorkLoad);
+        }
+        if (
+          extensionWorkload?.designationExtensionActivity &&
+          extensionWorkload.extensionActivityFile &&
+          extensionWorkload.resourcePerson &&
+          extensionWorkload.certificateFile &&
+          extensionWorkload.totalNumberHours &&
+          extensionWorkload.summaryOfHoursFile
+        ) {
+          await SaveExtensionWorkload(extensionWorkload);
+        }
+        if (
+          strategicFunctionWorkload?.approvedUniversityDesignationFile &&
+          strategicFunctionWorkload.designationUniversityLevel
+        ) {
+          await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
+        }
+        setIsSubmitting(false);
+        clearStates();
+        setSteps(1);
+      }
+    })();
+  }, [isSubmitting]);
 
   const approvedUniversityDesignationFileHandler = (value?: File) => {
     setApprovedUniversityDesignationFile(value);
@@ -395,12 +444,10 @@ const FacultyWorkloadScreen = () => {
               approvedUniversityDesignationFileHandler
             }
             backHandler={backHandler}
-            designationUniversityLevel={
-              strategicFunction?.designationUniversityLevel
-            }
             approvedUniversityDesignationFileName={
-              strategicFunction?.approvedUniversityDesignationFile?.name
+              strategicFunctionWorkload?.approvedUniversityDesignationFile?.name
             }
+            isSubmitting={isSubmitting}
           />
         )}
       </BodyContainer>

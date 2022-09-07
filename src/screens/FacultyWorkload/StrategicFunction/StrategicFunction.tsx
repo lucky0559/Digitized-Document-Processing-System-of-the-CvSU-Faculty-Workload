@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
@@ -10,8 +10,8 @@ type StrategicFunctionProps = {
   designationUniversityLevelHandler: (value?: string[]) => void;
   approvedUniversityDesignationFileHandler: (value?: File) => void;
   backHandler: () => void;
-  designationUniversityLevel?: string[];
   approvedUniversityDesignationFileName?: string;
+  isSubmitting: boolean;
 };
 
 const StrategicFunction = ({
@@ -19,8 +19,8 @@ const StrategicFunction = ({
   designationUniversityLevelHandler,
   approvedUniversityDesignationFileHandler,
   backHandler,
-  designationUniversityLevel,
-  approvedUniversityDesignationFileName
+  approvedUniversityDesignationFileName,
+  isSubmitting
 }: StrategicFunctionProps) => {
   const [
     selectedDesignationUniversityLevel,
@@ -32,7 +32,7 @@ const StrategicFunction = ({
   };
 
   const setDesignationUniversityLevel = (
-    designationUniversityLevelValue?: []
+    designationUniversityLevelValue?: string[]
   ) => {
     designationUniversityLevelHandler(designationUniversityLevelValue);
   };
@@ -52,9 +52,12 @@ const StrategicFunction = ({
   };
 
   const onSubmit = () => {
-    setDesignationUniversityLevel();
     strategicFunctionHandler();
   };
+
+  useEffect(() => {
+    setDesignationUniversityLevel(selectedDesignationUniversityLevel);
+  }, [selectedDesignationUniversityLevel]);
 
   return (
     <Container>
@@ -246,7 +249,11 @@ const StrategicFunction = ({
           <FormButton text="Back" onClicked={backHandler}></FormButton>
         </ButtonContainer>
         <ButtonContainer>
-          <FormButton text="Submit" onClicked={onSubmit}></FormButton>
+          <FormButton
+            text="Submit"
+            onClicked={onSubmit}
+            isSubmitting={isSubmitting}
+          ></FormButton>
         </ButtonContainer>
       </Buttons>
     </Container>
