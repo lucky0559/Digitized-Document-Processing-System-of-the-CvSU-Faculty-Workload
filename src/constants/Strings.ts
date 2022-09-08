@@ -8,6 +8,7 @@ export enum ErrorMessages {
 
 export const DROPDOWN_LISTS = {
   CAMPUS: [
+    "",
     "Main Campus",
     "Bacoor Campus",
     "Carmona Campus",
@@ -19,6 +20,7 @@ export const DROPDOWN_LISTS = {
     "Trece Campus"
   ],
   DEPARTMENT: [
+    "",
     "CAFENR",
     "CAS",
     "CCJ",
@@ -30,6 +32,7 @@ export const DROPDOWN_LISTS = {
     "CVMBS"
   ],
   ACADEMIC_RANK: [
+    "",
     "Instructor I",
     "Instructor II",
     "Instructor III",
@@ -49,30 +52,34 @@ export const DROPDOWN_LISTS = {
     "Professor V",
     "Professor VI"
   ],
-  FUNDING_OF_STUDY: ["CvSU Research Grant", "Externally Funded"],
+  FUNDING_OF_STUDY: ["", "CvSU Research Grant", "Externally Funded"],
   DESIGNATION_IN_THE_STUDY: [
+    "",
     "Program Leader/Co-Program Leader",
     "Project Leader/Co-Project Leader",
     "Study Leader/Co-Study Leader"
   ],
   FUND_GENERATED_PER_SEMESTER: [
+    "",
     "Above 1,000,000.00",
     "500,001.00 - 1,000,000.00",
     "500,000.00 and below"
   ],
   DISSEMINATED_RESEARCH_OUTPUT: [
+    "",
     "International",
     "National",
     "Regional",
     "Local"
   ],
   DESIGNATION_EXTENSION_ACTIVITY: [
+    "",
     "Project Leader",
     "Project Coordinator",
     "Project Facilitator",
     "Project Assistants"
   ],
-  RESOURCE_PERSON: ["International", "National", "Regional", "Local"]
+  RESOURCE_PERSON: ["", "International", "National", "Regional", "Local"]
 };
 
 export enum WorkloadType {

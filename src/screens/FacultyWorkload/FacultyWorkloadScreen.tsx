@@ -46,6 +46,7 @@ const FacultyWorkloadScreen = () => {
   //RWL
   const [titleOfStudy, setTitleOfStudy] = useState("");
   const [fundingOfStudy, setFundingOfStudy] = useState<string | undefined>("");
+  const [fundDisplay, setFundDisplay] = useState<string | undefined>("");
   const [typeOfStudy, setTypeOfStudy] = useState("");
   const [designationStudy, setDesignationStudy] = useState<string | undefined>(
     ""
@@ -111,19 +112,23 @@ const FacultyWorkloadScreen = () => {
   //RWL
   const researchWorkLoadHandler = () => {
     if (fundingOfStudy) {
-      setResearchWorkLoad({
-        ...researchWorkLoad,
-        titleOfStudy,
-        fundingOfStudy
-      });
-    } else {
-      setResearchWorkLoad({
-        titleOfStudy,
-        fundingOfStudy,
-        ...researchWorkLoad
-      });
+      if (fundingOfStudy?.length > 0) {
+        setResearchWorkLoad({
+          ...researchWorkLoad,
+          titleOfStudy,
+          fundingOfStudy
+        });
+      }
     }
-    setSteps(steps + 1);
+    if (fundingOfStudy === "CvSU Research Grant") {
+      setSteps(3);
+    } else if (fundDisplay === "CvSU Research Grant") {
+      setSteps(3);
+    } else if (fundDisplay === "Externally Funded") {
+      setSteps(4);
+    } else {
+      setSteps(5);
+    }
   };
 
   const titleOfStudyHandler = (value: string) => {
@@ -133,6 +138,20 @@ const FacultyWorkloadScreen = () => {
   const fundingOfStudyHandler = (value?: string) => {
     setFundingOfStudy(value);
   };
+
+  useEffect(() => {
+    if (fundDisplay !== researchWorkLoad?.fundingOfStudy) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        fundingOfStudy: fundDisplay
+      });
+    }
+    if (researchWorkLoad?.fundingOfStudy) {
+      setFundDisplay(researchWorkLoad?.fundingOfStudy);
+    } else {
+      setFundDisplay(fundingOfStudy);
+    }
+  }, [fundingOfStudy]);
 
   const backHandler = () => {
     if (steps > 1) {
@@ -375,7 +394,7 @@ const FacultyWorkloadScreen = () => {
             fundingOfStudyHandler={fundingOfStudyHandler}
             backHandler={backHandler}
             titleOfStudy={titleOfStudy}
-            fundingOfStudy={researchWorkLoad?.fundingOfStudy}
+            fundingOfStudy={fundDisplay}
           />
         )}
         {steps === 3 && (
@@ -395,7 +414,7 @@ const FacultyWorkloadScreen = () => {
             researchWorkLoadHandler2={researchWorkLoadHandler2}
             fundGeneratedHandler={fundGeneratedHandler}
             rwlFile1Handler={rwlFile1Handler}
-            backHandler={backHandler}
+            backHandler={() => setSteps(2)}
             fundGenerated={researchWorkLoad?.fundGenerated}
             rwlFileName1={researchWorkLoad?.rwlFile1?.name}
           />
@@ -403,7 +422,7 @@ const FacultyWorkloadScreen = () => {
         {steps === 5 && (
           <ResearchWorkload3
             researchWorkLoadHandler3={researchWorkLoadHandler3}
-            backHandler={backHandler}
+            backHandler={() => setSteps(2)}
             disseminatedResearchHandler={disseminatedResearchHandler}
             rwlFile2Handler={rwlFile2Handler}
             disseminatedResearch={researchWorkLoad?.disseminatedResearch}

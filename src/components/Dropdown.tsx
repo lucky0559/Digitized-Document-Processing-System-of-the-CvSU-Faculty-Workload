@@ -32,7 +32,12 @@ export default function Dropdown({
       >
         {option.map((item, index) => {
           return (
-            <option key={index} value={item} selected={val === item}>
+            <option
+              key={index}
+              value={item}
+              hidden={item === ""}
+              selected={val === item}
+            >
               {item}
             </option>
           );
