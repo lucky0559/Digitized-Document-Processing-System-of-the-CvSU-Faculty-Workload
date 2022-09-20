@@ -66,3 +66,38 @@ export const strategicApprovedUniversityDesignationAwsConfig = {
   accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
   secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
 };
+
+export const strategicApprovedCollegeCampusDesignationAwsConfig = {
+  bucketName: "approved-college-campus-designation",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const strategicApprovedDepartmentDesignationAwsConfig = {
+  bucketName: "approved-department-designation",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const strategicCoachAdviserCertificateAwsConfig = {
+  bucketName: "strategic-coach-adviser-certificate",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const strategicApprovedDesignationAwsConfig = {
+  bucketName: "strategic-approved-designation",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};
+
+export const strategicListOfAdviseesAwsConfig = {
+  bucketName: "strategic-advisees-lists",
+  region: "ap-southeast-1",
+  accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
+};

@@ -79,7 +79,12 @@ export const DROPDOWN_LISTS = {
     "Project Facilitator",
     "Project Assistants"
   ],
-  RESOURCE_PERSON: ["", "International", "National", "Regional", "Local"]
+  RESOURCE_PERSON: ["", "International", "National", "Regional", "Local"],
+  DESIGNATION_SPORTS_SOCIO_TRAINOR_ACADEMIC: [
+    "",
+    "University Level",
+    "College/Campus Level"
+  ]
 };
 
 export enum WorkloadType {

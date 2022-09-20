@@ -21,6 +21,9 @@ import ResearchWorkload1 from "./ResearchWorkload/ResearchWorkload1";
 import ResearchWorkload2 from "./ResearchWorkload/ResearchWorkload2";
 import ResearchWorkload3 from "./ResearchWorkload/ResearchWorkload3";
 import StrategicFunction from "./StrategicFunction/StrategicFunction";
+import StrategicFunction1 from "./StrategicFunction/StrategicFunction1";
+import StrategicFunction2 from "./StrategicFunction/StrategicFunction2";
+import StrategicFunction3 from "./StrategicFunction/StrategicFunction3";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
 
 const FacultyWorkloadScreen = () => {
@@ -74,11 +77,38 @@ const FacultyWorkloadScreen = () => {
   const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
     string[] | undefined
   >([]);
-
+  const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
+    useState<string[] | undefined>([]);
+  const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
+    string[] | undefined
+  >([]);
+  const [
+    designationAsSportTrainorAcademic,
+    setDesignationAsSportTrainorAcademic
+  ] = useState<string | undefined>("");
+  const [designationAsMemberOfAdhoc, setDesignationAsMemberOfAdhoc] = useState<
+    string | undefined
+  >("");
+  const [totalOfAcademicAdvisees, setTotalOfAcademicAdvisees] = useState<
+    string | undefined
+  >("");
   const [
     approvedUniversityDesignationFile,
     setApprovedUniversityDesignationFile
   ] = useState<File>();
+  const [
+    approvedCollegeCampusDesignationFile,
+    setApprovedCollegeCampusDesignationFile
+  ] = useState<File>();
+  const [
+    approvedDepartmentDesignationFile,
+    setApprovedDepartmentDesignationFile
+  ] = useState<File>();
+  const [coachAdviserCertificateFile, setCoachAdviserCertificateFile] =
+    useState<File>();
+  const [approvedDesignationFile, setApprovedDesignationFile] =
+    useState<File>();
+  const [listOfAdviseesFile, setListOfAdviseesFile] = useState<File>();
 
   const [steps, setSteps] = useState(1);
 
@@ -278,11 +308,85 @@ const FacultyWorkloadScreen = () => {
       designationUniversityLevel,
       approvedUniversityDesignationFile
     });
-    setIsSubmitting(true);
+    setSteps(steps + 1);
   };
 
   const designationUniversityLevelHandler = (value?: string[]) => {
     setDesignationUniversityLevel(value);
+  };
+
+  //SF1
+  const setStrategicFunction1Handler = async () => {
+    setStrategicFunctionWorkload({
+      ...strategicFunctionWorkload,
+      designationCollegeCampusLevel,
+      approvedCollegeCampusDesignationFile
+    });
+    setSteps(steps + 1);
+  };
+
+  const designationCollegeCampusLevelHandler = (value?: string[]) => {
+    setDesignationCollegeCampusLevel(value);
+  };
+
+  const approvedCollegeCampusDesignationFileHandler = (value?: File) => {
+    setApprovedCollegeCampusDesignationFile(value);
+  };
+
+  //SF2
+  const setStrategicFunction2Handler = async () => {
+    setStrategicFunctionWorkload({
+      ...strategicFunctionWorkload,
+      designationDepartmentLevel,
+      approvedDepartmentDesignationFile
+    });
+    setSteps(steps + 1);
+  };
+
+  const designationDepartmentLevelHandler = (value?: string[]) => {
+    setDesignationDepartmentLevel(value);
+  };
+
+  const approvedDepartmentDesignationFileHandler = (value?: File) => {
+    setApprovedDepartmentDesignationFile(value);
+  };
+
+  //SF3
+  const setStrategicFunction3Handler = async () => {
+    setStrategicFunctionWorkload({
+      ...strategicFunctionWorkload,
+      designationAsSportTrainorAcademic,
+      coachAdviserCertificateFile,
+      designationAsMemberOfAdhoc,
+      approvedDesignationFile,
+      totalOfAcademicAdvisees,
+      listOfAdviseesFile
+    });
+    setIsSubmitting(true);
+  };
+
+  const coachAdviserCertificateFileHandler = (value?: File) => {
+    setCoachAdviserCertificateFile(value);
+  };
+
+  const approvedDesignationFileHandler = (value?: File) => {
+    setApprovedDesignationFile(value);
+  };
+
+  const designationAsMemberHandler = (value?: string) => {
+    setDesignationAsMemberOfAdhoc(value);
+  };
+
+  const setTotalNumberAcademicAdviseesHandler = (value?: string) => {
+    setTotalOfAcademicAdvisees(value);
+  };
+
+  const listAdviseesFileHandler = (value?: File) => {
+    setListOfAdviseesFile(value);
+  };
+
+  const setDesignationSSTAActivity = (value?: string) => {
+    setDesignationAsSportTrainorAcademic(value);
   };
 
   const clearStates = () => {
@@ -349,7 +453,17 @@ const FacultyWorkloadScreen = () => {
         }
         if (
           strategicFunctionWorkload?.approvedUniversityDesignationFile &&
-          strategicFunctionWorkload.designationUniversityLevel
+          strategicFunctionWorkload.designationUniversityLevel &&
+          strategicFunctionWorkload.approvedCollegeCampusDesignationFile &&
+          strategicFunctionWorkload.approvedDepartmentDesignationFile &&
+          strategicFunctionWorkload.approvedDesignationFile &&
+          strategicFunctionWorkload.coachAdviserCertificateFile &&
+          strategicFunctionWorkload.designationAsMemberOfAdhoc &&
+          strategicFunctionWorkload.designationAsSportTrainorAcademic &&
+          strategicFunctionWorkload.designationCollegeCampusLevel &&
+          strategicFunctionWorkload.designationDepartmentLevel &&
+          strategicFunctionWorkload.listOfAdviseesFile &&
+          strategicFunctionWorkload.totalOfAcademicAdvisees
         ) {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
         }
@@ -466,6 +580,76 @@ const FacultyWorkloadScreen = () => {
             approvedUniversityDesignationFileName={
               strategicFunctionWorkload?.approvedUniversityDesignationFile?.name
             }
+            designationUniversityLevel={
+              strategicFunctionWorkload?.designationUniversityLevel
+            }
+          />
+        )}
+        {steps === 8 && (
+          <StrategicFunction1
+            strategicFunction1Handler={setStrategicFunction1Handler}
+            designationCampusCollegeLevelHandler={
+              designationCollegeCampusLevelHandler
+            }
+            approvedCollegeCampusDesignationFileHandler={
+              approvedCollegeCampusDesignationFileHandler
+            }
+            backHandler={backHandler}
+            approvedCollegeCampusDesignationFileName={
+              strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
+                ?.name
+            }
+            designationCollegeCampusLevel={
+              strategicFunctionWorkload?.designationCollegeCampusLevel
+            }
+          />
+        )}
+        {steps === 9 && (
+          <StrategicFunction2
+            strategicFunction2Handler={setStrategicFunction2Handler}
+            designationDepartmentLevelHandler={
+              designationDepartmentLevelHandler
+            }
+            approvedDepartmentDesignationFileHandler={
+              approvedDepartmentDesignationFileHandler
+            }
+            backHandler={backHandler}
+            approvedDepartmentDesignationFileName={
+              strategicFunctionWorkload?.approvedDepartmentDesignationFile?.name
+            }
+            designationDepartmentLevel={
+              strategicFunctionWorkload?.designationDepartmentLevel
+            }
+          />
+        )}
+        {steps === 10 && (
+          <StrategicFunction3
+            coachAdviserCertificateFileHandler={
+              coachAdviserCertificateFileHandler
+            }
+            backHandler={backHandler}
+            designationSSTAActivity={
+              strategicFunctionWorkload?.designationAsSportTrainorAcademic
+            }
+            coachAdviserCertificateFileName={
+              strategicFunctionWorkload?.coachAdviserCertificateFile?.name
+            }
+            designationAsMemberHandler={designationAsMemberHandler}
+            designationAsMember={designationAsMemberOfAdhoc}
+            approvedDesignationFileHandler={approvedDesignationFileHandler}
+            approvedDesignationFileName={
+              strategicFunctionWorkload?.approvedDesignationFile?.name
+            }
+            totalNumberAcademicAdviseesHandler={
+              setTotalNumberAcademicAdviseesHandler
+            }
+            totalNumberAcademicAdvisees={totalOfAcademicAdvisees}
+            listAdviseesFileHandler={listAdviseesFileHandler}
+            listAdviseesFileName={
+              strategicFunctionWorkload?.listOfAdviseesFile?.name
+            }
+            setStrategicFunction3Handler={setStrategicFunction3Handler}
+            setDesignationSSTAActivity={setDesignationSSTAActivity}
             isSubmitting={isSubmitting}
           />
         )}

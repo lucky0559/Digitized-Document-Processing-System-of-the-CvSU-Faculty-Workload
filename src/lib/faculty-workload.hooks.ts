@@ -7,7 +7,12 @@ import {
   rwl1AwsConfig,
   rwl2AwsConfig,
   rwlAwsConfig,
+  strategicApprovedCollegeCampusDesignationAwsConfig,
+  strategicApprovedDepartmentDesignationAwsConfig,
+  strategicApprovedDesignationAwsConfig,
   strategicApprovedUniversityDesignationAwsConfig,
+  strategicCoachAdviserCertificateAwsConfig,
+  strategicListOfAdviseesAwsConfig,
   twlAwsConfig
 } from "../constants/Defaults";
 import { ExtensionWorkloadType } from "../types/ExtensionWorkload";
@@ -116,18 +121,64 @@ export const SaveStrategicFunctionWorkload = async (
   const approvedUniversityDesignationS3 = new ReactS3Client(
     strategicApprovedUniversityDesignationAwsConfig
   );
+  const approvedCollegeCampusDesignationS3 = new ReactS3Client(
+    strategicApprovedCollegeCampusDesignationAwsConfig
+  );
+  const approvedDepartmentDesignationS3 = new ReactS3Client(
+    strategicApprovedDepartmentDesignationAwsConfig
+  );
+  const coachAdviserCertificateS3 = new ReactS3Client(
+    strategicCoachAdviserCertificateAwsConfig
+  );
+  const approvedDesignationS3 = new ReactS3Client(
+    strategicApprovedDesignationAwsConfig
+  );
+  const listAdviseesS3 = new ReactS3Client(strategicListOfAdviseesAwsConfig);
 
   if (
     strategicFunctionWorkload.approvedUniversityDesignationFile &&
-    strategicFunctionWorkload.designationUniversityLevel
+    strategicFunctionWorkload.designationUniversityLevel &&
+    strategicFunctionWorkload.approvedCollegeCampusDesignationFile &&
+    strategicFunctionWorkload.approvedDepartmentDesignationFile &&
+    strategicFunctionWorkload.coachAdviserCertificateFile &&
+    strategicFunctionWorkload.approvedDesignationFile &&
+    strategicFunctionWorkload.listOfAdviseesFile
   ) {
     try {
       const approvedUniversityDesignationFile =
         await approvedUniversityDesignationS3.uploadFile(
           strategicFunctionWorkload.approvedUniversityDesignationFile
         );
+      const approvedCollegeCampusDesignationFile =
+        await approvedCollegeCampusDesignationS3.uploadFile(
+          strategicFunctionWorkload.approvedCollegeCampusDesignationFile
+        );
+      const approvedDepartmentDesignationFile =
+        await approvedDepartmentDesignationS3.uploadFile(
+          strategicFunctionWorkload.approvedDepartmentDesignationFile
+        );
+      const coachAdviserCertificateFile =
+        await coachAdviserCertificateS3.uploadFile(
+          strategicFunctionWorkload.coachAdviserCertificateFile
+        );
+      const listAdviseesFile = await listAdviseesS3.uploadFile(
+        strategicFunctionWorkload.listOfAdviseesFile
+      );
+      const approvedDesignationFile = await approvedDesignationS3.uploadFile(
+        strategicFunctionWorkload.approvedDesignationFile
+      );
       strategicFunctionWorkload.approvedUniversityDesignationFilePath =
         approvedUniversityDesignationFile.location;
+      strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+        approvedCollegeCampusDesignationFile.location;
+      strategicFunctionWorkload.approvedDepartmentDesignationFilePath =
+        approvedDepartmentDesignationFile.location;
+      strategicFunctionWorkload.coachAdviserCertificateFilePath =
+        coachAdviserCertificateFile.location;
+      strategicFunctionWorkload.approvedDesignationFilePath =
+        approvedDesignationFile.location;
+      strategicFunctionWorkload.listOfAdviseesFilePath =
+        listAdviseesFile.location;
       const { data } = await axios.post(
         `strategic-function-workload/${userId}/save`,
         strategicFunctionWorkload
