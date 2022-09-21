@@ -9,6 +9,8 @@ type ButtonProps = {
   onClick?: () => void;
   type: "submit" | "button" | "reset";
   isSubmitting?: boolean;
+  borderColor?: string;
+  textColor?: string;
 };
 
 export default function Button({
@@ -16,16 +18,27 @@ export default function Button({
   color,
   onClick,
   type,
-  isSubmitting
+  isSubmitting,
+  borderColor,
+  textColor
 }: ButtonProps) {
   return (
-    <ButtonContainer color={color} onClick={onClick} type={type}>
-      {isSubmitting ? <LoadingSpinner /> : <ButtonText>{text}</ButtonText>}
+    <ButtonContainer
+      color={color}
+      onClick={onClick}
+      type={type}
+      borderColor={borderColor}
+    >
+      {isSubmitting ? (
+        <LoadingSpinner />
+      ) : (
+        <ButtonText textColor={textColor}>{text}</ButtonText>
+      )}
     </ButtonContainer>
   );
 }
 
-const ButtonContainer = styled.button<{ color: string }>`
+const ButtonContainer = styled.button<{ color: string; borderColor?: string }>`
   background-color: ${p => p.color};
   width: 200px;
   height: 37px;
@@ -40,10 +53,11 @@ const ButtonContainer = styled.button<{ color: string }>`
   &:hover {
     opacity: 0.9;
   }
+  border: 3px solid ${p => (p.borderColor ? p.borderColor : "transparent")};
 `;
 
-const ButtonText = styled.text`
-  color: ${Colors.white};
+const ButtonText = styled.text<{ textColor?: string }>`
+  color: ${p => (p.textColor ? p.textColor : Colors.white)};
   font-size: 20px;
   font-family: HurmeGeometricSans3;
   font-weight: 600;

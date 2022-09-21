@@ -7,5 +7,6 @@ export default {
   black: "#000000",
   textFieldBackground: "#ECECEC",
   buttonPrimary: "#293241",
-  buttonSecondary: "#EE6C4D"
+  buttonSecondary: "#EE6C4D",
+  lightBlue: "#98C1D9"
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Colors from "../constants/Colors";
 
@@ -7,10 +8,16 @@ type MenuProps = {
 };
 
 const Menu = ({ isMenuOpen }: MenuProps) => {
+  const navigate = useNavigate();
   return (
     <Container isMenuOpen={isMenuOpen}>
       <NavButtonContainer>
-        <NavButtonText isActive={true}>Faculty Workload</NavButtonText>
+        <NavButtonText
+          isActive={true}
+          onClick={() => navigate("/faculty-workload", { replace: true })}
+        >
+          Faculty Workload
+        </NavButtonText>
       </NavButtonContainer>
       <NavButtonContainer>
         <NavButtonText isActive={false}>Workload Review</NavButtonText>
@@ -37,6 +44,7 @@ const Container = styled.div<{ isMenuOpen: boolean }>`
   height: calc(100% - 54px);
   background-color: ${Colors.secondary};
   position: absolute;
+  top: 54px;
   left: ${p => (p.isMenuOpen ? 0 : -248)}px;
   animation-name: ${p => (p.isMenuOpen ? slideInAnimation : slideOutAnimation)};
   animation-duration: 0.5s;
