@@ -1,12 +1,16 @@
+import { Formik } from "formik";
 import React, { useState, useEffect } from "react";
+import { FaEdit } from "react-icons/fa";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import Dropdown from "../../components/Dropdown";
 import Footer from "../../components/Footer";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import TopNav from "../../components/TopNav";
 import Colors from "../../constants/Colors";
+import { DROPDOWN_LISTS } from "../../constants/Strings";
 import { GetUser } from "../../lib/user.hooks";
 import { User } from "../../types/User";
 
@@ -16,6 +20,8 @@ function Profile() {
   const userId = localStorage.getItem("userId");
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  let editedUser = user;
   useEffect(() => {
     (async () => {
       if (userId) {
@@ -26,7 +32,17 @@ function Profile() {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [isEditing]);
+
+  const campusHandler = (campusValue: string) => {
+    editedUser!.campus = campusValue;
+    setUser(editedUser);
+  };
+
+  const departmentHandler = (departmentValue: string) => {
+    editedUser!.department = departmentValue;
+    setUser(editedUser);
+  };
 
   return (
     <Container>
@@ -39,9 +55,66 @@ function Profile() {
       <BodyContainer>
         {isLoading ? (
           <LoadingSpinner color={Colors.primary} />
+        ) : isEditing ? (
+          <ProfileContainer>
+            <ProfileText>Profile</ProfileText>
+            <InputsContainer>
+              <TextFieldContainer>
+                <Label>Surname</Label>
+                <TextField type="text" value={user?.surname} />
+              </TextFieldContainer>
+              <TextFieldContainer>
+                <Label>First Name</Label>
+                <TextField type="text" value={user?.firstName} />
+              </TextFieldContainer>
+              <TextFieldContainer>
+                <Label>Middle Initial</Label>
+                <TextField type="text" value={user?.middleInitial} />
+              </TextFieldContainer>
+              <DropDownContainer>
+                <Dropdown
+                  option={DROPDOWN_LISTS.CAMPUS}
+                  label="Campus"
+                  onSelect={campusHandler}
+                  val={user?.campus}
+                />
+              </DropDownContainer>
+              <DropDownContainer>
+                <Dropdown
+                  option={DROPDOWN_LISTS.DEPARTMENT}
+                  label="Department"
+                  onSelect={departmentHandler}
+                  val={user?.department}
+                />
+              </DropDownContainer>
+            </InputsContainer>
+            <ButtonsContainer>
+              <Button
+                text="Cancel"
+                color="transparent"
+                onClick={() => setIsEditing(!isEditing)}
+                type="button"
+                borderColor={Colors.primary}
+                textColor={Colors.primary}
+                hoverOpacity="0.5"
+              />
+              <Button
+                text="Save"
+                color="transparent"
+                onClick={() => console.log(user)}
+                type="button"
+                borderColor={Colors.primary}
+                textColor={Colors.primary}
+                hoverOpacity="0.5"
+              />
+            </ButtonsContainer>
+          </ProfileContainer>
         ) : (
           <ProfileContainer>
             <ProfileText>Profile</ProfileText>
+            <EditButton onClick={() => setIsEditing(!isEditing)}>
+              <FaEdit size={26} color="black" />
+            </EditButton>
             <UserDetailContainer>
               <DetailContainer>
                 <DetailLabel>
@@ -100,6 +173,7 @@ function Profile() {
                 type="button"
                 borderColor={Colors.primary}
                 textColor={Colors.primary}
+                hoverOpacity="0.5"
               />
               <Button
                 text="Change Password"
@@ -108,6 +182,7 @@ function Profile() {
                 type="button"
                 borderColor={Colors.primary}
                 textColor={Colors.primary}
+                hoverOpacity="0.5"
               />
             </ButtonsContainer>
           </ProfileContainer>
@@ -143,11 +218,14 @@ const ProfileContainer = styled.div`
   border-radius: 15px;
   width: 100%;
   height: 100%;
+  position: relative;
 `;
 
 const ProfileText = styled.text`
   text-transform: uppercase;
   font-size: 20px;
+  font-family: HurmeGeometricSans3Bold;
+  line-height: 25.44px;
 `;
 
 const UserDetailContainer = styled.div`
@@ -185,6 +263,59 @@ const FooterContainer = styled.div`
 
 const ButtonsContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 17.6px;
+`;
+
+const EditButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 27px;
+  top: 27px;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.4;
+  }
+`;
+
+const TextFieldContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 210px;
+  width: 100%;
+`;
+
+const DropDownContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 218px;
+  width: 100%;
+  margin-left: 5px;
+`;
+
+const TextField = styled.input`
+  font-family: HurmeGeometricSans3;
+  width: 100%;
+  height: 24.03px;
+  background-color: #ececec;
+`;
+
+const Label = styled.label`
+  font-size: 12px;
+  line-height: 15.26px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const InputsContainer = styled.div`
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Profile;

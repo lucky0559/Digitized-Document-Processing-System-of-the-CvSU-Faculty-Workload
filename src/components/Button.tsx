@@ -11,6 +11,7 @@ type ButtonProps = {
   isSubmitting?: boolean;
   borderColor?: string;
   textColor?: string;
+  hoverOpacity?: string;
 };
 
 export default function Button({
@@ -20,7 +21,8 @@ export default function Button({
   type,
   isSubmitting,
   borderColor,
-  textColor
+  textColor,
+  hoverOpacity
 }: ButtonProps) {
   return (
     <ButtonContainer
@@ -28,6 +30,7 @@ export default function Button({
       onClick={onClick}
       type={type}
       borderColor={borderColor}
+      hoverOpacity={hoverOpacity}
     >
       {isSubmitting ? (
         <LoadingSpinner />
@@ -38,7 +41,11 @@ export default function Button({
   );
 }
 
-const ButtonContainer = styled.button<{ color: string; borderColor?: string }>`
+const ButtonContainer = styled.button<{
+  color: string;
+  borderColor?: string;
+  hoverOpacity?: string;
+}>`
   background-color: ${p => p.color};
   width: 200px;
   height: 37px;
@@ -51,7 +58,7 @@ const ButtonContainer = styled.button<{ color: string; borderColor?: string }>`
   transition: opacity 0.2s ease-in-out;
   border: none;
   &:hover {
-    opacity: 0.9;
+    opacity: ${p => (p.hoverOpacity ? p.hoverOpacity : "0.9")};
   }
   border: 3px solid ${p => (p.borderColor ? p.borderColor : "transparent")};
 `;
