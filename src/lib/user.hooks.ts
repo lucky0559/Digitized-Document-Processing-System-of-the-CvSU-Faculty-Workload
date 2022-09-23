@@ -27,3 +27,8 @@ export const GetUser = async (userId: string) => {
   const { data } = await axios.get<User>(`user/${userId}`);
   return data;
 };
+
+export const EditUserProfile = async (id: string | null, user?: User) => {
+  const { data } = await axios.patch(`user/${id}/update-profile`, user);
+  return { data };
+};

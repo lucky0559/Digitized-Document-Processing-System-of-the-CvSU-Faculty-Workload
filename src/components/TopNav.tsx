@@ -26,8 +26,8 @@ export default function TopNav({ menuHandler, profileHandler }: TopNavProps) {
         </TopNavTitleText>
       </TopNavLeftContent>
       {user && (
-        <TopNavRightContent>
-          <FaUserCircle size={25} color="white" onClick={profileHandler} />
+        <TopNavRightContent onClick={profileHandler}>
+          <FaUserCircle size={25} color="white" />
         </TopNavRightContent>
       )}
     </Container>

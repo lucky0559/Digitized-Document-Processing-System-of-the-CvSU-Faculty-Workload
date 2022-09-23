@@ -11,7 +11,7 @@ import ProfileTab from "../../components/ProfileTab";
 import TopNav from "../../components/TopNav";
 import Colors from "../../constants/Colors";
 import { DROPDOWN_LISTS } from "../../constants/Strings";
-import { GetUser } from "../../lib/user.hooks";
+import { EditUserProfile, GetUser } from "../../lib/user.hooks";
 import { User } from "../../types/User";
 
 function Profile() {
@@ -21,12 +21,23 @@ function Profile() {
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [editedSurname, setEditedSurname] = useState("");
+  const [editedFirstName, setEditedFirstName] = useState("");
+  const [editedMiddleInitial, setEditedMiddleInitial] = useState("");
+  const [editedCampus, setEditedCampus] = useState("");
+  const [editedDepartment, setEditedDepartment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   let editedUser = user;
   useEffect(() => {
     (async () => {
       if (userId) {
         const user = await GetUser(userId);
         setUser(user);
+        setEditedSurname(user.surname);
+        setEditedFirstName(user.firstName);
+        setEditedMiddleInitial(user.middleInitial);
+        setEditedCampus(user.campus);
+        setEditedDepartment(user.department);
       }
       if (user === undefined) {
         setIsLoading(false);
@@ -35,13 +46,25 @@ function Profile() {
   }, [isEditing]);
 
   const campusHandler = (campusValue: string) => {
+    setEditedCampus(campusValue);
     editedUser!.campus = campusValue;
     setUser(editedUser);
   };
 
   const departmentHandler = (departmentValue: string) => {
+    setEditedDepartment(departmentValue);
     editedUser!.department = departmentValue;
     setUser(editedUser);
+  };
+
+  const onSave = async () => {
+    setIsSubmitting(true);
+    editedUser!.surname = editedSurname;
+    editedUser!.firstName = editedFirstName;
+    editedUser!.middleInitial = editedMiddleInitial;
+    await EditUserProfile(userId, editedUser);
+    setIsSubmitting(false);
+    setIsEditing(false);
   };
 
   return (
@@ -61,22 +84,35 @@ function Profile() {
             <InputsContainer>
               <TextFieldContainer>
                 <Label>Surname</Label>
-                <TextField type="text" value={user?.surname} />
+                <TextField
+                  type="text"
+                  value={editedSurname}
+                  onChange={e => setEditedSurname(e.target.value)}
+                />
               </TextFieldContainer>
               <TextFieldContainer>
                 <Label>First Name</Label>
-                <TextField type="text" value={user?.firstName} />
+                <TextField
+                  type="text"
+                  value={editedFirstName}
+                  onChange={e => setEditedFirstName(e.target.value)}
+                />
               </TextFieldContainer>
               <TextFieldContainer>
                 <Label>Middle Initial</Label>
-                <TextField type="text" value={user?.middleInitial} />
+                <TextField
+                  type="text"
+                  value={editedMiddleInitial}
+                  onChange={e => setEditedMiddleInitial(e.target.value)}
+                  maxLength={1}
+                />
               </TextFieldContainer>
               <DropDownContainer>
                 <Dropdown
                   option={DROPDOWN_LISTS.CAMPUS}
                   label="Campus"
                   onSelect={campusHandler}
-                  val={user?.campus}
+                  val={editedCampus ? editedCampus : user?.campus}
                 />
               </DropDownContainer>
               <DropDownContainer>
@@ -84,7 +120,7 @@ function Profile() {
                   option={DROPDOWN_LISTS.DEPARTMENT}
                   label="Department"
                   onSelect={departmentHandler}
-                  val={user?.department}
+                  val={editedDepartment ? editedDepartment : user?.department}
                 />
               </DropDownContainer>
             </InputsContainer>
@@ -101,11 +137,12 @@ function Profile() {
               <Button
                 text="Save"
                 color="transparent"
-                onClick={() => console.log(user)}
+                onClick={onSave}
                 type="button"
                 borderColor={Colors.primary}
                 textColor={Colors.primary}
                 hoverOpacity="0.5"
+                isSubmitting={isSubmitting}
               />
             </ButtonsContainer>
           </ProfileContainer>
