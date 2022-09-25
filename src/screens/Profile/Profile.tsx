@@ -11,7 +11,13 @@ import ProfileTab from "../../components/ProfileTab";
 import TopNav from "../../components/TopNav";
 import Colors from "../../constants/Colors";
 import { DROPDOWN_LISTS } from "../../constants/Strings";
-import { EditUserProfile, GetUser } from "../../lib/user.hooks";
+import {
+  CheckESignature,
+  EditUserProfile,
+  GetUser,
+  UploadESignature
+} from "../../lib/user.hooks";
+import { ESignature } from "../../types/ESignature";
 import { User } from "../../types/User";
 
 function Profile() {
@@ -26,12 +32,17 @@ function Profile() {
   const [editedMiddleInitial, setEditedMiddleInitial] = useState("");
   const [editedCampus, setEditedCampus] = useState("");
   const [editedDepartment, setEditedDepartment] = useState("");
+  const [eSignature, setESignature] = useState<ESignature>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasESignature, setHasESignature] = useState<boolean>();
+  const [eSignatureFile, setESignatureFile] = useState<File>();
   let editedUser = user;
   useEffect(() => {
     (async () => {
       if (userId) {
         const user = await GetUser(userId);
+        const haveESignature = await CheckESignature(userId);
+        setHasESignature(haveESignature.data);
         setUser(user);
         setEditedSurname(user.surname);
         setEditedFirstName(user.firstName);
@@ -43,7 +54,7 @@ function Profile() {
         setIsLoading(false);
       }
     })();
-  }, [isEditing]);
+  }, [isEditing, hasESignature]);
 
   const campusHandler = (campusValue: string) => {
     setEditedCampus(campusValue);
@@ -66,6 +77,24 @@ function Profile() {
     setIsSubmitting(false);
     setIsEditing(false);
   };
+
+  const eSignatureUploadHandler = async (eSignatureFile: File) => {
+    setIsSubmitting(true);
+    setESignature({
+      userId: userId!,
+      eSignatureFilePath: "",
+      fileName: ""
+    });
+    setESignatureFile(eSignatureFile);
+  };
+
+  useEffect(() => {
+    (async () => {
+      await UploadESignature(eSignature, eSignatureFile);
+      setHasESignature(true);
+    })();
+    setIsSubmitting(false);
+  }, [eSignature, eSignatureFile]);
 
   return (
     <Container>
@@ -203,24 +232,38 @@ function Profile() {
               </DetailContainer>
             </UserDetailContainer>
             <ButtonsContainer>
-              <Button
-                text="Upload E-signature"
-                color="transparent"
-                onClick={() => console.log("upload clicked")}
-                type="button"
-                borderColor={Colors.primary}
-                textColor={Colors.primary}
-                hoverOpacity="0.5"
-              />
-              <Button
-                text="Change Password"
-                color="transparent"
-                onClick={() => console.log("change password clicked")}
-                type="button"
-                borderColor={Colors.primary}
-                textColor={Colors.primary}
-                hoverOpacity="0.5"
-              />
+              {hasESignature ? (
+                <ButtonStyled>
+                  {isSubmitting ? (
+                    <LoadingSpinner color={Colors.primary} />
+                  ) : (
+                    <ButtonText>
+                      <FileInput
+                        type="file"
+                        onChange={e => {
+                          eSignatureUploadHandler(e.target.files![0]);
+                        }}
+                      />
+                      Replace E-Signature
+                    </ButtonText>
+                  )}
+                </ButtonStyled>
+              ) : (
+                <ButtonStyled>
+                  <ButtonText>
+                    <FileInput
+                      type="file"
+                      onChange={e => {
+                        eSignatureUploadHandler(e.target.files![0]);
+                      }}
+                    />
+                    Upload E-Signature
+                  </ButtonText>
+                </ButtonStyled>
+              )}
+              <ButtonStyled>
+                <ButtonText>Change Password</ButtonText>
+              </ButtonStyled>
             </ButtonsContainer>
           </ProfileContainer>
         )}
@@ -353,6 +396,37 @@ const InputsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const FileInput = styled.input`
+  display: none;
+  width: 100%;
+  height: 100%;
+`;
+
+const ButtonStyled = styled.div`
+  background-color: ${Colors.lightBlue};
+  width: 137px;
+  height: 36px;
+  border: 3px solid ${Colors.primary};
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
+  margin: 10px 10px 0 10px;
+  cursor: pointer;
+`;
+
+const ButtonText = styled.label`
+  font-size: 14px;
+  line-height: 17.81px;
+  font-family: HurmeGeometricSans3SemiBold;
+  color: ${Colors.primary};
+  cursor: pointer;
 `;
 
 export default Profile;

@@ -17,13 +17,10 @@ const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
 
   return (
     <Container isProfileOpen={isProfileOpen}>
-      <NavButtonContainer>
-        <NavButtonText
-          isActive={true}
-          onClick={() => navigate("/profile", { replace: true })}
-        >
-          Profile
-        </NavButtonText>
+      <NavButtonContainer
+        onClick={() => navigate("/profile", { replace: true })}
+      >
+        <NavButtonText isActive={true}>Profile</NavButtonText>
       </NavButtonContainer>
       <NavButtonContainer onClick={logoutHandler}>
         <NavButtonText isActive={true}>Logout</NavButtonText>

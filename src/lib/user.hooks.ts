@@ -1,4 +1,7 @@
+import ReactS3Client from "react-aws-s3-typescript";
 import axios from "../api/axios";
+import { eSignatureAwsConfig } from "../constants/Defaults";
+import { ESignature } from "../types/ESignature";
 import { User } from "../types/User";
 
 export type LoginDTO = {
@@ -30,5 +33,29 @@ export const GetUser = async (userId: string) => {
 
 export const EditUserProfile = async (id: string | null, user?: User) => {
   const { data } = await axios.patch(`user/${id}/update-profile`, user);
+  return { data };
+};
+
+export const UploadESignature = async (
+  eSignature?: ESignature,
+  eSignatureFile?: File
+) => {
+  const eSignatureS3 = new ReactS3Client(eSignatureAwsConfig);
+  try {
+    const eSignatureFileUpload = await eSignatureS3.uploadFile(eSignatureFile!);
+    eSignature!.eSignatureFilePath = eSignatureFileUpload.location;
+    eSignature!.fileName = eSignatureFileUpload.key;
+    const { data } = await axios.post("user/e-signature", eSignature);
+    if (data) {
+      await eSignatureS3.deleteFile(data.fileName);
+    }
+    return { data };
+  } catch {
+    // do nothing
+  }
+};
+
+export const CheckESignature = async (userId: string) => {
+  const { data } = await axios.get(`user/${userId}/check-e-signature`);
   return { data };
 };
