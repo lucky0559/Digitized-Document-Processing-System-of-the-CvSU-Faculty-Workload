@@ -12,6 +12,7 @@ import TopNav from "../../components/TopNav";
 import Colors from "../../constants/Colors";
 import { DROPDOWN_LISTS } from "../../constants/Strings";
 import {
+  ChangePassword,
   CheckESignature,
   EditUserProfile,
   GetUser,
@@ -19,6 +20,7 @@ import {
 } from "../../lib/user.hooks";
 import { ESignature } from "../../types/ESignature";
 import { User } from "../../types/User";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 function Profile() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,6 +38,16 @@ function Profile() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasESignature, setHasESignature] = useState<boolean>();
   const [eSignatureFile, setESignatureFile] = useState<File>();
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmShowNewPassword] =
+    useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
+
   let editedUser = user;
   useEffect(() => {
     (async () => {
@@ -95,6 +107,24 @@ function Profile() {
     })();
     setIsSubmitting(false);
   }, [eSignature, eSignatureFile]);
+
+  const onChangePassword = async () => {
+    setResponseMessage("");
+    setIsSubmitting(true);
+    const user = await GetUser(userId!);
+    await ChangePassword(user.username, oldPassword, newPassword)
+      .then(res => {
+        setResponseMessage(res.data);
+        setIsSubmitting(false);
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+      })
+      .catch(error => {
+        setResponseMessage(error.response.data.message);
+        setIsSubmitting(false);
+      });
+  };
 
   return (
     <Container>
@@ -172,6 +202,134 @@ function Profile() {
                 textColor={Colors.primary}
                 hoverOpacity="0.5"
                 isSubmitting={isSubmitting}
+              />
+            </ButtonsContainer>
+          </ProfileContainer>
+        ) : isChangingPassword ? (
+          <ProfileContainer>
+            <ProfileText>Profile</ProfileText>
+            <InputsContainer>
+              <TextFieldContainer>
+                <Label>Old Password</Label>
+                <FieldIconContainer>
+                  <TextField
+                    type={showOldPassword ? "text" : "password"}
+                    value={oldPassword}
+                    onChange={e => setOldPassword(e.target.value)}
+                  />
+                  {showOldPassword ? (
+                    <AiFillEye
+                      size={20}
+                      onClick={() => setShowOldPassword(!showOldPassword)}
+                    />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size={20}
+                      onClick={() => setShowOldPassword(!showOldPassword)}
+                    />
+                  )}
+                </FieldIconContainer>
+                {
+                  <ResponseMessage type="error">
+                    {responseMessage === "Invalid Old Password"
+                      ? responseMessage
+                      : ""}
+                  </ResponseMessage>
+                }
+              </TextFieldContainer>
+              <TextFieldContainer>
+                <Label>New Password</Label>
+                <FieldIconContainer>
+                  <TextField
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                  />
+                  {showNewPassword ? (
+                    <AiFillEye
+                      size={20}
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size={20}
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    />
+                  )}
+                </FieldIconContainer>
+              </TextFieldContainer>
+              <TextFieldContainer>
+                <Label>Confirm New Password</Label>
+                <FieldIconContainer>
+                  <TextField
+                    type={showConfirmNewPassword ? "text" : "password"}
+                    value={confirmNewPassword}
+                    onChange={e => setConfirmNewPassword(e.target.value)}
+                  />
+                  {showConfirmNewPassword ? (
+                    <AiFillEye
+                      size={20}
+                      onClick={() =>
+                        setShowConfirmShowNewPassword(!showConfirmNewPassword)
+                      }
+                    />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size={20}
+                      onClick={() =>
+                        setShowConfirmShowNewPassword(!showConfirmNewPassword)
+                      }
+                    />
+                  )}
+                </FieldIconContainer>
+                {
+                  <ResponseMessage type="success">
+                    {responseMessage === "Change Password Successfully!"
+                      ? responseMessage
+                      : ""}
+                  </ResponseMessage>
+                }
+                {newPassword !== confirmNewPassword ? (
+                  <ResponseMessage type="error">
+                    Password not match
+                  </ResponseMessage>
+                ) : (
+                  ""
+                )}
+              </TextFieldContainer>
+            </InputsContainer>
+            <ButtonsContainer>
+              <Button
+                text="Cancel"
+                color="transparent"
+                onClick={() => {
+                  setResponseMessage("");
+                  setOldPassword("");
+                  setNewPassword("");
+                  setConfirmNewPassword("");
+                  setIsChangingPassword(false);
+                }}
+                type="button"
+                borderColor={Colors.primary}
+                textColor={Colors.primary}
+                hoverOpacity="0.5"
+              />
+              <Button
+                text="Save"
+                color="transparent"
+                onClick={onChangePassword}
+                type="button"
+                borderColor={Colors.primary}
+                textColor={Colors.primary}
+                hoverOpacity="0.5"
+                isSubmitting={isSubmitting}
+                disable={
+                  !oldPassword ||
+                  !newPassword ||
+                  !confirmNewPassword ||
+                  newPassword !== confirmNewPassword
+                }
+                spinnerColor={Colors.primary}
               />
             </ButtonsContainer>
           </ProfileContainer>
@@ -261,7 +419,7 @@ function Profile() {
                   </ButtonText>
                 </ButtonStyled>
               )}
-              <ButtonStyled>
+              <ButtonStyled onClick={() => setIsChangingPassword(true)}>
                 <ButtonText>Change Password</ButtonText>
               </ButtonStyled>
             </ButtonsContainer>
@@ -382,6 +540,11 @@ const TextField = styled.input`
   width: 100%;
   height: 24.03px;
   background-color: #ececec;
+  border: none;
+  outline: none;
+  ::-ms-reveal {
+    display: none;
+  }
 `;
 
 const Label = styled.label`
@@ -427,6 +590,20 @@ const ButtonText = styled.label`
   font-family: HurmeGeometricSans3SemiBold;
   color: ${Colors.primary};
   cursor: pointer;
+`;
+
+const FieldIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ececec;
+  padding: 0 5px 0 5px;
+`;
+
+const ResponseMessage = styled.text<{ type: string }>`
+  color: ${p => (p.type === "success" ? "#008000" : "red")};
+  font-size: 12px;
+  font-family: HurmeGeometricSans3Bold;
 `;
 
 export default Profile;

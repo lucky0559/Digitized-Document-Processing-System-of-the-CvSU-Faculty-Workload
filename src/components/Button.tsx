@@ -12,6 +12,8 @@ type ButtonProps = {
   borderColor?: string;
   textColor?: string;
   hoverOpacity?: string;
+  spinnerColor?: string;
+  disable?: boolean;
 };
 
 export default function Button({
@@ -22,7 +24,9 @@ export default function Button({
   isSubmitting,
   borderColor,
   textColor,
-  hoverOpacity
+  hoverOpacity,
+  spinnerColor,
+  disable
 }: ButtonProps) {
   return (
     <ButtonContainer
@@ -31,9 +35,10 @@ export default function Button({
       type={type}
       borderColor={borderColor}
       hoverOpacity={hoverOpacity}
+      disabled={disable}
     >
       {isSubmitting ? (
-        <LoadingSpinner />
+        <LoadingSpinner color={spinnerColor} />
       ) : (
         <ButtonText textColor={textColor}>{text}</ButtonText>
       )}
@@ -45,7 +50,9 @@ const ButtonContainer = styled.button<{
   color: string;
   borderColor?: string;
   hoverOpacity?: string;
+  disabled?: boolean;
 }>`
+  opacity: ${p => (p.disabled ? 0.5 : 1)};
   background-color: ${p => p.color};
   width: 200px;
   height: 37px;
@@ -53,7 +60,7 @@ const ButtonContainer = styled.button<{
   justify-content: center;
   align-items: center;
   display: flex;
-  cursor: pointer;
+  cursor: ${p => (p.disabled ? "auto" : "pointer")};
   margin: 10px;
   transition: opacity 0.2s ease-in-out;
   border: none;
@@ -63,7 +70,7 @@ const ButtonContainer = styled.button<{
   border: 3px solid ${p => (p.borderColor ? p.borderColor : "transparent")};
 `;
 
-const ButtonText = styled.text<{ textColor?: string }>`
+const ButtonText = styled.text<{ textColor?: string; disabled?: boolean }>`
   color: ${p => (p.textColor ? p.textColor : Colors.white)};
   font-size: 20px;
   font-family: HurmeGeometricSans3;

@@ -59,3 +59,14 @@ export const CheckESignature = async (userId: string) => {
   const { data } = await axios.get(`user/${userId}/check-e-signature`);
   return { data };
 };
+
+export const ChangePassword = async (
+  username: string,
+  oldPassword: string,
+  password: string
+) => {
+  const { data } = await axios.patch(
+    `user/${username}/${oldPassword}/${password}/change-password`
+  );
+  return { data };
+};
