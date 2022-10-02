@@ -531,6 +531,48 @@ const FacultyWorkloadScreen = () => {
           extensionWorkload.totalNumberHours &&
           extensionWorkload.summaryOfHoursFile
         ) {
+          let designationExtensionActivityPoints;
+          let resourcePersonPoints;
+          let totalNumberHoursPoints;
+          if (
+            extensionWorkload.designationExtensionActivity === "Project Leader"
+          ) {
+            designationExtensionActivityPoints = 3;
+          } else if (
+            extensionWorkload.designationExtensionActivity ===
+            "Project Coordinator"
+          ) {
+            designationExtensionActivityPoints = 2.5;
+          } else if (
+            extensionWorkload.designationExtensionActivity ===
+            "Project Facilitator"
+          ) {
+            designationExtensionActivityPoints = 2;
+          } else {
+            designationExtensionActivityPoints = 1;
+          }
+
+          if (extensionWorkload.resourcePerson === "International") {
+            resourcePersonPoints = 4;
+          } else if (extensionWorkload.resourcePerson === "National") {
+            resourcePersonPoints = 3;
+          } else if (extensionWorkload.resourcePerson === "Regional") {
+            resourcePersonPoints = 2;
+          } else {
+            resourcePersonPoints = 1;
+          }
+
+          if (parseFloat(extensionWorkload.totalNumberHours) >= 3) {
+            totalNumberHoursPoints = 3;
+          } else {
+            totalNumberHoursPoints =
+              parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
+          }
+
+          extensionWorkload.ewlPoints =
+            designationExtensionActivityPoints +
+            resourcePersonPoints +
+            totalNumberHoursPoints;
           await SaveExtensionWorkload(extensionWorkload);
         }
         if (
