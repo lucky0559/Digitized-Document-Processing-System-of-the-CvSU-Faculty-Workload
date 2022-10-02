@@ -437,6 +437,7 @@ const FacultyWorkloadScreen = () => {
     setTwlFile(undefined);
     setTitleOfStudy("");
     setFundingOfStudy("");
+    setFundDisplay("");
     setTypeOfStudy("");
     setDesignationStudy("");
     setDisseminatedResearch("");
@@ -468,20 +469,60 @@ const FacultyWorkloadScreen = () => {
           teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
           await SaveTeachingWorkload(teachingWorkLoad);
         }
+        // for cvsu reasearch grant
         if (
           researchWorkLoad?.titleOfStudy &&
           researchWorkLoad.fundingOfStudy &&
           researchWorkLoad.typeOfStudy &&
           researchWorkLoad.designationStudy &&
-          researchWorkLoad.fundGenerated &&
-          researchWorkLoad.disseminatedResearch &&
-          researchWorkLoad.rwlFile &&
-          researchWorkLoad.rwlFile1 &&
-          researchWorkLoad.rwlFile2
+          researchWorkLoad.rwlFile
         ) {
           let designationStudyPoints;
+          if (
+            researchWorkLoad.designationStudy ===
+            "Program Leader/Co-Program Leader"
+          ) {
+            designationStudyPoints = 9;
+          } else if (
+            researchWorkLoad.designationStudy ===
+            "Project Leader/Co-Project Leader"
+          ) {
+            designationStudyPoints = 6;
+          } else {
+            designationStudyPoints = 3;
+          }
+          researchWorkLoad.rwlPoints = designationStudyPoints;
           await SaveResearchWorkload(researchWorkLoad);
+        } else {
+          // for external funded
+          let fundGeneratedPoints;
+          let disseminatedResearchPoints;
+
+          if (researchWorkLoad?.fundGenerated === "Above 1,000,000.00") {
+            fundGeneratedPoints = 3;
+          } else if (
+            researchWorkLoad?.fundGenerated === "500,001.00 - 1,000,000.00"
+          ) {
+            fundGeneratedPoints = 2;
+          } else {
+            fundGeneratedPoints = 1;
+          }
+
+          if (researchWorkLoad?.disseminatedResearch === "International") {
+            disseminatedResearchPoints = 4;
+          } else if (researchWorkLoad?.disseminatedResearch === "National") {
+            disseminatedResearchPoints = 3;
+          } else if (researchWorkLoad?.disseminatedResearch === "Regional") {
+            disseminatedResearchPoints = 2;
+          } else {
+            disseminatedResearchPoints = 1;
+          }
+
+          researchWorkLoad!.rwlPoints =
+            fundGeneratedPoints + disseminatedResearchPoints;
+          await SaveResearchWorkload(researchWorkLoad!);
         }
+
         if (
           extensionWorkload?.designationExtensionActivity &&
           extensionWorkload.extensionActivityFile &&
