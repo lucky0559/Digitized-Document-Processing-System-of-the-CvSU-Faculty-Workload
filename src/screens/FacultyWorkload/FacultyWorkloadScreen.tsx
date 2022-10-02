@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
@@ -36,6 +37,8 @@ const FacultyWorkloadScreen = () => {
   const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
     useState<StrategicFunctionType>();
 
+  const navigate = useNavigate();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,7 +46,7 @@ const FacultyWorkloadScreen = () => {
   //TWL
   const [numberOfPreparations, setNumberOfPreparations] = useState("");
   const [contactHours, setContactHours] = useState("");
-  const [totalNoOfHours, setTotalNoOfHours] = useState("");
+  const [totalNoOfStudents, setTotalNoOfStudents] = useState("");
   const [twlFile, setTwlFile] = useState<File>();
 
   //RWL
@@ -114,7 +117,7 @@ const FacultyWorkloadScreen = () => {
     setTeachingWorkLoad({
       numberOfPreparations,
       contactHours,
-      totalNoOfHours,
+      totalNoOfStudents,
       twlFile
     });
     setSteps(steps + 1);
@@ -128,8 +131,8 @@ const FacultyWorkloadScreen = () => {
     setContactHours(value);
   };
 
-  const totalNoOfHoursHandler = (value: string) => {
-    setTotalNoOfHours(value);
+  const totalNoOfStudentsHandler = (value: string) => {
+    setTotalNoOfStudents(value);
   };
 
   const twlFileHandler = (value?: File) => {
@@ -149,12 +152,14 @@ const FacultyWorkloadScreen = () => {
     }
     if (fundingOfStudy === "CvSU Research Grant") {
       setSteps(3);
-    } else if (fundDisplay === "CvSU Research Grant") {
-      setSteps(3);
+    } else if (fundingOfStudy === "Externally Funded") {
+      setSteps(4);
     } else if (fundDisplay === "Externally Funded") {
       setSteps(4);
+    } else if (fundDisplay === "CvSU Research Grant") {
+      setSteps(3);
     } else {
-      setSteps(5);
+      setSteps(6);
     }
   };
 
@@ -203,7 +208,7 @@ const FacultyWorkloadScreen = () => {
         ...researchWorkLoad
       });
     }
-    setSteps(steps + 1);
+    setSteps(6);
   };
 
   const typeOfStudyHandler = (value: string) => {
@@ -428,7 +433,7 @@ const FacultyWorkloadScreen = () => {
     setStrategicFunctionWorkload({});
     setNumberOfPreparations("");
     setContactHours("");
-    setTotalNoOfHours("");
+    setTotalNoOfStudents("");
     setTwlFile(undefined);
     setTitleOfStudy("");
     setFundingOfStudy("");
@@ -455,9 +460,12 @@ const FacultyWorkloadScreen = () => {
         if (
           teachingWorkLoad?.contactHours &&
           teachingWorkLoad.numberOfPreparations &&
-          teachingWorkLoad.totalNoOfHours &&
+          teachingWorkLoad.totalNoOfStudents &&
           teachingWorkLoad.twlFile
         ) {
+          const totalNoOfStudents =
+            parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
+          teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
           await SaveTeachingWorkload(teachingWorkLoad);
         }
         if (
@@ -471,6 +479,7 @@ const FacultyWorkloadScreen = () => {
           researchWorkLoad.rwlFile1 &&
           researchWorkLoad.rwlFile2
         ) {
+          let designationStudyPoints;
           await SaveResearchWorkload(researchWorkLoad);
         }
         if (
@@ -501,6 +510,7 @@ const FacultyWorkloadScreen = () => {
         }
         setIsSubmitting(false);
         clearStates();
+        navigate("/faculty-workload", { replace: true });
         setSteps(1);
       }
     })();
@@ -525,11 +535,11 @@ const FacultyWorkloadScreen = () => {
             teachingWorkLoadHandler={teachingWorkLoadHandler}
             numberOfPreparationsHandler={numberOfPreparationsHandler}
             contactHoursHandler={contactHoursHandler}
-            totalNoOfHoursHandler={totalNoOfHoursHandler}
+            totalNoOfStudentsHandler={totalNoOfStudentsHandler}
             twlFileHandler={twlFileHandler}
             numberOfPreparations={numberOfPreparations}
             contactHours={contactHours}
-            totalNoOfHours={totalNoOfHours}
+            totalNoOfStudents={totalNoOfStudents}
             twlFileName={teachingWorkLoad?.twlFile?.name}
           />
         )}
@@ -586,7 +596,7 @@ const FacultyWorkloadScreen = () => {
             certificateFileHandler={certificateFileHandler}
             totalNumberHoursHandler={totalNumberHoursHandler}
             summaryOfHoursFileHandler={summaryOfHoursFileHandler}
-            backHandler={backHandler}
+            backHandler={() => setSteps(2)}
             designationExtensionActivity={
               extensionWorkload?.designationExtensionActivity
             }

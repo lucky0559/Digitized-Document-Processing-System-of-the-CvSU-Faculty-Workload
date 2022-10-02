@@ -11,4 +11,5 @@ export type ResearchWorkLoadType = {
   rwlFilePath1?: string;
   rwlFile2?: File;
   rwlFilePath2?: string;
+  rwlPoints?: number;
 };

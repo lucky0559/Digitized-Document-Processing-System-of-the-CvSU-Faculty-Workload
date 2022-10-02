@@ -1,7 +1,8 @@
 export type TeachingWorkLoadType = {
   numberOfPreparations?: string;
   contactHours?: string;
-  totalNoOfHours?: string;
+  totalNoOfStudents?: string;
   twlFile?: File;
   twlFilePath?: string;
+  totalTeachingWorkload?: number;
 };

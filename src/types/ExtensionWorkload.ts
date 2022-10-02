@@ -8,4 +8,5 @@ export type ExtensionWorkloadType = {
   totalNumberHours?: string;
   summaryOfHoursFile?: File;
   summaryOfHoursFilePath?: string;
+  ewlPoints?: number;
 };
