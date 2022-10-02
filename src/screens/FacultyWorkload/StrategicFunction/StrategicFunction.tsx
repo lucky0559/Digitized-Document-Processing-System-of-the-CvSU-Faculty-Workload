@@ -7,11 +7,11 @@ import { WorkloadType } from "../../../constants/Strings";
 
 type StrategicFunctionProps = {
   strategicFunctionHandler: () => void;
-  designationUniversityLevelHandler: (value?: string[]) => void;
+  designationUniversityLevelHandler: (value: string) => void;
   approvedUniversityDesignationFileHandler: (value?: File) => void;
   backHandler: () => void;
   approvedUniversityDesignationFileName?: string;
-  designationUniversityLevel?: string[];
+  designationUniversityLevel: string[];
 };
 
 const StrategicFunction = ({
@@ -22,42 +22,40 @@ const StrategicFunction = ({
   approvedUniversityDesignationFileName,
   designationUniversityLevel
 }: StrategicFunctionProps) => {
-  const [
-    selectedDesignationUniversityLevel,
-    setSelectedDesignationUniversityLevel
-  ] = useState<string[]>([]);
-
   const fileHandler = (file?: File) => {
     approvedUniversityDesignationFileHandler(file);
   };
 
   const setDesignationUniversityLevel = (
-    designationUniversityLevelValue?: string[]
+    designationUniversityLevelValue: string
   ) => {
+    dataClicked(designationUniversityLevelValue);
     designationUniversityLevelHandler(designationUniversityLevelValue);
-  };
-
-  const selectedDesignationUniversityLevelHandler = (selected: string) => {
-    if (selectedDesignationUniversityLevel.includes(selected)) {
-      const filteredArray = selectedDesignationUniversityLevel.filter(
-        e => e !== selected
-      );
-      setSelectedDesignationUniversityLevel(filteredArray);
-    } else {
-      setSelectedDesignationUniversityLevel([
-        ...selectedDesignationUniversityLevel,
-        selected
-      ]);
-    }
   };
 
   const onSubmit = () => {
     strategicFunctionHandler();
   };
 
+  let dataValue: string[] = [...designationUniversityLevel];
+
+  const [boxClicked, setBoxClicked] = useState(0);
+
+  const dataClicked = (value: string) => {
+    if (dataValue.includes(value)) {
+      const index = dataValue.indexOf(value);
+      if (index > -1) {
+        dataValue.splice(index, 1);
+      }
+    } else {
+      dataValue.push(value);
+    }
+    setBoxClicked(boxClicked + 1);
+  };
+
   useEffect(() => {
-    setDesignationUniversityLevel(selectedDesignationUniversityLevel);
-  }, [selectedDesignationUniversityLevel]);
+    dataValue = [...designationUniversityLevel];
+  }, [boxClicked]);
 
   return (
     <Container>
@@ -73,28 +71,20 @@ const StrategicFunction = ({
         <CheckBoxColumnContainer>
           <CheckBoxContainer>
             <CheckBox
-              isSelected={
-                selectedDesignationUniversityLevel.includes("Dean/Director") ||
-                designationUniversityLevel?.includes("Dean/Director")!
-              }
-              onClick={() =>
-                selectedDesignationUniversityLevelHandler("Dean/Director")
-              }
+              isSelected={dataValue?.includes("Dean/Director")!}
+              onClick={() => setDesignationUniversityLevel("Dean/Director")}
             />
             <CheckBoxLabel>Dean/Director</CheckBoxLabel>
           </CheckBoxContainer>
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "University Project Head/Assistant Project Head"
-                ) ||
                 designationUniversityLevel?.includes(
                   "University Project Head/Assistant Project Head"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "University Project Head/Assistant Project Head"
                 )
               }
@@ -106,15 +96,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "Head, Physical Planning/Project Implementation Unit"
-                ) ||
                 designationUniversityLevel?.includes(
                   "Head, Physical Planning/Project Implementation Unit"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "Head, Physical Planning/Project Implementation Unit"
                 )
               }
@@ -126,15 +113,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "Chair/Member of Review Boards (ERB, IBC, IACUC, CSC)"
-                ) ||
                 designationUniversityLevel?.includes(
                   "Chair/Member of Review Boards (ERB, IBC, IACUC, CSC)"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "Chair/Member of Review Boards (ERB, IBC, IACUC, CSC)"
                 )
               }
@@ -148,15 +132,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "University Pollution Control Officer"
-                ) ||
                 designationUniversityLevel?.includes(
                   "University Pollution Control Officer"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "University Pollution Control Officer"
                 )
               }
@@ -166,15 +147,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "University Inspector/Engineer/Architect/Estimator"
-                ) ||
                 designationUniversityLevel?.includes(
                   "University Inspector/Engineer/Architect/Estimator"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "University Inspector/Engineer/Architect/Estimator"
                 )
               }
@@ -186,15 +164,10 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "Curricular Program Head"
-                ) ||
                 designationUniversityLevel?.includes("Curricular Program Head")!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
-                  "Curricular Program Head"
-                )
+                setDesignationUniversityLevel("Curricular Program Head")
               }
             />
             <CheckBoxLabel>Curricular Program Head</CheckBoxLabel>
@@ -202,15 +175,10 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "RECETS Council Members"
-                ) ||
                 designationUniversityLevel?.includes("RECETS Council Members")!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
-                  "RECETS Council Members"
-                )
+                setDesignationUniversityLevel("RECETS Council Members")
               }
             />
             <CheckBoxLabel>RECETS Council Members</CheckBoxLabel>
@@ -220,15 +188,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "University Textbook Board Chairman/Member"
-                ) ||
                 designationUniversityLevel?.includes(
                   "University Textbook Board Chairman/Member"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "University Textbook Board Chairman/Member"
                 )
               }
@@ -240,15 +205,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "Internal Assessment Body Member (Evaluated at least 3 programs)"
-                ) ||
                 designationUniversityLevel?.includes(
                   "Internal Assessment Body Member (Evaluated at least 3 programs)"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "Internal Assessment Body Member (Evaluated at least 3 programs)"
                 )
               }
@@ -260,15 +222,12 @@ const StrategicFunction = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationUniversityLevel.includes(
-                  "Head of Research Monitoring & Evaluation/Public Office/Central Experiment Station/ITSO/other units of Research & Extension Center"
-                ) ||
                 designationUniversityLevel?.includes(
                   "Head of Research Monitoring & Evaluation/Public Office/Central Experiment Station/ITSO/other units of Research & Extension Center"
                 )!
               }
               onClick={() =>
-                selectedDesignationUniversityLevelHandler(
+                setDesignationUniversityLevel(
                   "Head of Research Monitoring & Evaluation/Public Office/Central Experiment Station/ITSO/other units of Research & Extension Center"
                 )
               }

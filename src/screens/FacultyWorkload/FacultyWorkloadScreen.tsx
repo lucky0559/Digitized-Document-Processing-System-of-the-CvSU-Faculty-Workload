@@ -74,9 +74,6 @@ const FacultyWorkloadScreen = () => {
   const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
 
   //SF
-  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
-    string[] | undefined
-  >([]);
   const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
     useState<string[] | undefined>([]);
   const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
@@ -303,16 +300,28 @@ const FacultyWorkloadScreen = () => {
   };
 
   //SF
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // const designationUniversityLevel: string[] = [];
+  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
+    string[]
+  >([]);
+  const designationUniversityLevelHandler = (value: string) => {
+    if (designationUniversityLevel.includes(value)) {
+      const index = designationUniversityLevel.indexOf(value);
+      if (index > -1) {
+        designationUniversityLevel.splice(index, 1);
+      }
+    } else {
+      designationUniversityLevel.push(value);
+    }
+  };
+
   const setStrategicFunctionHandler = async () => {
     setStrategicFunctionWorkload({
-      designationUniversityLevel,
+      designationUniversityLevel: designationUniversityLevel,
       approvedUniversityDesignationFile
     });
     setSteps(steps + 1);
-  };
-
-  const designationUniversityLevelHandler = (value?: string[]) => {
-    setDesignationUniversityLevel(value);
   };
 
   //SF1
@@ -413,7 +422,7 @@ const FacultyWorkloadScreen = () => {
     setCertificateFile(undefined);
     setTotalNumberHours("");
     setSummaryOfHoursFile(undefined);
-    setDesignationUniversityLevel([]);
+    strategicFunctionWorkload!.designationUniversityLevel = [];
     setApprovedUniversityDesignationFile(undefined);
   };
 
@@ -580,9 +589,7 @@ const FacultyWorkloadScreen = () => {
             approvedUniversityDesignationFileName={
               strategicFunctionWorkload?.approvedUniversityDesignationFile?.name
             }
-            designationUniversityLevel={
-              strategicFunctionWorkload?.designationUniversityLevel
-            }
+            designationUniversityLevel={designationUniversityLevel}
           />
         )}
         {steps === 8 && (
