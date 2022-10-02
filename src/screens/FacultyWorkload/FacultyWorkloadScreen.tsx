@@ -301,7 +301,6 @@ const FacultyWorkloadScreen = () => {
 
   //SF
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const designationUniversityLevel: string[] = [];
   const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
     string[]
   >([]);
@@ -325,17 +324,29 @@ const FacultyWorkloadScreen = () => {
   };
 
   //SF1
+  const [
+    designationCollegeCampusLevelReserve,
+    setDesignationCollegeCampusLevelReserve
+  ] = useState<string[]>([]);
+
+  const designationCollegeCampusLevelHandler = (value: string) => {
+    if (designationCollegeCampusLevelReserve.includes(value)) {
+      const index = designationCollegeCampusLevelReserve.indexOf(value);
+      if (index > -1) {
+        designationCollegeCampusLevelReserve.splice(index, 1);
+      }
+    } else {
+      designationCollegeCampusLevelReserve.push(value);
+    }
+  };
+
   const setStrategicFunction1Handler = async () => {
     setStrategicFunctionWorkload({
       ...strategicFunctionWorkload,
-      designationCollegeCampusLevel,
+      designationCollegeCampusLevel: designationCollegeCampusLevelReserve,
       approvedCollegeCampusDesignationFile
     });
     setSteps(steps + 1);
-  };
-
-  const designationCollegeCampusLevelHandler = (value?: string[]) => {
-    setDesignationCollegeCampusLevel(value);
   };
 
   const approvedCollegeCampusDesignationFileHandler = (value?: File) => {
@@ -343,17 +354,29 @@ const FacultyWorkloadScreen = () => {
   };
 
   //SF2
+  const [
+    designationDepartmentLevelReserve,
+    setDesignationDepartmentLevelReserve
+  ] = useState<string[]>([]);
+
+  const designationDepartmentLevelHandler = (value: string) => {
+    if (designationDepartmentLevelReserve.includes(value)) {
+      const index = designationDepartmentLevelReserve.indexOf(value);
+      if (index > -1) {
+        designationDepartmentLevelReserve.splice(index, 1);
+      }
+    } else {
+      designationDepartmentLevelReserve.push(value);
+    }
+  };
+
   const setStrategicFunction2Handler = async () => {
     setStrategicFunctionWorkload({
       ...strategicFunctionWorkload,
-      designationDepartmentLevel,
+      designationDepartmentLevel: designationDepartmentLevelReserve,
       approvedDepartmentDesignationFile
     });
     setSteps(steps + 1);
-  };
-
-  const designationDepartmentLevelHandler = (value?: string[]) => {
-    setDesignationDepartmentLevel(value);
   };
 
   const approvedDepartmentDesignationFileHandler = (value?: File) => {
@@ -606,9 +629,7 @@ const FacultyWorkloadScreen = () => {
               strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
                 ?.name
             }
-            designationCollegeCampusLevel={
-              strategicFunctionWorkload?.designationCollegeCampusLevel
-            }
+            designationCollegeCampusLevel={designationCollegeCampusLevelReserve}
           />
         )}
         {steps === 9 && (
@@ -624,9 +645,7 @@ const FacultyWorkloadScreen = () => {
             approvedDepartmentDesignationFileName={
               strategicFunctionWorkload?.approvedDepartmentDesignationFile?.name
             }
-            designationDepartmentLevel={
-              strategicFunctionWorkload?.designationDepartmentLevel
-            }
+            designationDepartmentLevel={designationDepartmentLevelReserve}
           />
         )}
         {steps === 10 && (
