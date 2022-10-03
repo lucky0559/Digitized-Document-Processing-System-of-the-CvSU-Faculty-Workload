@@ -453,6 +453,11 @@ const FacultyWorkloadScreen = () => {
     setSummaryOfHoursFile(undefined);
     strategicFunctionWorkload!.designationUniversityLevel = [];
     setApprovedUniversityDesignationFile(undefined);
+    setDesignationUniversityLevel([]);
+    setDesignationCollegeCampusLevelReserve([]);
+    setDesignationDepartmentLevelReserve([]);
+    setDesignationAsMemberOfAdhoc("");
+    setTotalOfAcademicAdvisees("");
   };
 
   useEffect(() => {
@@ -589,6 +594,39 @@ const FacultyWorkloadScreen = () => {
           strategicFunctionWorkload.listOfAdviseesFile &&
           strategicFunctionWorkload.totalOfAcademicAdvisees
         ) {
+          let designationUniversityPoints;
+          let designationCollegeCampusPoints;
+          let designationDepartmentPoints;
+          let designationSportsSocioPoint;
+          let totalNumberOfAcademicAdviseesPoints;
+
+          designationUniversityPoints =
+            strategicFunctionWorkload.designationUniversityLevel.length * 18;
+          designationCollegeCampusPoints =
+            strategicFunctionWorkload.designationCollegeCampusLevel.length * 15;
+          designationDepartmentPoints =
+            strategicFunctionWorkload.designationDepartmentLevel.length * 12;
+
+          if (
+            strategicFunctionWorkload.designationAsSportTrainorAcademic ===
+            "University Level"
+          ) {
+            designationSportsSocioPoint = 5;
+          } else {
+            designationSportsSocioPoint = 3;
+          }
+
+          totalNumberOfAcademicAdviseesPoints =
+            parseFloat(strategicFunctionWorkload.totalOfAcademicAdvisees) *
+            0.023;
+
+          strategicFunctionWorkload.sfwPoints =
+            designationUniversityPoints +
+            designationCollegeCampusPoints +
+            designationDepartmentPoints +
+            designationSportsSocioPoint +
+            totalNumberOfAcademicAdviseesPoints;
+
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
         }
         setIsSubmitting(false);
