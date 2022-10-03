@@ -9,11 +9,11 @@ type TeachingWorkLoadScreenProps = {
   teachingWorkLoadHandler: () => void;
   numberOfPreparationsHandler: (value: string) => void;
   contactHoursHandler: (value: string) => void;
-  totalNoOfHoursHandler: (value: string) => void;
+  totalNoOfStudentsHandler: (value: string) => void;
   twlFileHandler: (value?: File) => void;
   numberOfPreparations: string;
   contactHours: string;
-  totalNoOfHours: string;
+  totalNoOfStudents: string;
   twlFileName?: string;
 };
 
@@ -21,11 +21,11 @@ const TeachingWorkLoad = ({
   teachingWorkLoadHandler,
   numberOfPreparations,
   contactHours,
-  totalNoOfHours,
+  totalNoOfStudents,
   twlFileName,
   numberOfPreparationsHandler,
   contactHoursHandler,
-  totalNoOfHoursHandler,
+  totalNoOfStudentsHandler,
   twlFileHandler
 }: TeachingWorkLoadScreenProps) => {
   const nextHandler = () => {
@@ -59,11 +59,11 @@ const TeachingWorkLoad = ({
           />
         </TextInputContainer>
         <TextInputContainer>
-          <Label>Total No. of Hours</Label>
+          <Label>Total No. of Students</Label>
           <TextInput
             type="number"
-            value={totalNoOfHours}
-            onChange={e => totalNoOfHoursHandler(e.target.value)}
+            value={totalNoOfStudents}
+            onChange={e => totalNoOfStudentsHandler(e.target.value)}
           />
         </TextInputContainer>
         <UploadFileContainer>

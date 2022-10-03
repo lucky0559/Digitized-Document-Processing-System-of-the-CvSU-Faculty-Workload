@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
@@ -36,6 +37,8 @@ const FacultyWorkloadScreen = () => {
   const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
     useState<StrategicFunctionType>();
 
+  const navigate = useNavigate();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,7 +46,7 @@ const FacultyWorkloadScreen = () => {
   //TWL
   const [numberOfPreparations, setNumberOfPreparations] = useState("");
   const [contactHours, setContactHours] = useState("");
-  const [totalNoOfHours, setTotalNoOfHours] = useState("");
+  const [totalNoOfStudents, setTotalNoOfStudents] = useState("");
   const [twlFile, setTwlFile] = useState<File>();
 
   //RWL
@@ -74,9 +77,6 @@ const FacultyWorkloadScreen = () => {
   const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
 
   //SF
-  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
-    string[] | undefined
-  >([]);
   const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
     useState<string[] | undefined>([]);
   const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
@@ -117,7 +117,7 @@ const FacultyWorkloadScreen = () => {
     setTeachingWorkLoad({
       numberOfPreparations,
       contactHours,
-      totalNoOfHours,
+      totalNoOfStudents,
       twlFile
     });
     setSteps(steps + 1);
@@ -131,8 +131,8 @@ const FacultyWorkloadScreen = () => {
     setContactHours(value);
   };
 
-  const totalNoOfHoursHandler = (value: string) => {
-    setTotalNoOfHours(value);
+  const totalNoOfStudentsHandler = (value: string) => {
+    setTotalNoOfStudents(value);
   };
 
   const twlFileHandler = (value?: File) => {
@@ -152,12 +152,14 @@ const FacultyWorkloadScreen = () => {
     }
     if (fundingOfStudy === "CvSU Research Grant") {
       setSteps(3);
-    } else if (fundDisplay === "CvSU Research Grant") {
-      setSteps(3);
+    } else if (fundingOfStudy === "Externally Funded") {
+      setSteps(4);
     } else if (fundDisplay === "Externally Funded") {
       setSteps(4);
+    } else if (fundDisplay === "CvSU Research Grant") {
+      setSteps(3);
     } else {
-      setSteps(5);
+      setSteps(6);
     }
   };
 
@@ -206,7 +208,7 @@ const FacultyWorkloadScreen = () => {
         ...researchWorkLoad
       });
     }
-    setSteps(steps + 1);
+    setSteps(6);
   };
 
   const typeOfStudyHandler = (value: string) => {
@@ -303,30 +305,53 @@ const FacultyWorkloadScreen = () => {
   };
 
   //SF
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
+    string[]
+  >([]);
+  const designationUniversityLevelHandler = (value: string) => {
+    if (designationUniversityLevel.includes(value)) {
+      const index = designationUniversityLevel.indexOf(value);
+      if (index > -1) {
+        designationUniversityLevel.splice(index, 1);
+      }
+    } else {
+      designationUniversityLevel.push(value);
+    }
+  };
+
   const setStrategicFunctionHandler = async () => {
     setStrategicFunctionWorkload({
-      designationUniversityLevel,
+      designationUniversityLevel: designationUniversityLevel,
       approvedUniversityDesignationFile
     });
     setSteps(steps + 1);
   };
 
-  const designationUniversityLevelHandler = (value?: string[]) => {
-    setDesignationUniversityLevel(value);
+  //SF1
+  const [
+    designationCollegeCampusLevelReserve,
+    setDesignationCollegeCampusLevelReserve
+  ] = useState<string[]>([]);
+
+  const designationCollegeCampusLevelHandler = (value: string) => {
+    if (designationCollegeCampusLevelReserve.includes(value)) {
+      const index = designationCollegeCampusLevelReserve.indexOf(value);
+      if (index > -1) {
+        designationCollegeCampusLevelReserve.splice(index, 1);
+      }
+    } else {
+      designationCollegeCampusLevelReserve.push(value);
+    }
   };
 
-  //SF1
   const setStrategicFunction1Handler = async () => {
     setStrategicFunctionWorkload({
       ...strategicFunctionWorkload,
-      designationCollegeCampusLevel,
+      designationCollegeCampusLevel: designationCollegeCampusLevelReserve,
       approvedCollegeCampusDesignationFile
     });
     setSteps(steps + 1);
-  };
-
-  const designationCollegeCampusLevelHandler = (value?: string[]) => {
-    setDesignationCollegeCampusLevel(value);
   };
 
   const approvedCollegeCampusDesignationFileHandler = (value?: File) => {
@@ -334,17 +359,29 @@ const FacultyWorkloadScreen = () => {
   };
 
   //SF2
+  const [
+    designationDepartmentLevelReserve,
+    setDesignationDepartmentLevelReserve
+  ] = useState<string[]>([]);
+
+  const designationDepartmentLevelHandler = (value: string) => {
+    if (designationDepartmentLevelReserve.includes(value)) {
+      const index = designationDepartmentLevelReserve.indexOf(value);
+      if (index > -1) {
+        designationDepartmentLevelReserve.splice(index, 1);
+      }
+    } else {
+      designationDepartmentLevelReserve.push(value);
+    }
+  };
+
   const setStrategicFunction2Handler = async () => {
     setStrategicFunctionWorkload({
       ...strategicFunctionWorkload,
-      designationDepartmentLevel,
+      designationDepartmentLevel: designationDepartmentLevelReserve,
       approvedDepartmentDesignationFile
     });
     setSteps(steps + 1);
-  };
-
-  const designationDepartmentLevelHandler = (value?: string[]) => {
-    setDesignationDepartmentLevel(value);
   };
 
   const approvedDepartmentDesignationFileHandler = (value?: File) => {
@@ -396,10 +433,11 @@ const FacultyWorkloadScreen = () => {
     setStrategicFunctionWorkload({});
     setNumberOfPreparations("");
     setContactHours("");
-    setTotalNoOfHours("");
+    setTotalNoOfStudents("");
     setTwlFile(undefined);
     setTitleOfStudy("");
     setFundingOfStudy("");
+    setFundDisplay("");
     setTypeOfStudy("");
     setDesignationStudy("");
     setDisseminatedResearch("");
@@ -413,8 +451,13 @@ const FacultyWorkloadScreen = () => {
     setCertificateFile(undefined);
     setTotalNumberHours("");
     setSummaryOfHoursFile(undefined);
-    setDesignationUniversityLevel([]);
+    strategicFunctionWorkload!.designationUniversityLevel = [];
     setApprovedUniversityDesignationFile(undefined);
+    setDesignationUniversityLevel([]);
+    setDesignationCollegeCampusLevelReserve([]);
+    setDesignationDepartmentLevelReserve([]);
+    setDesignationAsMemberOfAdhoc("");
+    setTotalOfAcademicAdvisees("");
   };
 
   useEffect(() => {
@@ -423,24 +466,68 @@ const FacultyWorkloadScreen = () => {
         if (
           teachingWorkLoad?.contactHours &&
           teachingWorkLoad.numberOfPreparations &&
-          teachingWorkLoad.totalNoOfHours &&
+          teachingWorkLoad.totalNoOfStudents &&
           teachingWorkLoad.twlFile
         ) {
+          const totalNoOfStudents =
+            parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
+          teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
           await SaveTeachingWorkload(teachingWorkLoad);
         }
+        // for cvsu reasearch grant
         if (
           researchWorkLoad?.titleOfStudy &&
           researchWorkLoad.fundingOfStudy &&
           researchWorkLoad.typeOfStudy &&
           researchWorkLoad.designationStudy &&
-          researchWorkLoad.fundGenerated &&
-          researchWorkLoad.disseminatedResearch &&
-          researchWorkLoad.rwlFile &&
-          researchWorkLoad.rwlFile1 &&
-          researchWorkLoad.rwlFile2
+          researchWorkLoad.rwlFile
         ) {
+          let designationStudyPoints;
+          if (
+            researchWorkLoad.designationStudy ===
+            "Program Leader/Co-Program Leader"
+          ) {
+            designationStudyPoints = 9;
+          } else if (
+            researchWorkLoad.designationStudy ===
+            "Project Leader/Co-Project Leader"
+          ) {
+            designationStudyPoints = 6;
+          } else {
+            designationStudyPoints = 3;
+          }
+          researchWorkLoad.rwlPoints = designationStudyPoints;
           await SaveResearchWorkload(researchWorkLoad);
+        } else {
+          // for external funded
+          let fundGeneratedPoints;
+          let disseminatedResearchPoints;
+
+          if (researchWorkLoad?.fundGenerated === "Above 1,000,000.00") {
+            fundGeneratedPoints = 3;
+          } else if (
+            researchWorkLoad?.fundGenerated === "500,001.00 - 1,000,000.00"
+          ) {
+            fundGeneratedPoints = 2;
+          } else {
+            fundGeneratedPoints = 1;
+          }
+
+          if (researchWorkLoad?.disseminatedResearch === "International") {
+            disseminatedResearchPoints = 4;
+          } else if (researchWorkLoad?.disseminatedResearch === "National") {
+            disseminatedResearchPoints = 3;
+          } else if (researchWorkLoad?.disseminatedResearch === "Regional") {
+            disseminatedResearchPoints = 2;
+          } else {
+            disseminatedResearchPoints = 1;
+          }
+
+          researchWorkLoad!.rwlPoints =
+            fundGeneratedPoints + disseminatedResearchPoints;
+          await SaveResearchWorkload(researchWorkLoad!);
         }
+
         if (
           extensionWorkload?.designationExtensionActivity &&
           extensionWorkload.extensionActivityFile &&
@@ -449,6 +536,48 @@ const FacultyWorkloadScreen = () => {
           extensionWorkload.totalNumberHours &&
           extensionWorkload.summaryOfHoursFile
         ) {
+          let designationExtensionActivityPoints;
+          let resourcePersonPoints;
+          let totalNumberHoursPoints;
+          if (
+            extensionWorkload.designationExtensionActivity === "Project Leader"
+          ) {
+            designationExtensionActivityPoints = 3;
+          } else if (
+            extensionWorkload.designationExtensionActivity ===
+            "Project Coordinator"
+          ) {
+            designationExtensionActivityPoints = 2.5;
+          } else if (
+            extensionWorkload.designationExtensionActivity ===
+            "Project Facilitator"
+          ) {
+            designationExtensionActivityPoints = 2;
+          } else {
+            designationExtensionActivityPoints = 1;
+          }
+
+          if (extensionWorkload.resourcePerson === "International") {
+            resourcePersonPoints = 4;
+          } else if (extensionWorkload.resourcePerson === "National") {
+            resourcePersonPoints = 3;
+          } else if (extensionWorkload.resourcePerson === "Regional") {
+            resourcePersonPoints = 2;
+          } else {
+            resourcePersonPoints = 1;
+          }
+
+          if (parseFloat(extensionWorkload.totalNumberHours) >= 3) {
+            totalNumberHoursPoints = 3;
+          } else {
+            totalNumberHoursPoints =
+              parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
+          }
+
+          extensionWorkload.ewlPoints =
+            designationExtensionActivityPoints +
+            resourcePersonPoints +
+            totalNumberHoursPoints;
           await SaveExtensionWorkload(extensionWorkload);
         }
         if (
@@ -465,10 +594,44 @@ const FacultyWorkloadScreen = () => {
           strategicFunctionWorkload.listOfAdviseesFile &&
           strategicFunctionWorkload.totalOfAcademicAdvisees
         ) {
+          let designationUniversityPoints;
+          let designationCollegeCampusPoints;
+          let designationDepartmentPoints;
+          let designationSportsSocioPoint;
+          let totalNumberOfAcademicAdviseesPoints;
+
+          designationUniversityPoints =
+            strategicFunctionWorkload.designationUniversityLevel.length * 18;
+          designationCollegeCampusPoints =
+            strategicFunctionWorkload.designationCollegeCampusLevel.length * 15;
+          designationDepartmentPoints =
+            strategicFunctionWorkload.designationDepartmentLevel.length * 12;
+
+          if (
+            strategicFunctionWorkload.designationAsSportTrainorAcademic ===
+            "University Level"
+          ) {
+            designationSportsSocioPoint = 5;
+          } else {
+            designationSportsSocioPoint = 3;
+          }
+
+          totalNumberOfAcademicAdviseesPoints =
+            parseFloat(strategicFunctionWorkload.totalOfAcademicAdvisees) *
+            0.023;
+
+          strategicFunctionWorkload.sfwPoints =
+            designationUniversityPoints +
+            designationCollegeCampusPoints +
+            designationDepartmentPoints +
+            designationSportsSocioPoint +
+            totalNumberOfAcademicAdviseesPoints;
+
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
         }
         setIsSubmitting(false);
         clearStates();
+        navigate("/faculty-workload", { replace: true });
         setSteps(1);
       }
     })();
@@ -493,11 +656,11 @@ const FacultyWorkloadScreen = () => {
             teachingWorkLoadHandler={teachingWorkLoadHandler}
             numberOfPreparationsHandler={numberOfPreparationsHandler}
             contactHoursHandler={contactHoursHandler}
-            totalNoOfHoursHandler={totalNoOfHoursHandler}
+            totalNoOfStudentsHandler={totalNoOfStudentsHandler}
             twlFileHandler={twlFileHandler}
             numberOfPreparations={numberOfPreparations}
             contactHours={contactHours}
-            totalNoOfHours={totalNoOfHours}
+            totalNoOfStudents={totalNoOfStudents}
             twlFileName={teachingWorkLoad?.twlFile?.name}
           />
         )}
@@ -554,7 +717,7 @@ const FacultyWorkloadScreen = () => {
             certificateFileHandler={certificateFileHandler}
             totalNumberHoursHandler={totalNumberHoursHandler}
             summaryOfHoursFileHandler={summaryOfHoursFileHandler}
-            backHandler={backHandler}
+            backHandler={() => setSteps(2)}
             designationExtensionActivity={
               extensionWorkload?.designationExtensionActivity
             }
@@ -580,9 +743,7 @@ const FacultyWorkloadScreen = () => {
             approvedUniversityDesignationFileName={
               strategicFunctionWorkload?.approvedUniversityDesignationFile?.name
             }
-            designationUniversityLevel={
-              strategicFunctionWorkload?.designationUniversityLevel
-            }
+            designationUniversityLevel={designationUniversityLevel}
           />
         )}
         {steps === 8 && (
@@ -599,9 +760,7 @@ const FacultyWorkloadScreen = () => {
               strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
                 ?.name
             }
-            designationCollegeCampusLevel={
-              strategicFunctionWorkload?.designationCollegeCampusLevel
-            }
+            designationCollegeCampusLevel={designationCollegeCampusLevelReserve}
           />
         )}
         {steps === 9 && (
@@ -617,9 +776,7 @@ const FacultyWorkloadScreen = () => {
             approvedDepartmentDesignationFileName={
               strategicFunctionWorkload?.approvedDepartmentDesignationFile?.name
             }
-            designationDepartmentLevel={
-              strategicFunctionWorkload?.designationDepartmentLevel
-            }
+            designationDepartmentLevel={designationDepartmentLevelReserve}
           />
         )}
         {steps === 10 && (

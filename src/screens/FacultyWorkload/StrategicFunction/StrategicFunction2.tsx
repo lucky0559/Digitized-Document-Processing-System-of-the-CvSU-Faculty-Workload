@@ -7,11 +7,11 @@ import { WorkloadType } from "../../../constants/Strings";
 
 type StrategicFunction2Props = {
   strategicFunction2Handler: () => void;
-  designationDepartmentLevelHandler: (value?: string[]) => void;
+  designationDepartmentLevelHandler: (value: string) => void;
   approvedDepartmentDesignationFileHandler: (value?: File) => void;
   backHandler: () => void;
   approvedDepartmentDesignationFileName?: string;
-  designationDepartmentLevel?: string[];
+  designationDepartmentLevel: string[];
 };
 
 const StrategicFunction2 = ({
@@ -22,42 +22,40 @@ const StrategicFunction2 = ({
   approvedDepartmentDesignationFileName,
   designationDepartmentLevel
 }: StrategicFunction2Props) => {
-  const [
-    selectedDesignationDepartmentLevel,
-    setSelectedDesignationDepartmentLevel
-  ] = useState<string[]>([]);
-
   const fileHandler = (file?: File) => {
     approvedDepartmentDesignationFileHandler(file);
   };
 
   const setDesignationDepartmentLevel = (
-    designationDepartmentLevelValue?: string[]
+    designationDepartmentLevelValue: string
   ) => {
+    dataClicked(designationDepartmentLevelValue);
     designationDepartmentLevelHandler(designationDepartmentLevelValue);
   };
 
-  const selectedDesignationDepartmentLevelHandler = (selected: string) => {
-    if (selectedDesignationDepartmentLevel.includes(selected)) {
-      const filteredArray = selectedDesignationDepartmentLevel.filter(
-        e => e !== selected
-      );
-      setSelectedDesignationDepartmentLevel(filteredArray);
+  let dataValue: string[] = [...designationDepartmentLevel];
+
+  const [boxClicked, setBoxClicked] = useState(0);
+
+  const dataClicked = (value: string) => {
+    if (dataValue.includes(value)) {
+      const index = dataValue.indexOf(value);
+      if (index > -1) {
+        dataValue.splice(index, 1);
+      }
     } else {
-      setSelectedDesignationDepartmentLevel([
-        ...selectedDesignationDepartmentLevel,
-        selected
-      ]);
+      dataValue.push(value);
     }
+    setBoxClicked(boxClicked + 1);
   };
+
+  useEffect(() => {
+    dataValue = [...designationDepartmentLevel];
+  }, [boxClicked]);
 
   const onSubmit = () => {
     strategicFunction2Handler();
   };
-
-  useEffect(() => {
-    setDesignationDepartmentLevel(selectedDesignationDepartmentLevel);
-  }, [selectedDesignationDepartmentLevel]);
 
   return (
     <Container>
@@ -74,15 +72,12 @@ const StrategicFunction2 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationDepartmentLevel.includes(
-                  "Department Coordinator (Research, Extension, GAD, Budget Officer, OJT, Guidance)"
-                ) ||
-                designationDepartmentLevel?.includes(
+                dataValue.includes(
                   "Department Coordinator (Research, Extension, GAD, Budget Officer, OJT, Guidance)"
                 )!
               }
               onClick={() =>
-                selectedDesignationDepartmentLevelHandler(
+                setDesignationDepartmentLevel(
                   "Department Coordinator (Research, Extension, GAD, Budget Officer, OJT, Guidance)"
                 )
               }
@@ -96,14 +91,8 @@ const StrategicFunction2 = ({
         <CheckBoxColumnContainer>
           <CheckBoxContainer>
             <CheckBox
-              isSelected={
-                selectedDesignationDepartmentLevel.includes(
-                  "Department MISOT"
-                ) || designationDepartmentLevel?.includes("Department MISOT")!
-              }
-              onClick={() =>
-                selectedDesignationDepartmentLevelHandler("Department MISOT")
-              }
+              isSelected={dataValue.includes("Department MISOT")!}
+              onClick={() => setDesignationDepartmentLevel("Department MISOT")}
             />
             <CheckBoxLabel>Department MISOT</CheckBoxLabel>
           </CheckBoxContainer>
@@ -111,14 +100,8 @@ const StrategicFunction2 = ({
         <CheckBoxColumnContainer>
           <CheckBoxContainer>
             <CheckBox
-              isSelected={
-                selectedDesignationDepartmentLevel.includes(
-                  "IMDU Chair/Member"
-                ) || designationDepartmentLevel?.includes("IMDU Chair/Member")!
-              }
-              onClick={() =>
-                selectedDesignationDepartmentLevelHandler("IMDU Chair/Member")
-              }
+              isSelected={dataValue.includes("IMDU Chair/Member")!}
+              onClick={() => setDesignationDepartmentLevel("IMDU Chair/Member")}
             />
             <CheckBoxLabel>IMDU Chair/Member</CheckBoxLabel>
           </CheckBoxContainer>

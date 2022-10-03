@@ -7,11 +7,11 @@ import { WorkloadType } from "../../../constants/Strings";
 
 type StrategicFunction1Props = {
   strategicFunction1Handler: () => void;
-  designationCampusCollegeLevelHandler: (value?: string[]) => void;
+  designationCampusCollegeLevelHandler: (value: string) => void;
   approvedCollegeCampusDesignationFileHandler: (value?: File) => void;
   backHandler: () => void;
   approvedCollegeCampusDesignationFileName?: string;
-  designationCollegeCampusLevel?: string[];
+  designationCollegeCampusLevel: string[];
 };
 
 const StrategicFunction1 = ({
@@ -22,42 +22,40 @@ const StrategicFunction1 = ({
   approvedCollegeCampusDesignationFileName,
   designationCollegeCampusLevel
 }: StrategicFunction1Props) => {
-  const [
-    selectedDesignationCollegeCampusLevel,
-    setSelectedDesignationCollegeCampusLevel
-  ] = useState<string[]>([]);
-
   const fileHandler = (file?: File) => {
     approvedCollegeCampusDesignationFileHandler(file);
   };
 
   const setDesignationUniversityLevel = (
-    designationUniversityLevelValue?: string[]
+    designationUniversityLevelValue: string
   ) => {
+    dataClicked(designationUniversityLevelValue);
     designationCampusCollegeLevelHandler(designationUniversityLevelValue);
   };
 
-  const selectedDesignationCollegeCampusLevelHandler = (selected: string) => {
-    if (selectedDesignationCollegeCampusLevel.includes(selected)) {
-      const filteredArray = selectedDesignationCollegeCampusLevel.filter(
-        e => e !== selected
-      );
-      setSelectedDesignationCollegeCampusLevel(filteredArray);
+  let dataValue: string[] = [...designationCollegeCampusLevel];
+
+  const [boxClicked, setBoxClicked] = useState(0);
+
+  const dataClicked = (value: string) => {
+    if (dataValue.includes(value)) {
+      const index = dataValue.indexOf(value);
+      if (index > -1) {
+        dataValue.splice(index, 1);
+      }
     } else {
-      setSelectedDesignationCollegeCampusLevel([
-        ...selectedDesignationCollegeCampusLevel,
-        selected
-      ]);
+      dataValue.push(value);
     }
+    setBoxClicked(boxClicked + 1);
   };
+
+  useEffect(() => {
+    dataValue = [...designationCollegeCampusLevel];
+  }, [boxClicked]);
 
   const onSubmit = () => {
     strategicFunction1Handler();
   };
-
-  useEffect(() => {
-    setDesignationUniversityLevel(selectedDesignationCollegeCampusLevel);
-  }, [selectedDesignationCollegeCampusLevel]);
 
   return (
     <Container>
@@ -74,15 +72,10 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "Department Chair/Principal/Administrator"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "Department Chair/Principal/Administrator"
-                )!
+                dataValue.includes("Department Chair/Principal/Administrator")!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "Department Chair/Principal/Administrator"
                 )
               }
@@ -94,15 +87,12 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College/Campus Coordinator (Research, Extension, GAD, Sports, Job Placement, Guidance, Quality Assurance or Extramural Study)"
-                ) ||
-                designationCollegeCampusLevel?.includes(
+                dataValue.includes(
                   "College/Campus Coordinator (Research, Extension, GAD, Sports, Job Placement, Guidance, Quality Assurance or Extramural Study)"
                 )!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "College/Campus Coordinator (Research, Extension, GAD, Sports, Job Placement, Guidance, Quality Assurance or Extramural Study)"
                 )
               }
@@ -115,15 +105,12 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College/Campus Budget Officer/Property Custodian"
-                ) ||
-                designationCollegeCampusLevel?.includes(
+                dataValue.includes(
                   "College/Campus Budget Officer/Property Custodian"
                 )!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "College/Campus Budget Officer/Property Custodian"
                 )
               }
@@ -135,15 +122,10 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "In-Charge of College Reading Room"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "In-Charge of College Reading Room"
-                )!
+                dataValue.includes("In-Charge of College Reading Room")!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "In-Charge of College Reading Room"
                 )
               }
@@ -154,18 +136,9 @@ const StrategicFunction1 = ({
         <CheckBoxColumnContainer>
           <CheckBoxContainer>
             <CheckBox
-              isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College/Campus Secretary"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "College/Campus Secretary"
-                )!
-              }
+              isSelected={dataValue.includes("College/Campus Secretary")!}
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
-                  "College/Campus Secretary"
-                )
+                setDesignationUniversityLevel("College/Campus Secretary")
               }
             />
             <CheckBoxLabel>College/Campus Secretary</CheckBoxLabel>
@@ -173,15 +146,12 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "Graduate Program/Learning Center Coordinator"
-                ) ||
-                designationCollegeCampusLevel?.includes(
+                dataValue.includes(
                   "Graduate Program/Learning Center Coordinator"
                 )!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "Graduate Program/Learning Center Coordinator"
                 )
               }
@@ -192,18 +162,9 @@ const StrategicFunction1 = ({
           </CheckBoxContainer>
           <CheckBoxContainer>
             <CheckBox
-              isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College IMDU Chair/Member"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "College IMDU Chair/Member"
-                )!
-              }
+              isSelected={dataValue.includes("College IMDU Chair/Member")!}
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
-                  "College IMDU Chair/Member"
-                )
+                setDesignationUniversityLevel("College IMDU Chair/Member")
               }
             />
             <CheckBoxLabel>College IMDU Chair/Member</CheckBoxLabel>
@@ -211,15 +172,10 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College/Campus Student Misdemeanor Member"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "College/Campus Student Misdemeanor Member"
-                )!
+                dataValue.includes("College/Campus Student Misdemeanor Member")!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "College/Campus Student Misdemeanor Member"
                 )
               }
@@ -232,18 +188,9 @@ const StrategicFunction1 = ({
         <CheckBoxColumnContainer>
           <CheckBoxContainer>
             <CheckBox
-              isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College/Campus Registrar"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "College/Campus Registrar"
-                )!
-              }
+              isSelected={dataValue.includes("College/Campus Registrar")!}
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
-                  "College/Campus Registrar"
-                )
+                setDesignationUniversityLevel("College/Campus Registrar")
               }
             />
             <CheckBoxLabel>College/Campus Registrar</CheckBoxLabel>
@@ -251,15 +198,12 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "College/Campus Liaison Officer/MISO/PIO/Enterprise Laboratory/Resource Generation Officer"
-                ) ||
-                designationCollegeCampusLevel?.includes(
+                dataValue.includes(
                   "College/Campus Liaison Officer/MISO/PIO/Enterprise Laboratory/Resource Generation Officer"
                 )!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "College/Campus Liaison Officer/MISO/PIO/Enterprise Laboratory/Resource Generation Officer"
                 )
               }
@@ -272,15 +216,10 @@ const StrategicFunction1 = ({
           <CheckBoxContainer>
             <CheckBox
               isSelected={
-                selectedDesignationCollegeCampusLevel.includes(
-                  "Accreditation Task Force Chairman/Member"
-                ) ||
-                designationCollegeCampusLevel?.includes(
-                  "Accreditation Task Force Chairman/Member"
-                )!
+                dataValue.includes("Accreditation Task Force Chairman/Member")!
               }
               onClick={() =>
-                selectedDesignationCollegeCampusLevelHandler(
+                setDesignationUniversityLevel(
                   "Accreditation Task Force Chairman/Member"
                 )
               }

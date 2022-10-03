@@ -49,16 +49,26 @@ export const SaveResearchWorkload = async (
   const rwl1AwsConfigS3 = new ReactS3Client(rwl1AwsConfig);
   const rwl2AwsConfigS3 = new ReactS3Client(rwl2AwsConfig);
 
-  if (
-    researchWorkload.rwlFile &&
-    researchWorkload.rwlFile1 &&
-    researchWorkload.rwlFile2
-  ) {
+  if (researchWorkload.rwlFile) {
     try {
       const file = await rwlAwsConfigS3.uploadFile(researchWorkload.rwlFile);
+      researchWorkload.rwlFilePath = file.location;
+
+      const { data } = await axios.post(
+        `research-workload/${userId}/save`,
+        researchWorkload
+      );
+      return { data };
+    } catch (exception) {
+      console.log(exception);
+    }
+  }
+
+  if (researchWorkload.rwlFile1 && researchWorkload.rwlFile2) {
+    try {
       const file1 = await rwl1AwsConfigS3.uploadFile(researchWorkload.rwlFile1);
       const file2 = await rwl2AwsConfigS3.uploadFile(researchWorkload.rwlFile2);
-      researchWorkload.rwlFilePath = file.location;
+
       researchWorkload.rwlFilePath1 = file1.location;
       researchWorkload.rwlFilePath2 = file2.location;
       const { data } = await axios.post(
