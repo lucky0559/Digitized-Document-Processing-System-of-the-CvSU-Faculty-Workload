@@ -4,6 +4,7 @@ import FacultyWorkloadScreen from "./screens/FacultyWorkload/FacultyWorkloadScre
 import WelcomeScreen from "./screens/LoginRegister/WelcomeScreen";
 import Profile from "./screens/Profile/Profile";
 import VerifyScreen from "./screens/Verify/VerifyScreen";
+import WorkloadReviewScreen from "./screens/WorkloadReview/WorkloadReviewScreen";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/faculty-workload" element={<FacultyWorkloadScreen />} />
         <Route path="verify/:token" element={<VerifyScreen />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/workload-review" element={<WorkloadReviewScreen />} />
       </Routes>
     </BrowserRouter>
   );

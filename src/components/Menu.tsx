@@ -20,7 +20,12 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
         </NavButtonText>
       </NavButtonContainer>
       <NavButtonContainer>
-        <NavButtonText isActive={false}>Workload Review</NavButtonText>
+        <NavButtonText
+          onClick={() => navigate("/workload-review", { replace: true })}
+          isActive={false}
+        >
+          Workload Review
+        </NavButtonText>
       </NavButtonContainer>
       <NavButtonContainer>
         <NavButtonText isActive={false}>Reports</NavButtonText>

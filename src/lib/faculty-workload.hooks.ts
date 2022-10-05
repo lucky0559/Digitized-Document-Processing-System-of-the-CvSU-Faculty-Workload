@@ -199,3 +199,9 @@ export const SaveStrategicFunctionWorkload = async (
     }
   }
 };
+
+export const GetAllTeachingWorkload = async () => {
+  const { data } = await axios.get("teaching-workload/all-teaching-workload");
+
+  return { data };
+};
