@@ -6,7 +6,11 @@ import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
-import { GetAllTeachingWorkload } from "../../lib/faculty-workload.hooks";
+import {
+  GetAllExtensionWorkload,
+  GetAllResearchWorkload,
+  GetAllTeachingWorkload
+} from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
 import Workload from "./Workload";
 
@@ -16,11 +20,17 @@ const WorkloadReviewScreen = () => {
 
   // const allTeachingWorkload = await GetAllTeachingWorkload();
   const [allTeachingWorkload, setAllTeachingWorkload] = useState<User[]>();
+  const [allResearchWorkload, setAllResearchWorkload] = useState<User[]>();
+  const [allExtensionWorkload, setAllExtensionWorkload] = useState<User[]>();
 
   useEffect(() => {
     (async () => {
       const teachingWorkloads = await GetAllTeachingWorkload();
       setAllTeachingWorkload(teachingWorkloads.data);
+      const researchWorkLoads = await GetAllResearchWorkload();
+      setAllResearchWorkload(researchWorkLoads.data);
+      const extensionWorkloads = await GetAllExtensionWorkload();
+      setAllExtensionWorkload(extensionWorkloads.data);
     })();
   }, []);
 
@@ -35,7 +45,11 @@ const WorkloadReviewScreen = () => {
       <BodyContainer>
         <ScreenTitle title="Workload Review" />
         <WorkloadsContainer>
-          <Workload workload={allTeachingWorkload} workloadType="Teaching" />
+          <Workload
+            teachingWorkload={allTeachingWorkload}
+            researchWorkload={allResearchWorkload}
+            extensionWorkload={allExtensionWorkload}
+          />
         </WorkloadsContainer>
       </BodyContainer>
       <FooterContainer>

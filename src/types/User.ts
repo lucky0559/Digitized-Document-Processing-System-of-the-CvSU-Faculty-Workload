@@ -9,4 +9,10 @@ export type User = {
   role?: string;
   academicRank: string;
   twlFilePath?: string;
+  rwlFilePath?: string;
+  rwlFilePath1?: string;
+  rwlFilePath2?: string;
+  extensionActivityFilePath?: string;
+  certificateFilePath?: string;
+  summaryOfHoursFilePath?: string;
 };

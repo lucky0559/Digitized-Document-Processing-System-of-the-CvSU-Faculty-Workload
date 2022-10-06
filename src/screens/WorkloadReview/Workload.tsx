@@ -4,10 +4,15 @@ import CheckboxWorkload from "../../components/CheckboxWorkload";
 import { User } from "../../types/User";
 
 type WorkloadProps = {
-  workload?: User[];
-  workloadType: string;
+  teachingWorkload?: User[];
+  researchWorkload?: User[];
+  extensionWorkload?: User[];
 };
-function Workload({ workload, workloadType }: WorkloadProps) {
+function Workload({
+  teachingWorkload,
+  researchWorkload,
+  extensionWorkload
+}: WorkloadProps) {
   return (
     <Container>
       <Table>
@@ -17,7 +22,7 @@ function Workload({ workload, workloadType }: WorkloadProps) {
           <ThStyle>Workload Type</ThStyle>
           <ThStyle>Approved/Disapproved with Remarks</ThStyle>
         </tr>
-        {workload?.map((item, index) => {
+        {teachingWorkload?.map((item, index) => {
           return (
             <tr>
               <TdStyle>
@@ -27,10 +32,59 @@ function Workload({ workload, workloadType }: WorkloadProps) {
                 <TdText key={index}>{item.academicRank}</TdText>
               </TdStyle>
               <TdStyle>
-                <TdText key={index}>{workloadType}</TdText>
+                <TdText key={index}>Teaching Workload</TdText>
               </TdStyle>
               <TdStyle>
-                <CheckboxWorkload twlFilePath={item.twlFilePath} />
+                <CheckboxWorkload
+                  twlFilePath={item.twlFilePath}
+                  workloadType="Teaching Workload"
+                />
+              </TdStyle>
+            </tr>
+          );
+        })}
+        {researchWorkload?.map((item, index) => {
+          return (
+            <tr>
+              <TdStyle>
+                <TdText key={index}>{item.firstName}</TdText>
+              </TdStyle>
+              <TdStyle>
+                <TdText key={index}>{item.academicRank}</TdText>
+              </TdStyle>
+              <TdStyle>
+                <TdText key={index}>Research Workload</TdText>
+              </TdStyle>
+              <TdStyle>
+                <CheckboxWorkload
+                  rwlFilePath={item.rwlFilePath}
+                  rwlFilePath1={item.rwlFilePath1}
+                  rwlFilePath2={item.rwlFilePath2}
+                  workloadType="Research Workload"
+                />
+              </TdStyle>
+            </tr>
+          );
+        })}
+        {extensionWorkload?.map((item, index) => {
+          return (
+            <tr>
+              <TdStyle>
+                <TdText key={index}>{item.firstName}</TdText>
+              </TdStyle>
+              <TdStyle>
+                <TdText key={index}>{item.academicRank}</TdText>
+              </TdStyle>
+              <TdStyle>
+                <TdText key={index}>Extension Workload</TdText>
+              </TdStyle>
+              <TdStyle>
+                <CheckboxWorkload
+                  extensionActivityFilePath={item.extensionActivityFilePath}
+                  certificateFilePath={item.certificateFilePath}
+                  summaryOfHoursFilePath={item.summaryOfHoursFilePath}
+                  workloadType="Extension Workload"
+                />
               </TdStyle>
             </tr>
           );
@@ -50,7 +104,7 @@ const TdText = styled.text`
 
 const TdStyle = styled.td`
   text-align: center;
-  padding-bottom: 30px;
+  padding-bottom: 100px;
 `;
 
 const ThStyle = styled.th`

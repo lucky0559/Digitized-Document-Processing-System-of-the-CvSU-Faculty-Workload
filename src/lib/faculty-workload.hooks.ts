@@ -205,3 +205,15 @@ export const GetAllTeachingWorkload = async () => {
 
   return { data };
 };
+
+export const GetAllResearchWorkload = async () => {
+  const { data } = await axios.get("teaching-workload/all-research-workload");
+
+  return { data };
+};
+
+export const GetAllExtensionWorkload = async () => {
+  const { data } = await axios.get("teaching-workload/all-extension-workload");
+
+  return { data };
+};
