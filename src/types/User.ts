@@ -8,4 +8,5 @@ export type User = {
   department: string;
   role?: string;
   academicRank: string;
+  twlFilePath?: string;
 };

@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+
 import Colors from "../constants/Colors";
 
-function CheckboxWorkload() {
+type CheckboxWorkloadProps = {
+  twlFilePath?: string;
+};
+
+function CheckboxWorkload({ twlFilePath }: CheckboxWorkloadProps) {
   const [isApproved, setIsApproved] = useState(false);
   const [remarks, setRemarks] = useState("");
+  const [viewFile, isViewFile] = useState(false);
   return (
     <Container>
       <CheckboxContainer
@@ -20,7 +26,10 @@ function CheckboxWorkload() {
         />
       </TdStyle>
       <ViewAndSubmitContainer>
-        <ButtonView>View Attached File</ButtonView>
+        <ButtonView onClick={() => window.open(twlFilePath)}>
+          View Attached File
+        </ButtonView>
+
         <ButtonSubmit
           disabled={!isApproved && remarks.length === 0}
           onClick={() => console.log(remarks)}

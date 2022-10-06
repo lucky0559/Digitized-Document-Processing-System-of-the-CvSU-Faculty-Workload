@@ -30,7 +30,7 @@ function Workload({ workload, workloadType }: WorkloadProps) {
                 <TdText key={index}>{workloadType}</TdText>
               </TdStyle>
               <TdStyle>
-                <CheckboxWorkload />
+                <CheckboxWorkload twlFilePath={item.twlFilePath} />
               </TdStyle>
             </tr>
           );
