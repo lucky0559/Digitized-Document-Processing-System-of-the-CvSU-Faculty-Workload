@@ -49,6 +49,7 @@ export default function LoginScreen({
       .then(res => {
         setIsSubmitting(false);
         localStorage.setItem("userId", res.data.id);
+        localStorage.setItem("role", res.data.role);
         navigate("faculty-workload", { replace: true });
         setErrorMessage("");
       })

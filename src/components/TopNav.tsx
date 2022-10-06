@@ -11,7 +11,7 @@ type TopNavProps = {
 };
 
 export default function TopNav({ menuHandler, profileHandler }: TopNavProps) {
-  const user = localStorage.getItem("user");
+  const user = localStorage.getItem("userId");
   return (
     <Container>
       <TopNavLeftContent>

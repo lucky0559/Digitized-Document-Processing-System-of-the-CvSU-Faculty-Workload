@@ -9,6 +9,7 @@ type MenuProps = {
 
 const Menu = ({ isMenuOpen }: MenuProps) => {
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
   return (
     <Container isMenuOpen={isMenuOpen}>
       <NavButtonContainer>
@@ -19,14 +20,17 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
           Faculty Workload
         </NavButtonText>
       </NavButtonContainer>
-      <NavButtonContainer>
-        <NavButtonText
-          onClick={() => navigate("/workload-review", { replace: true })}
-          isActive={false}
-        >
-          Workload Review
-        </NavButtonText>
-      </NavButtonContainer>
+      {userRole === "Department Chairperson" && (
+        <NavButtonContainer>
+          <NavButtonText
+            onClick={() => navigate("/workload-review", { replace: true })}
+            isActive={false}
+          >
+            Workload Review
+          </NavButtonText>
+        </NavButtonContainer>
+      )}
+
       <NavButtonContainer>
         <NavButtonText isActive={false}>Reports</NavButtonText>
       </NavButtonContainer>
