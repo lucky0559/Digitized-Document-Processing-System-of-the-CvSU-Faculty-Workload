@@ -15,4 +15,10 @@ export type User = {
   extensionActivityFilePath?: string;
   certificateFilePath?: string;
   summaryOfHoursFilePath?: string;
+  approvedUniversityDesignationFilePath?: string;
+  approvedCollegeCampusDesignationFilePath?: string;
+  approvedDepartmentDesignationFilePath?: string;
+  coachAdviserCertificateFilePath?: string;
+  approvedDesignationFilePath?: string;
+  listOfAdviseesFilePath?: string;
 };

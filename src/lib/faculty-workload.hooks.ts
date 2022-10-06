@@ -217,3 +217,9 @@ export const GetAllExtensionWorkload = async () => {
 
   return { data };
 };
+
+export const GetAllStrategicWorkload = async () => {
+  const { data } = await axios.get("teaching-workload/all-strategic-workload");
+
+  return { data };
+};

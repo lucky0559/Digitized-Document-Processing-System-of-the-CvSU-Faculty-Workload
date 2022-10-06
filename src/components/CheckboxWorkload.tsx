@@ -12,6 +12,12 @@ type CheckboxWorkloadProps = {
   extensionActivityFilePath?: string;
   certificateFilePath?: string;
   summaryOfHoursFilePath?: string;
+  approvedUniversityDesignationFilePath?: string;
+  approvedCollegeCampusDesignationFilePath?: string;
+  approvedDepartmentDesignationFilePath?: string;
+  coachAdviserCertificateFilePath?: string;
+  approvedDesignationFilePath?: string;
+  listOfAdviseesFilePath?: string;
 };
 
 function CheckboxWorkload({
@@ -22,7 +28,13 @@ function CheckboxWorkload({
   workloadType,
   extensionActivityFilePath,
   certificateFilePath,
-  summaryOfHoursFilePath
+  summaryOfHoursFilePath,
+  approvedUniversityDesignationFilePath,
+  approvedCollegeCampusDesignationFilePath,
+  approvedDepartmentDesignationFilePath,
+  coachAdviserCertificateFilePath,
+  approvedDesignationFilePath,
+  listOfAdviseesFilePath
 }: CheckboxWorkloadProps) {
   const [isApproved, setIsApproved] = useState(false);
   const [remarks, setRemarks] = useState("");
@@ -62,7 +74,7 @@ function CheckboxWorkload({
               </>
             )}
           </div>
-        ) : (
+        ) : workloadType === "Extension Workload" ? (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <ButtonView onClick={() => window.open(extensionActivityFilePath)}>
               View Attached Extension Activity
@@ -74,6 +86,53 @@ function CheckboxWorkload({
               View Attached Summary of Hours
             </ButtonView>
           </div>
+        ) : (
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginLeft: 170
+              }}
+            >
+              <ButtonView
+                onClick={() =>
+                  window.open(approvedUniversityDesignationFilePath)
+                }
+              >
+                View Attached Designation University Level
+              </ButtonView>
+              <ButtonView
+                onClick={() =>
+                  window.open(approvedCollegeCampusDesignationFilePath)
+                }
+              >
+                View Attached Designation College/Campus Level
+              </ButtonView>
+              <ButtonView
+                onClick={() =>
+                  window.open(approvedDepartmentDesignationFilePath)
+                }
+              >
+                View Attached Designation Department Level
+              </ButtonView>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <ButtonView
+                onClick={() => window.open(coachAdviserCertificateFilePath)}
+              >
+                View Attached Coach/Adviser Certificate
+              </ButtonView>
+              <ButtonView
+                onClick={() => window.open(approvedDesignationFilePath)}
+              >
+                View Attached Approved Designation
+              </ButtonView>
+              <ButtonView onClick={() => window.open(listOfAdviseesFilePath)}>
+                View Attached List of Advisees
+              </ButtonView>
+            </div>
+          </>
         )}
 
         <ButtonSubmit
@@ -126,7 +185,7 @@ const RemarksInput = styled.input``;
 const ButtonView = styled.button`
   width: 150px;
   height: 30px;
-  background-color: ${Colors.active};
+  background-color: ${Colors.buttonPrimary};
   margin-left: 20px;
   color: white;
   font-family: HurmeGeometricSans3;
@@ -136,12 +195,13 @@ const ButtonView = styled.button`
     opacity: 0.7;
   }
   font-size: 10px;
+  margin-bottom: 3px;
 `;
 
 const ButtonSubmit = styled.button<{ disabled: boolean }>`
   width: 150px;
   height: 30px;
-  background-color: ${Colors.active};
+  background-color: ${Colors.buttonSecondary};
   margin-left: 20px;
   color: white;
   font-family: HurmeGeometricSans3;

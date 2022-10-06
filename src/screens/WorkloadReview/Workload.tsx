@@ -7,11 +7,13 @@ type WorkloadProps = {
   teachingWorkload?: User[];
   researchWorkload?: User[];
   extensionWorkload?: User[];
+  allStrategicWorkload?: User[];
 };
 function Workload({
   teachingWorkload,
   researchWorkload,
-  extensionWorkload
+  extensionWorkload,
+  allStrategicWorkload
 }: WorkloadProps) {
   return (
     <Container>
@@ -84,6 +86,40 @@ function Workload({
                   certificateFilePath={item.certificateFilePath}
                   summaryOfHoursFilePath={item.summaryOfHoursFilePath}
                   workloadType="Extension Workload"
+                />
+              </TdStyle>
+            </tr>
+          );
+        })}
+        {allStrategicWorkload?.map((item, index) => {
+          return (
+            <tr>
+              <TdStyle>
+                <TdText key={index}>{item.firstName}</TdText>
+              </TdStyle>
+              <TdStyle>
+                <TdText key={index}>{item.academicRank}</TdText>
+              </TdStyle>
+              <TdStyle>
+                <TdText key={index}>Strategic Function Workload</TdText>
+              </TdStyle>
+              <TdStyle>
+                <CheckboxWorkload
+                  approvedUniversityDesignationFilePath={
+                    item.approvedUniversityDesignationFilePath
+                  }
+                  approvedCollegeCampusDesignationFilePath={
+                    item.approvedCollegeCampusDesignationFilePath
+                  }
+                  approvedDepartmentDesignationFilePath={
+                    item.approvedDepartmentDesignationFilePath
+                  }
+                  coachAdviserCertificateFilePath={
+                    item.coachAdviserCertificateFilePath
+                  }
+                  approvedDesignationFilePath={item.approvedDesignationFilePath}
+                  listOfAdviseesFilePath={item.listOfAdviseesFilePath}
+                  workloadType="Strategic Function Workload"
                 />
               </TdStyle>
             </tr>

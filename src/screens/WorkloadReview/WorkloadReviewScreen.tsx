@@ -9,6 +9,7 @@ import TopNav from "../../components/TopNav";
 import {
   GetAllExtensionWorkload,
   GetAllResearchWorkload,
+  GetAllStrategicWorkload,
   GetAllTeachingWorkload
 } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
@@ -22,6 +23,7 @@ const WorkloadReviewScreen = () => {
   const [allTeachingWorkload, setAllTeachingWorkload] = useState<User[]>();
   const [allResearchWorkload, setAllResearchWorkload] = useState<User[]>();
   const [allExtensionWorkload, setAllExtensionWorkload] = useState<User[]>();
+  const [allStrategicWorkload, setAllStrategicWorkload] = useState<User[]>();
 
   useEffect(() => {
     (async () => {
@@ -31,6 +33,8 @@ const WorkloadReviewScreen = () => {
       setAllResearchWorkload(researchWorkLoads.data);
       const extensionWorkloads = await GetAllExtensionWorkload();
       setAllExtensionWorkload(extensionWorkloads.data);
+      const strategicWorkloads = await GetAllStrategicWorkload();
+      setAllStrategicWorkload(strategicWorkloads.data);
     })();
   }, []);
 
@@ -49,6 +53,7 @@ const WorkloadReviewScreen = () => {
             teachingWorkload={allTeachingWorkload}
             researchWorkload={allResearchWorkload}
             extensionWorkload={allExtensionWorkload}
+            allStrategicWorkload={allStrategicWorkload}
           />
         </WorkloadsContainer>
       </BodyContainer>
@@ -76,6 +81,8 @@ const FooterContainer = styled.div`
   margin-top: auto;
 `;
 
-const WorkloadsContainer = styled.div``;
+const WorkloadsContainer = styled.div`
+  margin-right: 20%;
+`;
 
 export default WorkloadReviewScreen;
