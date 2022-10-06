@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
+import Colors from "../../constants/Colors";
 import {
   GetAllExtensionWorkload,
   GetAllResearchWorkload,
@@ -19,13 +21,15 @@ const WorkloadReviewScreen = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // const allTeachingWorkload = await GetAllTeachingWorkload();
   const [allTeachingWorkload, setAllTeachingWorkload] = useState<User[]>();
   const [allResearchWorkload, setAllResearchWorkload] = useState<User[]>();
   const [allExtensionWorkload, setAllExtensionWorkload] = useState<User[]>();
   const [allStrategicWorkload, setAllStrategicWorkload] = useState<User[]>();
 
+  const [isDataLoading, setIsDataLoading] = useState(false);
+
   useEffect(() => {
+    setIsDataLoading(true);
     (async () => {
       const teachingWorkloads = await GetAllTeachingWorkload();
       setAllTeachingWorkload(teachingWorkloads.data);
@@ -35,6 +39,7 @@ const WorkloadReviewScreen = () => {
       setAllExtensionWorkload(extensionWorkloads.data);
       const strategicWorkloads = await GetAllStrategicWorkload();
       setAllStrategicWorkload(strategicWorkloads.data);
+      setIsDataLoading(false);
     })();
   }, []);
 
@@ -48,12 +53,14 @@ const WorkloadReviewScreen = () => {
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Workload Review" />
+
         <WorkloadsContainer>
           <Workload
             teachingWorkload={allTeachingWorkload}
             researchWorkload={allResearchWorkload}
             extensionWorkload={allExtensionWorkload}
             allStrategicWorkload={allStrategicWorkload}
+            isDataLoading={isDataLoading}
           />
         </WorkloadsContainer>
       </BodyContainer>

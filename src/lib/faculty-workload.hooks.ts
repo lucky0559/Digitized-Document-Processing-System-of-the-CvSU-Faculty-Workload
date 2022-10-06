@@ -207,19 +207,21 @@ export const GetAllTeachingWorkload = async () => {
 };
 
 export const GetAllResearchWorkload = async () => {
-  const { data } = await axios.get("teaching-workload/all-research-workload");
+  const { data } = await axios.get("research-workload/all-research-workload");
 
   return { data };
 };
 
 export const GetAllExtensionWorkload = async () => {
-  const { data } = await axios.get("teaching-workload/all-extension-workload");
+  const { data } = await axios.get("extension-workload/all-extension-workload");
 
   return { data };
 };
 
 export const GetAllStrategicWorkload = async () => {
-  const { data } = await axios.get("teaching-workload/all-strategic-workload");
+  const { data } = await axios.get(
+    "strategic-function-workload/all-strategic-workload"
+  );
 
   return { data };
 };

@@ -20,7 +20,7 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
           Faculty Workload
         </NavButtonText>
       </NavButtonContainer>
-      {userRole === "Department Chairperson" && (
+      {userRole !== "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/workload-review", { replace: true })}
