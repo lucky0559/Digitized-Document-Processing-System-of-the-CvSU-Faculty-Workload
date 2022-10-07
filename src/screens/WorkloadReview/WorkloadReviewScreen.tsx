@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
-import Colors from "../../constants/Colors";
 import {
-  GetAllExtensionWorkload,
-  GetAllResearchWorkload,
-  GetAllStrategicWorkload,
-  GetAllTeachingWorkload
+  GetAllPendingExtensionWorkloadDC,
+  GetAllPendingExtensionWorkloadDean,
+  GetAllPendingExtensionWorkloadOVPAA,
+  GetAllPendingResearchWorkloadDC,
+  GetAllPendingResearchWorkloadDean,
+  GetAllPendingResearchWorkloadOVPAA,
+  GetAllPendingStrategicWorkloadDC,
+  GetAllPendingStrategicWorkloadDean,
+  GetAllPendingStrategicWorkloadOVPAA,
+  GetAllPendingTeachingWorkloadDC,
+  GetAllPendingTeachingWorkloadDean,
+  GetAllPendingTeachingWorkloadOVPAA
 } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
 import Workload from "./Workload";
@@ -28,17 +33,40 @@ const WorkloadReviewScreen = () => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
 
+  const userRole = localStorage.getItem("role");
+
   useEffect(() => {
     setIsDataLoading(true);
     (async () => {
-      const teachingWorkloads = await GetAllTeachingWorkload();
-      setAllTeachingWorkload(teachingWorkloads.data);
-      const researchWorkLoads = await GetAllResearchWorkload();
-      setAllResearchWorkload(researchWorkLoads.data);
-      const extensionWorkloads = await GetAllExtensionWorkload();
-      setAllExtensionWorkload(extensionWorkloads.data);
-      const strategicWorkloads = await GetAllStrategicWorkload();
-      setAllStrategicWorkload(strategicWorkloads.data);
+      if (userRole === "Department Chairperson") {
+        const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
+        setAllTeachingWorkload(teachingWorkloads.data);
+        const researchWorkLoads = await GetAllPendingResearchWorkloadDC();
+        setAllResearchWorkload(researchWorkLoads.data);
+        const extensionWorkloads = await GetAllPendingExtensionWorkloadDC();
+        setAllExtensionWorkload(extensionWorkloads.data);
+        const strategicWorkloads = await GetAllPendingStrategicWorkloadDC();
+        setAllStrategicWorkload(strategicWorkloads.data);
+      } else if (userRole === "Dean") {
+        const teachingWorkloads = await GetAllPendingTeachingWorkloadDean();
+        setAllTeachingWorkload(teachingWorkloads.data);
+        const researchWorkLoads = await GetAllPendingResearchWorkloadDean();
+        setAllResearchWorkload(researchWorkLoads.data);
+        const extensionWorkloads = await GetAllPendingExtensionWorkloadDean();
+        setAllExtensionWorkload(extensionWorkloads.data);
+        const strategicWorkloads = await GetAllPendingStrategicWorkloadDean();
+        setAllStrategicWorkload(strategicWorkloads.data);
+      } else if (userRole === "OVPAA") {
+        const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
+        setAllTeachingWorkload(teachingWorkloads.data);
+        const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
+        setAllResearchWorkload(researchWorkLoads.data);
+        const extensionWorkloads = await GetAllPendingExtensionWorkloadOVPAA();
+        setAllExtensionWorkload(extensionWorkloads.data);
+        const strategicWorkloads = await GetAllPendingStrategicWorkloadOVPAA();
+        setAllStrategicWorkload(strategicWorkloads.data);
+      }
+
       setIsDataLoading(false);
     })();
   }, []);
