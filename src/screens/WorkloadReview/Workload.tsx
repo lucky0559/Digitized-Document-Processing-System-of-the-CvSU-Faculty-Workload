@@ -56,6 +56,7 @@ function Workload({
                 <TdStyle>
                   <CheckboxWorkload
                     twlFilePath={item.twlFilePath}
+                    workloadId={item.workloadId}
                     workloadType="Teaching Workload"
                   />
                 </TdStyle>
@@ -81,6 +82,7 @@ function Workload({
                     rwlFilePath1={item.rwlFilePath1}
                     rwlFilePath2={item.rwlFilePath2}
                     workloadType="Research Workload"
+                    workloadId={item.workloadId}
                   />
                 </TdStyle>
               </tr>
@@ -105,6 +107,7 @@ function Workload({
                     certificateFilePath={item.certificateFilePath}
                     summaryOfHoursFilePath={item.summaryOfHoursFilePath}
                     workloadType="Extension Workload"
+                    workloadId={item.workloadId}
                   />
                 </TdStyle>
               </tr>
@@ -142,6 +145,7 @@ function Workload({
                     }
                     listOfAdviseesFilePath={item.listOfAdviseesFilePath}
                     workloadType="Strategic Function Workload"
+                    workloadId={item.workloadId}
                   />
                 </TdStyle>
               </tr>

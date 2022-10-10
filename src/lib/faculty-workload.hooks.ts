@@ -295,3 +295,35 @@ export const GetAllPendingStrategicWorkloadOVPAA = async () => {
 
   return { data };
 };
+
+export const ApproveTeachingWorkload = async (workloadId?: string) => {
+  const { data } = await axios.patch(
+    `teaching-workload/${workloadId}/approve-workload`
+  );
+
+  return { data };
+};
+
+export const ApproveExtensionWorkload = async (workloadId?: string) => {
+  const { data } = await axios.patch(
+    `extension-workload/${workloadId}/approve-workload`
+  );
+
+  return { data };
+};
+
+export const ApproveResearchWorkload = async (workloadId?: string) => {
+  const { data } = await axios.patch(
+    `research-workload/${workloadId}/approve-workload`
+  );
+
+  return { data };
+};
+
+export const ApproveStrategicFunctionWorkload = async (workloadId?: string) => {
+  const { data } = await axios.patch(
+    `strategic-function-workload/${workloadId}/approve-workload`
+  );
+
+  return { data };
+};

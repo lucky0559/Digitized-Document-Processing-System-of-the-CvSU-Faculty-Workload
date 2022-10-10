@@ -1,7 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Colors from "../constants/Colors";
+import {
+  ApproveExtensionWorkload,
+  ApproveResearchWorkload,
+  ApproveStrategicFunctionWorkload,
+  ApproveTeachingWorkload
+} from "../lib/faculty-workload.hooks";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type CheckboxWorkloadProps = {
   twlFilePath?: string;
@@ -18,6 +26,7 @@ type CheckboxWorkloadProps = {
   coachAdviserCertificateFilePath?: string;
   approvedDesignationFilePath?: string;
   listOfAdviseesFilePath?: string;
+  workloadId?: string;
 };
 
 function CheckboxWorkload({
@@ -34,10 +43,32 @@ function CheckboxWorkload({
   approvedDepartmentDesignationFilePath,
   coachAdviserCertificateFilePath,
   approvedDesignationFilePath,
-  listOfAdviseesFilePath
+  listOfAdviseesFilePath,
+  workloadId
 }: CheckboxWorkloadProps) {
   const [isApproved, setIsApproved] = useState(false);
   const [remarks, setRemarks] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onApprove = async () => {
+    if (isApproved) {
+      setIsSubmitting(true);
+      if (workloadType === "Teaching Workload") {
+        await ApproveTeachingWorkload(workloadId);
+      } else if (workloadType === "Extension Workload") {
+        await ApproveExtensionWorkload(workloadId);
+      } else if (workloadType === "Research Workload") {
+        await ApproveResearchWorkload(workloadId);
+      } else if (workloadType === "Strategic Function Workload") {
+        await ApproveStrategicFunctionWorkload(workloadId);
+      }
+    } else {
+      return console.log(remarks);
+    }
+    window.location.reload();
+    setIsSubmitting(false);
+  };
+
   return (
     <Container>
       <CheckboxContainer
@@ -137,9 +168,9 @@ function CheckboxWorkload({
 
         <ButtonSubmit
           disabled={!isApproved && remarks.length === 0}
-          onClick={() => console.log(remarks)}
+          onClick={onApprove}
         >
-          Submit
+          {isSubmitting ? <LoadingSpinner /> : "Submit"}
         </ButtonSubmit>
       </ViewAndSubmitContainer>
     </Container>
@@ -211,6 +242,9 @@ const ButtonSubmit = styled.button<{ disabled: boolean }>`
     opacity: 0.7;
   }
   opacity: ${p => (p.disabled ? 0.7 : 1)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default CheckboxWorkload;

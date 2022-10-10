@@ -1,4 +1,5 @@
 export type User = {
+  workloadId?: string;
   username: string;
   email: string;
   surname: string;
