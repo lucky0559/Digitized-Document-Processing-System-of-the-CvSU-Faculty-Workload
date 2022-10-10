@@ -5,4 +5,5 @@ export type TeachingWorkLoadType = {
   twlFile?: File;
   twlFilePath?: string;
   totalTeachingWorkload?: number;
+  remarks?: string;
 };

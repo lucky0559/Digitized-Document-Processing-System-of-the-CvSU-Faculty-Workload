@@ -327,3 +327,47 @@ export const ApproveStrategicFunctionWorkload = async (workloadId?: string) => {
 
   return { data };
 };
+
+export const ExtensionRemarksWorkload = async (
+  workloadId?: string,
+  remarks?: string
+) => {
+  const { data } = await axios.patch(
+    `extension-workload/${workloadId}/${remarks}/remarks-workload`
+  );
+
+  return { data };
+};
+
+export const ResearchRemarksWorkload = async (
+  workloadId?: string,
+  remarks?: string
+) => {
+  const { data } = await axios.patch(
+    `research-workload/${workloadId}/${remarks}/remarks-workload`
+  );
+
+  return { data };
+};
+
+export const StrategicRemarksWorkload = async (
+  workloadId?: string,
+  remarks?: string
+) => {
+  const { data } = await axios.patch(
+    `strategic-function-workload/${workloadId}/${remarks}/remarks-workload`
+  );
+
+  return { data };
+};
+
+export const TeachingRemarksWorkload = async (
+  workloadId?: string,
+  remarks?: string
+) => {
+  const { data } = await axios.patch(
+    `teaching-workload/${workloadId}/${remarks}/remarks-workload`
+  );
+
+  return { data };
+};

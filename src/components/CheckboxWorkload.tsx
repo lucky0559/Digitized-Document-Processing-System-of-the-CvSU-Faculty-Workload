@@ -7,7 +7,11 @@ import {
   ApproveExtensionWorkload,
   ApproveResearchWorkload,
   ApproveStrategicFunctionWorkload,
-  ApproveTeachingWorkload
+  ApproveTeachingWorkload,
+  ExtensionRemarksWorkload,
+  ResearchRemarksWorkload,
+  StrategicRemarksWorkload,
+  TeachingRemarksWorkload
 } from "../lib/faculty-workload.hooks";
 import { LoadingSpinner } from "./LoadingSpinner";
 
@@ -51,8 +55,8 @@ function CheckboxWorkload({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onApprove = async () => {
+    setIsSubmitting(true);
     if (isApproved) {
-      setIsSubmitting(true);
       if (workloadType === "Teaching Workload") {
         await ApproveTeachingWorkload(workloadId);
       } else if (workloadType === "Extension Workload") {
@@ -63,7 +67,15 @@ function CheckboxWorkload({
         await ApproveStrategicFunctionWorkload(workloadId);
       }
     } else {
-      return console.log(remarks);
+      if (workloadType === "Teaching Workload") {
+        await TeachingRemarksWorkload(workloadId, remarks);
+      } else if (workloadType === "Extension Workload") {
+        await ExtensionRemarksWorkload(workloadId, remarks);
+      } else if (workloadType === "Research Workload") {
+        await ResearchRemarksWorkload(workloadId, remarks);
+      } else if (workloadType === "Strategic Function Workload") {
+        await StrategicRemarksWorkload(workloadId, remarks);
+      }
     }
     window.location.reload();
     setIsSubmitting(false);
@@ -167,7 +179,7 @@ function CheckboxWorkload({
         )}
 
         <ButtonSubmit
-          disabled={!isApproved && remarks.length === 0}
+          disabled={!isApproved && remarks.length < 3}
           onClick={onApprove}
         >
           {isSubmitting ? <LoadingSpinner /> : "Submit"}
