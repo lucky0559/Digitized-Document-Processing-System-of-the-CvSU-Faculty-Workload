@@ -31,6 +31,7 @@ type CheckboxWorkloadProps = {
   approvedDesignationFilePath?: string;
   listOfAdviseesFilePath?: string;
   workloadId?: string;
+  remarksText?: string;
 };
 
 function CheckboxWorkload({
@@ -48,11 +49,14 @@ function CheckboxWorkload({
   coachAdviserCertificateFilePath,
   approvedDesignationFilePath,
   listOfAdviseesFilePath,
-  workloadId
+  workloadId,
+  remarksText
 }: CheckboxWorkloadProps) {
   const [isApproved, setIsApproved] = useState(false);
   const [remarks, setRemarks] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const userRole = localStorage.getItem("role");
 
   const onApprove = async () => {
     setIsSubmitting(true);
@@ -83,17 +87,23 @@ function CheckboxWorkload({
 
   return (
     <Container>
-      <CheckboxContainer
-        isSelected={isApproved}
-        onClick={() => setIsApproved(!isApproved)}
-      />
-      <TdStyle>
-        <RemarksInput
-          disabled={isApproved}
-          placeholder="Remarks"
-          onChange={e => setRemarks(e.target.value)}
-          value={remarks}
+      {userRole === "faculty" ? null : (
+        <CheckboxContainer
+          isSelected={isApproved}
+          onClick={() => setIsApproved(!isApproved)}
         />
+      )}
+      <TdStyle>
+        {userRole === "faculty" ? (
+          <text>{remarksText}</text>
+        ) : (
+          <RemarksInput
+            disabled={isApproved}
+            placeholder="Remarks"
+            onChange={e => setRemarks(e.target.value)}
+            value={remarks}
+          />
+        )}
       </TdStyle>
       <ViewAndSubmitContainer>
         {workloadType === "Teaching Workload" ? (
@@ -177,13 +187,21 @@ function CheckboxWorkload({
             </div>
           </>
         )}
-
-        <ButtonSubmit
-          disabled={!isApproved && remarks.length < 3}
-          onClick={onApprove}
-        >
-          {isSubmitting ? <LoadingSpinner /> : "Submit"}
-        </ButtonSubmit>
+        {userRole === "faculty" ? (
+          <ButtonSubmit
+            disabled={!isApproved && remarks.length < 3}
+            onClick={onApprove}
+          >
+            {isSubmitting ? <LoadingSpinner /> : "Remove"}
+          </ButtonSubmit>
+        ) : (
+          <ButtonSubmit
+            disabled={!isApproved && remarks.length < 3}
+            onClick={onApprove}
+          >
+            {isSubmitting ? <LoadingSpinner /> : "Submit"}
+          </ButtonSubmit>
+        )}
       </ViewAndSubmitContainer>
     </Container>
   );

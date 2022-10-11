@@ -22,4 +22,5 @@ export type User = {
   coachAdviserCertificateFilePath?: string;
   approvedDesignationFilePath?: string;
   listOfAdviseesFilePath?: string;
+  remarks?: string;
 };

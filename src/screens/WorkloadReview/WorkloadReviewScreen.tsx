@@ -17,9 +17,11 @@ import {
   GetAllPendingStrategicWorkloadOVPAA,
   GetAllPendingTeachingWorkloadDC,
   GetAllPendingTeachingWorkloadDean,
-  GetAllPendingTeachingWorkloadOVPAA
+  GetAllPendingTeachingWorkloadOVPAA,
+  GetExtensionWorkloadRemarksFaculty
 } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
+import RemarksWorkload from "./RemarksWorkload";
 import Workload from "./Workload";
 
 const WorkloadReviewScreen = () => {
@@ -34,6 +36,7 @@ const WorkloadReviewScreen = () => {
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   const userRole = localStorage.getItem("role");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     setIsDataLoading(true);
@@ -65,6 +68,17 @@ const WorkloadReviewScreen = () => {
         setAllExtensionWorkload(extensionWorkloads.data);
         const strategicWorkloads = await GetAllPendingStrategicWorkloadOVPAA();
         setAllStrategicWorkload(strategicWorkloads.data);
+      } else if (userRole === "faculty") {
+        // const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
+        // setAllTeachingWorkload(teachingWorkloads.data);
+        // const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
+        // setAllResearchWorkload(researchWorkLoads.data);
+        const extensionWorkloads = await GetExtensionWorkloadRemarksFaculty(
+          userId!
+        );
+        setAllExtensionWorkload(extensionWorkloads.data);
+        // const strategicWorkloads = await GetAllPendingStrategicWorkloadOVPAA();
+        // setAllStrategicWorkload(strategicWorkloads.data);
       }
 
       setIsDataLoading(false);
@@ -83,13 +97,23 @@ const WorkloadReviewScreen = () => {
         <ScreenTitle title="Workload Review" />
 
         <WorkloadsContainer>
-          <Workload
-            teachingWorkload={allTeachingWorkload}
-            researchWorkload={allResearchWorkload}
-            extensionWorkload={allExtensionWorkload}
-            allStrategicWorkload={allStrategicWorkload}
-            isDataLoading={isDataLoading}
-          />
+          {userRole === "faculty" ? (
+            <RemarksWorkload
+              teachingWorkload={allTeachingWorkload}
+              researchWorkload={allResearchWorkload}
+              extensionWorkload={allExtensionWorkload}
+              allStrategicWorkload={allStrategicWorkload}
+              isDataLoading={isDataLoading}
+            />
+          ) : (
+            <Workload
+              teachingWorkload={allTeachingWorkload}
+              researchWorkload={allResearchWorkload}
+              extensionWorkload={allExtensionWorkload}
+              allStrategicWorkload={allStrategicWorkload}
+              isDataLoading={isDataLoading}
+            />
+          )}
         </WorkloadsContainer>
       </BodyContainer>
       <FooterContainer>
