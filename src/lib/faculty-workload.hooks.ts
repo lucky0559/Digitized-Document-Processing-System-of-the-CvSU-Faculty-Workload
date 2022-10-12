@@ -388,11 +388,17 @@ export const GetResearchWorkloadRemarksFaculty = async (userId: string) => {
   return { data };
 };
 
-export const GetStrategicWorkloadRemarksFaculty: any = async (
-  userId: string
-) => {
+export const GetStrategicWorkloadRemarksFaculty = async (userId: string) => {
   const { data } = await axios.get(
     `strategic-function-workload/${userId}/workload-remarks`
+  );
+
+  return { data };
+};
+
+export const GetTeachingWorkloadRemarksFaculty = async (userId: string) => {
+  const { data } = await axios.get(
+    `teaching-workload/${userId}/workload-remarks`
   );
 
   return { data };
