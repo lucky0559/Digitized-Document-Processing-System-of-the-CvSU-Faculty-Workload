@@ -148,6 +148,7 @@ function RemarksWorkload({
                     listOfAdviseesFilePath={item.listOfAdviseesFilePath}
                     workloadType="Strategic Function Workload"
                     workloadId={item.workloadId}
+                    remarksText={item.remarks}
                   />
                 </TdStyle>
               </tr>
