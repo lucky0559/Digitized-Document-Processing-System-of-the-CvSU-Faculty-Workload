@@ -83,6 +83,7 @@ function RemarksWorkload({
                     rwlFilePath2={item.rwlFilePath2}
                     workloadType="Research Workload"
                     workloadId={item.workloadId}
+                    remarksText={item.remarks}
                   />
                 </TdStyle>
               </tr>

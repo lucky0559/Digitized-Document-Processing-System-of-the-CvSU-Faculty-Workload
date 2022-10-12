@@ -379,3 +379,11 @@ export const GetExtensionWorkloadRemarksFaculty = async (userId: string) => {
 
   return { data };
 };
+
+export const GetResearchWorkloadRemarksFaculty = async (userId: string) => {
+  const { data } = await axios.get(
+    `research-workload/${userId}/workload-remarks`
+  );
+
+  return { data };
+};

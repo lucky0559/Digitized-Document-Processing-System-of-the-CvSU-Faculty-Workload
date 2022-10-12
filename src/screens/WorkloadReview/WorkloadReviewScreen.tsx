@@ -18,7 +18,8 @@ import {
   GetAllPendingTeachingWorkloadDC,
   GetAllPendingTeachingWorkloadDean,
   GetAllPendingTeachingWorkloadOVPAA,
-  GetExtensionWorkloadRemarksFaculty
+  GetExtensionWorkloadRemarksFaculty,
+  GetResearchWorkloadRemarksFaculty
 } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
 import RemarksWorkload from "./RemarksWorkload";
@@ -71,8 +72,10 @@ const WorkloadReviewScreen = () => {
       } else if (userRole === "faculty") {
         // const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
         // setAllTeachingWorkload(teachingWorkloads.data);
-        // const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
-        // setAllResearchWorkload(researchWorkLoads.data);
+        const researchWorkLoads = await GetResearchWorkloadRemarksFaculty(
+          userId!
+        );
+        setAllResearchWorkload(researchWorkLoads.data);
         const extensionWorkloads = await GetExtensionWorkloadRemarksFaculty(
           userId!
         );
