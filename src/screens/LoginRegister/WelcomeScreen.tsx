@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import TopNav from "../../components/TopNav";
@@ -7,6 +8,14 @@ import RegisterScreen from "./RegisterScreen";
 
 const WelcomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState("login");
+  const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userId) {
+      navigate("/faculty-workload", { replace: true });
+    }
+  }, []);
 
   return (
     <WelcomeScreenContainer>

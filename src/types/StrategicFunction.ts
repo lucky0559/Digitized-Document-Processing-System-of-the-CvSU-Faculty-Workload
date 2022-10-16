@@ -18,4 +18,5 @@ export type StrategicFunctionType = {
   listOfAdviseesFile?: File;
   listOfAdviseesFilePath?: string;
   sfwPoints?: number;
+  remarks?: string;
 };

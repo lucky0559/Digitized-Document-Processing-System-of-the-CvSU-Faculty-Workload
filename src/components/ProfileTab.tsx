@@ -12,6 +12,7 @@ const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
 
   const logoutHandler = () => {
     localStorage.removeItem("userId");
+    localStorage.removeItem("role");
     navigate("/");
   };
 

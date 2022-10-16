@@ -1,4 +1,5 @@
 export type User = {
+  workloadId?: string;
   username: string;
   email: string;
   surname: string;
@@ -8,4 +9,18 @@ export type User = {
   department: string;
   role?: string;
   academicRank: string;
+  twlFilePath?: string;
+  rwlFilePath?: string;
+  rwlFilePath1?: string;
+  rwlFilePath2?: string;
+  extensionActivityFilePath?: string;
+  certificateFilePath?: string;
+  summaryOfHoursFilePath?: string;
+  approvedUniversityDesignationFilePath?: string;
+  approvedCollegeCampusDesignationFilePath?: string;
+  approvedDepartmentDesignationFilePath?: string;
+  coachAdviserCertificateFilePath?: string;
+  approvedDesignationFilePath?: string;
+  listOfAdviseesFilePath?: string;
+  remarks?: string;
 };

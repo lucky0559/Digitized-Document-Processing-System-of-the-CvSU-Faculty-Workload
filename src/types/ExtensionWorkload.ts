@@ -9,4 +9,5 @@ export type ExtensionWorkloadType = {
   summaryOfHoursFile?: File;
   summaryOfHoursFilePath?: string;
   ewlPoints?: number;
+  remarks?: string;
 };
