@@ -32,7 +32,12 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
       )}
 
       <NavButtonContainer>
-        <NavButtonText isActive={false}>Reports</NavButtonText>
+        <NavButtonText
+          isActive={false}
+          onClick={() => navigate("/reports", { replace: true })}
+        >
+          Reports
+        </NavButtonText>
       </NavButtonContainer>
     </Container>
   );
