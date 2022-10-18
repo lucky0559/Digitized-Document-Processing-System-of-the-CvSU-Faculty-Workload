@@ -1,17 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-const ReportsLists = () => {
+import { User } from "../../types/User";
+
+type ReportListsProps = {
+  usersReports?: User[];
+};
+
+const ReportsLists = ({ usersReports }: ReportListsProps) => {
+  console.log(usersReports);
   return (
     <Container>
       <Table>
         <TrStyled>
           <ThStyled rowSpan={2}>Name of Faculty</ThStyled>
           <ThStyled rowSpan={2}>Rank</ThStyled>
-          <ThStyled>
-            <TrStyled>
-              <ThStyled colSpan={5}>Evaluated Workload</ThStyled>
-            </TrStyled>
-          </ThStyled>
+          <ThStyled colSpan={5}>Evaluated Workload</ThStyled>
         </TrStyled>
         <TrStyled>
           <ThStyled>TWL</ThStyled>
@@ -20,15 +23,24 @@ const ReportsLists = () => {
           <ThStyled>SF</ThStyled>
           <ThStyled>TECU</ThStyled>
         </TrStyled>
-        {/* <TrStyled>
-          <ThStyled>1</ThStyled>
-          <ThStyled>2</ThStyled>
-          <ThStyled>3</ThStyled>
-          <ThStyled>4</ThStyled>
-          <ThStyled>5</ThStyled>
-          <ThStyled>6</ThStyled>
-          <ThStyled>7</ThStyled>
-        </TrStyled> */}
+        {usersReports?.map(item => {
+          return (
+            <TrStyled>
+              <TdStyled>{item.firstName}</TdStyled>
+              <TdStyled>{item.academicRank}</TdStyled>
+              <TdStyled>{item.twlPoints}</TdStyled>
+              <TdStyled>{item.rwlPoints}</TdStyled>
+              <TdStyled>{item.ewlPoints}</TdStyled>
+              <TdStyled>{item.sfwlPoints}</TdStyled>
+              <TdStyled>
+                {+item.twlPoints! +
+                  +item.rwlPoints! +
+                  +item.ewlPoints! +
+                  +item.sfwlPoints!}
+              </TdStyled>
+            </TrStyled>
+          );
+        })}
       </Table>
     </Container>
   );
@@ -45,10 +57,15 @@ const ThStyled = styled.th`
 const Table = styled.table`
   border: 1px solid black;
   border-collapse: collapse;
+  width: 100%;
 `;
 
-const TrStyled = styled.tr`
+const TrStyled = styled.tr``;
+
+const TdStyled = styled.td`
+  border: 1px solid black;
   border-collapse: collapse;
+  text-align: center;
 `;
 
 export default ReportsLists;

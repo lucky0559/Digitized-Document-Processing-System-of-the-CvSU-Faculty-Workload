@@ -5,13 +5,21 @@ import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
+import { GetTotalWorkloadPoints } from "../../lib/faculty-workload.hooks";
+import { User } from "../../types/User";
 import ReportsLists from "./ReportsLists";
 
 const ReportsScreen = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [usersReports, setUsersReports] = useState<User[]>();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    (async () => {
+      const reports = await GetTotalWorkloadPoints();
+      setUsersReports(reports.data);
+    })();
+  }, []);
 
   return (
     <Container>
@@ -23,7 +31,7 @@ const ReportsScreen = () => {
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Reports" />
-        <ReportsLists />
+        <ReportsLists usersReports={usersReports} />
       </BodyContainer>
       <FooterContainer>
         <Footer />

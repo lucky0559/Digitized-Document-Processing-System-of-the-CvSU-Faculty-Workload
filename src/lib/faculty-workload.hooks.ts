@@ -403,3 +403,9 @@ export const GetTeachingWorkloadRemarksFaculty = async (userId: string) => {
 
   return { data };
 };
+
+export const GetTotalWorkloadPoints = async () => {
+  const { data } = await axios.get(`extension-workload/workloads-approved`);
+
+  return { data };
+};
