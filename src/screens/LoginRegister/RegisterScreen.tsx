@@ -11,6 +11,7 @@ import Dropdown from "../../components/Dropdown";
 import { DROPDOWN_LISTS, ErrorMessages } from "../../constants/Strings";
 import { Default } from "../../constants/Defaults";
 import { Register } from "../../lib/user.hooks";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 type RegisterScreenProps = {
   onLoginButtonClick?: () => void;
@@ -76,6 +77,8 @@ export default function RegisterScreen({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
   const isDesktopTablet = window.innerWidth > 801;
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const campusHandler = (campusValue: string) => {
     setCampus(campusValue);
@@ -134,15 +137,17 @@ export default function RegisterScreen({
             <FormStyled>
               <FieldGroup>
                 <Label>Username</Label>
-                <TextInput
-                  value={values.username}
-                  type="text"
-                  onChange={handleChange}
-                  className={
-                    touched.username && errors.username ? "is-invalid" : ""
-                  }
-                  name="username"
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.username}
+                    type="text"
+                    onChange={handleChange}
+                    className={
+                      touched.username && errors.username ? "is-invalid" : ""
+                    }
+                    name="username"
+                  />
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="username"
@@ -156,13 +161,17 @@ export default function RegisterScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>CvSU Email</Label>
-                <TextInput
-                  value={values.email}
-                  type="email"
-                  onChange={handleChange}
-                  className={touched.email && errors.email ? "is-invalid" : ""}
-                  name="email"
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.email}
+                    type="email"
+                    onChange={handleChange}
+                    className={
+                      touched.email && errors.email ? "is-invalid" : ""
+                    }
+                    name="email"
+                  />
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="email"
@@ -176,15 +185,28 @@ export default function RegisterScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>Password</Label>
-                <TextInput
-                  value={values.password}
-                  type="password"
-                  onChange={handleChange}
-                  className={
-                    touched.password && errors.password ? "is-invalid" : ""
-                  }
-                  name="password"
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.password}
+                    type={showPassword ? "text" : "password"}
+                    onChange={handleChange}
+                    className={
+                      touched.password && errors.password ? "is-invalid" : ""
+                    }
+                    name="password"
+                  />
+                  {showPassword ? (
+                    <AiFillEye
+                      size={20}
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size={20}
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  )}
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="password"
@@ -193,17 +215,34 @@ export default function RegisterScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>Confirm Password</Label>
-                <TextInput
-                  value={values.confirmPassword}
-                  type="password"
-                  onChange={handleChange}
-                  className={
-                    touched.confirmPassword && errors.confirmPassword
-                      ? "is-invalid"
-                      : ""
-                  }
-                  name="confirmPassword"
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.confirmPassword}
+                    type={showConfirmPassword ? "text" : "password"}
+                    onChange={handleChange}
+                    className={
+                      touched.confirmPassword && errors.confirmPassword
+                        ? "is-invalid"
+                        : ""
+                    }
+                    name="confirmPassword"
+                  />
+                  {showConfirmPassword ? (
+                    <AiFillEye
+                      size={20}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size={20}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    />
+                  )}
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="confirmPassword"
@@ -212,15 +251,17 @@ export default function RegisterScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>Surname</Label>
-                <TextInput
-                  value={values.surname}
-                  type="text"
-                  onChange={handleChange}
-                  className={
-                    touched.surname && errors.surname ? "is-invalid" : ""
-                  }
-                  name="surname"
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.surname}
+                    type="text"
+                    onChange={handleChange}
+                    className={
+                      touched.surname && errors.surname ? "is-invalid" : ""
+                    }
+                    name="surname"
+                  />
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="surname"
@@ -229,15 +270,17 @@ export default function RegisterScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>First Name</Label>
-                <TextInput
-                  value={values.firstName}
-                  type="text"
-                  onChange={handleChange}
-                  className={
-                    touched.firstName && errors.firstName ? "is-invalid" : ""
-                  }
-                  name="firstName"
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.firstName}
+                    type="text"
+                    onChange={handleChange}
+                    className={
+                      touched.firstName && errors.firstName ? "is-invalid" : ""
+                    }
+                    name="firstName"
+                  />
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="firstName"
@@ -246,18 +289,20 @@ export default function RegisterScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>Middle Initial</Label>
-                <TextInput
-                  value={values.middleInitial}
-                  type="text"
-                  onChange={handleChange}
-                  className={
-                    touched.middleInitial && errors.middleInitial
-                      ? "is-invalid"
-                      : ""
-                  }
-                  name="middleInitial"
-                  maxLength={1}
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    value={values.middleInitial}
+                    type="text"
+                    onChange={handleChange}
+                    className={
+                      touched.middleInitial && errors.middleInitial
+                        ? "is-invalid"
+                        : ""
+                    }
+                    name="middleInitial"
+                    maxLength={1}
+                  />
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="middleInitial"
@@ -387,8 +432,12 @@ const ErrorMessageStyle = styled(ErrorMessage)`
 const TextInput = styled.input`
   width: 100%;
   background-color: ${Colors.textFieldBackground};
-  border-width: 1px;
   font-family: HurmeGeometricSans3;
+  ::-ms-reveal {
+    display: none;
+  }
+  border: none;
+  outline: none;
 `;
 
 const FieldGroup = styled.div`
@@ -414,4 +463,12 @@ const SuccessMessageText = styled.text`
   align-self: flex-start;
   font-weight: 400;
   color: green;
+`;
+
+const FieldIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ececec;
+  padding: 0 5px 0 0;
 `;
