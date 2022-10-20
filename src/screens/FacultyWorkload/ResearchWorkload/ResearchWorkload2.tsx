@@ -88,7 +88,7 @@ const WorkloadTextContainer = styled.div`
 `;
 
 const WorkloadText = styled.text`
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 600;
   line-height: 20px;
   font-family: HurmeGeometricSans3;
@@ -115,7 +115,7 @@ const UploadContainer = styled.div`
 
 const UploadTextDescription = styled.label`
   font-weight: 400;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
 `;
@@ -134,7 +134,7 @@ const AddStudyContainer = styled.div`
 
 const AddStudyText = styled.text`
   font-family: HurmeGeometricSans3SemiBold;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 18px;
   text-decoration: underline;
   cursor: pointer;

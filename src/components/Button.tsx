@@ -72,7 +72,7 @@ const ButtonContainer = styled.button<{
 
 const ButtonText = styled.text<{ textColor?: string; disabled?: boolean }>`
   color: ${p => (p.textColor ? p.textColor : Colors.white)};
-  font-size: 20px;
+  font-size: 23px;
   font-family: HurmeGeometricSans3;
   font-weight: 600;
 `;

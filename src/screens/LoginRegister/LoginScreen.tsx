@@ -202,7 +202,7 @@ const ForgotPasswordContainer = styled.div`
 `;
 
 const ForgotPasswordText = styled.text`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   font-family: HurmeGeometricSans3SemiBold;
   text-decoration-line: underline;
@@ -229,7 +229,7 @@ const FormStyled = styled(Form)`
 `;
 
 const ErrorMessageStyle = styled(ErrorMessage)`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
   font-weight: 400;
@@ -255,7 +255,7 @@ const FieldGroup = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3;
   align-self: flex-start;
   font-weight: 400;
@@ -268,7 +268,7 @@ const ErrorMessageContainer = styled.div`
 `;
 
 const ErrorMessageText = styled.text`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
   font-weight: 400;

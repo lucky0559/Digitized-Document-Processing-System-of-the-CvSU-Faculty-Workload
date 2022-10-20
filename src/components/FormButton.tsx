@@ -38,7 +38,7 @@ const Container = styled.div`
 
 const ButtonText = styled.text`
   color: ${Colors.primary};
-  font-size: 20px;
+  font-size: 23px;
   font-family: HurmeGeometricSans3;
   font-weight: 600;
 `;

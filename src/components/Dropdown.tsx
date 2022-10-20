@@ -60,7 +60,7 @@ const Select = styled.select`
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3;
   font-weight: 400;
 `;

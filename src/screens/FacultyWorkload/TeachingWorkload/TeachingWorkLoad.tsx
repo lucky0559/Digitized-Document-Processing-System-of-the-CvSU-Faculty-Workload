@@ -98,7 +98,7 @@ const WorkloadTextContainer = styled.div`
 `;
 
 const WorkloadText = styled.text`
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 600;
   line-height: 20px;
   font-family: HurmeGeometricSans3;
@@ -120,7 +120,7 @@ const TextInputContainer = styled.div`
 
 const Label = styled.label`
   font-weight: 400;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
 `;

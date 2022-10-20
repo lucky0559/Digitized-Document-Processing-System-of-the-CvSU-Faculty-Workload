@@ -70,7 +70,7 @@ const NavButtonContainer = styled.div`
 const NavButtonText = styled.text<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 19px;
   line-height: 20px;
   color: ${Colors.white};
 `;

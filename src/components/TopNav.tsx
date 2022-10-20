@@ -59,7 +59,7 @@ const CvsuLogo = styled.img`
 `;
 
 const TopNavTitleText = styled.text`
-  font-size: 12px;
+  font-size: 15px;
   margin-left: 20px;
   color: ${Colors.primaryHeaderText};
   font-family: HurmeGeometricSans3Bold;

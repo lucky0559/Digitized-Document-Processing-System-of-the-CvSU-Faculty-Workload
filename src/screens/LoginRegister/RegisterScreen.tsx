@@ -415,14 +415,14 @@ const FormStyled = styled(Form)`
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3;
   align-self: flex-start;
   font-weight: 400;
 `;
 
 const ErrorMessageStyle = styled(ErrorMessage)`
-  font-size: 12px;
+  font-size: 15px;
   width: 180px;
   text-transform: uppercase;
   font-family: HurmeGeometricSans3SemiBold;
@@ -450,7 +450,7 @@ const FieldGroup = styled.div`
 const ErrorMessageContainer = styled.div``;
 
 const ErrorMessageText = styled.text`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
   font-weight: 400;
@@ -458,7 +458,7 @@ const ErrorMessageText = styled.text`
 `;
 
 const SuccessMessageText = styled.text`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
   font-weight: 400;
