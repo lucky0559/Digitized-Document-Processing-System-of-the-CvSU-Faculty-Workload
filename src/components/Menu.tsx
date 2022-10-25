@@ -10,21 +10,46 @@ type MenuProps = {
 const Menu = ({ isMenuOpen }: MenuProps) => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
+  const location = window.location.pathname;
   return (
     <Container isMenuOpen={isMenuOpen}>
       <NavButtonContainer>
         <NavButtonText
+          isActive={location === "/teaching-workload"}
+          onClick={() => navigate("/teaching-workload", { replace: true })}
+        >
+          Teaching Workload
+        </NavButtonText>
+      </NavButtonContainer>
+      {/* <NavButtonContainer>
+        <NavButtonText
           isActive={true}
           onClick={() => navigate("/faculty-workload", { replace: true })}
         >
-          Faculty Workload
+          Research Workload
         </NavButtonText>
-      </NavButtonContainer>
+      </NavButtonContainer> */}
+      {/* <NavButtonContainer>
+        <NavButtonText
+          isActive={true}
+          onClick={() => navigate("/faculty-workload", { replace: true })}
+        >
+          Extension Workload
+        </NavButtonText>
+      </NavButtonContainer> */}
+      {/* <NavButtonContainer>
+        <NavButtonText
+          isActive={true}
+          onClick={() => navigate("/faculty-workload", { replace: true })}
+        >
+          Strategic Function Workload
+        </NavButtonText>
+      </NavButtonContainer> */}
       {userRole !== "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/workload-review", { replace: true })}
-            isActive={false}
+            isActive={location === "/workload-review"}
           >
             Workload Review
           </NavButtonText>
@@ -33,7 +58,7 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
 
       <NavButtonContainer>
         <NavButtonText
-          isActive={false}
+          isActive={location === "/reports"}
           onClick={() => navigate("/reports", { replace: true })}
         >
           Reports

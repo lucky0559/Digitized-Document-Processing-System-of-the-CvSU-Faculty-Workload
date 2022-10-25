@@ -651,7 +651,7 @@ const FacultyWorkloadScreen = () => {
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
-        {steps === 1 && (
+        {/* {steps === 1 && (
           <TeachingWorkLoad
             teachingWorkLoadHandler={teachingWorkLoadHandler}
             numberOfPreparationsHandler={numberOfPreparationsHandler}
@@ -663,7 +663,7 @@ const FacultyWorkloadScreen = () => {
             totalNoOfStudents={totalNoOfStudents}
             twlFileName={teachingWorkLoad?.twlFile?.name}
           />
-        )}
+        )} */}
         {steps === 2 && (
           <ResearchWorkload
             researchWorkLoadHandler={researchWorkLoadHandler}
