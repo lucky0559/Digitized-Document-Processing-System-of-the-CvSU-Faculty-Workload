@@ -16,6 +16,8 @@ type ResearchWorkload1Props = {
   typeOfStudy: string;
   designationStudy?: string;
   rwlFileName?: string;
+  rwlFileNameDisplay?: string;
+  isSubmitting: boolean;
 };
 
 const ResearchWorkload1 = ({
@@ -26,7 +28,8 @@ const ResearchWorkload1 = ({
   rwlFileHandler,
   typeOfStudy,
   designationStudy,
-  rwlFileName
+  rwlFileName,
+  isSubmitting
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -93,8 +96,14 @@ const ResearchWorkload1 = ({
         </ButtonContainer>
         <ButtonContainer>
           <FormButton
-            text="Next"
+            text="Submit"
             onClicked={researchWorkLoadHandler1}
+            disabled={
+              typeOfStudy.length <= 0 ||
+              designationStudy?.length! <= 0 ||
+              rwlFileName?.length! <= 0
+            }
+            isSubmitting={isSubmitting}
           ></FormButton>
         </ButtonContainer>
       </Buttons>

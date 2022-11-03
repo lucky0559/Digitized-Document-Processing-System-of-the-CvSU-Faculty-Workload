@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FacultyWorkloadScreen from "./screens/FacultyWorkload/FacultyWorkloadScreen";
+import ResearchWorkload from "./screens/FacultyWorkload/ResearchWorkload/ResearchWorkload";
 import TeachingWorkLoad from "./screens/FacultyWorkload/TeachingWorkload/TeachingWorkLoad";
 import WelcomeScreen from "./screens/LoginRegister/WelcomeScreen";
 import Profile from "./screens/Profile/Profile";
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomeScreen />} />
         <Route path="/teaching-workload" element={<TeachingWorkLoad />} />
+        <Route path="/research-workload" element={<ResearchWorkload />} />
         <Route path="verify/:token" element={<VerifyScreen />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/workload-review" element={<WorkloadReviewScreen />} />

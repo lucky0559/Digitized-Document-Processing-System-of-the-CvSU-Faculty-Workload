@@ -21,14 +21,14 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
           Teaching Workload
         </NavButtonText>
       </NavButtonContainer>
-      {/* <NavButtonContainer>
+      <NavButtonContainer>
         <NavButtonText
-          isActive={true}
-          onClick={() => navigate("/faculty-workload", { replace: true })}
+          isActive={location === "/research-workload"}
+          onClick={() => navigate("/research-workload", { replace: true })}
         >
           Research Workload
         </NavButtonText>
-      </NavButtonContainer> */}
+      </NavButtonContainer>
       {/* <NavButtonContainer>
         <NavButtonText
           isActive={true}

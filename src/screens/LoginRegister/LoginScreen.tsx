@@ -52,7 +52,7 @@ export default function LoginScreen({
         setIsSubmitting(false);
         localStorage.setItem("userId", res.data.id);
         localStorage.setItem("role", res.data.role);
-        navigate("faculty-workload", { replace: true });
+        navigate("teaching-workload", { replace: true });
         setErrorMessage("");
       })
       .catch(error => {

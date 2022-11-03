@@ -27,7 +27,7 @@ const TeachingWorkLoad = () => {
   const [totalNoOfStudents, setTotalNoOfStudents] = useState("");
   const [twlFile, setTwlFile] = useState<File>();
 
-  const teachingWorkLoadHandler = async () => {
+  const onSubmit = async () => {
     setTeachingWorkLoad({
       numberOfPreparations,
       contactHours,
@@ -133,7 +133,7 @@ const TeachingWorkLoad = () => {
           <ButtonContainer>
             <FormButton
               text="Submit"
-              onClicked={teachingWorkLoadHandler}
+              onClicked={onSubmit}
               isSubmitting={isSubmitting}
               disabled={
                 numberOfPreparations.length <= 0 ||

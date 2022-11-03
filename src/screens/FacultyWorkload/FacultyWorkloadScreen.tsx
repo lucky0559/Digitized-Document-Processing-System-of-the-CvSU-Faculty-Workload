@@ -28,10 +28,10 @@ import StrategicFunction3 from "./StrategicFunction/StrategicFunction3";
 import TeachingWorkLoad from "./TeachingWorkload/TeachingWorkLoad";
 
 const FacultyWorkloadScreen = () => {
-  const [teachingWorkLoad, setTeachingWorkLoad] =
-    useState<TeachingWorkLoadType>();
-  const [researchWorkLoad, setResearchWorkLoad] =
-    useState<ResearchWorkLoadType>();
+  // const [teachingWorkLoad, setTeachingWorkLoad] =
+  //   useState<TeachingWorkLoadType>();
+  // const [researchWorkLoad, setResearchWorkLoad] =
+  //   useState<ResearchWorkLoadType>();
   const [extensionWorkload, setExtensionWorkload] =
     useState<ExtensionWorkloadType>();
   const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
@@ -44,26 +44,26 @@ const FacultyWorkloadScreen = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   //TWL
-  const [numberOfPreparations, setNumberOfPreparations] = useState("");
-  const [contactHours, setContactHours] = useState("");
-  const [totalNoOfStudents, setTotalNoOfStudents] = useState("");
-  const [twlFile, setTwlFile] = useState<File>();
+  // const [numberOfPreparations, setNumberOfPreparations] = useState("");
+  // const [contactHours, setContactHours] = useState("");
+  // const [totalNoOfStudents, setTotalNoOfStudents] = useState("");
+  // const [twlFile, setTwlFile] = useState<File>();
 
   //RWL
-  const [titleOfStudy, setTitleOfStudy] = useState("");
-  const [fundingOfStudy, setFundingOfStudy] = useState<string | undefined>("");
-  const [fundDisplay, setFundDisplay] = useState<string | undefined>("");
-  const [typeOfStudy, setTypeOfStudy] = useState("");
-  const [designationStudy, setDesignationStudy] = useState<string | undefined>(
-    ""
-  );
-  const [disseminatedResearch, setDisseminatedResearch] = useState<
-    string | undefined
-  >("");
-  const [rwlFile, setRwlFile] = useState<File>();
-  const [rwlFile1, setRwlFile1] = useState<File>();
-  const [rwlFile2, setRwlFile2] = useState<File>();
-  const [fundGenerated, setFundGenerated] = useState<string | undefined>("");
+  // const [titleOfStudy, setTitleOfStudy] = useState("");
+  // const [fundingOfStudy, setFundingOfStudy] = useState<string | undefined>("");
+  // const [fundDisplay, setFundDisplay] = useState<string | undefined>("");
+  // const [typeOfStudy, setTypeOfStudy] = useState("");
+  // const [designationStudy, setDesignationStudy] = useState<string | undefined>(
+  //   ""
+  // );
+  // const [disseminatedResearch, setDisseminatedResearch] = useState<
+  //   string | undefined
+  // >("");
+  // const [rwlFile, setRwlFile] = useState<File>();
+  // const [rwlFile1, setRwlFile1] = useState<File>();
+  // const [rwlFile2, setRwlFile2] = useState<File>();
+  // const [fundGenerated, setFundGenerated] = useState<string | undefined>("");
 
   //EWL
   const [designationExtensionActivity, setDesignationExtensionActivity] =
@@ -113,77 +113,77 @@ const FacultyWorkloadScreen = () => {
   const [steps, setSteps] = useState(1);
 
   //TWL
-  const teachingWorkLoadHandler = async () => {
-    setTeachingWorkLoad({
-      numberOfPreparations,
-      contactHours,
-      totalNoOfStudents,
-      twlFile
-    });
-    setSteps(steps + 1);
-  };
+  // const teachingWorkLoadHandler = async () => {
+  //   setTeachingWorkLoad({
+  //     numberOfPreparations,
+  //     contactHours,
+  //     totalNoOfStudents,
+  //     twlFile
+  //   });
+  //   setSteps(steps + 1);
+  // };
 
-  const numberOfPreparationsHandler = (value: string) => {
-    setNumberOfPreparations(value);
-  };
+  // const numberOfPreparationsHandler = (value: string) => {
+  //   setNumberOfPreparations(value);
+  // };
 
-  const contactHoursHandler = (value: string) => {
-    setContactHours(value);
-  };
+  // const contactHoursHandler = (value: string) => {
+  //   setContactHours(value);
+  // };
 
-  const totalNoOfStudentsHandler = (value: string) => {
-    setTotalNoOfStudents(value);
-  };
+  // const totalNoOfStudentsHandler = (value: string) => {
+  //   setTotalNoOfStudents(value);
+  // };
 
-  const twlFileHandler = (value?: File) => {
-    setTwlFile(value);
-  };
+  // const twlFileHandler = (value?: File) => {
+  //   setTwlFile(value);
+  // };
 
   //RWL
-  const researchWorkLoadHandler = () => {
-    if (fundingOfStudy) {
-      if (fundingOfStudy?.length > 0) {
-        setResearchWorkLoad({
-          ...researchWorkLoad,
-          titleOfStudy,
-          fundingOfStudy
-        });
-      }
-    }
-    if (fundingOfStudy === "CvSU Research Grant") {
-      setSteps(3);
-    } else if (fundingOfStudy === "Externally Funded") {
-      setSteps(4);
-    } else if (fundDisplay === "Externally Funded") {
-      setSteps(4);
-    } else if (fundDisplay === "CvSU Research Grant") {
-      setSteps(3);
-    } else {
-      setSteps(6);
-    }
-  };
+  // const researchWorkLoadHandler = () => {
+  //   if (fundingOfStudy) {
+  //     if (fundingOfStudy?.length > 0) {
+  //       setResearchWorkLoad({
+  //         ...researchWorkLoad,
+  //         titleOfStudy,
+  //         fundingOfStudy
+  //       });
+  //     }
+  //   }
+  //   if (fundingOfStudy === "CvSU Research Grant") {
+  //     setSteps(3);
+  //   } else if (fundingOfStudy === "Externally Funded") {
+  //     setSteps(4);
+  //   } else if (fundDisplay === "Externally Funded") {
+  //     setSteps(4);
+  //   } else if (fundDisplay === "CvSU Research Grant") {
+  //     setSteps(3);
+  //   } else {
+  //     setSteps(6);
+  //   }
+  // };
 
-  const titleOfStudyHandler = (value: string) => {
-    setTitleOfStudy(value);
-  };
+  // const titleOfStudyHandler = (value: string) => {
+  //   setTitleOfStudy(value);
+  // };
 
-  const fundingOfStudyHandler = (value?: string) => {
-    setFundingOfStudy(value);
-  };
+  // const fundingOfStudyHandler = (value?: string) => {
+  //   setFundingOfStudy(value);
+  // };
 
-  useEffect(() => {
-    if (fundDisplay !== researchWorkLoad?.fundingOfStudy) {
-      setResearchWorkLoad({
-        ...researchWorkLoad,
-        fundingOfStudy: fundDisplay
-      });
-    }
-    if (researchWorkLoad?.fundingOfStudy) {
-      setFundDisplay(researchWorkLoad?.fundingOfStudy);
-    } else {
-      setFundDisplay(fundingOfStudy);
-    }
-  }, [fundingOfStudy]);
+  // useEffect(() => {
+  //   if (fundDisplay !== researchWorkLoad?.fundingOfStudy) {
+  //     setResearchWorkLoad({
+  //       ...researchWorkLoad,
+  //       fundingOfStudy: fundDisplay
+  //     });
+  //   }
+  //   if (researchWorkLoad?.fundingOfStudy) {
+  //     setFundDisplay(researchWorkLoad?.fundingOfStudy);
+  //   } else {
+  //     setFundDisplay(fundingOfStudy);
+  //   }
+  // }, [fundingOfStudy]);
 
   const backHandler = () => {
     if (steps > 1) {
@@ -192,80 +192,80 @@ const FacultyWorkloadScreen = () => {
   };
 
   //RWL1
-  const researchWorkLoadHandler1 = () => {
-    if (designationStudy) {
-      setResearchWorkLoad({
-        ...researchWorkLoad,
-        typeOfStudy,
-        designationStudy,
-        rwlFile
-      });
-    } else {
-      setResearchWorkLoad({
-        typeOfStudy,
-        designationStudy,
-        rwlFile,
-        ...researchWorkLoad
-      });
-    }
-    setSteps(6);
-  };
+  // const researchWorkLoadHandler1 = () => {
+  //   if (designationStudy) {
+  //     setResearchWorkLoad({
+  //       ...researchWorkLoad,
+  //       typeOfStudy,
+  //       designationStudy,
+  //       rwlFile
+  //     });
+  //   } else {
+  //     setResearchWorkLoad({
+  //       typeOfStudy,
+  //       designationStudy,
+  //       rwlFile,
+  //       ...researchWorkLoad
+  //     });
+  //   }
+  //   setSteps(6);
+  // };
 
-  const typeOfStudyHandler = (value: string) => {
-    setTypeOfStudy(value);
-  };
+  // const typeOfStudyHandler = (value: string) => {
+  //   setTypeOfStudy(value);
+  // };
 
-  const designationStudyHandler = (value?: string) => {
-    setDesignationStudy(value);
-  };
+  // const designationStudyHandler = (value?: string) => {
+  //   setDesignationStudy(value);
+  // };
 
-  const rwlFileHandler = (value?: File) => {
-    setRwlFile(value);
-  };
+  // const rwlFileHandler = (value?: File) => {
+  //   setRwlFile(value);
+  // };
 
   //RWL2
-  const researchWorkLoadHandler2 = () => {
-    if (fundGenerated) {
-      setResearchWorkLoad({
-        ...researchWorkLoad,
-        fundGenerated,
-        rwlFile1
-      });
-    } else {
-      setResearchWorkLoad({
-        fundGenerated,
-        rwlFile1,
-        ...researchWorkLoad
-      });
-    }
-    setSteps(steps + 1);
-  };
+  // const researchWorkLoadHandler2 = () => {
+  //   if (fundGenerated) {
+  //     setResearchWorkLoad({
+  //       ...researchWorkLoad,
+  //       fundGenerated,
+  //       rwlFile1
+  //     });
+  //   } else {
+  //     setResearchWorkLoad({
+  //       fundGenerated,
+  //       rwlFile1,
+  //       ...researchWorkLoad
+  //     });
+  //   }
+  //   setSteps(steps + 1);
+  // };
 
-  const fundGeneratedHandler = (value?: string) => {
-    setFundGenerated(value);
-  };
+  // const fundGeneratedHandler = (value?: string) => {
+  //   setFundGenerated(value);
+  // };
 
-  const rwlFile1Handler = (value?: File) => {
-    setRwlFile1(value);
-  };
+  // const rwlFile1Handler = (value?: File) => {
+  //   setRwlFile1(value);
+  // };
 
   //RWL3
-  const researchWorkLoadHandler3 = () => {
-    setResearchWorkLoad({
-      ...researchWorkLoad,
-      disseminatedResearch,
-      rwlFile2
-    });
-    setSteps(steps + 1);
-  };
+  // const researchWorkLoadHandler3 = () => {
+  //   setResearchWorkLoad({
+  //     ...researchWorkLoad,
+  //     disseminatedResearch,
+  //     rwlFile2
+  //   });
+  //   setSteps(steps + 1);
+  // };
 
-  const disseminatedResearchHandler = (value?: string) => {
-    setDisseminatedResearch(value);
-  };
+  // const disseminatedResearchHandler = (value?: string) => {
+  //   setDisseminatedResearch(value);
+  // };
 
-  const rwlFile2Handler = (value?: File) => {
-    setRwlFile2(value);
-  };
+  // const rwlFile2Handler = (value?: File) => {
+  //   setRwlFile2(value);
+  // };
 
   //EWL
   const extensionWorkloadHandler = () => {
@@ -426,107 +426,107 @@ const FacultyWorkloadScreen = () => {
     setDesignationAsSportTrainorAcademic(value);
   };
 
-  const clearStates = () => {
-    setTeachingWorkLoad({});
-    setResearchWorkLoad({});
-    setExtensionWorkload({});
-    setStrategicFunctionWorkload({});
-    setNumberOfPreparations("");
-    setContactHours("");
-    setTotalNoOfStudents("");
-    setTwlFile(undefined);
-    setTitleOfStudy("");
-    setFundingOfStudy("");
-    setFundDisplay("");
-    setTypeOfStudy("");
-    setDesignationStudy("");
-    setDisseminatedResearch("");
-    setRwlFile(undefined);
-    setRwlFile1(undefined);
-    setRwlFile2(undefined);
-    setFundGenerated("");
-    setDesignationExtensionActivity("");
-    setExtensionActivityFile(undefined);
-    setResourcePerson("");
-    setCertificateFile(undefined);
-    setTotalNumberHours("");
-    setSummaryOfHoursFile(undefined);
-    strategicFunctionWorkload!.designationUniversityLevel = [];
-    setApprovedUniversityDesignationFile(undefined);
-    setDesignationUniversityLevel([]);
-    setDesignationCollegeCampusLevelReserve([]);
-    setDesignationDepartmentLevelReserve([]);
-    setDesignationAsMemberOfAdhoc("");
-    setTotalOfAcademicAdvisees("");
-  };
+  // const clearStates = () => {
+  //   setTeachingWorkLoad({});
+  //   setResearchWorkLoad({});
+  //   setExtensionWorkload({});
+  //   setStrategicFunctionWorkload({});
+  //   setNumberOfPreparations("");
+  //   setContactHours("");
+  //   setTotalNoOfStudents("");
+  //   setTwlFile(undefined);
+  //   setTitleOfStudy("");
+  //   setFundingOfStudy("");
+  //   setFundDisplay("");
+  //   setTypeOfStudy("");
+  //   setDesignationStudy("");
+  //   setDisseminatedResearch("");
+  //   setRwlFile(undefined);
+  //   setRwlFile1(undefined);
+  //   setRwlFile2(undefined);
+  //   setFundGenerated("");
+  //   setDesignationExtensionActivity("");
+  //   setExtensionActivityFile(undefined);
+  //   setResourcePerson("");
+  //   setCertificateFile(undefined);
+  //   setTotalNumberHours("");
+  //   setSummaryOfHoursFile(undefined);
+  //   strategicFunctionWorkload!.designationUniversityLevel = [];
+  //   setApprovedUniversityDesignationFile(undefined);
+  //   setDesignationUniversityLevel([]);
+  //   setDesignationCollegeCampusLevelReserve([]);
+  //   setDesignationDepartmentLevelReserve([]);
+  //   setDesignationAsMemberOfAdhoc("");
+  //   setTotalOfAcademicAdvisees("");
+  // };
 
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        if (
-          teachingWorkLoad?.contactHours &&
-          teachingWorkLoad.numberOfPreparations &&
-          teachingWorkLoad.totalNoOfStudents &&
-          teachingWorkLoad.twlFile
-        ) {
-          const totalNoOfStudents =
-            parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
-          teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
-          await SaveTeachingWorkload(teachingWorkLoad);
-        }
+        // if (
+        //   teachingWorkLoad?.contactHours &&
+        //   teachingWorkLoad.numberOfPreparations &&
+        //   teachingWorkLoad.totalNoOfStudents &&
+        //   teachingWorkLoad.twlFile
+        // ) {
+        //   const totalNoOfStudents =
+        //     parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
+        //   teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
+        //   await SaveTeachingWorkload(teachingWorkLoad);
+        // }
         // for cvsu reasearch grant
-        if (
-          researchWorkLoad?.titleOfStudy &&
-          researchWorkLoad.fundingOfStudy &&
-          researchWorkLoad.typeOfStudy &&
-          researchWorkLoad.designationStudy &&
-          researchWorkLoad.rwlFile
-        ) {
-          let designationStudyPoints;
-          if (
-            researchWorkLoad.designationStudy ===
-            "Program Leader/Co-Program Leader"
-          ) {
-            designationStudyPoints = 9;
-          } else if (
-            researchWorkLoad.designationStudy ===
-            "Project Leader/Co-Project Leader"
-          ) {
-            designationStudyPoints = 6;
-          } else {
-            designationStudyPoints = 3;
-          }
-          researchWorkLoad.rwlPoints = designationStudyPoints;
-          await SaveResearchWorkload(researchWorkLoad);
-        } else {
-          // for external funded
-          let fundGeneratedPoints;
-          let disseminatedResearchPoints;
+        // if (
+        //   researchWorkLoad?.titleOfStudy &&
+        //   researchWorkLoad.fundingOfStudy &&
+        //   researchWorkLoad.typeOfStudy &&
+        //   researchWorkLoad.designationStudy &&
+        //   researchWorkLoad.rwlFile
+        // ) {
+        //   let designationStudyPoints;
+        //   if (
+        //     researchWorkLoad.designationStudy ===
+        //     "Program Leader/Co-Program Leader"
+        //   ) {
+        //     designationStudyPoints = 9;
+        //   } else if (
+        //     researchWorkLoad.designationStudy ===
+        //     "Project Leader/Co-Project Leader"
+        //   ) {
+        //     designationStudyPoints = 6;
+        //   } else {
+        //     designationStudyPoints = 3;
+        //   }
+        //   researchWorkLoad.rwlPoints = designationStudyPoints;
+        //   await SaveResearchWorkload(researchWorkLoad);
+        // } else {
+        //   // for external funded
+        //   let fundGeneratedPoints;
+        //   let disseminatedResearchPoints;
 
-          if (researchWorkLoad?.fundGenerated === "Above 1,000,000.00") {
-            fundGeneratedPoints = 3;
-          } else if (
-            researchWorkLoad?.fundGenerated === "500,001.00 - 1,000,000.00"
-          ) {
-            fundGeneratedPoints = 2;
-          } else {
-            fundGeneratedPoints = 1;
-          }
+        //   if (researchWorkLoad?.fundGenerated === "Above 1,000,000.00") {
+        //     fundGeneratedPoints = 3;
+        //   } else if (
+        //     researchWorkLoad?.fundGenerated === "500,001.00 - 1,000,000.00"
+        //   ) {
+        //     fundGeneratedPoints = 2;
+        //   } else {
+        //     fundGeneratedPoints = 1;
+        //   }
 
-          if (researchWorkLoad?.disseminatedResearch === "International") {
-            disseminatedResearchPoints = 4;
-          } else if (researchWorkLoad?.disseminatedResearch === "National") {
-            disseminatedResearchPoints = 3;
-          } else if (researchWorkLoad?.disseminatedResearch === "Regional") {
-            disseminatedResearchPoints = 2;
-          } else {
-            disseminatedResearchPoints = 1;
-          }
+        //   if (researchWorkLoad?.disseminatedResearch === "International") {
+        //     disseminatedResearchPoints = 4;
+        //   } else if (researchWorkLoad?.disseminatedResearch === "National") {
+        //     disseminatedResearchPoints = 3;
+        //   } else if (researchWorkLoad?.disseminatedResearch === "Regional") {
+        //     disseminatedResearchPoints = 2;
+        //   } else {
+        //     disseminatedResearchPoints = 1;
+        //   }
 
-          researchWorkLoad!.rwlPoints =
-            fundGeneratedPoints + disseminatedResearchPoints;
-          await SaveResearchWorkload(researchWorkLoad!);
-        }
+        //   researchWorkLoad!.rwlPoints =
+        //     fundGeneratedPoints + disseminatedResearchPoints;
+        //   await SaveResearchWorkload(researchWorkLoad!);
+        // }
 
         if (
           extensionWorkload?.designationExtensionActivity &&
@@ -630,7 +630,7 @@ const FacultyWorkloadScreen = () => {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
         }
         setIsSubmitting(false);
-        clearStates();
+        // clearStates();
         navigate("/faculty-workload", { replace: true });
         setSteps(1);
       }
@@ -664,7 +664,7 @@ const FacultyWorkloadScreen = () => {
             twlFileName={teachingWorkLoad?.twlFile?.name}
           />
         )} */}
-        {steps === 2 && (
+        {/* {steps === 2 && (
           <ResearchWorkload
             researchWorkLoadHandler={researchWorkLoadHandler}
             titleOfStudyHandler={titleOfStudyHandler}
@@ -673,8 +673,8 @@ const FacultyWorkloadScreen = () => {
             titleOfStudy={titleOfStudy}
             fundingOfStudy={fundDisplay}
           />
-        )}
-        {steps === 3 && (
+        )} */}
+        {/* {steps === 3 && (
           <ResearchWorkload1
             researchWorkLoadHandler1={researchWorkLoadHandler1}
             typeOfStudyHandler={typeOfStudyHandler}
@@ -705,7 +705,7 @@ const FacultyWorkloadScreen = () => {
             disseminatedResearch={researchWorkLoad?.disseminatedResearch}
             rwlFile2Name={researchWorkLoad?.rwlFile2?.name}
           />
-        )}
+        )} */}
         {steps === 6 && (
           <ExtensionWorkload
             extensionWorkloadHandler={extensionWorkloadHandler}

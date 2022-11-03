@@ -15,7 +15,7 @@ const UploadFileButton = ({
 
   return (
     <>
-      {!fileName || !workloadFileName ? (
+      {!workloadFileName && !fileName ? (
         <Container>
           <ButtonText>
             <FileInput
@@ -29,7 +29,7 @@ const UploadFileButton = ({
           </ButtonText>
         </Container>
       ) : (
-        <FileName> {fileName || workloadFileName} </FileName>
+        <FileName> {workloadFileName || fileName} </FileName>
       )}
     </>
   );
