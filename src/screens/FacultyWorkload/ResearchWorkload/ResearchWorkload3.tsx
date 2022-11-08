@@ -74,7 +74,7 @@ const ResearchWorkload3 = ({
             disabled={
               disseminatedResearchDisplay?.length! <= 0 ||
               disseminatedResearchDisplay === undefined ||
-              // rwlFile2Name?.length! <= 0 ||
+              rwlFile2Name?.length! <= 0 ||
               rwlFile2Name === undefined
             }
           ></FormButton>
