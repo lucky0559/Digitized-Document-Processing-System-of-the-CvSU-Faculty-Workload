@@ -10,7 +10,7 @@ type ResearchWorkload2Props = {
   fundGeneratedHandler: (value?: string) => void;
   rwlFile1Handler: (value?: File) => void;
   backHandler: () => void;
-  fundGenerated?: string;
+  fundGeneratedDisplay?: string;
   rwlFileName1?: string;
 };
 
@@ -19,7 +19,7 @@ const ResearchWorkload2 = ({
   fundGeneratedHandler,
   rwlFile1Handler,
   backHandler,
-  fundGenerated,
+  fundGeneratedDisplay,
   rwlFileName1
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
@@ -40,7 +40,7 @@ const ResearchWorkload2 = ({
           option={DROPDOWN_LISTS.FUND_GENERATED_PER_SEMESTER}
           label="Fund Generated per Semester (in peso)"
           onSelect={setFundGenerated}
-          val={fundGenerated}
+          val={fundGeneratedDisplay}
         />
       </InputsContainer>
       <UploadContainer>
@@ -66,6 +66,12 @@ const ResearchWorkload2 = ({
           <FormButton
             text="Next"
             onClicked={researchWorkLoadHandler2}
+            disabled={
+              fundGeneratedDisplay?.length! <= 0 ||
+              fundGeneratedDisplay === undefined ||
+              rwlFileName1?.length! <= 0 ||
+              rwlFileName1 === undefined
+            }
           ></FormButton>
         </ButtonContainer>
       </Buttons>

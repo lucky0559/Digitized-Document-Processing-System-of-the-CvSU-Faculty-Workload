@@ -10,8 +10,9 @@ type ResearchWorkload3Props = {
   backHandler: () => void;
   disseminatedResearchHandler: (value?: string) => void;
   rwlFile2Handler: (value?: File) => void;
-  disseminatedResearch?: string;
+  disseminatedResearchDisplay?: string;
   rwlFile2Name?: string;
+  isSubmitting: boolean;
 };
 
 const ResearchWorkload3 = ({
@@ -19,8 +20,9 @@ const ResearchWorkload3 = ({
   backHandler,
   disseminatedResearchHandler,
   rwlFile2Handler,
-  disseminatedResearch,
-  rwlFile2Name
+  disseminatedResearchDisplay,
+  rwlFile2Name,
+  isSubmitting
 }: ResearchWorkload3Props) => {
   const fileHandler = (file?: File) => {
     rwlFile2Handler(file);
@@ -40,7 +42,7 @@ const ResearchWorkload3 = ({
           option={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
           label="Disseminated research output in College or University In-House Review/Conferences"
           onSelect={setDisseminatedResearch}
-          val={disseminatedResearch}
+          val={disseminatedResearchDisplay}
         />
       </InputsContainer>
       <UploadContainer>
@@ -66,8 +68,15 @@ const ResearchWorkload3 = ({
         </ButtonContainer>
         <ButtonContainer>
           <FormButton
-            text="Next"
+            text="Submit"
             onClicked={researchWorkLoadHandler3}
+            isSubmitting={isSubmitting}
+            disabled={
+              disseminatedResearchDisplay?.length! <= 0 ||
+              disseminatedResearchDisplay === undefined ||
+              // rwlFile2Name?.length! <= 0 ||
+              rwlFile2Name === undefined
+            }
           ></FormButton>
         </ButtonContainer>
       </Buttons>

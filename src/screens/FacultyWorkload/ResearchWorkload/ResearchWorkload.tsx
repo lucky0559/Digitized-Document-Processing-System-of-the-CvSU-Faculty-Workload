@@ -35,10 +35,15 @@ const ResearchWorkload = () => {
   const [disseminatedResearch, setDisseminatedResearch] = useState<
     string | undefined
   >("");
+  const [disseminatedResearchDisplay, setDisseminatedResearchDisplay] =
+    useState<string | undefined>("");
   const [rwlFile, setRwlFile] = useState<File>();
   const [rwlFile1, setRwlFile1] = useState<File>();
   const [rwlFile2, setRwlFile2] = useState<File>();
   const [fundGenerated, setFundGenerated] = useState<string | undefined>("");
+  const [fundGeneratedDisplay, setFundGeneratedDisplay] = useState<
+    string | undefined
+  >("");
 
   const [steps, setSteps] = useState(1);
 
@@ -106,9 +111,41 @@ const ResearchWorkload = () => {
           ...researchWorkLoad
         });
       }
+      setSteps(1);
     }
 
-    if (steps > 1) {
+    if (steps === 3) {
+      if (fundGenerated) {
+        setResearchWorkLoad({
+          ...researchWorkLoad,
+          fundGenerated,
+          rwlFile1
+        });
+      } else {
+        setResearchWorkLoad({
+          fundGenerated,
+          rwlFile1,
+          ...researchWorkLoad
+        });
+      }
+      setSteps(1);
+    }
+
+    if (steps === 4) {
+      if (disseminatedResearch) {
+        setResearchWorkLoad({
+          ...researchWorkLoad,
+          disseminatedResearch,
+          rwlFile2
+        });
+      } else {
+        setResearchWorkLoad({
+          disseminatedResearch,
+          rwlFile2,
+          ...researchWorkLoad
+        });
+      }
+
       setSteps(steps - 1);
     }
   };
@@ -183,12 +220,30 @@ const ResearchWorkload = () => {
     setRwlFile1(value);
   };
 
+  useEffect(() => {
+    if (fundGeneratedDisplay !== researchWorkLoad?.fundGenerated) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        fundGenerated: fundGeneratedDisplay
+      });
+    }
+    if (researchWorkLoad?.fundGenerated) {
+      setFundGeneratedDisplay(researchWorkLoad?.fundGenerated);
+    } else {
+      setFundGeneratedDisplay(fundGenerated);
+    }
+  }, [fundGenerated]);
+
   const researchWorkLoadHandler3 = () => {
     setResearchWorkLoad({
       ...researchWorkLoad,
       disseminatedResearch,
       rwlFile2
     });
+    researchWorkLoad!.typeOfStudy = undefined;
+    researchWorkLoad!.designationStudy = undefined;
+    researchWorkLoad!.rwlFile = undefined;
+    researchWorkLoad!.rwlFilePath = undefined;
     onSubmit();
   };
 
@@ -199,6 +254,22 @@ const ResearchWorkload = () => {
   const rwlFile2Handler = (value?: File) => {
     setRwlFile2(value);
   };
+
+  useEffect(() => {
+    if (
+      disseminatedResearchDisplay !== researchWorkLoad?.disseminatedResearch
+    ) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        disseminatedResearch: disseminatedResearchDisplay
+      });
+    }
+    if (researchWorkLoad?.disseminatedResearch) {
+      setDisseminatedResearchDisplay(researchWorkLoad?.disseminatedResearch);
+    } else {
+      setDisseminatedResearchDisplay(disseminatedResearch);
+    }
+  }, [disseminatedResearch]);
 
   const onSubmit = async () => {
     setIsSubmitting(true);
@@ -338,19 +409,20 @@ const ResearchWorkload = () => {
             researchWorkLoadHandler2={researchWorkLoadHandler2}
             fundGeneratedHandler={fundGeneratedHandler}
             rwlFile1Handler={rwlFile1Handler}
-            backHandler={() => setSteps(1)}
-            fundGenerated={researchWorkLoad?.fundGenerated}
-            rwlFileName1={researchWorkLoad?.rwlFile1?.name}
+            backHandler={backHandler}
+            fundGeneratedDisplay={fundGeneratedDisplay}
+            rwlFileName1={rwlFile1?.name}
           />
         )}
         {steps === 4 && (
           <ResearchWorkload3
             researchWorkLoadHandler3={researchWorkLoadHandler3}
-            backHandler={() => setSteps(1)}
+            backHandler={backHandler}
             disseminatedResearchHandler={disseminatedResearchHandler}
             rwlFile2Handler={rwlFile2Handler}
-            disseminatedResearch={researchWorkLoad?.disseminatedResearch}
-            rwlFile2Name={researchWorkLoad?.rwlFile2?.name}
+            disseminatedResearchDisplay={disseminatedResearchDisplay}
+            rwlFile2Name={rwlFile2?.name}
+            isSubmitting={isSubmitting}
           />
         )}
       </BodyContainer>
