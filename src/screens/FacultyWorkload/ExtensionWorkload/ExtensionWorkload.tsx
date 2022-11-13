@@ -1,43 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
+import { useNavigate } from "react-router-dom";
+import { ExtensionWorkloadType } from "../../../types/ExtensionWorkload";
+import TopNav from "../../../components/TopNav";
+import Menu from "../../../components/Menu";
+import ProfileTab from "../../../components/ProfileTab";
 
-type ExtensionWorkloadProps = {
-  extensionWorkloadHandler: () => void;
-  designationExtensionActivityHandler: (value?: string) => void;
-  extensionActivityFileHandler: (value?: File) => void;
-  resourcePersonHandler: (value?: string) => void;
-  certificateFileHandler: (value?: File) => void;
-  totalNumberHoursHandler: (value?: string) => void;
-  summaryOfHoursFileHandler: (value?: File) => void;
-  backHandler: () => void;
-  designationExtensionActivity?: string;
-  extensionActivityFileName?: string;
-  resourcePerson?: string;
-  certificateFileName?: string;
-  totalNumberHours?: string;
-  summaryOfHoursFileName?: string;
-};
+const ExtensionWorkload = () => {
+  const navigate = useNavigate();
 
-const ExtensionWorkload = ({
-  extensionWorkloadHandler,
-  designationExtensionActivityHandler,
-  extensionActivityFileHandler,
-  resourcePersonHandler,
-  certificateFileHandler,
-  totalNumberHoursHandler,
-  summaryOfHoursFileHandler,
-  backHandler,
-  designationExtensionActivity,
-  extensionActivityFileName,
-  resourcePerson,
-  certificateFileName,
-  totalNumberHours,
-  summaryOfHoursFileName
-}: ExtensionWorkloadProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [extensionWorkload, setExtensionWorkload] =
+    useState<ExtensionWorkloadType>();
+
+  const [designationExtensionActivity, setDesignationExtensionActivity] =
+    useState<string | undefined>("");
+  const [extensionActivityFile, setExtensionActivityFile] = useState<File>();
+  const [resourcePerson, setResourcePerson] = useState<string | undefined>("");
+  const [certificateFile, setCertificateFile] = useState<File>();
+  const [totalNumberHours, setTotalNumberHours] = useState<string | undefined>(
+    ""
+  );
+  const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
+
+  const [steps, setSteps] = useState(1);
+
+  const extensionWorkloadHandler = () => {
+    setExtensionWorkload({
+      designationExtensionActivity,
+      extensionActivityFile,
+      resourcePerson,
+      certificateFile,
+      totalNumberHours,
+      summaryOfHoursFile
+    });
+    setSteps(steps + 1);
+  };
+
+  const designationExtensionActivityHandler = (value?: string) => {
+    setDesignationExtensionActivity(value);
+  };
+
+  const extensionActivityFileHandler = (value?: File) => {
+    setExtensionActivityFile(value);
+  };
+
+  const resourcePersonHandler = (value?: string) => {
+    setResourcePerson(value);
+  };
+
+  const certificateFileHandler = (value?: File) => {
+    setCertificateFile(value);
+  };
+
+  const totalNumberHoursHandler = (value?: string) => {
+    setTotalNumberHours(value);
+  };
+
+  const summaryOfHoursFileHandler = (value?: File) => {
+    setSummaryOfHoursFile(value);
+  };
+
   const setExtensionActivityFileHandler = (file?: File) => {
     extensionActivityFileHandler(file);
   };
@@ -50,92 +80,157 @@ const ExtensionWorkload = ({
     summaryOfHoursFileHandler(file);
   };
 
-  const setDesignationExtensionActivity = (
-    designationExtensionActivityValue?: string
-  ) => {
-    designationExtensionActivityHandler(designationExtensionActivityValue);
-  };
+  // if (
+  //   extensionWorkload?.designationExtensionActivity &&
+  //   extensionWorkload.extensionActivityFile &&
+  //   extensionWorkload.resourcePerson &&
+  //   extensionWorkload.certificateFile &&
+  //   extensionWorkload.totalNumberHours &&
+  //   extensionWorkload.summaryOfHoursFile
+  // ) {
+  //   let designationExtensionActivityPoints;
+  //   let resourcePersonPoints;
+  //   let totalNumberHoursPoints;
+  //   if (
+  //     extensionWorkload.designationExtensionActivity === "Project Leader"
+  //   ) {
+  //     designationExtensionActivityPoints = 3;
+  //   } else if (
+  //     extensionWorkload.designationExtensionActivity ===
+  //     "Project Coordinator"
+  //   ) {
+  //     designationExtensionActivityPoints = 2.5;
+  //   } else if (
+  //     extensionWorkload.designationExtensionActivity ===
+  //     "Project Facilitator"
+  //   ) {
+  //     designationExtensionActivityPoints = 2;
+  //   } else {
+  //     designationExtensionActivityPoints = 1;
+  //   }
 
-  const setResourcePerson = (resourcePersonValue?: string) => {
-    resourcePersonHandler(resourcePersonValue);
-  };
+  //   if (extensionWorkload.resourcePerson === "International") {
+  //     resourcePersonPoints = 4;
+  //   } else if (extensionWorkload.resourcePerson === "National") {
+  //     resourcePersonPoints = 3;
+  //   } else if (extensionWorkload.resourcePerson === "Regional") {
+  //     resourcePersonPoints = 2;
+  //   } else {
+  //     resourcePersonPoints = 1;
+  //   }
+
+  //   if (parseFloat(extensionWorkload.totalNumberHours) >= 3) {
+  //     totalNumberHoursPoints = 3;
+  //   } else {
+  //     totalNumberHoursPoints =
+  //       parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
+  //   }
+
+  //   extensionWorkload.ewlPoints =
+  //     designationExtensionActivityPoints +
+  //     resourcePersonPoints +
+  //     totalNumberHoursPoints;
+  //   await SaveExtensionWorkload(extensionWorkload);
+  // }
 
   return (
-    <Container>
-      <WorkloadTextContainer>
-        <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
-      </WorkloadTextContainer>
-      <InputsContainer>
-        <Dropdown
-          option={DROPDOWN_LISTS.DESIGNATION_EXTENSION_ACTIVITY}
-          label="Designation in Extension Activity"
-          onSelect={setDesignationExtensionActivity}
-          val={designationExtensionActivity}
-        />
-      </InputsContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload Extension Activity Accomplishment Report here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={setExtensionActivityFileHandler}
-            workloadFileName={extensionActivityFileName}
-          />
-        </UploadFileContainer>
-      </UploadContainer>
-      <InputsContainer>
-        <Dropdown
-          option={DROPDOWN_LISTS.RESOURCE_PERSON}
-          label="Resource Person in an Extension Activity"
-          onSelect={setResourcePerson}
-          val={resourcePerson}
-        />
-      </InputsContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload certificate of presentation here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={setCertificateFileHandler}
-            workloadFileName={certificateFileName}
-          />
-        </UploadFileContainer>
-      </UploadContainer>
-      <InputsContainer>
-        <Label>Total Number of Hours Rendered in Extension Activities</Label>
-        <TextInput
-          type="number"
-          onChange={e => totalNumberHoursHandler(e.target.value)}
-          value={totalNumberHours}
-        />
-      </InputsContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload Summary of hours rendered in extension activities:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={setSummaryOfHoursFileHandler}
-            workloadFileName={summaryOfHoursFileName}
-          />
-        </UploadFileContainer>
-      </UploadContainer>
-      <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
-        <ButtonContainer>
-          <FormButton
-            text="Next"
-            onClicked={extensionWorkloadHandler}
-          ></FormButton>
-        </ButtonContainer>
-      </Buttons>
-    </Container>
+    <MainContainer>
+      <TopNav
+        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
+        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      />
+      <Menu isMenuOpen={isMenuOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} />
+      <BodyContainer>
+        <Container>
+          <WorkloadTextContainer>
+            <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
+          </WorkloadTextContainer>
+          <InputsContainer>
+            <Dropdown
+              option={DROPDOWN_LISTS.DESIGNATION_EXTENSION_ACTIVITY}
+              label="Designation in Extension Activity"
+              onSelect={designationExtensionActivityHandler}
+              val={designationExtensionActivity}
+            />
+          </InputsContainer>
+          <UploadContainer>
+            <UploadTextDescription>
+              Upload Extension Activity Accomplishment Report here:
+            </UploadTextDescription>
+            <UploadFileContainer>
+              <UploadFileButton
+                fileHandler={setExtensionActivityFileHandler}
+                workloadFileName={extensionActivityFile?.name}
+              />
+            </UploadFileContainer>
+          </UploadContainer>
+          <InputsContainer>
+            <Dropdown
+              option={DROPDOWN_LISTS.RESOURCE_PERSON}
+              label="Resource Person in an Extension Activity"
+              onSelect={resourcePersonHandler}
+              val={resourcePerson}
+            />
+          </InputsContainer>
+          <UploadContainer>
+            <UploadTextDescription>
+              Upload certificate of presentation here:
+            </UploadTextDescription>
+            <UploadFileContainer>
+              <UploadFileButton
+                fileHandler={setCertificateFileHandler}
+                workloadFileName={certificateFile?.name}
+              />
+            </UploadFileContainer>
+          </UploadContainer>
+          <InputsContainer>
+            <Label>
+              Total Number of Hours Rendered in Extension Activities
+            </Label>
+            <TextInput
+              type="number"
+              onChange={e => totalNumberHoursHandler(e.target.value)}
+              value={totalNumberHours}
+            />
+          </InputsContainer>
+          <UploadContainer>
+            <UploadTextDescription>
+              Upload Summary of hours rendered in extension activities:
+            </UploadTextDescription>
+            <UploadFileContainer>
+              <UploadFileButton
+                fileHandler={setSummaryOfHoursFileHandler}
+                workloadFileName={summaryOfHoursFile?.name}
+              />
+            </UploadFileContainer>
+          </UploadContainer>
+          <Buttons>
+            <ButtonContainer>
+              <FormButton
+                text="Submit"
+                onClicked={extensionWorkloadHandler}
+              ></FormButton>
+            </ButtonContainer>
+          </Buttons>
+        </Container>
+      </BodyContainer>
+    </MainContainer>
   );
 };
+
+const MainContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const BodyContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
 
 const Container = styled.div`
   padding: 30px;
