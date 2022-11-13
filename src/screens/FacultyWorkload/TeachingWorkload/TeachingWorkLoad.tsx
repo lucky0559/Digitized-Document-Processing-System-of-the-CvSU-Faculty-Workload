@@ -49,7 +49,7 @@ const TeachingWorkLoad = () => {
           const totalNoOfStudents =
             parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
           teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
-          // await SaveTeachingWorkload(teachingWorkLoad);
+          await SaveTeachingWorkload(teachingWorkLoad);
           setIsSubmitting(false);
           clearStates();
         }

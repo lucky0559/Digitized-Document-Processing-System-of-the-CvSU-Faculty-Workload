@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
@@ -9,6 +9,7 @@ import { ExtensionWorkloadType } from "../../../types/ExtensionWorkload";
 import TopNav from "../../../components/TopNav";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
+import { SaveExtensionWorkload } from "../../../lib/faculty-workload.hooks";
 
 const ExtensionWorkload = () => {
   const navigate = useNavigate();
@@ -30,8 +31,6 @@ const ExtensionWorkload = () => {
   );
   const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
 
-  const [steps, setSteps] = useState(1);
-
   const extensionWorkloadHandler = () => {
     setExtensionWorkload({
       designationExtensionActivity,
@@ -41,7 +40,79 @@ const ExtensionWorkload = () => {
       totalNumberHours,
       summaryOfHoursFile
     });
-    setSteps(steps + 1);
+    setIsSubmitting(true);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (isSubmitting) {
+        if (
+          extensionWorkload?.designationExtensionActivity &&
+          extensionWorkload.extensionActivityFile &&
+          extensionWorkload.resourcePerson &&
+          extensionWorkload.certificateFile &&
+          extensionWorkload.totalNumberHours &&
+          extensionWorkload.summaryOfHoursFile
+        ) {
+          let designationExtensionActivityPoints;
+          let resourcePersonPoints;
+          let totalNumberHoursPoints;
+          if (
+            extensionWorkload.designationExtensionActivity === "Project Leader"
+          ) {
+            designationExtensionActivityPoints = 3;
+          } else if (
+            extensionWorkload.designationExtensionActivity ===
+            "Project Coordinator"
+          ) {
+            designationExtensionActivityPoints = 2.5;
+          } else if (
+            extensionWorkload.designationExtensionActivity ===
+            "Project Facilitator"
+          ) {
+            designationExtensionActivityPoints = 2;
+          } else {
+            designationExtensionActivityPoints = 1;
+          }
+
+          if (extensionWorkload.resourcePerson === "International") {
+            resourcePersonPoints = 4;
+          } else if (extensionWorkload.resourcePerson === "National") {
+            resourcePersonPoints = 3;
+          } else if (extensionWorkload.resourcePerson === "Regional") {
+            resourcePersonPoints = 2;
+          } else {
+            resourcePersonPoints = 1;
+          }
+
+          if (parseFloat(extensionWorkload.totalNumberHours) >= 3) {
+            totalNumberHoursPoints = 3;
+          } else {
+            totalNumberHoursPoints =
+              parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
+          }
+
+          extensionWorkload.ewlPoints =
+            designationExtensionActivityPoints +
+            resourcePersonPoints +
+            totalNumberHoursPoints;
+          await SaveExtensionWorkload(extensionWorkload);
+          setIsSubmitting(false);
+          clearStates();
+          window.location.reload();
+        }
+      }
+    })();
+  });
+
+  const clearStates = () => {
+    setDesignationExtensionActivity("");
+    setExtensionActivityFile(undefined);
+    setResourcePerson("");
+    setCertificateFile(undefined);
+    setTotalNumberHours("");
+    setSummaryOfHoursFile(undefined);
+    setExtensionWorkload(undefined);
   };
 
   const designationExtensionActivityHandler = (value?: string) => {
@@ -79,59 +150,6 @@ const ExtensionWorkload = () => {
   const setSummaryOfHoursFileHandler = (file?: File) => {
     summaryOfHoursFileHandler(file);
   };
-
-  // if (
-  //   extensionWorkload?.designationExtensionActivity &&
-  //   extensionWorkload.extensionActivityFile &&
-  //   extensionWorkload.resourcePerson &&
-  //   extensionWorkload.certificateFile &&
-  //   extensionWorkload.totalNumberHours &&
-  //   extensionWorkload.summaryOfHoursFile
-  // ) {
-  //   let designationExtensionActivityPoints;
-  //   let resourcePersonPoints;
-  //   let totalNumberHoursPoints;
-  //   if (
-  //     extensionWorkload.designationExtensionActivity === "Project Leader"
-  //   ) {
-  //     designationExtensionActivityPoints = 3;
-  //   } else if (
-  //     extensionWorkload.designationExtensionActivity ===
-  //     "Project Coordinator"
-  //   ) {
-  //     designationExtensionActivityPoints = 2.5;
-  //   } else if (
-  //     extensionWorkload.designationExtensionActivity ===
-  //     "Project Facilitator"
-  //   ) {
-  //     designationExtensionActivityPoints = 2;
-  //   } else {
-  //     designationExtensionActivityPoints = 1;
-  //   }
-
-  //   if (extensionWorkload.resourcePerson === "International") {
-  //     resourcePersonPoints = 4;
-  //   } else if (extensionWorkload.resourcePerson === "National") {
-  //     resourcePersonPoints = 3;
-  //   } else if (extensionWorkload.resourcePerson === "Regional") {
-  //     resourcePersonPoints = 2;
-  //   } else {
-  //     resourcePersonPoints = 1;
-  //   }
-
-  //   if (parseFloat(extensionWorkload.totalNumberHours) >= 3) {
-  //     totalNumberHoursPoints = 3;
-  //   } else {
-  //     totalNumberHoursPoints =
-  //       parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
-  //   }
-
-  //   extensionWorkload.ewlPoints =
-  //     designationExtensionActivityPoints +
-  //     resourcePersonPoints +
-  //     totalNumberHoursPoints;
-  //   await SaveExtensionWorkload(extensionWorkload);
-  // }
 
   return (
     <MainContainer>
@@ -205,14 +223,27 @@ const ExtensionWorkload = () => {
               />
             </UploadFileContainer>
           </UploadContainer>
-          <Buttons>
-            <ButtonContainer>
-              <FormButton
-                text="Submit"
-                onClicked={extensionWorkloadHandler}
-              ></FormButton>
-            </ButtonContainer>
-          </Buttons>
+          <ButtonContainer>
+            <FormButton
+              text="Submit"
+              onClicked={extensionWorkloadHandler}
+              isSubmitting={isSubmitting}
+              disabled={
+                designationExtensionActivity?.length! <= 0 ||
+                designationExtensionActivity === undefined ||
+                extensionActivityFile?.name.length! <= 0 ||
+                extensionActivityFile?.name === undefined ||
+                resourcePerson?.length! <= 0 ||
+                resourcePerson === undefined ||
+                certificateFile?.name.length! <= 0 ||
+                certificateFile?.name === undefined ||
+                totalNumberHours?.length! <= 0 ||
+                totalNumberHours === undefined ||
+                summaryOfHoursFile?.name.length! <= 0 ||
+                summaryOfHoursFile?.name === undefined
+              }
+            ></FormButton>
+          </ButtonContainer>
         </Container>
       </BodyContainer>
     </MainContainer>
@@ -283,15 +314,7 @@ const UploadTextDescription = styled.label`
 const ButtonContainer = styled.div`
   display: flex;
   align-self: flex-end;
-  margin: 20px 20px 0px 0px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 80px;
+  margin: 100px 20px 0px 0px;
 `;
 
 const UploadFileContainer = styled.div`

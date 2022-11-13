@@ -498,15 +498,7 @@ const TextInput = styled.input`
 const ButtonContainer = styled.div`
   display: flex;
   align-self: flex-end;
-  margin: 20px 20px 0px 0px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 80px;
+  margin: 100px 20px 0px 0px;
 `;
 
 export default ResearchWorkload;
