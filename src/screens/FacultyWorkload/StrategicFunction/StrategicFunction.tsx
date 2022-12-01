@@ -4,268 +4,414 @@ import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
 import Colors from "../../../constants/Colors";
 import { WorkloadType } from "../../../constants/Strings";
+import { StrategicFunctionType } from "../../../types/StrategicFunction";
+import { useNavigate } from "react-router";
+import { SaveStrategicFunctionWorkload } from "../../../lib/faculty-workload.hooks";
+import TopNav from "../../../components/TopNav";
+import Menu from "../../../components/Menu";
+import ProfileTab from "../../../components/ProfileTab";
+import ScreenTitle from "../../../components/ScreenTitle";
+import StrategicFunction1 from "./StrategicFunction1";
+import StrategicFunction2 from "./StrategicFunction2";
 
-type StrategicFunctionProps = {
-  strategicFunctionHandler: () => void;
-  designationUniversityLevelHandler: (value: string) => void;
-  approvedUniversityDesignationFileHandler: (value?: File) => void;
-  backHandler: () => void;
-  approvedUniversityDesignationFileName?: string;
-  designationUniversityLevel: string[];
-};
+const StrategicFunction = () => {
+  const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
+    useState<StrategicFunctionType>();
 
-const StrategicFunction = ({
-  strategicFunctionHandler,
-  designationUniversityLevelHandler,
-  approvedUniversityDesignationFileHandler,
-  backHandler,
-  approvedUniversityDesignationFileName,
-  designationUniversityLevel
-}: StrategicFunctionProps) => {
-  const fileHandler = (file?: File) => {
-    approvedUniversityDesignationFileHandler(file);
-  };
+  const navigate = useNavigate();
 
-  const setDesignationUniversityLevel = (
-    designationUniversityLevelValue: string
-  ) => {
-    dataClicked(designationUniversityLevelValue);
-    designationUniversityLevelHandler(designationUniversityLevelValue);
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onSubmit = () => {
-    strategicFunctionHandler();
-  };
+  const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
+    useState<string[] | undefined>([]);
+  const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
+    string[] | undefined
+  >([]);
+  const [
+    designationAsSportTrainorAcademic,
+    setDesignationAsSportTrainorAcademic
+  ] = useState<string | undefined>("");
+  const [designationAsMemberOfAdhoc, setDesignationAsMemberOfAdhoc] = useState<
+    string | undefined
+  >("");
+  const [totalOfAcademicAdvisees, setTotalOfAcademicAdvisees] = useState<
+    string | undefined
+  >("");
+  const [
+    approvedUniversityDesignationFile,
+    setApprovedUniversityDesignationFile
+  ] = useState<File>();
+  const [
+    approvedCollegeCampusDesignationFile,
+    setApprovedCollegeCampusDesignationFile
+  ] = useState<File>();
+  const [
+    approvedDepartmentDesignationFile,
+    setApprovedDepartmentDesignationFile
+  ] = useState<File>();
+  const [coachAdviserCertificateFile, setCoachAdviserCertificateFile] =
+    useState<File>();
+  const [approvedDesignationFile, setApprovedDesignationFile] =
+    useState<File>();
+  const [listOfAdviseesFile, setListOfAdviseesFile] = useState<File>();
 
-  let dataValue: string[] = [...designationUniversityLevel];
+  const [steps, setSteps] = useState(1);
 
-  const [boxClicked, setBoxClicked] = useState(0);
+  // const fileHandler = (file?: File) => {
+  //   approvedUniversityDesignationFileHandler(file);
+  // };
 
-  const dataClicked = (value: string) => {
-    if (dataValue.includes(value)) {
-      const index = dataValue.indexOf(value);
-      if (index > -1) {
-        dataValue.splice(index, 1);
-      }
-    } else {
-      dataValue.push(value);
+  // const approvedUniversityDesignationFileHandler = (value?: File) => {
+  //   setApprovedUniversityDesignationFile(value);
+  // };
+
+  // const setDesignationUniversityLevelHandler = (
+  //   designationUniversityLevelValue: string
+  // ) => {
+  //   dataClicked(designationUniversityLevelValue);
+  //   designationUniversityLevelHandler(designationUniversityLevelValue);
+  // };
+
+  // const onSubmit = () => {
+  //   setStrategicFunctionHandler();
+  // };
+
+  // //SF
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
+  //   string[]
+  // >([]);
+
+  // let dataValue: string[] = [...designationUniversityLevel];
+
+  // const [boxClicked, setBoxClicked] = useState(0);
+
+  // const dataClicked = (value: string) => {
+  //   if (dataValue.includes(value)) {
+  //     const index = dataValue.indexOf(value);
+  //     if (index > -1) {
+  //       dataValue.splice(index, 1);
+  //     }
+  //   } else {
+  //     dataValue.push(value);
+  //   }
+  //   setBoxClicked(boxClicked + 1);
+  // };
+
+  // useEffect(() => {
+  //   dataValue = [...designationUniversityLevel];
+  // }, [boxClicked]);
+
+  // const designationUniversityLevelHandler = (value: string) => {
+  //   if (designationUniversityLevel.includes(value)) {
+  //     const index = designationUniversityLevel.indexOf(value);
+  //     if (index > -1) {
+  //       designationUniversityLevel.splice(index, 1);
+  //     }
+  //   } else {
+  //     designationUniversityLevel.push(value);
+  //   }
+  // };
+
+  // const setStrategicFunctionHandler = async () => {
+  //   setStrategicFunctionWorkload({
+  //     designationUniversityLevel: designationUniversityLevel,
+  //     approvedUniversityDesignationFile
+  //   });
+  //   setSteps(steps + 1);
+  // };
+
+  // // SF1
+  // const [
+  //   designationCollegeCampusLevelReserve,
+  //   setDesignationCollegeCampusLevelReserve
+  // ] = useState<string[]>([]);
+
+  // const designationCollegeCampusLevelHandler = (value: string) => {
+  //   if (designationCollegeCampusLevelReserve.includes(value)) {
+  //     const index = designationCollegeCampusLevelReserve.indexOf(value);
+  //     if (index > -1) {
+  //       designationCollegeCampusLevelReserve.splice(index, 1);
+  //     }
+  //   } else {
+  //     designationCollegeCampusLevelReserve.push(value);
+  //   }
+  // };
+
+  // const setStrategicFunction1Handler = async () => {
+  //   setStrategicFunctionWorkload({
+  //     ...strategicFunctionWorkload,
+  //     designationCollegeCampusLevel: designationCollegeCampusLevelReserve,
+  //     approvedCollegeCampusDesignationFile
+  //   });
+  //   setSteps(steps + 1);
+  // };
+
+  // const approvedCollegeCampusDesignationFileHandler = (value?: File) => {
+  //   setApprovedCollegeCampusDesignationFile(value);
+  // };
+
+  // //SF2
+  // const [
+  //   designationDepartmentLevelReserve,
+  //   setDesignationDepartmentLevelReserve
+  // ] = useState<string[]>([]);
+
+  // const designationDepartmentLevelHandler = (value: string) => {
+  //   if (designationDepartmentLevelReserve.includes(value)) {
+  //     const index = designationDepartmentLevelReserve.indexOf(value);
+  //     if (index > -1) {
+  //       designationDepartmentLevelReserve.splice(index, 1);
+  //     }
+  //   } else {
+  //     designationDepartmentLevelReserve.push(value);
+  //   }
+  // };
+
+  // const setStrategicFunction2Handler = async () => {
+  //   setStrategicFunctionWorkload({
+  //     ...strategicFunctionWorkload,
+  //     designationDepartmentLevel: designationDepartmentLevelReserve,
+  //     approvedDepartmentDesignationFile
+  //   });
+  //   setSteps(steps + 1);
+  // };
+
+  // const approvedDepartmentDesignationFileHandler = (value?: File) => {
+  //   setApprovedDepartmentDesignationFile(value);
+  // };
+
+  // //SF3
+  // const setStrategicFunction3Handler = async () => {
+  //   setStrategicFunctionWorkload({
+  //     ...strategicFunctionWorkload,
+  //     designationAsSportTrainorAcademic,
+  //     coachAdviserCertificateFile,
+  //     designationAsMemberOfAdhoc,
+  //     approvedDesignationFile,
+  //     totalOfAcademicAdvisees,
+  //     listOfAdviseesFile
+  //   });
+  //   setIsSubmitting(true);
+  // };
+
+  // const coachAdviserCertificateFileHandler = (value?: File) => {
+  //   setCoachAdviserCertificateFile(value);
+  // };
+
+  // const approvedDesignationFileHandler = (value?: File) => {
+  //   setApprovedDesignationFile(value);
+  // };
+
+  // const designationAsMemberHandler = (value?: string) => {
+  //   setDesignationAsMemberOfAdhoc(value);
+  // };
+
+  // const setTotalNumberAcademicAdviseesHandler = (value?: string) => {
+  //   setTotalOfAcademicAdvisees(value);
+  // };
+
+  // const listAdviseesFileHandler = (value?: File) => {
+  //   setListOfAdviseesFile(value);
+  // };
+
+  // const setDesignationSSTAActivity = (value?: string) => {
+  //   setDesignationAsSportTrainorAcademic(value);
+  // };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (isSubmitting) {
+  //       if (
+  //         strategicFunctionWorkload?.approvedUniversityDesignationFile &&
+  //         strategicFunctionWorkload.designationUniversityLevel &&
+  //         strategicFunctionWorkload.approvedCollegeCampusDesignationFile &&
+  //         strategicFunctionWorkload.approvedDepartmentDesignationFile &&
+  //         strategicFunctionWorkload.approvedDesignationFile &&
+  //         strategicFunctionWorkload.coachAdviserCertificateFile &&
+  //         strategicFunctionWorkload.designationAsMemberOfAdhoc &&
+  //         strategicFunctionWorkload.designationAsSportTrainorAcademic &&
+  //         strategicFunctionWorkload.designationCollegeCampusLevel &&
+  //         strategicFunctionWorkload.designationDepartmentLevel &&
+  //         strategicFunctionWorkload.listOfAdviseesFile &&
+  //         strategicFunctionWorkload.totalOfAcademicAdvisees
+  //       ) {
+  //         let designationUniversityPoints;
+  //         let designationCollegeCampusPoints;
+  //         let designationDepartmentPoints;
+  //         let designationSportsSocioPoint;
+  //         let totalNumberOfAcademicAdviseesPoints;
+
+  //         designationUniversityPoints =
+  //           strategicFunctionWorkload.designationUniversityLevel.length * 18;
+  //         designationCollegeCampusPoints =
+  //           strategicFunctionWorkload.designationCollegeCampusLevel.length * 15;
+  //         designationDepartmentPoints =
+  //           strategicFunctionWorkload.designationDepartmentLevel.length * 12;
+
+  //         if (
+  //           strategicFunctionWorkload.designationAsSportTrainorAcademic ===
+  //           "University Level"
+  //         ) {
+  //           designationSportsSocioPoint = 5;
+  //         } else {
+  //           designationSportsSocioPoint = 3;
+  //         }
+
+  //         totalNumberOfAcademicAdviseesPoints =
+  //           parseFloat(strategicFunctionWorkload.totalOfAcademicAdvisees) *
+  //           0.023;
+
+  //         strategicFunctionWorkload.sfwPoints =
+  //           designationUniversityPoints +
+  //           designationCollegeCampusPoints +
+  //           designationDepartmentPoints +
+  //           designationSportsSocioPoint +
+  //           totalNumberOfAcademicAdviseesPoints;
+
+  //         // await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
+  //         setIsSubmitting(false);
+  //         window.location.reload();
+  //       }
+  //     }
+  //   })();
+  // }, [isSubmitting]);
+
+  const clearStates = () => {};
+
+  const backHandler = () => {
+    if (steps > 1) {
+      setSteps(steps - 1);
     }
-    setBoxClicked(boxClicked + 1);
+  };
+
+  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
+    string[]
+  >([]);
+
+  const [designationUniversity1, setDesignationUniversity1] = useState("");
+  const [designationUniversity2, setDesignationUniversity2] = useState("");
+  const [designationUniversity3, setDesignationUniversity3] = useState("");
+
+  let designationUniversity: string[] = [];
+
+  const [universityLevelInputDesignation, setUniversityLevelInputDesignation] =
+    useState("");
+
+  const onSelectDesignation = (value: string) => {
+    designationUniversity.push(value);
+  };
+
+  const onSelectDesignationUniversity1 = (value: string) => {
+    if (value.length > 0) {
+      setDesignationUniversity1(value);
+    }
+  };
+
+  const onSelectDesignationUniversity2 = (value: string) => {
+    if (value.length > 0) {
+      setDesignationUniversity2(value);
+    }
+  };
+
+  const onSelectDesignationUniversity3 = (value: string) => {
+    if (value.length > 0) {
+      setDesignationUniversity3(value);
+    }
+  };
+
+  const textInputDesignationUniversity4 = (value: string) => {
+    if (value.length > 0) {
+      setUniversityLevelInputDesignation(value);
+    }
+  };
+
+  const onNextSubmit = () => {
+    if (steps === 1) {
+      setDesignationUniversityLevel(
+        [
+          designationUniversity1,
+          designationUniversity2,
+          designationUniversity3,
+          universityLevelInputDesignation
+        ].filter(Boolean)
+      );
+    }
+    setSteps(steps + 1);
+    if (steps === 3) console.log(strategicFunctionWorkload);
   };
 
   useEffect(() => {
-    dataValue = [...designationUniversityLevel];
-  }, [boxClicked]);
+    setStrategicFunctionWorkload({
+      designationUniversityLevel,
+      designationCollegeCampusLevel
+    });
+    console.log(designationUniversityLevel);
+  }, [designationUniversityLevel]);
 
   return (
-    <Container>
-      <WorkloadTextContainer>
-        <WorkloadText>{WorkloadType.STRATEGIC_FUNCTION}</WorkloadText>
-      </WorkloadTextContainer>
-      <UniversityLabelContainer>
-        <UniversityLabelText>
-          Designation at the University Label
-        </UniversityLabelText>
-      </UniversityLabelContainer>
-      <CheckBoxGroupContainer>
-        <CheckBoxColumnContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={dataValue?.includes("Dean/Director")!}
-              onClick={() => setDesignationUniversityLevel("Dean/Director")}
-            />
-            <CheckBoxLabel>Dean/Director</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "University Project Head/Assistant Project Head"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "University Project Head/Assistant Project Head"
-                )
+    <MainContainer>
+      <TopNav
+        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
+        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      />
+      <Menu isMenuOpen={isMenuOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} />
+      <BodyContainer>
+        <ScreenTitle title="Strategic Functions (SF)" />
+        <Container>
+          {steps === 1 && (
+            <StrategicFunction1
+              onSelect1={onSelectDesignationUniversity1}
+              onSelect2={onSelectDesignationUniversity2}
+              onSelect3={onSelectDesignationUniversity3}
+              textInput4={textInputDesignationUniversity4}
+              designationUniversity={
+                strategicFunctionWorkload?.designationUniversityLevel
               }
             />
-            <CheckBoxLabel>
-              University Project Head/Assistant Project Head
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "Head, Physical Planning/Project Implementation Unit"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Head, Physical Planning/Project Implementation Unit"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Head, Physical Planning/Project Implementation Unit
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "Chair/Member of Review Boards (ERB, IBC, IACUC, CSC)"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Chair/Member of Review Boards (ERB, IBC, IACUC, CSC)"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Chair/Member of Review Boards (ERB, IBC, IACUC, CSC)
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxColumnContainer>
-        <CheckBoxColumnContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "University Pollution Control Officer"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "University Pollution Control Officer"
-                )
-              }
-            />
-            <CheckBoxLabel>University Pollution Control Officer</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "University Inspector/Engineer/Architect/Estimator"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "University Inspector/Engineer/Architect/Estimator"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              University Inspector/Engineer/Architect/Estimator
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes("Curricular Program Head")!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel("Curricular Program Head")
-              }
-            />
-            <CheckBoxLabel>Curricular Program Head</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes("RECETS Council Members")!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel("RECETS Council Members")
-              }
-            />
-            <CheckBoxLabel>RECETS Council Members</CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxColumnContainer>
-        <CheckBoxColumnContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "University Textbook Board Chairman/Member"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "University Textbook Board Chairman/Member"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              University Textbook Board Chairman/Member
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "Internal Assessment Body Member (Evaluated at least 3 programs)"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Internal Assessment Body Member (Evaluated at least 3 programs)"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Internal Assessment Body Member (Evaluated at least 3 programs)
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                designationUniversityLevel?.includes(
-                  "Head of Research Monitoring & Evaluation/Public Office/Central Experiment Station/ITSO/other units of Research & Extension Center"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Head of Research Monitoring & Evaluation/Public Office/Central Experiment Station/ITSO/other units of Research & Extension Center"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Head of Research Monitoring & Evaluation/Public Office/Central
-              Experiment Station/ITSO/other units of Research & Extension Center
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxColumnContainer>
-      </CheckBoxGroupContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload approved university designation here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={fileHandler}
-            workloadFileName={approvedUniversityDesignationFileName}
-          />
-        </UploadFileContainer>
-      </UploadContainer>
-      <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
-        <ButtonContainer>
-          <FormButton text="Next" onClicked={onSubmit}></FormButton>
-        </ButtonContainer>
-      </Buttons>
-    </Container>
+          )}
+          {steps === 2 && <StrategicFunction2 onSelect={onSelectDesignation} />}
+          <Buttons>
+            {steps > 1 && (
+              <ButtonContainer>
+                <FormButton text="Back" onClicked={backHandler}></FormButton>
+              </ButtonContainer>
+            )}
+            <ButtonContainer>
+              <FormButton
+                text={steps !== 2 ? "Next" : "Submit"}
+                onClicked={onNextSubmit}
+              ></FormButton>
+            </ButtonContainer>
+          </Buttons>
+        </Container>
+      </BodyContainer>
+    </MainContainer>
   );
 };
 
+const MainContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const BodyContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 5px solid black;
+  border-radius: 15px;
+  margin: 80px;
+`;
+
 const Container = styled.div`
   padding: 30px;
-  width: auto;
-  max-width: 60%;
+  width: 95%;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -310,9 +456,9 @@ const ButtonContainer = styled.div`
 const Buttons = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   width: 100%;
   margin-top: 80px;
+  justify-content: flex-end;
 `;
 
 const UploadFileContainer = styled.div`

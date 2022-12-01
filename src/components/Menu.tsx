@@ -37,14 +37,16 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
           Extension Workload
         </NavButtonText>
       </NavButtonContainer>
-      {/* <NavButtonContainer>
+      <NavButtonContainer>
         <NavButtonText
-          isActive={true}
-          onClick={() => navigate("/faculty-workload", { replace: true })}
+          isActive={location === "/strategic-function-workload"}
+          onClick={() =>
+            navigate("/strategic-function-workload", { replace: true })
+          }
         >
           Strategic Function Workload
         </NavButtonText>
-      </NavButtonContainer> */}
+      </NavButtonContainer>
       {userRole !== "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText

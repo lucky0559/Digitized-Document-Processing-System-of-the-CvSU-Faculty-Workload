@@ -4,7 +4,7 @@ import Colors from "../constants/Colors";
 
 type DropdownProps = {
   option: string[];
-  label: string;
+  label?: string;
   onSelect: (option: string) => void;
   val?: string;
 };
@@ -50,7 +50,6 @@ export default function Dropdown({
 const Container = styled.div`
   flex-direction: column;
   display: flex;
-  margin-top: 15px;
   width: 100%;
 `;
 
