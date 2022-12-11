@@ -19,7 +19,7 @@ function TextInputWithUpload({
     <Container>
       <InputContainer>
         <Label>{inputLabel}</Label>
-        <Input onChange={e => onChangeTextInput(e.target.value)} />
+        <Input onChange={e => onChangeTextInput(e.target.value)} value={val} />
       </InputContainer>
       <UploadContainer>
         <Label>{uploadLabel}</Label>

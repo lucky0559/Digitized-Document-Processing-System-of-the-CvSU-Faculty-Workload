@@ -86,7 +86,7 @@ export const DROPDOWN_LISTS = {
     "College/Campus Level"
   ],
   DESIGNATION_UNIVERSITY_LEVEL: [
-    "",
+    "-----",
     "Dean/Director",
     "University Pollution Control Officer",
     "University Textbook Board Chairman/Member",

@@ -9,6 +9,7 @@ type DropdownWithUploadProps = {
   uploadLabel: string;
   onSelect: (value: string) => void;
   val?: string;
+  selected?: string[];
 };
 
 function DropdownWithUpload({
@@ -16,13 +17,19 @@ function DropdownWithUpload({
   uploadLabel,
   options,
   val,
+  selected,
   onSelect
 }: DropdownWithUploadProps) {
   return (
     <Container>
       <InputContainer>
         <Label>{inputLabel}</Label>
-        <Dropdown option={options} onSelect={onSelect} val={val} />
+        <Dropdown
+          option={options}
+          onSelect={onSelect}
+          val={val}
+          selected={selected}
+        />
       </InputContainer>
       <UploadContainer>
         <Label>{uploadLabel}</Label>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
 
@@ -7,11 +7,13 @@ type DropdownProps = {
   label?: string;
   onSelect: (option: string) => void;
   val?: string;
+  selected?: string[];
 };
 
 export default function Dropdown({
   option,
   label,
+  selected,
   onSelect,
   val
 }: DropdownProps) {
@@ -35,8 +37,13 @@ export default function Dropdown({
             <option
               key={index}
               value={item}
-              hidden={item === ""}
-              selected={val === item}
+              hidden={
+                item === "-----" ||
+                item === selected?.[0] ||
+                item === selected?.[1] ||
+                item === selected?.[2]
+              }
+              selected={val === "item"}
             >
               {item}
             </option>

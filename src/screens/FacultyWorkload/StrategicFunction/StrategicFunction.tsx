@@ -348,7 +348,6 @@ const StrategicFunction = () => {
       designationUniversityLevel,
       designationCollegeCampusLevel
     });
-    console.log(designationUniversityLevel);
   }, [designationUniversityLevel]);
 
   return (
@@ -371,6 +370,10 @@ const StrategicFunction = () => {
               designationUniversity={
                 strategicFunctionWorkload?.designationUniversityLevel
               }
+              universityLevelInputDesignation={universityLevelInputDesignation}
+              designationUniversity1={designationUniversity1}
+              designationUniversity2={designationUniversity2}
+              designationUniversity3={designationUniversity3}
             />
           )}
           {steps === 2 && <StrategicFunction2 onSelect={onSelectDesignation} />}

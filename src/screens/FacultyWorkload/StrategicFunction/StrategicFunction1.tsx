@@ -10,6 +10,10 @@ type StrategicFunction1Props = {
   onSelect3: (value: string) => void;
   textInput4: (value: string) => void;
   designationUniversity?: string[];
+  universityLevelInputDesignation: string;
+  designationUniversity1: string;
+  designationUniversity2: string;
+  designationUniversity3: string;
 };
 
 function StrategicFunction1({
@@ -17,7 +21,11 @@ function StrategicFunction1({
   onSelect2,
   onSelect3,
   textInput4,
-  designationUniversity
+  designationUniversity,
+  universityLevelInputDesignation,
+  designationUniversity1,
+  designationUniversity2,
+  designationUniversity3
 }: StrategicFunction1Props) {
   return (
     <>
@@ -27,26 +35,62 @@ function StrategicFunction1({
           <DropdownWithUpload
             inputLabel="Designation 1"
             uploadLabel="Upload approved university designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL.filter(
+              item =>
+                ![
+                  designationUniversity?.[1],
+                  designationUniversity?.[2]
+                ].includes(item)
+            )}
             onSelect={onSelect1}
             val={designationUniversity?.[0]}
+            selected={[
+              designationUniversity1,
+              designationUniversity2,
+              designationUniversity1
+            ]}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
             uploadLabel="Upload approved university designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL.filter(
+              item =>
+                ![
+                  designationUniversity?.[0],
+                  designationUniversity?.[2]
+                ].includes(item)
+            )}
             onSelect={onSelect2}
+            val={designationUniversity?.[1]}
+            selected={[
+              designationUniversity1,
+              designationUniversity2,
+              designationUniversity1
+            ]}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
             uploadLabel="Upload approved university designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL.filter(
+              item =>
+                ![
+                  designationUniversity?.[0],
+                  designationUniversity?.[1]
+                ].includes(item)
+            )}
             onSelect={onSelect3}
+            val={designationUniversity?.[2]}
+            selected={[
+              designationUniversity1,
+              designationUniversity2,
+              designationUniversity1
+            ]}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
             uploadLabel="Upload approved university designation here:"
             onChangeTextInput={textInput4}
+            val={universityLevelInputDesignation}
           />
         </div>
       </UniversityLevelContainer>
