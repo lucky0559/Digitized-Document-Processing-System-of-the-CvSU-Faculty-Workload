@@ -35,55 +35,37 @@ function StrategicFunction1({
           <DropdownWithUpload
             inputLabel="Designation 1"
             uploadLabel="Upload approved university designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL.filter(
-              item =>
-                ![
-                  designationUniversity?.[1],
-                  designationUniversity?.[2]
-                ].includes(item)
-            )}
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
             onSelect={onSelect1}
             val={designationUniversity?.[0]}
             selected={[
               designationUniversity1,
               designationUniversity2,
-              designationUniversity1
+              designationUniversity3
             ]}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
             uploadLabel="Upload approved university designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL.filter(
-              item =>
-                ![
-                  designationUniversity?.[0],
-                  designationUniversity?.[2]
-                ].includes(item)
-            )}
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
             onSelect={onSelect2}
             val={designationUniversity?.[1]}
             selected={[
               designationUniversity1,
               designationUniversity2,
-              designationUniversity1
+              designationUniversity3
             ]}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
             uploadLabel="Upload approved university designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL.filter(
-              item =>
-                ![
-                  designationUniversity?.[0],
-                  designationUniversity?.[1]
-                ].includes(item)
-            )}
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
             onSelect={onSelect3}
             val={designationUniversity?.[2]}
             selected={[
               designationUniversity1,
               designationUniversity2,
-              designationUniversity1
+              designationUniversity3
             ]}
           />
           <TextInputWithUpload

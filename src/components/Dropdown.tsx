@@ -43,7 +43,7 @@ export default function Dropdown({
                 item === selected?.[1] ||
                 item === selected?.[2]
               }
-              selected={val === "item"}
+              selected={val === item}
             >
               {item}
             </option>
