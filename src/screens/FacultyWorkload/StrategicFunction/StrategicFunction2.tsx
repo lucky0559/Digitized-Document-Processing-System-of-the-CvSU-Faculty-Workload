@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
+import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
 
-type StrategicFunction2Props = {
-  onSelect: (value: string) => void;
-};
+type StrategicFunction2Props = {};
 
-function StrategicFunction2({ onSelect }: StrategicFunction2Props) {
+function StrategicFunction2({}: StrategicFunction2Props) {
   return (
     <>
       <DepartmentLevelContainer>
@@ -17,25 +16,24 @@ function StrategicFunction2({ onSelect }: StrategicFunction2Props) {
             inputLabel="Designation 1"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={onSelect}
+            onSelect={() => {}}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={onSelect}
+            onSelect={() => {}}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={onSelect}
+            onSelect={() => {}}
           />
-          <DropdownWithUpload
+          <TextInputWithUpload
             inputLabel="Other Designation"
             uploadLabel="Upload approved department designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={onSelect}
+            onChangeTextInput={() => {}}
           />
         </div>
       </DepartmentLevelContainer>
@@ -45,7 +43,7 @@ function StrategicFunction2({ onSelect }: StrategicFunction2Props) {
             inputLabel="Designation as Sports/Socio-Cultural Coach or Trainor and Academic Organization Adviser"
             uploadLabel="Upload coach or adviser certificate here:"
             options={DROPDOWN_LISTS.DESIGNATION_SPORTS_SOCIO_TRAINOR_ACADEMIC}
-            onSelect={onSelect}
+            onSelect={() => {}}
           />
           {/* <DropdownWithUpload
             inputLabel="Designation as Member of University-Wide AdHoc Committee"

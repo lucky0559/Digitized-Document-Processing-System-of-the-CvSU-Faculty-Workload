@@ -24,8 +24,6 @@ const StrategicFunction = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
-    useState<string[] | undefined>([]);
   const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
     string[] | undefined
   >([]);
@@ -290,19 +288,26 @@ const StrategicFunction = () => {
   const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
     string[]
   >([]);
+  const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
+    useState<string[]>([]);
 
   const [designationUniversity1, setDesignationUniversity1] = useState("");
   const [designationUniversity2, setDesignationUniversity2] = useState("");
   const [designationUniversity3, setDesignationUniversity3] = useState("");
 
-  let designationUniversity: string[] = [];
+  const [collegeCampusDesignation1, setCollegeCampusDesignation1] =
+    useState("");
+  const [collegeCampusDesignation2, setCollegeCampusDesignation2] =
+    useState("");
+  const [collegeCampusDesignation3, setCollegeCampusDesignation3] =
+    useState("");
 
   const [universityLevelInputDesignation, setUniversityLevelInputDesignation] =
     useState("");
-
-  const onSelectDesignation = (value: string) => {
-    designationUniversity.push(value);
-  };
+  const [
+    collegeCampusLevelInputDesignation,
+    setCollegeCampusLevelInputDesignation
+  ] = useState("");
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length > 0) {
@@ -328,6 +333,30 @@ const StrategicFunction = () => {
     }
   };
 
+  const onSelectCollegeCampusDesignation1 = (value: string) => {
+    if (value.length > 0) {
+      setCollegeCampusDesignation1(value);
+    }
+  };
+
+  const onSelectCollegeCampusDesignation2 = (value: string) => {
+    if (value.length > 0) {
+      setCollegeCampusDesignation2(value);
+    }
+  };
+
+  const onSelectCollegeCampusDesignation3 = (value: string) => {
+    if (value.length > 0) {
+      setCollegeCampusDesignation3(value);
+    }
+  };
+
+  const textInputCollegeCampusDesignation4 = (value: string) => {
+    if (value.length > 0) {
+      setCollegeCampusLevelInputDesignation(value);
+    }
+  };
+
   const onNextSubmit = () => {
     if (steps === 1) {
       setDesignationUniversityLevel(
@@ -336,6 +365,14 @@ const StrategicFunction = () => {
           designationUniversity2,
           designationUniversity3,
           universityLevelInputDesignation
+        ].filter(Boolean)
+      );
+      setDesignationCollegeCampusLevel(
+        [
+          collegeCampusDesignation1,
+          collegeCampusDesignation2,
+          collegeCampusDesignation3,
+          collegeCampusLevelInputDesignation
         ].filter(Boolean)
       );
     }
@@ -363,10 +400,10 @@ const StrategicFunction = () => {
         <Container>
           {steps === 1 && (
             <StrategicFunction1
-              onSelect1={onSelectDesignationUniversity1}
-              onSelect2={onSelectDesignationUniversity2}
-              onSelect3={onSelectDesignationUniversity3}
-              textInput4={textInputDesignationUniversity4}
+              onUniversityLevelSelect1={onSelectDesignationUniversity1}
+              onUniversityLevelSelect2={onSelectDesignationUniversity2}
+              onUniversityLevelSelect3={onSelectDesignationUniversity3}
+              textInputUniversityLevel4={textInputDesignationUniversity4}
               designationUniversity={
                 strategicFunctionWorkload?.designationUniversityLevel
               }
@@ -374,9 +411,22 @@ const StrategicFunction = () => {
               designationUniversity1={designationUniversity1}
               designationUniversity2={designationUniversity2}
               designationUniversity3={designationUniversity3}
+              onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
+              onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
+              onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
+              textInputCollegeCampusLevel4={textInputCollegeCampusDesignation4}
+              designationCollegeCampus={
+                strategicFunctionWorkload?.designationCollegeCampusLevel
+              }
+              collegeCampusDesignation1={collegeCampusDesignation1}
+              collegeCampusDesignation2={collegeCampusDesignation2}
+              collegeCampusDesignation3={collegeCampusDesignation3}
+              collegeCampusLevelInputDesignation={
+                collegeCampusLevelInputDesignation
+              }
             />
           )}
-          {steps === 2 && <StrategicFunction2 onSelect={onSelectDesignation} />}
+          {steps === 2 && <StrategicFunction2 />}
           <Buttons>
             {steps > 1 && (
               <ButtonContainer>

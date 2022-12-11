@@ -100,7 +100,7 @@ export const DROPDOWN_LISTS = {
     "Head of Research Monitoring & Evaluation"
   ],
   DESIGNATION_COLLEGE_CAMPUS_LEVEL: [
-    "",
+    "-----",
     "Department Chair/Principal/Administrator",
     "College/Campus Secretary",
     "College/Campus Registrar",
