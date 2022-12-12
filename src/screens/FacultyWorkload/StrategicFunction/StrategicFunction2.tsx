@@ -4,9 +4,29 @@ import DropdownWithUpload from "../../../components/DropdownWithUpload";
 import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
 
-type StrategicFunction2Props = {};
+type StrategicFunction2Props = {
+  onSelectDepartmentDesignation1: (value: string) => void;
+  onSelectDepartmentDesignation2: (value: string) => void;
+  onSelectDepartmentDesignation3: (value: string) => void;
+  textInputDepartmentDesignation4: (value: string) => void;
+  designationDepartment?: string[];
+  departmentDesignation1: string;
+  departmentDesignation2: string;
+  departmentDesignation3: string;
+  departmentLevelInputDesignation: string;
+};
 
-function StrategicFunction2({}: StrategicFunction2Props) {
+function StrategicFunction2({
+  onSelectDepartmentDesignation1,
+  onSelectDepartmentDesignation2,
+  onSelectDepartmentDesignation3,
+  textInputDepartmentDesignation4,
+  designationDepartment,
+  departmentDesignation1,
+  departmentDesignation2,
+  departmentDesignation3,
+  departmentLevelInputDesignation
+}: StrategicFunction2Props) {
   return (
     <>
       <DepartmentLevelContainer>
@@ -16,24 +36,31 @@ function StrategicFunction2({}: StrategicFunction2Props) {
             inputLabel="Designation 1"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={() => {}}
+            onSelect={onSelectDepartmentDesignation1}
+            val={designationDepartment?.[0]}
+            selected={[departmentDesignation2, departmentDesignation3]}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={() => {}}
+            onSelect={onSelectDepartmentDesignation2}
+            val={designationDepartment?.[1]}
+            selected={[departmentDesignation1, departmentDesignation3]}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={() => {}}
+            onSelect={onSelectDepartmentDesignation3}
+            val={designationDepartment?.[2]}
+            selected={[departmentDesignation1, departmentDesignation2]}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
             uploadLabel="Upload approved department designation here:"
-            onChangeTextInput={() => {}}
+            onChangeTextInput={textInputDepartmentDesignation4}
+            val={departmentLevelInputDesignation}
           />
         </div>
       </DepartmentLevelContainer>
@@ -45,16 +72,18 @@ function StrategicFunction2({}: StrategicFunction2Props) {
             options={DROPDOWN_LISTS.DESIGNATION_SPORTS_SOCIO_TRAINOR_ACADEMIC}
             onSelect={() => {}}
           />
-          {/* <DropdownWithUpload
+          <DropdownWithUpload
             inputLabel="Designation as Member of University-Wide AdHoc Committee"
             uploadLabel="Upload approved designation here:"
-            options={DROPDOWN_LISTS.DESIGNATION_}
+            options={DROPDOWN_LISTS.ACADEMIC_RANK}
+            onSelect={() => {}}
           />
           <DropdownWithUpload
             inputLabel="Designation as Academic Adviser"
             uploadLabel="Upload list of advisees here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-          /> */}
+            onSelect={() => {}}
+          />
         </div>
       </DepartmentLevelContainer>
     </>

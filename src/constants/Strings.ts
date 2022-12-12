@@ -114,7 +114,7 @@ export const DROPDOWN_LISTS = {
     "College/Campus Student Misdemeanor Member"
   ],
   DESIGNATION_DEPARTMENT_LEVEL: [
-    "",
+    "-----",
     "Department Coordinator",
     "Department MISO",
     "IMDU Chair/Member"

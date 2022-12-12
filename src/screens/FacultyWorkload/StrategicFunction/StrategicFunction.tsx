@@ -24,9 +24,6 @@ const StrategicFunction = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
-    string[] | undefined
-  >([]);
   const [
     designationAsSportTrainorAcademic,
     setDesignationAsSportTrainorAcademic
@@ -290,6 +287,9 @@ const StrategicFunction = () => {
   >([]);
   const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
     useState<string[]>([]);
+  const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
+    string[]
+  >([]);
 
   const [designationUniversity1, setDesignationUniversity1] = useState("");
   const [designationUniversity2, setDesignationUniversity2] = useState("");
@@ -302,12 +302,18 @@ const StrategicFunction = () => {
   const [collegeCampusDesignation3, setCollegeCampusDesignation3] =
     useState("");
 
+  const [departmentDesignation1, setDepartmentDesignation1] = useState("");
+  const [departmentDesignation2, setDepartmentDesignation2] = useState("");
+  const [departmentDesignation3, setDepartmentDesignation3] = useState("");
+
   const [universityLevelInputDesignation, setUniversityLevelInputDesignation] =
     useState("");
   const [
     collegeCampusLevelInputDesignation,
     setCollegeCampusLevelInputDesignation
   ] = useState("");
+  const [departmentLevelInputDesignation, setDepartmentLevelInputDesignation] =
+    useState("");
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length > 0) {
@@ -357,6 +363,30 @@ const StrategicFunction = () => {
     }
   };
 
+  const onSelectDepartmentDesignation1 = (value: string) => {
+    if (value.length > 0) {
+      setDepartmentDesignation1(value);
+    }
+  };
+
+  const onSelectDepartmentDesignation2 = (value: string) => {
+    if (value.length > 0) {
+      setDepartmentDesignation2(value);
+    }
+  };
+
+  const onSelectDepartmentDesignation3 = (value: string) => {
+    if (value.length > 0) {
+      setDepartmentDesignation3(value);
+    }
+  };
+
+  const textInputDepartmentDesignation4 = (value: string) => {
+    if (value.length > 0) {
+      setDepartmentLevelInputDesignation(value);
+    }
+  };
+
   const onNextSubmit = () => {
     if (steps === 1) {
       setDesignationUniversityLevel(
@@ -375,17 +405,33 @@ const StrategicFunction = () => {
           collegeCampusLevelInputDesignation
         ].filter(Boolean)
       );
+      setDesignationDepartmentLevel(
+        [
+          departmentDesignation1,
+          departmentDesignation2,
+          departmentDesignation3,
+          departmentLevelInputDesignation
+        ].filter(Boolean)
+      );
     }
     setSteps(steps + 1);
-    if (steps === 3) console.log(strategicFunctionWorkload);
+    if (steps === 3) {
+      setIsSubmitting(true);
+      console.log(strategicFunctionWorkload);
+    }
   };
 
   useEffect(() => {
     setStrategicFunctionWorkload({
       designationUniversityLevel,
-      designationCollegeCampusLevel
+      designationCollegeCampusLevel,
+      designationDepartmentLevel
     });
-  }, [designationUniversityLevel]);
+  }, [
+    designationUniversityLevel,
+    designationCollegeCampusLevel,
+    designationDepartmentLevel
+  ]);
 
   return (
     <MainContainer>
@@ -426,7 +472,21 @@ const StrategicFunction = () => {
               }
             />
           )}
-          {steps === 2 && <StrategicFunction2 />}
+          {steps === 2 && (
+            <StrategicFunction2
+              onSelectDepartmentDesignation1={onSelectDepartmentDesignation1}
+              onSelectDepartmentDesignation2={onSelectDepartmentDesignation2}
+              onSelectDepartmentDesignation3={onSelectDepartmentDesignation3}
+              textInputDepartmentDesignation4={textInputDepartmentDesignation4}
+              designationDepartment={
+                strategicFunctionWorkload?.designationDepartmentLevel
+              }
+              departmentDesignation1={departmentDesignation1}
+              departmentDesignation2={departmentDesignation2}
+              departmentDesignation3={departmentDesignation3}
+              departmentLevelInputDesignation={departmentLevelInputDesignation}
+            />
+          )}
           <Buttons>
             {steps > 1 && (
               <ButtonContainer>
