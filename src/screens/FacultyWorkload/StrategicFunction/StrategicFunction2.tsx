@@ -14,6 +14,12 @@ type StrategicFunction2Props = {
   departmentDesignation2: string;
   departmentDesignation3: string;
   departmentLevelInputDesignation: string;
+  textInputSportsSocioDesignation: (value: string) => void;
+  textInputMemberUniversityWideDesignation: (value: string) => void;
+  textInputAcademicAdviserDesignation: (value: string) => void;
+  sportsSocioInputDesignation: string;
+  memberUniversityWideInputDesignation: string;
+  academicAdviserInputDesignation: string;
 };
 
 function StrategicFunction2({
@@ -25,7 +31,13 @@ function StrategicFunction2({
   departmentDesignation1,
   departmentDesignation2,
   departmentDesignation3,
-  departmentLevelInputDesignation
+  departmentLevelInputDesignation,
+  textInputSportsSocioDesignation,
+  textInputMemberUniversityWideDesignation,
+  textInputAcademicAdviserDesignation,
+  sportsSocioInputDesignation,
+  memberUniversityWideInputDesignation,
+  academicAdviserInputDesignation
 }: StrategicFunction2Props) {
   return (
     <>
@@ -66,23 +78,23 @@ function StrategicFunction2({
       </DepartmentLevelContainer>
       <DepartmentLevelContainer>
         <div>
-          <DropdownWithUpload
+          <TextInputWithUpload
             inputLabel="Designation as Sports/Socio-Cultural Coach or Trainor and Academic Organization Adviser"
             uploadLabel="Upload coach or adviser certificate here:"
-            options={DROPDOWN_LISTS.DESIGNATION_SPORTS_SOCIO_TRAINOR_ACADEMIC}
-            onSelect={() => {}}
+            onChangeTextInput={textInputSportsSocioDesignation}
+            val={sportsSocioInputDesignation}
           />
-          <DropdownWithUpload
+          <TextInputWithUpload
             inputLabel="Designation as Member of University-Wide AdHoc Committee"
             uploadLabel="Upload approved designation here:"
-            options={DROPDOWN_LISTS.ACADEMIC_RANK}
-            onSelect={() => {}}
+            onChangeTextInput={textInputMemberUniversityWideDesignation}
+            val={memberUniversityWideInputDesignation}
           />
-          <DropdownWithUpload
+          <TextInputWithUpload
             inputLabel="Designation as Academic Adviser"
             uploadLabel="Upload list of advisees here:"
-            options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
-            onSelect={() => {}}
+            onChangeTextInput={textInputAcademicAdviserDesignation}
+            val={academicAdviserInputDesignation}
           />
         </div>
       </DepartmentLevelContainer>

@@ -40,6 +40,7 @@ const Label = styled.label`
   text-overflow: ellipsis;
   display: block;
   overflow: hidden;
+  max-width: 260px;
 `;
 
 const InputContainer = styled.div`

@@ -314,76 +314,102 @@ const StrategicFunction = () => {
   ] = useState("");
   const [departmentLevelInputDesignation, setDepartmentLevelInputDesignation] =
     useState("");
+  const [sportsSocioInputDesignation, setSportsSocioInputDesignation] =
+    useState("");
+  const [
+    memberUniversityWideInputDesignation,
+    setMemberUniversityWideInputDesignation
+  ] = useState("");
+  const [academicAdviserInputDesignation, setAcademicAdviserInputDesignation] =
+    useState("");
 
   const onSelectDesignationUniversity1 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDesignationUniversity1(value);
     }
   };
 
   const onSelectDesignationUniversity2 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDesignationUniversity2(value);
     }
   };
 
   const onSelectDesignationUniversity3 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDesignationUniversity3(value);
     }
   };
 
   const textInputDesignationUniversity4 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setUniversityLevelInputDesignation(value);
     }
   };
 
   const onSelectCollegeCampusDesignation1 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setCollegeCampusDesignation1(value);
     }
   };
 
   const onSelectCollegeCampusDesignation2 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setCollegeCampusDesignation2(value);
     }
   };
 
   const onSelectCollegeCampusDesignation3 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setCollegeCampusDesignation3(value);
     }
   };
 
   const textInputCollegeCampusDesignation4 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setCollegeCampusLevelInputDesignation(value);
     }
   };
 
   const onSelectDepartmentDesignation1 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDepartmentDesignation1(value);
     }
   };
 
   const onSelectDepartmentDesignation2 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDepartmentDesignation2(value);
     }
   };
 
   const onSelectDepartmentDesignation3 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDepartmentDesignation3(value);
     }
   };
 
   const textInputDepartmentDesignation4 = (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 0 || value !== "") {
       setDepartmentLevelInputDesignation(value);
+    }
+  };
+
+  const textInputSportsSocioDesignation = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setSportsSocioInputDesignation(value);
+    }
+  };
+
+  const textInputMemberUniversityWideDesignation = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setMemberUniversityWideInputDesignation(value);
+    }
+  };
+
+  const textInputAcademicAdviserDesignation = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setAcademicAdviserInputDesignation(value);
     }
   };
 
@@ -405,6 +431,9 @@ const StrategicFunction = () => {
           collegeCampusLevelInputDesignation
         ].filter(Boolean)
       );
+    }
+    setSteps(steps + 1);
+    if (steps === 3) {
       setDesignationDepartmentLevel(
         [
           departmentDesignation1,
@@ -413,24 +442,32 @@ const StrategicFunction = () => {
           departmentLevelInputDesignation
         ].filter(Boolean)
       );
-    }
-    setSteps(steps + 1);
-    if (steps === 3) {
       setIsSubmitting(true);
       console.log(strategicFunctionWorkload);
     }
   };
 
   useEffect(() => {
-    setStrategicFunctionWorkload({
-      designationUniversityLevel,
-      designationCollegeCampusLevel,
-      designationDepartmentLevel
-    });
+    if (isSubmitting) {
+      setStrategicFunctionWorkload({
+        ...strategicFunctionWorkload,
+        designationDepartmentLevel,
+        designationAsSportTrainorAcademic: sportsSocioInputDesignation,
+        designationAsMemberOfAdhoc: memberUniversityWideInputDesignation,
+        totalOfAcademicAdvisees: academicAdviserInputDesignation
+      });
+    } else {
+      setStrategicFunctionWorkload({
+        designationUniversityLevel,
+        designationCollegeCampusLevel
+      });
+    }
   }, [
     designationUniversityLevel,
     designationCollegeCampusLevel,
-    designationDepartmentLevel
+    designationDepartmentLevel,
+    designationDepartmentLevel,
+    isSubmitting
   ]);
 
   return (
@@ -485,6 +522,18 @@ const StrategicFunction = () => {
               departmentDesignation2={departmentDesignation2}
               departmentDesignation3={departmentDesignation3}
               departmentLevelInputDesignation={departmentLevelInputDesignation}
+              textInputSportsSocioDesignation={textInputSportsSocioDesignation}
+              textInputMemberUniversityWideDesignation={
+                textInputMemberUniversityWideDesignation
+              }
+              textInputAcademicAdviserDesignation={
+                textInputAcademicAdviserDesignation
+              }
+              sportsSocioInputDesignation={sportsSocioInputDesignation}
+              memberUniversityWideInputDesignation={
+                memberUniversityWideInputDesignation
+              }
+              academicAdviserInputDesignation={academicAdviserInputDesignation}
             />
           )}
           <Buttons>
