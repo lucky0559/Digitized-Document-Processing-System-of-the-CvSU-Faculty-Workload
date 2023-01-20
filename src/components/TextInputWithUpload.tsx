@@ -32,6 +32,7 @@ function TextInputWithUpload({
 const Container = styled.div`
   display: flex;
   width: 100%;
+  padding-top: 30px;
 `;
 
 const Label = styled.label`

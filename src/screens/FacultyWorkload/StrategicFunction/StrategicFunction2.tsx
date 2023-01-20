@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
+import TextInputWithTitlePointUpload from "../../../components/TextInputWithTitlePointsUpload";
 import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
+import { DesignationWithTitleAndPoints } from "./StrategicFunction";
 
 type StrategicFunction2Props = {
   onSelectDepartmentDesignation1: (value: string) => void;
@@ -14,12 +16,15 @@ type StrategicFunction2Props = {
   departmentDesignation2: string;
   departmentDesignation3: string;
   departmentLevelInputDesignation: string;
-  textInputSportsSocioDesignation: (value: string) => void;
-  textInputMemberUniversityWideDesignation: (value: string) => void;
-  textInputAcademicAdviserDesignation: (value: string) => void;
-  sportsSocioInputDesignation: string;
-  memberUniversityWideInputDesignation: string;
-  academicAdviserInputDesignation: string;
+  textInputSportsSocioDesignationTitle: (value: string) => void;
+  textInputSportsSocioDesignationPoints: (value: string) => void;
+  textInputMemberUniversityWideDesignationTitle: (value: string) => void;
+  textInputMemberUniversityWideDesignationPoints: (value: string) => void;
+  textInputAcademicAdviserDesignationTitle: (value: string) => void;
+  textInputAcademicAdviserDesignationPoints: (value: string) => void;
+  sportsSocioInputDesignation?: DesignationWithTitleAndPoints;
+  memberUniversityWideInputDesignation?: DesignationWithTitleAndPoints;
+  academicAdviserInputDesignation?: DesignationWithTitleAndPoints;
 };
 
 function StrategicFunction2({
@@ -32,9 +37,12 @@ function StrategicFunction2({
   departmentDesignation2,
   departmentDesignation3,
   departmentLevelInputDesignation,
-  textInputSportsSocioDesignation,
-  textInputMemberUniversityWideDesignation,
-  textInputAcademicAdviserDesignation,
+  textInputSportsSocioDesignationTitle,
+  textInputSportsSocioDesignationPoints,
+  textInputMemberUniversityWideDesignationTitle,
+  textInputMemberUniversityWideDesignationPoints,
+  textInputAcademicAdviserDesignationTitle,
+  textInputAcademicAdviserDesignationPoints,
   sportsSocioInputDesignation,
   memberUniversityWideInputDesignation,
   academicAdviserInputDesignation
@@ -78,23 +86,33 @@ function StrategicFunction2({
       </DepartmentLevelContainer>
       <DepartmentLevelContainer>
         <div>
-          <TextInputWithUpload
+          <TextInputWithTitlePointUpload
             inputLabel="Designation as Sports/Socio-Cultural Coach or Trainor and Academic Organization Adviser"
             uploadLabel="Upload coach or adviser certificate here:"
-            onChangeTextInput={textInputSportsSocioDesignation}
-            val={sportsSocioInputDesignation}
+            onChangeTextInputTitle={textInputSportsSocioDesignationTitle}
+            onChangeTextInputPoints={textInputSportsSocioDesignationPoints}
+            titleVal={sportsSocioInputDesignation?.title}
+            pointsVal={sportsSocioInputDesignation?.points}
           />
-          <TextInputWithUpload
+          <TextInputWithTitlePointUpload
             inputLabel="Designation as Member of University-Wide AdHoc Committee"
             uploadLabel="Upload approved designation here:"
-            onChangeTextInput={textInputMemberUniversityWideDesignation}
-            val={memberUniversityWideInputDesignation}
+            onChangeTextInputTitle={
+              textInputMemberUniversityWideDesignationTitle
+            }
+            onChangeTextInputPoints={
+              textInputMemberUniversityWideDesignationPoints
+            }
+            titleVal={memberUniversityWideInputDesignation?.title}
+            pointsVal={memberUniversityWideInputDesignation?.points}
           />
-          <TextInputWithUpload
+          <TextInputWithTitlePointUpload
             inputLabel="Designation as Academic Adviser"
             uploadLabel="Upload list of advisees here:"
-            onChangeTextInput={textInputAcademicAdviserDesignation}
-            val={academicAdviserInputDesignation}
+            onChangeTextInputTitle={textInputAcademicAdviserDesignationTitle}
+            onChangeTextInputPoints={textInputAcademicAdviserDesignationPoints}
+            titleVal={academicAdviserInputDesignation?.title}
+            pointsVal={academicAdviserInputDesignation?.points}
           />
         </div>
       </DepartmentLevelContainer>
