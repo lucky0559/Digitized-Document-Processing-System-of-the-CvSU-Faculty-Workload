@@ -8,8 +8,10 @@ type DropdownWithUploadProps = {
   options: string[];
   uploadLabel: string;
   onSelect: (value: string) => void;
+  onFileSelect: (file?: File) => void;
   val?: string;
   selected?: string[];
+  fileName?: string;
 };
 
 function DropdownWithUpload({
@@ -18,7 +20,9 @@ function DropdownWithUpload({
   options,
   val,
   selected,
-  onSelect
+  fileName,
+  onSelect,
+  onFileSelect
 }: DropdownWithUploadProps) {
   return (
     <Container>
@@ -33,7 +37,10 @@ function DropdownWithUpload({
       </InputContainer>
       <UploadContainer>
         <Label>{uploadLabel}</Label>
-        <UploadFileButton fileHandler={() => {}} workloadFileName={""} />
+        <UploadFileButton
+          fileHandler={onFileSelect}
+          workloadFileName={fileName}
+        />
       </UploadContainer>
     </Container>
   );

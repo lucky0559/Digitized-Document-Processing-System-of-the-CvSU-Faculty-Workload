@@ -52,7 +52,7 @@ function StrategicFunction2({
       <DepartmentLevelContainer>
         <LevelLabel>Designation at the Department Level</LevelLabel>
         <div>
-          <DropdownWithUpload
+          {/* <DropdownWithUpload
             inputLabel="Designation 1"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
@@ -75,7 +75,7 @@ function StrategicFunction2({
             onSelect={onSelectDepartmentDesignation3}
             val={designationDepartment?.[2]}
             selected={[departmentDesignation1, departmentDesignation2]}
-          />
+          /> */}
           <TextInputWithUpload
             inputLabel="Other Designation"
             uploadLabel="Upload approved department designation here:"

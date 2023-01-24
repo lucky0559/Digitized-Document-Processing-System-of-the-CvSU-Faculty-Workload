@@ -17,11 +17,16 @@ type StrategicFunction1Props = {
   onCollegeCampusLevelSelect2: (value: string) => void;
   onCollegeCampusLevelSelect3: (value: string) => void;
   textInputCollegeCampusLevel4: (value: string) => void;
-  designationCollegeCampus?: string[];
   collegeCampusLevelInputDesignation: string;
   displayDesignationCollegeCampus1: string | undefined;
   displayDesignationCollegeCampus2: string | undefined;
   displayDesignationCollegeCampus3: string | undefined;
+  onFileUniversityLevelSelect1: (file?: File) => void;
+  onFileUniversityLevelSelect2: (file?: File) => void;
+  onFileUniversityLevelSelect3: (file?: File) => void;
+  universityLevelFileName1?: string;
+  universityLevelFileName2?: string;
+  universityLevelFileName3?: string;
 };
 
 function StrategicFunction1({
@@ -37,11 +42,16 @@ function StrategicFunction1({
   onCollegeCampusLevelSelect2,
   onCollegeCampusLevelSelect3,
   textInputCollegeCampusLevel4,
-  designationCollegeCampus,
   collegeCampusLevelInputDesignation,
   displayDesignationCollegeCampus1,
   displayDesignationCollegeCampus2,
-  displayDesignationCollegeCampus3
+  displayDesignationCollegeCampus3,
+  onFileUniversityLevelSelect1,
+  onFileUniversityLevelSelect2,
+  onFileUniversityLevelSelect3,
+  universityLevelFileName1,
+  universityLevelFileName2,
+  universityLevelFileName3
 }: StrategicFunction1Props) {
   return (
     <>
@@ -58,6 +68,8 @@ function StrategicFunction1({
               displayDesignationUniversity2!,
               displayDesignationUniversity3!
             ]}
+            onFileSelect={onFileUniversityLevelSelect1}
+            fileName={universityLevelFileName1}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
@@ -69,6 +81,8 @@ function StrategicFunction1({
               displayDesignationUniversity1!,
               displayDesignationUniversity3!
             ]}
+            onFileSelect={onFileUniversityLevelSelect2}
+            fileName={universityLevelFileName2}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
@@ -80,6 +94,8 @@ function StrategicFunction1({
               displayDesignationUniversity1!,
               displayDesignationUniversity2!
             ]}
+            onFileSelect={onFileUniversityLevelSelect3}
+            fileName={universityLevelFileName3}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
@@ -102,6 +118,7 @@ function StrategicFunction1({
               displayDesignationCollegeCampus2!,
               displayDesignationCollegeCampus3!
             ]}
+            onFileSelect={onFileUniversityLevelSelect1}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
@@ -113,6 +130,7 @@ function StrategicFunction1({
               displayDesignationCollegeCampus1!,
               displayDesignationCollegeCampus3!
             ]}
+            onFileSelect={onFileUniversityLevelSelect1}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
@@ -124,6 +142,7 @@ function StrategicFunction1({
               displayDesignationCollegeCampus1!,
               displayDesignationCollegeCampus2!
             ]}
+            onFileSelect={onFileUniversityLevelSelect1}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"

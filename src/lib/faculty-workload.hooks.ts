@@ -154,11 +154,34 @@ export const SaveStrategicFunctionWorkload = async (
     strategicFunctionWorkload.approvedDesignationFile &&
     strategicFunctionWorkload.listOfAdviseesFile
   ) {
+    let approvedUniversityDesignationFile1;
+    let approvedUniversityDesignationFile2;
+    let approvedUniversityDesignationFile3;
     try {
-      const approvedUniversityDesignationFile =
-        await approvedUniversityDesignationS3.uploadFile(
-          strategicFunctionWorkload.approvedUniversityDesignationFile
-        );
+      if (strategicFunctionWorkload.approvedUniversityDesignationFile[0]) {
+        approvedUniversityDesignationFile1 =
+          await approvedUniversityDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedUniversityDesignationFile[0]
+          );
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+          approvedUniversityDesignationFile1?.location;
+      }
+      if (strategicFunctionWorkload.approvedUniversityDesignationFile[1]) {
+        approvedUniversityDesignationFile2 =
+          await approvedUniversityDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedUniversityDesignationFile[1]
+          );
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+          approvedUniversityDesignationFile2?.location;
+      }
+      if (strategicFunctionWorkload.approvedUniversityDesignationFile[2]) {
+        approvedUniversityDesignationFile3 =
+          await approvedUniversityDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedUniversityDesignationFile[2]
+          );
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+          approvedUniversityDesignationFile3?.location;
+      }
       const approvedCollegeCampusDesignationFile =
         await approvedCollegeCampusDesignationS3.uploadFile(
           strategicFunctionWorkload.approvedCollegeCampusDesignationFile
@@ -177,8 +200,7 @@ export const SaveStrategicFunctionWorkload = async (
       const approvedDesignationFile = await approvedDesignationS3.uploadFile(
         strategicFunctionWorkload.approvedDesignationFile
       );
-      strategicFunctionWorkload.approvedUniversityDesignationFilePath =
-        approvedUniversityDesignationFile.location;
+
       strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
         approvedCollegeCampusDesignationFile.location;
       strategicFunctionWorkload.approvedDepartmentDesignationFilePath =
