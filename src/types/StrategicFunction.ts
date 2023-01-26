@@ -3,7 +3,7 @@ export type StrategicFunctionType = {
   approvedUniversityDesignationFile?: File[];
   approvedUniversityDesignationFilePath?: string;
   designationCollegeCampusLevel?: string[];
-  approvedCollegeCampusDesignationFile?: File;
+  approvedCollegeCampusDesignationFile?: File[];
   approvedCollegeCampusDesignationFilePath?: string;
   designationDepartmentLevel?: string[];
   approvedDepartmentDesignationFile?: File;

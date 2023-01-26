@@ -24,9 +24,19 @@ type StrategicFunction1Props = {
   onFileUniversityLevelSelect1: (file?: File) => void;
   onFileUniversityLevelSelect2: (file?: File) => void;
   onFileUniversityLevelSelect3: (file?: File) => void;
+  onFileCustomUniversityLevelSelect: (file?: File) => void;
   universityLevelFileName1?: string;
   universityLevelFileName2?: string;
   universityLevelFileName3?: string;
+  customUniversityFileName?: string;
+  onFileCollegeCampusLevelSelect1: (file?: File) => void;
+  onFileCollegeCampusLevelSelect2: (file?: File) => void;
+  onFileCollegeCampusLevelSelect3: (file?: File) => void;
+  onFileCustomCollegeCampusLevelSelect: (file?: File) => void;
+  collegeCampusLevelFileName1?: string;
+  collegeCampusLevelFileName2?: string;
+  collegeCampusLevelFileName3?: string;
+  customcollegeCampusLevelFileName?: string;
 };
 
 function StrategicFunction1({
@@ -49,9 +59,19 @@ function StrategicFunction1({
   onFileUniversityLevelSelect1,
   onFileUniversityLevelSelect2,
   onFileUniversityLevelSelect3,
+  onFileCustomUniversityLevelSelect,
   universityLevelFileName1,
   universityLevelFileName2,
-  universityLevelFileName3
+  universityLevelFileName3,
+  customUniversityFileName,
+  onFileCollegeCampusLevelSelect1,
+  onFileCollegeCampusLevelSelect2,
+  onFileCollegeCampusLevelSelect3,
+  onFileCustomCollegeCampusLevelSelect,
+  collegeCampusLevelFileName1,
+  collegeCampusLevelFileName2,
+  collegeCampusLevelFileName3,
+  customcollegeCampusLevelFileName
 }: StrategicFunction1Props) {
   return (
     <>
@@ -102,6 +122,8 @@ function StrategicFunction1({
             uploadLabel="Upload approved university designation here:"
             onChangeTextInput={textInputUniversityLevel4}
             val={universityLevelInputDesignation}
+            onFileSelect={onFileCustomUniversityLevelSelect}
+            fileName={customUniversityFileName}
           />
         </div>
       </UniversityLevelContainer>
@@ -118,7 +140,8 @@ function StrategicFunction1({
               displayDesignationCollegeCampus2!,
               displayDesignationCollegeCampus3!
             ]}
-            onFileSelect={onFileUniversityLevelSelect1}
+            onFileSelect={onFileCollegeCampusLevelSelect1}
+            fileName={collegeCampusLevelFileName1}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
@@ -130,7 +153,8 @@ function StrategicFunction1({
               displayDesignationCollegeCampus1!,
               displayDesignationCollegeCampus3!
             ]}
-            onFileSelect={onFileUniversityLevelSelect1}
+            onFileSelect={onFileCollegeCampusLevelSelect2}
+            fileName={collegeCampusLevelFileName2}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
@@ -142,13 +166,16 @@ function StrategicFunction1({
               displayDesignationCollegeCampus1!,
               displayDesignationCollegeCampus2!
             ]}
-            onFileSelect={onFileUniversityLevelSelect1}
+            onFileSelect={onFileCollegeCampusLevelSelect3}
+            fileName={collegeCampusLevelFileName3}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
             uploadLabel="Upload approved college designation here:"
             onChangeTextInput={textInputCollegeCampusLevel4}
             val={collegeCampusLevelInputDesignation}
+            onFileSelect={onFileCustomCollegeCampusLevelSelect}
+            fileName={customcollegeCampusLevelFileName}
           />
         </div>
       </CollegeCampusLevelContainer>

@@ -157,7 +157,11 @@ export const SaveStrategicFunctionWorkload = async (
     let approvedUniversityDesignationFile1;
     let approvedUniversityDesignationFile2;
     let approvedUniversityDesignationFile3;
+    let approvedCollegeCampusDesignationFile1;
+    let approvedCollegeCampusDesignationFile2;
+    let approvedCollegeCampusDesignationFile3;
     try {
+      // UNIVERSITY
       if (strategicFunctionWorkload.approvedUniversityDesignationFile[0]) {
         approvedUniversityDesignationFile1 =
           await approvedUniversityDesignationS3.uploadFile(
@@ -182,10 +186,32 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.approvedUniversityDesignationFilePath =
           approvedUniversityDesignationFile3?.location;
       }
-      const approvedCollegeCampusDesignationFile =
-        await approvedCollegeCampusDesignationS3.uploadFile(
-          strategicFunctionWorkload.approvedCollegeCampusDesignationFile
-        );
+      // COLLEGE CAMPUS
+      if (strategicFunctionWorkload.approvedCollegeCampusDesignationFile[0]) {
+        approvedCollegeCampusDesignationFile1 =
+          await approvedCollegeCampusDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedCollegeCampusDesignationFile[0]
+          );
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+          approvedCollegeCampusDesignationFile1.location;
+      }
+      if (strategicFunctionWorkload.approvedCollegeCampusDesignationFile[1]) {
+        approvedCollegeCampusDesignationFile2 =
+          await approvedCollegeCampusDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedCollegeCampusDesignationFile[1]
+          );
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+          approvedCollegeCampusDesignationFile2.location;
+      }
+      if (strategicFunctionWorkload.approvedCollegeCampusDesignationFile[2]) {
+        approvedCollegeCampusDesignationFile3 =
+          await approvedCollegeCampusDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedCollegeCampusDesignationFile[2]
+          );
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+          approvedCollegeCampusDesignationFile3.location;
+      }
+      //
       const approvedDepartmentDesignationFile =
         await approvedDepartmentDesignationS3.uploadFile(
           strategicFunctionWorkload.approvedDepartmentDesignationFile
@@ -201,8 +227,6 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.approvedDesignationFile
       );
 
-      strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
-        approvedCollegeCampusDesignationFile.location;
       strategicFunctionWorkload.approvedDepartmentDesignationFilePath =
         approvedDepartmentDesignationFile.location;
       strategicFunctionWorkload.coachAdviserCertificateFilePath =

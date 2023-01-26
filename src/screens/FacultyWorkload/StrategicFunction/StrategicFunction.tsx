@@ -45,8 +45,13 @@ const StrategicFunction = () => {
   // ] = useState<File[]>();
   const approvedUniversityDesignationFile: File[] = [];
   const [
-    approvedCollegeCampusDesignationFile,
-    setApprovedCollegeCampusDesignationFile
+    customApprovedUniversityDesignationFile,
+    setCustomApprovedUniversityDesignationFile
+  ] = useState<File>();
+  const approvedCollegeCampusDesignationFile: File[] = [];
+  const [
+    customApprovedCollegeCampusDesignationFile,
+    setCustomApprovedCollegeCampusDesignationFile
   ] = useState<File>();
   const [
     approvedDepartmentDesignationFile,
@@ -67,13 +72,27 @@ const StrategicFunction = () => {
   const approvedUniversityDesignationFileHandler1 = (value?: File) => {
     approvedUniversityDesignationFile[0] = value!;
   };
-
   const approvedUniversityDesignationFileHandler2 = (value?: File) => {
     approvedUniversityDesignationFile[1] = value!;
   };
-
   const approvedUniversityDesignationFileHandler3 = (value?: File) => {
     approvedUniversityDesignationFile[2] = value!;
+  };
+  const customApprovedUniversityDesignationFileHandler = (value?: File) => {
+    setCustomApprovedUniversityDesignationFile(value);
+  };
+
+  const approvedCollegeCampusDesignationFileHandler1 = (value?: File) => {
+    approvedCollegeCampusDesignationFile[0] = value!;
+  };
+  const approvedCollegeCampusDesignationFileHandler2 = (value?: File) => {
+    approvedCollegeCampusDesignationFile[1] = value!;
+  };
+  const approvedCollegeCampusDesignationFileHandler3 = (value?: File) => {
+    approvedCollegeCampusDesignationFile[2] = value!;
+  };
+  const customApprovedCollegeCampusDesignationFileHandler = (value?: File) => {
+    setCustomApprovedCollegeCampusDesignationFile(value);
   };
 
   // const setDesignationUniversityLevelHandler = (
@@ -505,6 +524,7 @@ const StrategicFunction = () => {
 
   const onNextSubmit = () => {
     if (steps === 1) {
+      // UNIVERSITY
       if (
         approvedUniversityDesignationFile.length !== 0 ||
         strategicFunctionWorkload?.approvedUniversityDesignationFile?.length! <
@@ -571,6 +591,73 @@ const StrategicFunction = () => {
           });
         }
         console.log(approvedUniversityDesignationFile);
+      }
+      // COLEGE CAMPUS
+      if (
+        approvedCollegeCampusDesignationFile.length !== 0 ||
+        strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
+          ?.length! < approvedCollegeCampusDesignationFile.length
+      ) {
+        if (
+          approvedCollegeCampusDesignationFile[0] &&
+          approvedCollegeCampusDesignationFile[1] &&
+          approvedCollegeCampusDesignationFile[2]
+        ) {
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        } else if (
+          approvedCollegeCampusDesignationFile[0] &&
+          approvedCollegeCampusDesignationFile[1]
+        ) {
+          approvedCollegeCampusDesignationFile[2] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        } else if (
+          approvedCollegeCampusDesignationFile[0] &&
+          approvedCollegeCampusDesignationFile[2]
+        ) {
+          approvedCollegeCampusDesignationFile[1] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        } else if (
+          approvedCollegeCampusDesignationFile[1] &&
+          approvedCollegeCampusDesignationFile[2]
+        ) {
+          approvedCollegeCampusDesignationFile[0] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        } else if (approvedCollegeCampusDesignationFile[0]) {
+          approvedCollegeCampusDesignationFile[1] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
+          approvedCollegeCampusDesignationFile[2] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        } else if (approvedCollegeCampusDesignationFile[1]) {
+          approvedCollegeCampusDesignationFile[0] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
+          approvedCollegeCampusDesignationFile[2] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        } else if (approvedCollegeCampusDesignationFile[2]) {
+          approvedCollegeCampusDesignationFile[0] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
+          approvedCollegeCampusDesignationFile[1] =
+            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
+          setStrategicFunctionWorkload({
+            approvedCollegeCampusDesignationFile
+          });
+        }
       }
       setSteps(steps + 1);
     }
@@ -796,7 +883,8 @@ const StrategicFunction = () => {
             designationCollegeCampusLevel?.[2]
         ) {
           setStrategicFunctionWorkload({
-            designationCollegeCampusLevel
+            designationCollegeCampusLevel,
+            approvedCollegeCampusDesignationFile
           });
         }
       }
@@ -849,6 +937,12 @@ const StrategicFunction = () => {
               onFileUniversityLevelSelect3={
                 approvedUniversityDesignationFileHandler3
               }
+              onFileCustomUniversityLevelSelect={
+                customApprovedUniversityDesignationFileHandler
+              }
+              customUniversityFileName={
+                customApprovedUniversityDesignationFile?.name
+              }
               universityLevelFileName1={
                 strategicFunctionWorkload
                   ?.approvedUniversityDesignationFile?.[0]?.name
@@ -860,6 +954,33 @@ const StrategicFunction = () => {
               universityLevelFileName3={
                 strategicFunctionWorkload
                   ?.approvedUniversityDesignationFile?.[2]?.name
+              }
+              onFileCollegeCampusLevelSelect1={
+                approvedCollegeCampusDesignationFileHandler1
+              }
+              onFileCollegeCampusLevelSelect2={
+                approvedCollegeCampusDesignationFileHandler2
+              }
+              onFileCollegeCampusLevelSelect3={
+                approvedCollegeCampusDesignationFileHandler3
+              }
+              onFileCustomCollegeCampusLevelSelect={
+                customApprovedCollegeCampusDesignationFileHandler
+              }
+              collegeCampusLevelFileName1={
+                strategicFunctionWorkload
+                  ?.approvedCollegeCampusDesignationFile?.[0]?.name
+              }
+              collegeCampusLevelFileName2={
+                strategicFunctionWorkload
+                  ?.approvedCollegeCampusDesignationFile?.[1]?.name
+              }
+              collegeCampusLevelFileName3={
+                strategicFunctionWorkload
+                  ?.approvedCollegeCampusDesignationFile?.[2]?.name
+              }
+              customcollegeCampusLevelFileName={
+                customApprovedCollegeCampusDesignationFile?.name
               }
             />
           )}

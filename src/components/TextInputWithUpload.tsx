@@ -7,13 +7,17 @@ type TextInputWithUploadProps = {
   uploadLabel: string;
   onChangeTextInput: (value: string) => void;
   val?: string;
+  onFileSelect: (file?: File) => void;
+  fileName?: string;
 };
 
 function TextInputWithUpload({
   inputLabel,
   uploadLabel,
   val,
-  onChangeTextInput
+  onChangeTextInput,
+  onFileSelect,
+  fileName
 }: TextInputWithUploadProps) {
   return (
     <Container>
@@ -23,7 +27,10 @@ function TextInputWithUpload({
       </InputContainer>
       <UploadContainer>
         <Label>{uploadLabel}</Label>
-        <UploadFileButton fileHandler={() => {}} workloadFileName={""} />
+        <UploadFileButton
+          fileHandler={onFileSelect}
+          workloadFileName={fileName}
+        />
       </UploadContainer>
     </Container>
   );

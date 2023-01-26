@@ -81,6 +81,7 @@ function StrategicFunction2({
             uploadLabel="Upload approved department designation here:"
             onChangeTextInput={textInputDepartmentDesignation4}
             val={departmentLevelInputDesignation}
+            onFileSelect={() => {}}
           />
         </div>
       </DepartmentLevelContainer>
