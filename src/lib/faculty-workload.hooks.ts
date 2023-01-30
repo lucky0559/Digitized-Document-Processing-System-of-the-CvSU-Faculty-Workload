@@ -160,6 +160,9 @@ export const SaveStrategicFunctionWorkload = async (
     let approvedCollegeCampusDesignationFile1;
     let approvedCollegeCampusDesignationFile2;
     let approvedCollegeCampusDesignationFile3;
+    let approvedDepartmentDesignationFile1;
+    let approvedDepartmentDesignationFile2;
+    let approvedDepartmentDesignationFile3;
     try {
       // UNIVERSITY
       if (strategicFunctionWorkload.approvedUniversityDesignationFile[0]) {
@@ -211,11 +214,16 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
           approvedCollegeCampusDesignationFile3.location;
       }
-      //
-      const approvedDepartmentDesignationFile =
-        await approvedDepartmentDesignationS3.uploadFile(
-          strategicFunctionWorkload.approvedDepartmentDesignationFile
-        );
+      // DEPARTMENT
+      if (strategicFunctionWorkload.approvedDepartmentDesignationFile[0]) {
+        approvedDepartmentDesignationFile1 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.approvedDepartmentDesignationFile[0]
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath =
+          approvedDepartmentDesignationFile1.location;
+      }
+
       const coachAdviserCertificateFile =
         await coachAdviserCertificateS3.uploadFile(
           strategicFunctionWorkload.coachAdviserCertificateFile
@@ -227,8 +235,6 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.approvedDesignationFile
       );
 
-      strategicFunctionWorkload.approvedDepartmentDesignationFilePath =
-        approvedDepartmentDesignationFile.location;
       strategicFunctionWorkload.coachAdviserCertificateFilePath =
         coachAdviserCertificateFile.location;
       strategicFunctionWorkload.approvedDesignationFilePath =

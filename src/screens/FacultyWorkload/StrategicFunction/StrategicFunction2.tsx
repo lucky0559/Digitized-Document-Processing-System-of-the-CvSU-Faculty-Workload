@@ -16,6 +16,17 @@ type StrategicFunction2Props = {
   departmentDesignation2: string;
   departmentDesignation3: string;
   departmentLevelInputDesignation: string;
+  displayDesignationDepartment1: string | undefined;
+  displayDesignationDepartment2: string | undefined;
+  displayDesignationDepartment3: string | undefined;
+  departmentLevelFileName1?: string;
+  departmentLevelFileName2?: string;
+  departmentLevelFileName3?: string;
+  customDepartmentFileName?: string;
+  onFileDepartmentLevelSelect1: (file?: File) => void;
+  onFileDepartmentLevelSelect2: (file?: File) => void;
+  onFileDepartmentLevelSelect3: (file?: File) => void;
+  onFileCustomDepartmentLevelSelect: (file?: File) => void;
   textInputSportsSocioDesignationTitle: (value: string) => void;
   textInputSportsSocioDesignationPoints: (value: string) => void;
   textInputMemberUniversityWideDesignationTitle: (value: string) => void;
@@ -45,43 +56,70 @@ function StrategicFunction2({
   textInputAcademicAdviserDesignationPoints,
   sportsSocioInputDesignation,
   memberUniversityWideInputDesignation,
-  academicAdviserInputDesignation
+  academicAdviserInputDesignation,
+  displayDesignationDepartment1,
+  displayDesignationDepartment2,
+  displayDesignationDepartment3,
+  departmentLevelFileName1,
+  departmentLevelFileName2,
+  departmentLevelFileName3,
+  customDepartmentFileName,
+  onFileDepartmentLevelSelect1,
+  onFileDepartmentLevelSelect2,
+  onFileDepartmentLevelSelect3,
+  onFileCustomDepartmentLevelSelect
 }: StrategicFunction2Props) {
   return (
     <>
       <DepartmentLevelContainer>
         <LevelLabel>Designation at the Department Level</LevelLabel>
         <div>
-          {/* <DropdownWithUpload
+          <DropdownWithUpload
             inputLabel="Designation 1"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation1}
-            val={designationDepartment?.[0]}
-            selected={[departmentDesignation2, departmentDesignation3]}
+            val={displayDesignationDepartment1}
+            selected={[
+              displayDesignationDepartment2!,
+              displayDesignationDepartment3!
+            ]}
+            onFileSelect={onFileDepartmentLevelSelect1}
+            fileName={departmentLevelFileName1}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation2}
-            val={designationDepartment?.[1]}
-            selected={[departmentDesignation1, departmentDesignation3]}
+            val={displayDesignationDepartment2}
+            selected={[
+              displayDesignationDepartment1!,
+              displayDesignationDepartment3!
+            ]}
+            onFileSelect={onFileDepartmentLevelSelect2}
+            fileName={departmentLevelFileName2}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
             uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation3}
-            val={designationDepartment?.[2]}
-            selected={[departmentDesignation1, departmentDesignation2]}
-          /> */}
+            val={displayDesignationDepartment3}
+            selected={[
+              displayDesignationDepartment1!,
+              displayDesignationDepartment2!
+            ]}
+            onFileSelect={onFileDepartmentLevelSelect3}
+            fileName={departmentLevelFileName3}
+          />
           <TextInputWithUpload
             inputLabel="Other Designation"
             uploadLabel="Upload approved department designation here:"
             onChangeTextInput={textInputDepartmentDesignation4}
             val={departmentLevelInputDesignation}
-            onFileSelect={() => {}}
+            onFileSelect={onFileCustomDepartmentLevelSelect}
+            fileName={customDepartmentFileName}
           />
         </div>
       </DepartmentLevelContainer>
