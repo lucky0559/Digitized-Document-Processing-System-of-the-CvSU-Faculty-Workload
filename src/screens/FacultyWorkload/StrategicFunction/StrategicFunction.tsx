@@ -1198,6 +1198,8 @@ const StrategicFunction = () => {
         //   setIsSubmitting(false);
         //   // window.location.reload();
         // }
+        console.log(strategicFunctionWorkload);
+        setIsSubmitting(false);
       }
 
       if (designationUniversityLevel!.length > 0) {
