@@ -10,6 +10,8 @@ type TextInputWithTitlePointUploadProps = {
   onChangeTextInputPoints: (value: string) => void;
   titleVal?: string;
   pointsVal?: string;
+  fileHandler: (value?: File) => void;
+  fileName?: string;
 };
 
 function TextInputWithTitlePointUpload({
@@ -18,7 +20,9 @@ function TextInputWithTitlePointUpload({
   titleVal,
   pointsVal,
   onChangeTextInputTitle,
-  onChangeTextInputPoints
+  onChangeTextInputPoints,
+  fileHandler,
+  fileName
 }: TextInputWithTitlePointUploadProps) {
   return (
     <Container>
@@ -43,7 +47,10 @@ function TextInputWithTitlePointUpload({
       </InputContainer>
       <UploadContainer>
         <Label>{uploadLabel}</Label>
-        <UploadFileButton fileHandler={() => {}} workloadFileName={""} />
+        <UploadFileButton
+          fileHandler={fileHandler}
+          workloadFileName={fileName}
+        />
       </UploadContainer>
     </Container>
   );

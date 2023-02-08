@@ -19,6 +19,12 @@ export type DesignationWithTitleAndPoints = {
   points: string;
 };
 
+type DesignationWithPoints = {
+  title?: string;
+  points?: string;
+  file?: File;
+};
+
 const StrategicFunction = () => {
   const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
     useState<StrategicFunctionType>();
@@ -58,6 +64,11 @@ const StrategicFunction = () => {
     customApprovedDepartmentDesignationFile,
     setCustomApprovedDepartmentDesignationFile
   ] = useState<File>();
+  const [sportsSocio, setSportsSocio] = useState<DesignationWithPoints>();
+  const [memberUniversity, setMemberUniversity] =
+    useState<DesignationWithPoints>();
+  const [academicAdviser, setAcademicAdviser] =
+    useState<DesignationWithPoints>();
   const [coachAdviserCertificateFile, setCoachAdviserCertificateFile] =
     useState<File>();
   const [approvedDesignationFile, setApprovedDesignationFile] =
@@ -368,13 +379,19 @@ const StrategicFunction = () => {
     setDisplayCollegeCampusDesignation3
   ] = useState<string | undefined>("");
 
-  const [departmentDesignation1, setDepartmentDesignation1] = useState("");
+  const [departmentDesignation1, setDepartmentDesignation1] = useState<
+    string | undefined
+  >("");
   const [displayDepartmentDesignation1, setDisplayDepartmentDesignation1] =
     useState<string | undefined>("");
-  const [departmentDesignation2, setDepartmentDesignation2] = useState("");
+  const [departmentDesignation2, setDepartmentDesignation2] = useState<
+    string | undefined
+  >("");
   const [displayDepartmentDesignation2, setDisplayDepartmentDesignation2] =
     useState<string | undefined>("");
-  const [departmentDesignation3, setDepartmentDesignation3] = useState("");
+  const [departmentDesignation3, setDepartmentDesignation3] = useState<
+    string | undefined
+  >("");
   const [displayDepartmentDesignation3, setDisplayDepartmentDesignation3] =
     useState<string | undefined>("");
 
@@ -527,6 +544,81 @@ const StrategicFunction = () => {
     }
   };
 
+  const textInputTitleSportsSocio = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setSportsSocio({
+        ...sportsSocio,
+        title: value
+      });
+    }
+  };
+
+  const textInputPointsSportsSocio = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setSportsSocio({
+        ...sportsSocio,
+        points: value
+      });
+    }
+  };
+
+  const fileHandlerSportsSocio = (value?: File) => {
+    setSportsSocio({
+      ...sportsSocio,
+      file: value
+    });
+  };
+
+  const textInputTitleMemberUniversity = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setMemberUniversity({
+        ...memberUniversity,
+        title: value
+      });
+    }
+  };
+
+  const textInputPointsMemberUniversity = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setMemberUniversity({
+        ...memberUniversity,
+        points: value
+      });
+    }
+  };
+
+  const fileHandlerMemberUniversity = (value?: File) => {
+    setMemberUniversity({
+      ...memberUniversity,
+      file: value
+    });
+  };
+
+  const textInputTitleAcademicAdviser = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setAcademicAdviser({
+        ...academicAdviser,
+        title: value
+      });
+    }
+  };
+
+  const textInputPointsAcademicAdviser = (value: string) => {
+    if (value.length >= 0 || value !== "") {
+      setAcademicAdviser({
+        ...academicAdviser,
+        points: value
+      });
+    }
+  };
+
+  const fileHandlerAcademicAdviser = (value?: File) => {
+    setAcademicAdviser({
+      ...academicAdviser,
+      file: value
+    });
+  };
+
   const backHandler = () => {
     // console.log(approvedDepartmentDesignationFile);
 
@@ -542,6 +634,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[2]
       ) {
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       } else if (
@@ -551,6 +644,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[2] =
           strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       } else if (
@@ -560,6 +654,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[1] =
           strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       } else if (
@@ -569,6 +664,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[0] =
           strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       } else if (approvedDepartmentDesignationFile[0]) {
@@ -577,6 +673,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[2] =
           strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       } else if (approvedDepartmentDesignationFile[1]) {
@@ -585,6 +682,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[2] =
           strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       } else if (approvedDepartmentDesignationFile[2]) {
@@ -593,6 +691,7 @@ const StrategicFunction = () => {
         approvedDepartmentDesignationFile[1] =
           strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
         setStrategicFunctionWorkload({
+          ...strategicFunctionWorkload,
           approvedDepartmentDesignationFile
         });
       }
@@ -614,6 +713,10 @@ const StrategicFunction = () => {
 
   const onNextSubmit = () => {
     if (steps === 1) {
+      console.log(strategicFunctionWorkload?.approvedUniversityDesignationFile);
+      console.log(
+        strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
+      );
       // UNIVERSITY
       if (
         approvedUniversityDesignationFile.length !== 0 ||
@@ -626,6 +729,7 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[2]
         ) {
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         } else if (
@@ -635,6 +739,7 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[2] =
             strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         } else if (
@@ -644,6 +749,7 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[1] =
             strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         } else if (
@@ -653,6 +759,7 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[0] =
             strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         } else if (approvedUniversityDesignationFile[0]) {
@@ -661,6 +768,7 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[2] =
             strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         } else if (approvedUniversityDesignationFile[1]) {
@@ -669,6 +777,7 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[2] =
             strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         } else if (approvedUniversityDesignationFile[2]) {
@@ -677,10 +786,10 @@ const StrategicFunction = () => {
           approvedUniversityDesignationFile[1] =
             strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile
           });
         }
-        console.log(approvedUniversityDesignationFile);
       }
       // COLEGE CAMPUS
       if (
@@ -694,6 +803,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[2]
         ) {
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         } else if (
@@ -703,6 +813,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[2] =
             strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         } else if (
@@ -712,6 +823,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[1] =
             strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         } else if (
@@ -721,6 +833,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[0] =
             strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         } else if (approvedCollegeCampusDesignationFile[0]) {
@@ -729,6 +842,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[2] =
             strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         } else if (approvedCollegeCampusDesignationFile[1]) {
@@ -737,6 +851,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[2] =
             strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         } else if (approvedCollegeCampusDesignationFile[2]) {
@@ -745,6 +860,7 @@ const StrategicFunction = () => {
           approvedCollegeCampusDesignationFile[1] =
             strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
           setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         }
@@ -752,14 +868,88 @@ const StrategicFunction = () => {
       setSteps(steps + 1);
     }
     if (steps === 3) {
-      setDesignationDepartmentLevel(
-        [
-          departmentDesignation1,
-          departmentDesignation2,
-          departmentDesignation3,
-          departmentLevelInputDesignation
-        ].filter(Boolean)
-      );
+      // DEPARTMENT CAMPUS
+      if (
+        approvedDepartmentDesignationFile.length !== 0 ||
+        strategicFunctionWorkload?.approvedDepartmentDesignationFile?.length! <
+          approvedDepartmentDesignationFile.length
+      ) {
+        if (
+          approvedDepartmentDesignationFile[0] &&
+          approvedDepartmentDesignationFile[1] &&
+          approvedDepartmentDesignationFile[2]
+        ) {
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        } else if (
+          approvedDepartmentDesignationFile[0] &&
+          approvedDepartmentDesignationFile[1]
+        ) {
+          approvedDepartmentDesignationFile[2] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        } else if (
+          approvedDepartmentDesignationFile[0] &&
+          approvedDepartmentDesignationFile[2]
+        ) {
+          approvedDepartmentDesignationFile[1] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        } else if (
+          approvedDepartmentDesignationFile[1] &&
+          approvedDepartmentDesignationFile[2]
+        ) {
+          approvedDepartmentDesignationFile[0] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        } else if (approvedDepartmentDesignationFile[0]) {
+          approvedDepartmentDesignationFile[1] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
+          approvedDepartmentDesignationFile[2] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        } else if (approvedDepartmentDesignationFile[1]) {
+          approvedDepartmentDesignationFile[0] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
+          approvedDepartmentDesignationFile[2] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        } else if (approvedDepartmentDesignationFile[2]) {
+          approvedDepartmentDesignationFile[0] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
+          approvedDepartmentDesignationFile[1] =
+            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
+          setStrategicFunctionWorkload({
+            ...strategicFunctionWorkload,
+            approvedDepartmentDesignationFile
+          });
+        }
+      }
+      // setDesignationDepartmentLevel(
+      //   [
+      //     departmentDesignation1,
+      //     departmentDesignation2,
+      //     departmentDesignation3,
+      //     departmentLevelInputDesignation
+      //   ].filter(Boolean)
+      // );
       setIsSubmitting(true);
     }
   };
@@ -1011,6 +1201,7 @@ const StrategicFunction = () => {
       }
 
       if (designationUniversityLevel!.length > 0) {
+        console.log(designationUniversityLevel);
         if (
           strategicFunctionWorkload?.designationUniversityLevel?.[0] !==
             designationUniversityLevel?.[0] ||
@@ -1020,7 +1211,7 @@ const StrategicFunction = () => {
             designationUniversityLevel?.[2]
         ) {
           setStrategicFunctionWorkload({
-            designationUniversityLevel,
+            ...strategicFunctionWorkload,
             approvedUniversityDesignationFile: approvedUniversityDesignationFile
           });
         }
@@ -1036,7 +1227,7 @@ const StrategicFunction = () => {
             designationCollegeCampusLevel?.[2]
         ) {
           setStrategicFunctionWorkload({
-            designationCollegeCampusLevel,
+            ...strategicFunctionWorkload,
             approvedCollegeCampusDesignationFile
           });
         }
@@ -1053,7 +1244,7 @@ const StrategicFunction = () => {
         ) {
           setStrategicFunctionWorkload({
             ...strategicFunctionWorkload,
-            designationDepartmentLevel
+            approvedDepartmentDesignationFile
           });
         }
       }
@@ -1166,36 +1357,7 @@ const StrategicFunction = () => {
               displayDesignationDepartment1={designationDepartmentLevel[0]}
               displayDesignationDepartment2={designationDepartmentLevel[1]}
               displayDesignationDepartment3={designationDepartmentLevel[2]}
-              designationDepartment={
-                strategicFunctionWorkload?.designationDepartmentLevel
-              }
-              departmentDesignation1={departmentDesignation1}
-              departmentDesignation2={departmentDesignation2}
-              departmentDesignation3={departmentDesignation3}
               departmentLevelInputDesignation={departmentLevelInputDesignation}
-              textInputSportsSocioDesignationTitle={
-                textInputSportsSocioDesignationTitle
-              }
-              textInputSportsSocioDesignationPoints={
-                textInputSportsSocioDesignationPoints
-              }
-              textInputMemberUniversityWideDesignationTitle={
-                textInputMemberUniversityWideDesignationTitle
-              }
-              textInputMemberUniversityWideDesignationPoints={
-                textInputMemberUniversityWideDesignationPoints
-              }
-              textInputAcademicAdviserDesignationTitle={
-                textInputAcademicAdviserDesignationTitle
-              }
-              textInputAcademicAdviserDesignationPoints={
-                textInputAcademicAdviserDesignationPoints
-              }
-              sportsSocioInputDesignation={sportsSocioInputDesignation}
-              memberUniversityWideInputDesignation={
-                memberUniversityWideInputDesignation
-              }
-              academicAdviserInputDesignation={academicAdviserInputDesignation}
               onFileDepartmentLevelSelect1={
                 approvedDepartmentDesignationFileHandler1
               }
@@ -1223,6 +1385,34 @@ const StrategicFunction = () => {
               customDepartmentFileName={
                 customApprovedDepartmentDesignationFile?.name
               }
+              onTextInputSportsSocioDesignationTitle={textInputTitleSportsSocio}
+              onTextInputSportsSocioDesignationPoints={
+                textInputPointsSportsSocio
+              }
+              sportsSocioTitle={sportsSocio?.title}
+              sportsSocioPoints={sportsSocio?.points}
+              fileHandlerSportsSocio={fileHandlerSportsSocio}
+              fileNameSportsSocio={sportsSocio?.file?.name}
+              onTextInputMemberUniversityWideDesignationTitle={
+                textInputTitleMemberUniversity
+              }
+              onTextInputMemberUniversityWideDesignationPoints={
+                textInputPointsMemberUniversity
+              }
+              memberUniversityTitle={memberUniversity?.title}
+              memberUniversityPoints={memberUniversity?.points}
+              fileHandlerMemberUniversity={fileHandlerMemberUniversity}
+              fileNameMemberUniversity={memberUniversity?.file?.name}
+              onTextInputAcademicAdviserDesignationTitle={
+                textInputTitleAcademicAdviser
+              }
+              onTextInputAcademicAdviserDesignationPoints={
+                textInputPointsAcademicAdviser
+              }
+              academicAdviserTitle={academicAdviser?.title}
+              academicAdviserPoints={academicAdviser?.points}
+              fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
+              fileNameAcademicAdviser={academicAdviser?.file?.name}
             />
           )}
           <Buttons>
