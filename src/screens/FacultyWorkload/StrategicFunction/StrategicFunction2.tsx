@@ -11,7 +11,7 @@ type StrategicFunction2Props = {
   onSelectDepartmentDesignation2: (value: string) => void;
   onSelectDepartmentDesignation3: (value: string) => void;
   textInputDepartmentDesignation4: (value: string) => void;
-  departmentLevelInputDesignation: string;
+  departmentLevelInputDesignation: string | undefined;
   displayDesignationDepartment1: string | undefined;
   displayDesignationDepartment2: string | undefined;
   displayDesignationDepartment3: string | undefined;

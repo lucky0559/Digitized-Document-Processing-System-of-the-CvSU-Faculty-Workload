@@ -19,9 +19,14 @@ export type DesignationWithTitleAndPoints = {
   points: string;
 };
 
-type DesignationWithPoints = {
+export type DesignationWithPoints = {
   title?: string;
   points?: string;
+  file?: File;
+};
+
+export type Designation = {
+  title?: string;
   file?: File;
 };
 
@@ -49,11 +54,10 @@ const StrategicFunction = () => {
   //   approvedUniversityDesignationFile,
   //   setApprovedUniversityDesignationFile
   // ] = useState<File[]>();
-  const approvedUniversityDesignationFile: File[] = [];
   const [
-    customApprovedUniversityDesignationFile,
-    setCustomApprovedUniversityDesignationFile
-  ] = useState<File>();
+    customApprovedUniversityDesignation,
+    setCustomApprovedUniversityDesignation
+  ] = useState<Designation>();
   const approvedCollegeCampusDesignationFile: File[] = [];
   const [
     customApprovedCollegeCampusDesignationFile,
@@ -83,44 +87,80 @@ const StrategicFunction = () => {
 
   // UNIVERSITY FILE SELECT
   const approvedUniversityDesignationFileHandler1 = (value?: File) => {
-    approvedUniversityDesignationFile[0] = value!;
+    setDesignationUniversity1({
+      ...designationUniversity1,
+      file: value
+    });
   };
   const approvedUniversityDesignationFileHandler2 = (value?: File) => {
-    approvedUniversityDesignationFile[1] = value!;
+    setDesignationUniversity2({
+      ...designationUniversity2,
+      file: value
+    });
   };
   const approvedUniversityDesignationFileHandler3 = (value?: File) => {
-    approvedUniversityDesignationFile[2] = value!;
+    setDesignationUniversity3({
+      ...designationUniversity3,
+      file: value
+    });
   };
   const customApprovedUniversityDesignationFileHandler = (value?: File) => {
-    setCustomApprovedUniversityDesignationFile(value);
+    setDesignationUniversity4({
+      ...designationUniversity4,
+      file: value
+    });
   };
 
   // COLLEGE CAMPUS FILE SELECT
   const approvedCollegeCampusDesignationFileHandler1 = (value?: File) => {
-    approvedCollegeCampusDesignationFile[0] = value!;
+    setCollegeCampusDesignation1({
+      ...collegeCampusDesignation1,
+      file: value
+    });
   };
   const approvedCollegeCampusDesignationFileHandler2 = (value?: File) => {
-    approvedCollegeCampusDesignationFile[1] = value!;
+    setCollegeCampusDesignation2({
+      ...collegeCampusDesignation2,
+      file: value
+    });
   };
   const approvedCollegeCampusDesignationFileHandler3 = (value?: File) => {
-    approvedCollegeCampusDesignationFile[2] = value!;
+    setCollegeCampusDesignation3({
+      ...collegeCampusDesignation3,
+      file: value
+    });
   };
   const customApprovedCollegeCampusDesignationFileHandler = (value?: File) => {
-    setCustomApprovedCollegeCampusDesignationFile(value);
+    setCollegeCampusDesignation4({
+      ...collegeCampusDesignation4,
+      file: value
+    });
   };
 
   // DEPARTMENT FILE SELECT
   const approvedDepartmentDesignationFileHandler1 = (value?: File) => {
-    approvedDepartmentDesignationFile[0] = value!;
+    setDepartmentDesignation1({
+      ...departmentDesignation1,
+      file: value
+    });
   };
   const approvedDepartmentDesignationFileHandler2 = (value?: File) => {
-    approvedDepartmentDesignationFile[1] = value!;
+    setDepartmentDesignation2({
+      ...departmentDesignation2,
+      file: value
+    });
   };
   const approvedDepartmentDesignationFileHandler3 = (value?: File) => {
-    approvedDepartmentDesignationFile[2] = value!;
+    setDepartmentDesignation3({
+      ...departmentDesignation3,
+      file: value
+    });
   };
   const customApprovedDepartmentDesignationFileHandler = (value?: File) => {
-    setCustomApprovedDepartmentDesignationFile(value);
+    setDepartmentDesignation4({
+      ...departmentDesignation4,
+      file: value
+    });
   };
 
   // const setDesignationUniversityLevelHandler = (
@@ -345,58 +385,33 @@ const StrategicFunction = () => {
     string[]
   >([]);
 
-  const [designationUniversity1, setDesignationUniversity1] = useState<
-    string | undefined
-  >("");
-  const [displayDesignationUniversity1, setDisplayDesignationUniversity1] =
-    useState<string | undefined>("");
-  const [designationUniversity2, setDesignationUniversity2] = useState("");
-  const [displayDesignationUniversity2, setDisplayDesignationUniversity2] =
-    useState("");
-  const [designationUniversity3, setDesignationUniversity3] = useState("");
-  const [displayDesignationUniversity3, setDisplayDesignationUniversity3] =
-    useState("");
+  const [designationUniversity1, setDesignationUniversity1] =
+    useState<Designation>();
+  const [designationUniversity2, setDesignationUniversity2] =
+    useState<Designation>();
+  const [designationUniversity3, setDesignationUniversity3] =
+    useState<Designation>();
+  const [designationUniversity4, setDesignationUniversity4] =
+    useState<Designation>();
 
-  const [collegeCampusDesignation1, setCollegeCampusDesignation1] = useState<
-    string | undefined
-  >("");
-  const [
-    displayCollegeCampusDesignation1,
-    setDisplayCollegeCampusDesignation1
-  ] = useState<string | undefined>("");
-  const [collegeCampusDesignation2, setCollegeCampusDesignation2] = useState<
-    string | undefined
-  >("");
-  const [
-    displayCollegeCampusDesignation2,
-    setDisplayCollegeCampusDesignation2
-  ] = useState<string | undefined>("");
-  const [collegeCampusDesignation3, setCollegeCampusDesignation3] = useState<
-    string | undefined
-  >("");
-  const [
-    displayCollegeCampusDesignation3,
-    setDisplayCollegeCampusDesignation3
-  ] = useState<string | undefined>("");
+  const [collegeCampusDesignation1, setCollegeCampusDesignation1] =
+    useState<Designation>();
+  const [collegeCampusDesignation2, setCollegeCampusDesignation2] =
+    useState<Designation>();
+  const [collegeCampusDesignation3, setCollegeCampusDesignation3] =
+    useState<Designation>();
+  const [collegeCampusDesignation4, setCollegeCampusDesignation4] =
+    useState<Designation>();
 
-  const [departmentDesignation1, setDepartmentDesignation1] = useState<
-    string | undefined
-  >("");
-  const [displayDepartmentDesignation1, setDisplayDepartmentDesignation1] =
-    useState<string | undefined>("");
-  const [departmentDesignation2, setDepartmentDesignation2] = useState<
-    string | undefined
-  >("");
-  const [displayDepartmentDesignation2, setDisplayDepartmentDesignation2] =
-    useState<string | undefined>("");
-  const [departmentDesignation3, setDepartmentDesignation3] = useState<
-    string | undefined
-  >("");
-  const [displayDepartmentDesignation3, setDisplayDepartmentDesignation3] =
-    useState<string | undefined>("");
+  const [departmentDesignation1, setDepartmentDesignation1] =
+    useState<Designation>();
+  const [departmentDesignation2, setDepartmentDesignation2] =
+    useState<Designation>();
+  const [departmentDesignation3, setDepartmentDesignation3] =
+    useState<Designation>();
+  const [departmentDesignation4, setDepartmentDesignation4] =
+    useState<Designation>();
 
-  const [universityLevelInputDesignation, setUniversityLevelInputDesignation] =
-    useState("");
   const [
     collegeCampusLevelInputDesignation,
     setCollegeCampusLevelInputDesignation
@@ -437,74 +452,110 @@ const StrategicFunction = () => {
   ] = useState("");
 
   const onSelectDesignationUniversity1 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDesignationUniversity1(value);
+    if (value.length >= 0 && value !== "") {
+      setDesignationUniversity1({
+        ...designationUniversity1,
+        title: value
+      });
     }
   };
 
   const onSelectDesignationUniversity2 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDesignationUniversity2(value);
+    if (value.length >= 0 && value !== "") {
+      setDesignationUniversity2({
+        ...designationUniversity2,
+        title: value
+      });
     }
   };
 
   const onSelectDesignationUniversity3 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDesignationUniversity3(value);
+    if (value.length >= 0 && value !== "") {
+      setDesignationUniversity3({
+        ...designationUniversity3,
+        title: value
+      });
     }
   };
 
   const textInputDesignationUniversity4 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setUniversityLevelInputDesignation(value);
+    if (value.length >= 0 && value !== "") {
+      setDesignationUniversity4({
+        ...designationUniversity4,
+        title: value
+      });
     }
   };
 
   const onSelectCollegeCampusDesignation1 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setCollegeCampusDesignation1(value);
+    if (value.length >= 0 && value !== "") {
+      setCollegeCampusDesignation1({
+        ...collegeCampusDesignation1,
+        title: value
+      });
     }
   };
 
   const onSelectCollegeCampusDesignation2 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setCollegeCampusDesignation2(value);
+    if (value.length >= 0 && value !== "") {
+      setCollegeCampusDesignation2({
+        ...collegeCampusDesignation2,
+        title: value
+      });
     }
   };
 
   const onSelectCollegeCampusDesignation3 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setCollegeCampusDesignation3(value);
+    if (value.length >= 0 && value !== "") {
+      setCollegeCampusDesignation3({
+        ...collegeCampusDesignation3,
+        title: value
+      });
     }
   };
 
   const textInputCollegeCampusDesignation4 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setCollegeCampusLevelInputDesignation(value);
+    if (value.length >= 0 && value !== "") {
+      setCollegeCampusDesignation4({
+        ...collegeCampusDesignation4,
+        title: value
+      });
     }
   };
 
   const onSelectDepartmentDesignation1 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDepartmentDesignation1(value);
+    if (value.length >= 0 && value !== "") {
+      setDepartmentDesignation1({
+        ...departmentDesignation1,
+        title: value
+      });
     }
   };
 
   const onSelectDepartmentDesignation2 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDepartmentDesignation2(value);
+    if (value.length >= 0 && value !== "") {
+      setDepartmentDesignation2({
+        ...departmentDesignation2,
+        title: value
+      });
     }
   };
 
   const onSelectDepartmentDesignation3 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDepartmentDesignation3(value);
+    if (value.length >= 0 && value !== "") {
+      setDepartmentDesignation3({
+        ...departmentDesignation3,
+        title: value
+      });
     }
   };
 
   const textInputDepartmentDesignation4 = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setDepartmentLevelInputDesignation(value);
+    if (value.length >= 0 && value !== "") {
+      setDepartmentDesignation4({
+        ...departmentDesignation4,
+        title: value
+      });
     }
   };
 
@@ -545,7 +596,7 @@ const StrategicFunction = () => {
   };
 
   const textInputTitleSportsSocio = (value: string) => {
-    if (value.length >= 0 || value !== "") {
+    if (value.length >= 0 && value !== "") {
       setSportsSocio({
         ...sportsSocio,
         title: value
@@ -554,7 +605,7 @@ const StrategicFunction = () => {
   };
 
   const textInputPointsSportsSocio = (value: string) => {
-    if (value.length >= 0 || value !== "") {
+    if (value.length >= 0 && value !== "") {
       setSportsSocio({
         ...sportsSocio,
         points: value
@@ -570,7 +621,7 @@ const StrategicFunction = () => {
   };
 
   const textInputTitleMemberUniversity = (value: string) => {
-    if (value.length >= 0 || value !== "") {
+    if (value.length >= 0 && value !== "") {
       setMemberUniversity({
         ...memberUniversity,
         title: value
@@ -579,7 +630,7 @@ const StrategicFunction = () => {
   };
 
   const textInputPointsMemberUniversity = (value: string) => {
-    if (value.length >= 0 || value !== "") {
+    if (value.length >= 0 && value !== "") {
       setMemberUniversity({
         ...memberUniversity,
         points: value
@@ -595,7 +646,7 @@ const StrategicFunction = () => {
   };
 
   const textInputTitleAcademicAdviser = (value: string) => {
-    if (value.length >= 0 || value !== "") {
+    if (value.length >= 0 && value !== "") {
       setAcademicAdviser({
         ...academicAdviser,
         title: value
@@ -604,7 +655,7 @@ const StrategicFunction = () => {
   };
 
   const textInputPointsAcademicAdviser = (value: string) => {
-    if (value.length >= 0 || value !== "") {
+    if (value.length >= 0 && value !== "") {
       setAcademicAdviser({
         ...academicAdviser,
         points: value
@@ -617,86 +668,6 @@ const StrategicFunction = () => {
       ...academicAdviser,
       file: value
     });
-  };
-
-  const backHandler = () => {
-    // console.log(approvedDepartmentDesignationFile);
-
-    // DEPARTMENT CAMPUS
-    if (
-      approvedDepartmentDesignationFile.length !== 0 ||
-      strategicFunctionWorkload?.approvedDepartmentDesignationFile?.length! <
-        approvedDepartmentDesignationFile.length
-    ) {
-      if (
-        approvedDepartmentDesignationFile[0] &&
-        approvedDepartmentDesignationFile[1] &&
-        approvedDepartmentDesignationFile[2]
-      ) {
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      } else if (
-        approvedDepartmentDesignationFile[0] &&
-        approvedDepartmentDesignationFile[1]
-      ) {
-        approvedDepartmentDesignationFile[2] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      } else if (
-        approvedDepartmentDesignationFile[0] &&
-        approvedDepartmentDesignationFile[2]
-      ) {
-        approvedDepartmentDesignationFile[1] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      } else if (
-        approvedDepartmentDesignationFile[1] &&
-        approvedDepartmentDesignationFile[2]
-      ) {
-        approvedDepartmentDesignationFile[0] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      } else if (approvedDepartmentDesignationFile[0]) {
-        approvedDepartmentDesignationFile[1] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-        approvedDepartmentDesignationFile[2] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      } else if (approvedDepartmentDesignationFile[1]) {
-        approvedDepartmentDesignationFile[0] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-        approvedDepartmentDesignationFile[2] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      } else if (approvedDepartmentDesignationFile[2]) {
-        approvedDepartmentDesignationFile[0] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-        approvedDepartmentDesignationFile[1] =
-          strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-        setStrategicFunctionWorkload({
-          ...strategicFunctionWorkload,
-          approvedDepartmentDesignationFile
-        });
-      }
-    }
-    setSteps(steps - 1);
   };
 
   // useEffect(() => {
@@ -713,235 +684,232 @@ const StrategicFunction = () => {
 
   const onNextSubmit = () => {
     if (steps === 1) {
-      console.log(strategicFunctionWorkload?.approvedUniversityDesignationFile);
-      console.log(
-        strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
-      );
-      // UNIVERSITY
-      if (
-        approvedUniversityDesignationFile.length !== 0 ||
-        strategicFunctionWorkload?.approvedUniversityDesignationFile?.length! <
-          approvedUniversityDesignationFile.length
-      ) {
-        if (
-          approvedUniversityDesignationFile[0] &&
-          approvedUniversityDesignationFile[1] &&
-          approvedUniversityDesignationFile[2]
-        ) {
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        } else if (
-          approvedUniversityDesignationFile[0] &&
-          approvedUniversityDesignationFile[1]
-        ) {
-          approvedUniversityDesignationFile[2] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        } else if (
-          approvedUniversityDesignationFile[0] &&
-          approvedUniversityDesignationFile[2]
-        ) {
-          approvedUniversityDesignationFile[1] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        } else if (
-          approvedUniversityDesignationFile[1] &&
-          approvedUniversityDesignationFile[2]
-        ) {
-          approvedUniversityDesignationFile[0] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        } else if (approvedUniversityDesignationFile[0]) {
-          approvedUniversityDesignationFile[1] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-          approvedUniversityDesignationFile[2] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        } else if (approvedUniversityDesignationFile[1]) {
-          approvedUniversityDesignationFile[0] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-          approvedUniversityDesignationFile[2] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        } else if (approvedUniversityDesignationFile[2]) {
-          approvedUniversityDesignationFile[0] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-          approvedUniversityDesignationFile[1] =
-            strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile
-          });
-        }
-      }
-      // COLEGE CAMPUS
-      if (
-        approvedCollegeCampusDesignationFile.length !== 0 ||
-        strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
-          ?.length! < approvedCollegeCampusDesignationFile.length
-      ) {
-        if (
-          approvedCollegeCampusDesignationFile[0] &&
-          approvedCollegeCampusDesignationFile[1] &&
-          approvedCollegeCampusDesignationFile[2]
-        ) {
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        } else if (
-          approvedCollegeCampusDesignationFile[0] &&
-          approvedCollegeCampusDesignationFile[1]
-        ) {
-          approvedCollegeCampusDesignationFile[2] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        } else if (
-          approvedCollegeCampusDesignationFile[0] &&
-          approvedCollegeCampusDesignationFile[2]
-        ) {
-          approvedCollegeCampusDesignationFile[1] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        } else if (
-          approvedCollegeCampusDesignationFile[1] &&
-          approvedCollegeCampusDesignationFile[2]
-        ) {
-          approvedCollegeCampusDesignationFile[0] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        } else if (approvedCollegeCampusDesignationFile[0]) {
-          approvedCollegeCampusDesignationFile[1] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-          approvedCollegeCampusDesignationFile[2] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        } else if (approvedCollegeCampusDesignationFile[1]) {
-          approvedCollegeCampusDesignationFile[0] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-          approvedCollegeCampusDesignationFile[2] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        } else if (approvedCollegeCampusDesignationFile[2]) {
-          approvedCollegeCampusDesignationFile[0] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-          approvedCollegeCampusDesignationFile[1] =
-            strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        }
-      }
+      // // UNIVERSITY
+      // if (
+      //   approvedUniversityDesignationFile.length !== 0 ||
+      //   strategicFunctionWorkload?.approvedUniversityDesignationFile?.length! <
+      //     approvedUniversityDesignationFile.length
+      // ) {
+      //   if (
+      //     approvedUniversityDesignationFile[0] &&
+      //     approvedUniversityDesignationFile[1] &&
+      //     approvedUniversityDesignationFile[2]
+      //   ) {
+      //     console.log(approvedUniversityDesignationFile);
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   } else if (
+      //     approvedUniversityDesignationFile[0] &&
+      //     approvedUniversityDesignationFile[1]
+      //   ) {
+      //     approvedUniversityDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   } else if (
+      //     approvedUniversityDesignationFile[0] &&
+      //     approvedUniversityDesignationFile[2]
+      //   ) {
+      //     approvedUniversityDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   } else if (
+      //     approvedUniversityDesignationFile[1] &&
+      //     approvedUniversityDesignationFile[2]
+      //   ) {
+      //     approvedUniversityDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   } else if (approvedUniversityDesignationFile[0]) {
+      //     approvedUniversityDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
+      //     approvedUniversityDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   } else if (approvedUniversityDesignationFile[1]) {
+      //     approvedUniversityDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
+      //     approvedUniversityDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   } else if (approvedUniversityDesignationFile[2]) {
+      //     approvedUniversityDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
+      //     approvedUniversityDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFile
+      //     });
+      //   }
+      // }
+      // // COLEGE CAMPUS
+      // if (
+      //   approvedCollegeCampusDesignationFile.length !== 0 ||
+      //   strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
+      //     ?.length! < approvedCollegeCampusDesignationFile.length
+      // ) {
+      //   if (
+      //     approvedCollegeCampusDesignationFile[0] &&
+      //     approvedCollegeCampusDesignationFile[1] &&
+      //     approvedCollegeCampusDesignationFile[2]
+      //   ) {
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   } else if (
+      //     approvedCollegeCampusDesignationFile[0] &&
+      //     approvedCollegeCampusDesignationFile[1]
+      //   ) {
+      //     approvedCollegeCampusDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   } else if (
+      //     approvedCollegeCampusDesignationFile[0] &&
+      //     approvedCollegeCampusDesignationFile[2]
+      //   ) {
+      //     approvedCollegeCampusDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   } else if (
+      //     approvedCollegeCampusDesignationFile[1] &&
+      //     approvedCollegeCampusDesignationFile[2]
+      //   ) {
+      //     approvedCollegeCampusDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   } else if (approvedCollegeCampusDesignationFile[0]) {
+      //     approvedCollegeCampusDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
+      //     approvedCollegeCampusDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   } else if (approvedCollegeCampusDesignationFile[1]) {
+      //     approvedCollegeCampusDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
+      //     approvedCollegeCampusDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   } else if (approvedCollegeCampusDesignationFile[2]) {
+      //     approvedCollegeCampusDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
+      //     approvedCollegeCampusDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
+      //     setStrategicFunctionWorkload({
+      //       approvedUniversityDesignationFile,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   }
+      // }
       setSteps(steps + 1);
     }
-    if (steps === 3) {
+    if (steps === 2) {
       // DEPARTMENT CAMPUS
-      if (
-        approvedDepartmentDesignationFile.length !== 0 ||
-        strategicFunctionWorkload?.approvedDepartmentDesignationFile?.length! <
-          approvedDepartmentDesignationFile.length
-      ) {
-        if (
-          approvedDepartmentDesignationFile[0] &&
-          approvedDepartmentDesignationFile[1] &&
-          approvedDepartmentDesignationFile[2]
-        ) {
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        } else if (
-          approvedDepartmentDesignationFile[0] &&
-          approvedDepartmentDesignationFile[1]
-        ) {
-          approvedDepartmentDesignationFile[2] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        } else if (
-          approvedDepartmentDesignationFile[0] &&
-          approvedDepartmentDesignationFile[2]
-        ) {
-          approvedDepartmentDesignationFile[1] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        } else if (
-          approvedDepartmentDesignationFile[1] &&
-          approvedDepartmentDesignationFile[2]
-        ) {
-          approvedDepartmentDesignationFile[0] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        } else if (approvedDepartmentDesignationFile[0]) {
-          approvedDepartmentDesignationFile[1] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-          approvedDepartmentDesignationFile[2] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        } else if (approvedDepartmentDesignationFile[1]) {
-          approvedDepartmentDesignationFile[0] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-          approvedDepartmentDesignationFile[2] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        } else if (approvedDepartmentDesignationFile[2]) {
-          approvedDepartmentDesignationFile[0] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-          approvedDepartmentDesignationFile[1] =
-            strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        }
-      }
+      // if (
+      //   approvedDepartmentDesignationFile.length !== 0 ||
+      //   strategicFunctionWorkload?.approvedDepartmentDesignationFile?.length! <
+      //     approvedDepartmentDesignationFile.length
+      // ) {
+      //   if (
+      //     approvedDepartmentDesignationFile[0] &&
+      //     approvedDepartmentDesignationFile[1] &&
+      //     approvedDepartmentDesignationFile[2]
+      //   ) {
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   } else if (
+      //     approvedDepartmentDesignationFile[0] &&
+      //     approvedDepartmentDesignationFile[1]
+      //   ) {
+      //     approvedDepartmentDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   } else if (
+      //     approvedDepartmentDesignationFile[0] &&
+      //     approvedDepartmentDesignationFile[2]
+      //   ) {
+      //     approvedDepartmentDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   } else if (
+      //     approvedDepartmentDesignationFile[1] &&
+      //     approvedDepartmentDesignationFile[2]
+      //   ) {
+      //     approvedDepartmentDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   } else if (approvedDepartmentDesignationFile[0]) {
+      //     approvedDepartmentDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
+      //     approvedDepartmentDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   } else if (approvedDepartmentDesignationFile[1]) {
+      //     approvedDepartmentDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
+      //     approvedDepartmentDesignationFile[2] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   } else if (approvedDepartmentDesignationFile[2]) {
+      //     approvedDepartmentDesignationFile[0] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
+      //     approvedDepartmentDesignationFile[1] =
+      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   }
+      // }
       // setDesignationDepartmentLevel(
       //   [
       //     departmentDesignation1,
@@ -955,202 +923,201 @@ const StrategicFunction = () => {
   };
 
   // DESIGNATION UNIVERSITY
-  useEffect(() => {
-    if (designationUniversity1) {
-      setDisplayDesignationUniversity1(designationUniversity1);
-    }
-    if (designationUniversity2) {
-      setDisplayDesignationUniversity2(designationUniversity2);
-    }
-    if (designationUniversity3) {
-      setDisplayDesignationUniversity3(designationUniversity3);
-    }
-  }, [designationUniversity1, designationUniversity2, designationUniversity3]);
+  // useEffect(() => {
+  //   if (designationUniversity1) {
+  //     setDisplayDesignationUniversity1(designationUniversity1.title);
+  //   }
+  //   if (designationUniversity2) {
+  //     setDisplayDesignationUniversity2(designationUniversity2);
+  //   }
+  //   if (designationUniversity3) {
+  //     setDisplayDesignationUniversity3(designationUniversity3);
+  //   }
+  // }, [designationUniversity1, designationUniversity2, designationUniversity3]);
 
-  useEffect(() => {
-    if (
-      displayDesignationUniversity1 !==
-        strategicFunctionWorkload?.designationUniversityLevel?.[0] ||
-      displayDesignationUniversity2 !==
-        strategicFunctionWorkload?.designationUniversityLevel?.[1] ||
-      displayDesignationUniversity3 !==
-        strategicFunctionWorkload?.designationUniversityLevel?.[2]
-    ) {
-      if (
-        displayDesignationUniversity1 &&
-        displayDesignationUniversity2 &&
-        displayDesignationUniversity3
-      ) {
-        setDesignationUniversityLevel(
-          [
-            displayDesignationUniversity1,
-            displayDesignationUniversity2,
-            displayDesignationUniversity3
-          ].filter(Boolean)
-        );
-      } else if (
-        displayDesignationUniversity1 &&
-        displayDesignationUniversity2
-      ) {
-        setDesignationUniversityLevel(
-          [displayDesignationUniversity1, displayDesignationUniversity2].filter(
-            Boolean
-          )
-        );
-      } else if (displayDesignationUniversity1) {
-        setDesignationUniversityLevel(
-          [displayDesignationUniversity1].filter(Boolean)
-        );
-      } else if (displayDesignationUniversity2) {
-        setDesignationUniversityLevel(
-          [displayDesignationUniversity2].filter(Boolean)
-        );
-      } else if (displayDesignationUniversity3) {
-        setDesignationUniversityLevel(
-          [displayDesignationUniversity3].filter(Boolean)
-        );
-      }
-    }
-  }, [
-    displayDesignationUniversity1,
-    displayDesignationUniversity2,
-    displayDesignationUniversity3
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     displayDesignationUniversity1 !==
+  //       strategicFunctionWorkload?.designationUniversityLevel?.[0] ||
+  //     displayDesignationUniversity2 !==
+  //       strategicFunctionWorkload?.designationUniversityLevel?.[1] ||
+  //     displayDesignationUniversity3 !==
+  //       strategicFunctionWorkload?.designationUniversityLevel?.[2]
+  //   ) {
+  //     if (
+  //       displayDesignationUniversity1 &&
+  //       displayDesignationUniversity2 &&
+  //       displayDesignationUniversity3
+  //     ) {
+  //       setDesignationUniversityLevel(
+  //         [
+  //           displayDesignationUniversity1,
+  //           displayDesignationUniversity2,
+  //           displayDesignationUniversity3
+  //         ].filter(Boolean)
+  //       );
+  //     } else if (
+  //       displayDesignationUniversity1 &&
+  //       displayDesignationUniversity2
+  //     ) {
+  //       setDesignationUniversityLevel(
+  //         [displayDesignationUniversity1, displayDesignationUniversity2].filter(
+  //           Boolean
+  //         )
+  //       );
+  //     } else if (displayDesignationUniversity1) {
+  //       setDesignationUniversityLevel(
+  //         [displayDesignationUniversity1].filter(Boolean)
+  //       );
+  //     } else if (displayDesignationUniversity2) {
+  //       setDesignationUniversityLevel(
+  //         [displayDesignationUniversity2].filter(Boolean)
+  //       );
+  //     } else if (displayDesignationUniversity3) {
+  //       setDesignationUniversityLevel(
+  //         [displayDesignationUniversity3].filter(Boolean)
+  //       );
+  //     }
+  //   }
+  // }, [
+  //   displayDesignationUniversity1,
+  //   displayDesignationUniversity2,
+  //   displayDesignationUniversity3
+  // ]);
 
   // COLLEGE CAMPUS DESIGNATION
-  useEffect(() => {
-    if (collegeCampusDesignation1) {
-      setDisplayCollegeCampusDesignation1(collegeCampusDesignation1);
-    }
-    if (collegeCampusDesignation2) {
-      setDisplayCollegeCampusDesignation2(collegeCampusDesignation2);
-    }
-    if (collegeCampusDesignation3) {
-      setDisplayCollegeCampusDesignation3(collegeCampusDesignation3);
-    }
-  }, [
-    collegeCampusDesignation1,
-    collegeCampusDesignation2,
-    collegeCampusDesignation3
-  ]);
+  // useEffect(() => {
+  //   if (collegeCampusDesignation1) {
+  //     setDisplayCollegeCampusDesignation1(collegeCampusDesignation1);
+  //   }
+  //   if (collegeCampusDesignation2) {
+  //     setDisplayCollegeCampusDesignation2(collegeCampusDesignation2);
+  //   }
+  //   if (collegeCampusDesignation3) {
+  //     setDisplayCollegeCampusDesignation3(collegeCampusDesignation3);
+  //   }
+  // }, [
+  //   collegeCampusDesignation1,
+  //   collegeCampusDesignation2,
+  //   collegeCampusDesignation3
+  // ]);
 
-  useEffect(() => {
-    if (
-      displayCollegeCampusDesignation1 !==
-        strategicFunctionWorkload?.designationCollegeCampusLevel?.[0] ||
-      displayCollegeCampusDesignation2 !==
-        strategicFunctionWorkload?.designationCollegeCampusLevel?.[1] ||
-      displayCollegeCampusDesignation3 !==
-        strategicFunctionWorkload?.designationCollegeCampusLevel?.[2]
-    ) {
-      if (
-        displayCollegeCampusDesignation1 &&
-        displayCollegeCampusDesignation2 &&
-        displayCollegeCampusDesignation3
-      ) {
-        setDesignationCollegeCampusLevel(
-          [
-            displayCollegeCampusDesignation1,
-            displayCollegeCampusDesignation2,
-            displayCollegeCampusDesignation3
-          ].filter(Boolean)
-        );
-      } else if (
-        displayCollegeCampusDesignation1 &&
-        displayCollegeCampusDesignation2
-      ) {
-        setDesignationCollegeCampusLevel(
-          [
-            displayCollegeCampusDesignation1,
-            displayCollegeCampusDesignation2
-          ].filter(Boolean)
-        );
-      } else if (displayCollegeCampusDesignation1) {
-        setDesignationCollegeCampusLevel(
-          [displayCollegeCampusDesignation1].filter(Boolean)
-        );
-      } else if (displayCollegeCampusDesignation2) {
-        setDesignationCollegeCampusLevel(
-          [displayCollegeCampusDesignation2].filter(Boolean)
-        );
-      } else if (displayCollegeCampusDesignation3) {
-        setDesignationCollegeCampusLevel(
-          [displayCollegeCampusDesignation3].filter(Boolean)
-        );
-      }
-    }
-  }, [
-    displayCollegeCampusDesignation1,
-    displayCollegeCampusDesignation2,
-    displayCollegeCampusDesignation3
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     displayCollegeCampusDesignation1 !==
+  //       strategicFunctionWorkload?.designationCollegeCampusLevel?.[0] ||
+  //     displayCollegeCampusDesignation2 !==
+  //       strategicFunctionWorkload?.designationCollegeCampusLevel?.[1] ||
+  //     displayCollegeCampusDesignation3 !==
+  //       strategicFunctionWorkload?.designationCollegeCampusLevel?.[2]
+  //   ) {
+  //     if (
+  //       displayCollegeCampusDesignation1 &&
+  //       displayCollegeCampusDesignation2 &&
+  //       displayCollegeCampusDesignation3
+  //     ) {
+  //       setDesignationCollegeCampusLevel(
+  //         [
+  //           displayCollegeCampusDesignation1,
+  //           displayCollegeCampusDesignation2,
+  //           displayCollegeCampusDesignation3
+  //         ].filter(Boolean)
+  //       );
+  //     } else if (
+  //       displayCollegeCampusDesignation1 &&
+  //       displayCollegeCampusDesignation2
+  //     ) {
+  //       setDesignationCollegeCampusLevel(
+  //         [
+  //           displayCollegeCampusDesignation1,
+  //           displayCollegeCampusDesignation2
+  //         ].filter(Boolean)
+  //       );
+  //     } else if (displayCollegeCampusDesignation1) {
+  //       setDesignationCollegeCampusLevel(
+  //         [displayCollegeCampusDesignation1].filter(Boolean)
+  //       );
+  //     } else if (displayCollegeCampusDesignation2) {
+  //       setDesignationCollegeCampusLevel(
+  //         [displayCollegeCampusDesignation2].filter(Boolean)
+  //       );
+  //     } else if (displayCollegeCampusDesignation3) {
+  //       setDesignationCollegeCampusLevel(
+  //         [displayCollegeCampusDesignation3].filter(Boolean)
+  //       );
+  //     }
+  //   }
+  // }, [
+  //   displayCollegeCampusDesignation1,
+  //   displayCollegeCampusDesignation2,
+  //   displayCollegeCampusDesignation3
+  // ]);
 
   // DEPARTMENT DESIGNATION
-  useEffect(() => {
-    if (departmentDesignation1) {
-      setDisplayDepartmentDesignation1(departmentDesignation1);
-    }
-    if (departmentDesignation2) {
-      setDisplayDepartmentDesignation2(departmentDesignation2);
-    }
-    if (departmentDesignation3) {
-      setDisplayDepartmentDesignation3(departmentDesignation3);
-    }
-  }, [departmentDesignation1, departmentDesignation2, departmentDesignation3]);
+  // useEffect(() => {
+  //   if (departmentDesignation1) {
+  //     setDisplayDepartmentDesignation1(departmentDesignation1);
+  //   }
+  //   if (departmentDesignation2) {
+  //     setDisplayDepartmentDesignation2(departmentDesignation2);
+  //   }
+  //   if (departmentDesignation3) {
+  //     setDisplayDepartmentDesignation3(departmentDesignation3);
+  //   }
+  // }, [departmentDesignation1, departmentDesignation2, departmentDesignation3]);
 
-  useEffect(() => {
-    if (
-      displayDepartmentDesignation1 !==
-        strategicFunctionWorkload?.designationDepartmentLevel?.[0] ||
-      displayDepartmentDesignation2 !==
-        strategicFunctionWorkload?.designationDepartmentLevel?.[1] ||
-      displayDepartmentDesignation3 !==
-        strategicFunctionWorkload?.designationDepartmentLevel?.[2]
-    ) {
-      if (
-        displayDepartmentDesignation1 &&
-        displayDepartmentDesignation2 &&
-        displayDepartmentDesignation3
-      ) {
-        setDesignationDepartmentLevel(
-          [
-            displayDepartmentDesignation1,
-            displayDepartmentDesignation2,
-            displayDepartmentDesignation3
-          ].filter(Boolean)
-        );
-      } else if (
-        displayDepartmentDesignation1 &&
-        displayDepartmentDesignation2
-      ) {
-        setDesignationDepartmentLevel(
-          [displayDepartmentDesignation1, displayDepartmentDesignation2].filter(
-            Boolean
-          )
-        );
-      } else if (displayDepartmentDesignation1) {
-        setDesignationDepartmentLevel(
-          [displayDepartmentDesignation1].filter(Boolean)
-        );
-      } else if (displayDepartmentDesignation2) {
-        setDesignationDepartmentLevel(
-          [displayDepartmentDesignation2].filter(Boolean)
-        );
-      } else if (displayDepartmentDesignation3) {
-        setDesignationDepartmentLevel(
-          [displayDepartmentDesignation3].filter(Boolean)
-        );
-      }
-    }
-  }, [
-    displayDepartmentDesignation1,
-    displayDepartmentDesignation2,
-    displayDepartmentDesignation3
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     displayDepartmentDesignation1 !==
+  //       strategicFunctionWorkload?.designationDepartmentLevel?.[0] ||
+  //     displayDepartmentDesignation2 !==
+  //       strategicFunctionWorkload?.designationDepartmentLevel?.[1] ||
+  //     displayDepartmentDesignation3 !==
+  //       strategicFunctionWorkload?.designationDepartmentLevel?.[2]
+  //   ) {
+  //     if (
+  //       displayDepartmentDesignation1 &&
+  //       displayDepartmentDesignation2 &&
+  //       displayDepartmentDesignation3
+  //     ) {
+  //       setDesignationDepartmentLevel(
+  //         [
+  //           displayDepartmentDesignation1,
+  //           displayDepartmentDesignation2,
+  //           displayDepartmentDesignation3
+  //         ].filter(Boolean)
+  //       );
+  //     } else if (
+  //       displayDepartmentDesignation1 &&
+  //       displayDepartmentDesignation2
+  //     ) {
+  //       setDesignationDepartmentLevel(
+  //         [displayDepartmentDesignation1, displayDepartmentDesignation2].filter(
+  //           Boolean
+  //         )
+  //       );
+  //     } else if (displayDepartmentDesignation1) {
+  //       setDesignationDepartmentLevel(
+  //         [displayDepartmentDesignation1].filter(Boolean)
+  //       );
+  //     } else if (displayDepartmentDesignation2) {
+  //       setDesignationDepartmentLevel(
+  //         [displayDepartmentDesignation2].filter(Boolean)
+  //       );
+  //     } else if (displayDepartmentDesignation3) {
+  //       setDesignationDepartmentLevel(
+  //         [displayDepartmentDesignation3].filter(Boolean)
+  //       );
+  //     }
+  //   }
+  // }, [
+  //   displayDepartmentDesignation1,
+  //   displayDepartmentDesignation2,
+  //   displayDepartmentDesignation3
+  // ]);
 
   useEffect(() => {
     (async () => {
-      // console.log(designationUniversityLevel);
       if (isSubmitting) {
         // if (
         //   strategicFunctionWorkload?.approvedUniversityDesignationFile &&
@@ -1198,62 +1165,90 @@ const StrategicFunction = () => {
         //   setIsSubmitting(false);
         //   // window.location.reload();
         // }
+        // console.log(strategicFunctionWorkload);
+        setStrategicFunctionWorkload({
+          designationUniversityLevel: [
+            designationUniversity1!,
+            designationUniversity2!,
+            designationUniversity3!,
+            designationUniversity4!
+          ].filter(Boolean),
+          designationCollegeCampusLevel: [
+            collegeCampusDesignation1!,
+            collegeCampusDesignation2!,
+            collegeCampusDesignation3!,
+            collegeCampusDesignation4!
+          ],
+          designationAsSportTrainorAcademic: sportsSocio,
+          designationAsMemberOfAdhoc: memberUniversity,
+          academicAdvisees: academicAdviser
+        });
       }
 
-      if (designationUniversityLevel!.length > 0) {
-        console.log(designationUniversityLevel);
-        if (
-          strategicFunctionWorkload?.designationUniversityLevel?.[0] !==
-            designationUniversityLevel?.[0] ||
-          strategicFunctionWorkload?.designationUniversityLevel?.[1] !==
-            designationUniversityLevel?.[1] ||
-          strategicFunctionWorkload?.designationUniversityLevel?.[2] !==
-            designationUniversityLevel?.[2]
-        ) {
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedUniversityDesignationFile: approvedUniversityDesignationFile
-          });
-        }
-      }
+      // if (designationUniversityLevel!.length > 0) {
+      //   if (
+      //     strategicFunctionWorkload?.designationUniversityLevel?.[0] !==
+      //       designationUniversityLevel?.[0] ||
+      //     strategicFunctionWorkload?.designationUniversityLevel?.[1] !==
+      //       designationUniversityLevel?.[1] ||
+      //     strategicFunctionWorkload?.designationUniversityLevel?.[2] !==
+      //       designationUniversityLevel?.[2]
+      //   ) {
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedUniversityDesignationFil
+      //     });
+      //   }
+      // }
 
-      if (designationCollegeCampusLevel!.length > 0) {
-        if (
-          strategicFunctionWorkload?.designationCollegeCampusLevel?.[0] !==
-            designationCollegeCampusLevel?.[0] ||
-          strategicFunctionWorkload?.designationCollegeCampusLevel?.[1] !==
-            designationCollegeCampusLevel?.[1] ||
-          strategicFunctionWorkload?.designationCollegeCampusLevel?.[2] !==
-            designationCollegeCampusLevel?.[2]
-        ) {
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedCollegeCampusDesignationFile
-          });
-        }
-      }
+      // if (designationCollegeCampusLevel!.length > 0) {
+      //   if (
+      //     strategicFunctionWorkload?.designationCollegeCampusLevel?.[0] !==
+      //       designationCollegeCampusLevel?.[0] ||
+      //     strategicFunctionWorkload?.designationCollegeCampusLevel?.[1] !==
+      //       designationCollegeCampusLevel?.[1] ||
+      //     strategicFunctionWorkload?.designationCollegeCampusLevel?.[2] !==
+      //       designationCollegeCampusLevel?.[2]
+      //   ) {
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedCollegeCampusDesignationFile
+      //     });
+      //   }
+      // }
 
-      if (designationDepartmentLevel!.length > 0) {
-        if (
-          strategicFunctionWorkload?.designationDepartmentLevel?.[0] !==
-            designationDepartmentLevel?.[0] ||
-          strategicFunctionWorkload?.designationDepartmentLevel?.[1] !==
-            designationDepartmentLevel?.[1] ||
-          strategicFunctionWorkload?.designationDepartmentLevel?.[2] !==
-            designationDepartmentLevel?.[2]
-        ) {
-          setStrategicFunctionWorkload({
-            ...strategicFunctionWorkload,
-            approvedDepartmentDesignationFile
-          });
-        }
+      // if (designationDepartmentLevel!.length > 0) {
+      //   if (
+      //     strategicFunctionWorkload?.designationDepartmentLevel?.[0] !==
+      //       designationDepartmentLevel?.[0] ||
+      //     strategicFunctionWorkload?.designationDepartmentLevel?.[1] !==
+      //       designationDepartmentLevel?.[1] ||
+      //     strategicFunctionWorkload?.designationDepartmentLevel?.[2] !==
+      //       designationDepartmentLevel?.[2]
+      //   ) {
+      //     setStrategicFunctionWorkload({
+      //       ...strategicFunctionWorkload,
+      //       approvedDepartmentDesignationFile
+      //     });
+      //   }
+      // }
+    })();
+  }, [isSubmitting]);
+
+  useEffect(() => {
+    (async () => {
+      if (isSubmitting) {
+        console.log(strategicFunctionWorkload);
+        setIsSubmitting(false);
+        // try {
+        //   await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
+        //   setIsSubmitting(false);
+        // } catch (e) {
+        //   setIsSubmitting(false);
+        // }
       }
     })();
-  }, [
-    designationUniversityLevel,
-    designationCollegeCampusLevel,
-    designationDepartmentLevel
-  ]);
+  }, [strategicFunctionWorkload]);
 
   return (
     <MainContainer>
@@ -1272,25 +1267,25 @@ const StrategicFunction = () => {
               onUniversityLevelSelect2={onSelectDesignationUniversity2}
               onUniversityLevelSelect3={onSelectDesignationUniversity3}
               textInputUniversityLevel4={textInputDesignationUniversity4}
-              universityLevelInputDesignation={universityLevelInputDesignation}
-              displayDesignationUniversity1={designationUniversityLevel[0]}
-              displayDesignationUniversity2={designationUniversityLevel[1]}
-              displayDesignationUniversity3={designationUniversityLevel[2]}
+              universityLevelInputDesignation={designationUniversity4?.title}
+              displayDesignationUniversity1={designationUniversity1?.title}
+              displayDesignationUniversity2={designationUniversity2?.title}
+              displayDesignationUniversity3={designationUniversity3?.title}
               onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
               onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
               onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
               textInputCollegeCampusLevel4={textInputCollegeCampusDesignation4}
               displayDesignationCollegeCampus1={
-                designationCollegeCampusLevel[0]
+                collegeCampusDesignation1?.title
               }
               displayDesignationCollegeCampus2={
-                designationCollegeCampusLevel[1]
+                collegeCampusDesignation2?.title
               }
               displayDesignationCollegeCampus3={
-                designationCollegeCampusLevel[2]
+                collegeCampusDesignation3?.title
               }
               collegeCampusLevelInputDesignation={
-                collegeCampusLevelInputDesignation
+                collegeCampusDesignation4?.title
               }
               onFileUniversityLevelSelect1={
                 approvedUniversityDesignationFileHandler1
@@ -1304,21 +1299,10 @@ const StrategicFunction = () => {
               onFileCustomUniversityLevelSelect={
                 customApprovedUniversityDesignationFileHandler
               }
-              customUniversityFileName={
-                customApprovedUniversityDesignationFile?.name
-              }
-              universityLevelFileName1={
-                strategicFunctionWorkload
-                  ?.approvedUniversityDesignationFile?.[0]?.name
-              }
-              universityLevelFileName2={
-                strategicFunctionWorkload
-                  ?.approvedUniversityDesignationFile?.[1]?.name
-              }
-              universityLevelFileName3={
-                strategicFunctionWorkload
-                  ?.approvedUniversityDesignationFile?.[2]?.name
-              }
+              customUniversityFileName={designationUniversity4?.file?.name}
+              universityLevelFileName1={designationUniversity1?.file?.name}
+              universityLevelFileName2={designationUniversity2?.file?.name}
+              universityLevelFileName3={designationUniversity3?.file?.name}
               onFileCollegeCampusLevelSelect1={
                 approvedCollegeCampusDesignationFileHandler1
               }
@@ -1332,19 +1316,16 @@ const StrategicFunction = () => {
                 customApprovedCollegeCampusDesignationFileHandler
               }
               collegeCampusLevelFileName1={
-                strategicFunctionWorkload
-                  ?.approvedCollegeCampusDesignationFile?.[0]?.name
+                collegeCampusDesignation1?.file?.name
               }
               collegeCampusLevelFileName2={
-                strategicFunctionWorkload
-                  ?.approvedCollegeCampusDesignationFile?.[1]?.name
+                collegeCampusDesignation2?.file?.name
               }
               collegeCampusLevelFileName3={
-                strategicFunctionWorkload
-                  ?.approvedCollegeCampusDesignationFile?.[2]?.name
+                collegeCampusDesignation3?.file?.name
               }
               customcollegeCampusLevelFileName={
-                customApprovedCollegeCampusDesignationFile?.name
+                collegeCampusDesignation4?.file?.name
               }
             />
           )}
@@ -1354,10 +1335,10 @@ const StrategicFunction = () => {
               onSelectDepartmentDesignation2={onSelectDepartmentDesignation2}
               onSelectDepartmentDesignation3={onSelectDepartmentDesignation3}
               textInputDepartmentDesignation4={textInputDepartmentDesignation4}
-              displayDesignationDepartment1={designationDepartmentLevel[0]}
-              displayDesignationDepartment2={designationDepartmentLevel[1]}
-              displayDesignationDepartment3={designationDepartmentLevel[2]}
-              departmentLevelInputDesignation={departmentLevelInputDesignation}
+              displayDesignationDepartment1={departmentDesignation1?.title}
+              displayDesignationDepartment2={departmentDesignation2?.title}
+              displayDesignationDepartment3={departmentDesignation3?.title}
+              departmentLevelInputDesignation={departmentDesignation4?.title}
               onFileDepartmentLevelSelect1={
                 approvedDepartmentDesignationFileHandler1
               }
@@ -1370,21 +1351,10 @@ const StrategicFunction = () => {
               onFileCustomDepartmentLevelSelect={
                 customApprovedDepartmentDesignationFileHandler
               }
-              departmentLevelFileName1={
-                strategicFunctionWorkload
-                  ?.approvedDepartmentDesignationFile?.[0]?.name
-              }
-              departmentLevelFileName2={
-                strategicFunctionWorkload
-                  ?.approvedDepartmentDesignationFile?.[1]?.name
-              }
-              departmentLevelFileName3={
-                strategicFunctionWorkload
-                  ?.approvedDepartmentDesignationFile?.[2]?.name
-              }
-              customDepartmentFileName={
-                customApprovedDepartmentDesignationFile?.name
-              }
+              departmentLevelFileName1={departmentDesignation1?.file?.name}
+              departmentLevelFileName2={departmentDesignation2?.file?.name}
+              departmentLevelFileName3={departmentDesignation3?.file?.name}
+              customDepartmentFileName={departmentDesignation4?.file?.name}
               onTextInputSportsSocioDesignationTitle={textInputTitleSportsSocio}
               onTextInputSportsSocioDesignationPoints={
                 textInputPointsSportsSocio
@@ -1418,7 +1388,10 @@ const StrategicFunction = () => {
           <Buttons>
             {steps > 1 && (
               <ButtonContainer>
-                <FormButton text="Back" onClicked={backHandler}></FormButton>
+                <FormButton
+                  text="Back"
+                  onClicked={() => setSteps(steps - 1)}
+                ></FormButton>
               </ButtonContainer>
             )}
             <ButtonContainer>
