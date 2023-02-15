@@ -125,7 +125,7 @@ export const SaveExtensionWorkload = async (
 };
 
 export const SaveStrategicFunctionWorkload = async (
-  strategicFunctionWorkload: StrategicFunctionType
+  strategicFunctionWorkload?: StrategicFunctionType
 ) => {
   const userId = localStorage.getItem("userId");
   const approvedUniversityDesignationS3 = new ReactS3Client(
@@ -146,101 +146,157 @@ export const SaveStrategicFunctionWorkload = async (
   const listAdviseesS3 = new ReactS3Client(strategicListOfAdviseesAwsConfig);
 
   if (
-    strategicFunctionWorkload.approvedUniversityDesignationFile &&
-    strategicFunctionWorkload.designationUniversityLevel &&
-    strategicFunctionWorkload.approvedCollegeCampusDesignationFile &&
-    strategicFunctionWorkload.approvedDepartmentDesignationFile &&
-    strategicFunctionWorkload.coachAdviserCertificateFile &&
-    strategicFunctionWorkload.approvedDesignationFile &&
-    strategicFunctionWorkload.listOfAdviseesFile
+    strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 &&
+    strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 &&
+    strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+    strategicFunctionWorkload?.designationAsSportTrainorAcademic &&
+    strategicFunctionWorkload?.designationAsMemberOfAdhoc &&
+    strategicFunctionWorkload?.academicAdvisees
   ) {
     let approvedUniversityDesignationFile1;
     let approvedUniversityDesignationFile2;
     let approvedUniversityDesignationFile3;
+    let approvedUniversityDesignationFile4;
     let approvedCollegeCampusDesignationFile1;
     let approvedCollegeCampusDesignationFile2;
     let approvedCollegeCampusDesignationFile3;
+    let approvedCollegeCampusDesignationFile4;
     let approvedDepartmentDesignationFile1;
     let approvedDepartmentDesignationFile2;
     let approvedDepartmentDesignationFile3;
+    let approvedDepartmentDesignationFile4;
+
+    let sportsTrainorAcademicFile;
+
+    let memberAdhocFile;
+
+    let academicAdviseesFile;
+
     try {
       // UNIVERSITY
-      if (strategicFunctionWorkload.approvedUniversityDesignationFile[0]) {
+      if (strategicFunctionWorkload.designationUniversityLevel?.[0].file) {
         approvedUniversityDesignationFile1 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedUniversityDesignationFile[0]
+            strategicFunctionWorkload.designationUniversityLevel[0].file
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath1 =
           approvedUniversityDesignationFile1?.location;
       }
-      if (strategicFunctionWorkload.approvedUniversityDesignationFile[1]) {
+      if (strategicFunctionWorkload.designationUniversityLevel?.[1].file) {
         approvedUniversityDesignationFile2 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedUniversityDesignationFile[1]
+            strategicFunctionWorkload.designationUniversityLevel[1].file
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath2 =
           approvedUniversityDesignationFile2?.location;
       }
-      if (strategicFunctionWorkload.approvedUniversityDesignationFile[2]) {
+      if (strategicFunctionWorkload.designationUniversityLevel?.[2].file) {
         approvedUniversityDesignationFile3 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedUniversityDesignationFile[2]
+            strategicFunctionWorkload.designationUniversityLevel[2].file
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath =
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath3 =
           approvedUniversityDesignationFile3?.location;
       }
+      if (strategicFunctionWorkload.designationUniversityLevel?.[3].file) {
+        approvedUniversityDesignationFile4 =
+          await approvedUniversityDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationUniversityLevel[3].file
+          );
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath4 =
+          approvedUniversityDesignationFile4?.location;
+      }
       // COLLEGE CAMPUS
-      if (strategicFunctionWorkload.approvedCollegeCampusDesignationFile[0]) {
+      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {
         approvedCollegeCampusDesignationFile1 =
           await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedCollegeCampusDesignationFile[0]
+            strategicFunctionWorkload.designationCollegeCampusLevel[0].file
           );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath1 =
           approvedCollegeCampusDesignationFile1.location;
       }
-      if (strategicFunctionWorkload.approvedCollegeCampusDesignationFile[1]) {
+      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file) {
         approvedCollegeCampusDesignationFile2 =
           await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedCollegeCampusDesignationFile[1]
+            strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file
           );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath2 =
           approvedCollegeCampusDesignationFile2.location;
       }
-      if (strategicFunctionWorkload.approvedCollegeCampusDesignationFile[2]) {
+      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file) {
         approvedCollegeCampusDesignationFile3 =
           await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedCollegeCampusDesignationFile[2]
+            strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file
           );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath =
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath3 =
           approvedCollegeCampusDesignationFile3.location;
       }
+      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file) {
+        approvedCollegeCampusDesignationFile4 =
+          await approvedCollegeCampusDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file
+          );
+        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath4 =
+          approvedCollegeCampusDesignationFile4.location;
+      }
       // DEPARTMENT
-      if (strategicFunctionWorkload.approvedDepartmentDesignationFile[0]) {
+      if (strategicFunctionWorkload.designationDepartmentLevel?.[0].file) {
         approvedDepartmentDesignationFile1 =
           await approvedDepartmentDesignationS3.uploadFile(
-            strategicFunctionWorkload.approvedDepartmentDesignationFile[0]
+            strategicFunctionWorkload.designationDepartmentLevel?.[0].file
           );
-        strategicFunctionWorkload.approvedDepartmentDesignationFilePath =
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath1 =
           approvedDepartmentDesignationFile1.location;
       }
+      if (strategicFunctionWorkload.designationDepartmentLevel?.[1].file) {
+        approvedDepartmentDesignationFile2 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationDepartmentLevel?.[1].file
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath2 =
+          approvedDepartmentDesignationFile2.location;
+      }
+      if (strategicFunctionWorkload.designationDepartmentLevel?.[2].file) {
+        approvedDepartmentDesignationFile3 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationDepartmentLevel?.[2].file
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath3 =
+          approvedDepartmentDesignationFile3.location;
+      }
+      if (strategicFunctionWorkload.designationDepartmentLevel?.[3].file) {
+        approvedDepartmentDesignationFile4 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationDepartmentLevel?.[3].file
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath4 =
+          approvedDepartmentDesignationFile4.location;
+      }
 
-      const coachAdviserCertificateFile =
-        await coachAdviserCertificateS3.uploadFile(
-          strategicFunctionWorkload.coachAdviserCertificateFile
+      if (strategicFunctionWorkload.designationAsSportTrainorAcademic.file) {
+        sportsTrainorAcademicFile = await coachAdviserCertificateS3.uploadFile(
+          strategicFunctionWorkload.designationAsSportTrainorAcademic.file
         );
-      const listAdviseesFile = await listAdviseesS3.uploadFile(
-        strategicFunctionWorkload.listOfAdviseesFile
-      );
-      const approvedDesignationFile = await approvedDesignationS3.uploadFile(
-        strategicFunctionWorkload.approvedDesignationFile
-      );
+      }
 
-      strategicFunctionWorkload.coachAdviserCertificateFilePath =
-        coachAdviserCertificateFile.location;
-      strategicFunctionWorkload.approvedDesignationFilePath =
-        approvedDesignationFile.location;
-      strategicFunctionWorkload.listOfAdviseesFilePath =
-        listAdviseesFile.location;
+      if (strategicFunctionWorkload.designationAsMemberOfAdhoc.file) {
+        memberAdhocFile = await listAdviseesS3.uploadFile(
+          strategicFunctionWorkload.designationAsMemberOfAdhoc.file
+        );
+      }
+
+      if (strategicFunctionWorkload.academicAdvisees?.file) {
+        academicAdviseesFile = await listAdviseesS3.uploadFile(
+          strategicFunctionWorkload.academicAdvisees.file
+        );
+      }
+
+      strategicFunctionWorkload.sportsTrainorAcademicFilePath =
+        sportsTrainorAcademicFile?.location;
+
+      strategicFunctionWorkload.memberAdhocFilePath = memberAdhocFile?.location;
+      strategicFunctionWorkload.academicAdviseesFilePath =
+        academicAdviseesFile?.location;
       const { data } = await axios.post(
         `strategic-function-workload/${userId}/save`,
         strategicFunctionWorkload

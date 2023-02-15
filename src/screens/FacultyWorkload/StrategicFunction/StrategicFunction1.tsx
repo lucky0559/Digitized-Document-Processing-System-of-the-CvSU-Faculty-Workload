@@ -9,7 +9,7 @@ type StrategicFunction1Props = {
   onUniversityLevelSelect2: (value: string) => void;
   onUniversityLevelSelect3: (value: string) => void;
   textInputUniversityLevel4: (value: string) => void;
-  universityLevelInputDesignation: string;
+  universityLevelInputDesignation: string | undefined;
   displayDesignationUniversity1: string | undefined;
   displayDesignationUniversity2: string | undefined;
   displayDesignationUniversity3: string | undefined;
@@ -17,7 +17,7 @@ type StrategicFunction1Props = {
   onCollegeCampusLevelSelect2: (value: string) => void;
   onCollegeCampusLevelSelect3: (value: string) => void;
   textInputCollegeCampusLevel4: (value: string) => void;
-  collegeCampusLevelInputDesignation: string;
+  collegeCampusLevelInputDesignation: string | undefined;
   displayDesignationCollegeCampus1: string | undefined;
   displayDesignationCollegeCampus2: string | undefined;
   displayDesignationCollegeCampus3: string | undefined;
