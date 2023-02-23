@@ -1,18 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Colors from "../constants/Colors";
 
-type MenuProps = {
-  isMenuOpen: boolean;
-};
-
-const Menu = ({ isMenuOpen }: MenuProps) => {
+const Menu = () => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
   const location = window.location.pathname;
   return (
-    <Container isMenuOpen={isMenuOpen}>
+    <Container>
       <NavButtonContainer>
         <NavButtonText
           isActive={location === "/teaching-workload"}
@@ -70,25 +66,12 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
   );
 };
 
-const slideInAnimation = keyframes`
- 0% { left: -248px }
- 100% { left: 0; }
- `;
-
-const slideOutAnimation = keyframes`
- 0% { left: 0 }
- 100% { left: -248px; }
- `;
-
-const Container = styled.div<{ isMenuOpen: boolean }>`
+const Container = styled.div`
   width: 248px;
   height: calc(100% - 54px);
   background-color: ${Colors.secondary};
   position: absolute;
   top: 54px;
-  left: ${p => (p.isMenuOpen ? 0 : -248)}px;
-  animation-name: ${p => (p.isMenuOpen ? slideInAnimation : slideOutAnimation)};
-  animation-duration: 0.5s;
 `;
 
 const NavButtonContainer = styled.div`

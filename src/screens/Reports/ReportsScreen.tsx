@@ -27,7 +27,7 @@ const ReportsScreen = () => {
         menuHandler={() => setIsMenuOpen(!isMenuOpen)}
         profileHandler={() => setIsProfileOpen(!isProfileOpen)}
       />
-      <Menu isMenuOpen={isMenuOpen} />
+      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Reports" />

@@ -157,7 +157,7 @@ const ExtensionWorkload = () => {
         menuHandler={() => setIsMenuOpen(!isMenuOpen)}
         profileHandler={() => setIsProfileOpen(!isProfileOpen)}
       />
-      <Menu isMenuOpen={isMenuOpen} />
+      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <Container>
