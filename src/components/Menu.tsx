@@ -101,10 +101,10 @@ const Menu = ({ isFacultySubmenuOpen, facultySubMenuHandler }: MenuProps) => {
 
 const Container = styled.div`
   width: 248px;
-  height: calc(100% - 54px);
   background-color: ${Colors.secondary};
-  position: absolute;
+  position: fixed;
   top: 54px;
+  height: ${window.outerHeight}px;
 `;
 
 const NavButtonContainer = styled.div`
