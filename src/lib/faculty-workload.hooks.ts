@@ -146,12 +146,12 @@ export const SaveStrategicFunctionWorkload = async (
   const listAdviseesS3 = new ReactS3Client(strategicListOfAdviseesAwsConfig);
 
   if (
-    strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 &&
-    strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 &&
-    strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
-    strategicFunctionWorkload?.designationAsSportTrainorAcademic &&
-    strategicFunctionWorkload?.designationAsMemberOfAdhoc &&
-    strategicFunctionWorkload?.academicAdvisees
+    strategicFunctionWorkload?.designationUniversityLevel?.length! > 0
+    // strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 &&
+    // strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+    // strategicFunctionWorkload?.designationAsSportTrainorAcademic &&
+    // strategicFunctionWorkload?.designationAsMemberOfAdhoc &&
+    // strategicFunctionWorkload?.academicAdvisees
   ) {
     let approvedUniversityDesignationFile1;
     let approvedUniversityDesignationFile2;
@@ -174,129 +174,145 @@ export const SaveStrategicFunctionWorkload = async (
 
     try {
       // UNIVERSITY
-      if (strategicFunctionWorkload.designationUniversityLevel?.[0].file) {
+      if (
+        strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationUniversityLevelFiles?.[0]
+      ) {
         approvedUniversityDesignationFile1 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationUniversityLevel[0].file
+            strategicFunctionWorkload?.designationUniversityLevelFiles[0]
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath1 =
-          approvedUniversityDesignationFile1?.location;
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath = [
+          approvedUniversityDesignationFile1?.location
+        ];
       }
-      if (strategicFunctionWorkload.designationUniversityLevel?.[1].file) {
+      if (
+        strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationUniversityLevelFiles?.[1]
+      ) {
         approvedUniversityDesignationFile2 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationUniversityLevel[1].file
+            strategicFunctionWorkload.designationUniversityLevelFiles[1]
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath2 =
-          approvedUniversityDesignationFile2?.location;
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath?.push(
+          approvedUniversityDesignationFile2?.location
+        );
       }
-      if (strategicFunctionWorkload.designationUniversityLevel?.[2].file) {
+      if (
+        strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationUniversityLevelFiles?.[2]
+      ) {
         approvedUniversityDesignationFile3 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationUniversityLevel[2].file
+            strategicFunctionWorkload.designationUniversityLevelFiles[2]
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath3 =
-          approvedUniversityDesignationFile3?.location;
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath?.push(
+          approvedUniversityDesignationFile3?.location
+        );
       }
-      if (strategicFunctionWorkload.designationUniversityLevel?.[3].file) {
+      if (
+        strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationUniversityLevelFiles?.[3]
+      ) {
         approvedUniversityDesignationFile4 =
           await approvedUniversityDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationUniversityLevel[3].file
+            strategicFunctionWorkload.designationUniversityLevelFiles[3]
           );
-        strategicFunctionWorkload.approvedUniversityDesignationFilePath4 =
-          approvedUniversityDesignationFile4?.location;
-      }
-      // COLLEGE CAMPUS
-      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {
-        approvedCollegeCampusDesignationFile1 =
-          await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationCollegeCampusLevel[0].file
-          );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath1 =
-          approvedCollegeCampusDesignationFile1.location;
-      }
-      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file) {
-        approvedCollegeCampusDesignationFile2 =
-          await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file
-          );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath2 =
-          approvedCollegeCampusDesignationFile2.location;
-      }
-      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file) {
-        approvedCollegeCampusDesignationFile3 =
-          await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file
-          );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath3 =
-          approvedCollegeCampusDesignationFile3.location;
-      }
-      if (strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file) {
-        approvedCollegeCampusDesignationFile4 =
-          await approvedCollegeCampusDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file
-          );
-        strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath4 =
-          approvedCollegeCampusDesignationFile4.location;
-      }
-      // DEPARTMENT
-      if (strategicFunctionWorkload.designationDepartmentLevel?.[0].file) {
-        approvedDepartmentDesignationFile1 =
-          await approvedDepartmentDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationDepartmentLevel?.[0].file
-          );
-        strategicFunctionWorkload.approvedDepartmentDesignationFilePath1 =
-          approvedDepartmentDesignationFile1.location;
-      }
-      if (strategicFunctionWorkload.designationDepartmentLevel?.[1].file) {
-        approvedDepartmentDesignationFile2 =
-          await approvedDepartmentDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationDepartmentLevel?.[1].file
-          );
-        strategicFunctionWorkload.approvedDepartmentDesignationFilePath2 =
-          approvedDepartmentDesignationFile2.location;
-      }
-      if (strategicFunctionWorkload.designationDepartmentLevel?.[2].file) {
-        approvedDepartmentDesignationFile3 =
-          await approvedDepartmentDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationDepartmentLevel?.[2].file
-          );
-        strategicFunctionWorkload.approvedDepartmentDesignationFilePath3 =
-          approvedDepartmentDesignationFile3.location;
-      }
-      if (strategicFunctionWorkload.designationDepartmentLevel?.[3].file) {
-        approvedDepartmentDesignationFile4 =
-          await approvedDepartmentDesignationS3.uploadFile(
-            strategicFunctionWorkload.designationDepartmentLevel?.[3].file
-          );
-        strategicFunctionWorkload.approvedDepartmentDesignationFilePath4 =
-          approvedDepartmentDesignationFile4.location;
-      }
-
-      if (strategicFunctionWorkload.designationAsSportTrainorAcademic.file) {
-        sportsTrainorAcademicFile = await coachAdviserCertificateS3.uploadFile(
-          strategicFunctionWorkload.designationAsSportTrainorAcademic.file
+        strategicFunctionWorkload.approvedUniversityDesignationFilePath?.push(
+          approvedUniversityDesignationFile4?.location
         );
       }
+      // // COLLEGE CAMPUS
+      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {
+      //   approvedCollegeCampusDesignationFile1 =
+      //     await approvedCollegeCampusDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationCollegeCampusLevel[0].file
+      //     );
+      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath1 =
+      //     approvedCollegeCampusDesignationFile1.location;
+      // }
+      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file) {
+      //   approvedCollegeCampusDesignationFile2 =
+      //     await approvedCollegeCampusDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file
+      //     );
+      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath2 =
+      //     approvedCollegeCampusDesignationFile2.location;
+      // }
+      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file) {
+      //   approvedCollegeCampusDesignationFile3 =
+      //     await approvedCollegeCampusDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file
+      //     );
+      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath3 =
+      //     approvedCollegeCampusDesignationFile3.location;
+      // }
+      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file) {
+      //   approvedCollegeCampusDesignationFile4 =
+      //     await approvedCollegeCampusDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file
+      //     );
+      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath4 =
+      //     approvedCollegeCampusDesignationFile4.location;
+      // }
+      // // DEPARTMENT
+      // if (strategicFunctionWorkload.designationDepartmentLevel?.[0].file) {
+      //   approvedDepartmentDesignationFile1 =
+      //     await approvedDepartmentDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationDepartmentLevel?.[0].file
+      //     );
+      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath1 =
+      //     approvedDepartmentDesignationFile1.location;
+      // }
+      // if (strategicFunctionWorkload.designationDepartmentLevel?.[1].file) {
+      //   approvedDepartmentDesignationFile2 =
+      //     await approvedDepartmentDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationDepartmentLevel?.[1].file
+      //     );
+      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath2 =
+      //     approvedDepartmentDesignationFile2.location;
+      // }
+      // if (strategicFunctionWorkload.designationDepartmentLevel?.[2].file) {
+      //   approvedDepartmentDesignationFile3 =
+      //     await approvedDepartmentDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationDepartmentLevel?.[2].file
+      //     );
+      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath3 =
+      //     approvedDepartmentDesignationFile3.location;
+      // }
+      // if (strategicFunctionWorkload.designationDepartmentLevel?.[3].file) {
+      //   approvedDepartmentDesignationFile4 =
+      //     await approvedDepartmentDesignationS3.uploadFile(
+      //       strategicFunctionWorkload.designationDepartmentLevel?.[3].file
+      //     );
+      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath4 =
+      //     approvedDepartmentDesignationFile4.location;
+      // }
 
-      if (strategicFunctionWorkload.designationAsMemberOfAdhoc.file) {
-        memberAdhocFile = await listAdviseesS3.uploadFile(
-          strategicFunctionWorkload.designationAsMemberOfAdhoc.file
-        );
-      }
+      // if (strategicFunctionWorkload.designationAsSportTrainorAcademic.file) {
+      //   sportsTrainorAcademicFile = await coachAdviserCertificateS3.uploadFile(
+      //     strategicFunctionWorkload.designationAsSportTrainorAcademic.file
+      //   );
+      // }
 
-      if (strategicFunctionWorkload.academicAdvisees?.file) {
-        academicAdviseesFile = await listAdviseesS3.uploadFile(
-          strategicFunctionWorkload.academicAdvisees.file
-        );
-      }
+      // if (strategicFunctionWorkload.designationAsMemberOfAdhoc.file) {
+      //   memberAdhocFile = await listAdviseesS3.uploadFile(
+      //     strategicFunctionWorkload.designationAsMemberOfAdhoc.file
+      //   );
+      // }
 
-      strategicFunctionWorkload.sportsTrainorAcademicFilePath =
-        sportsTrainorAcademicFile?.location;
+      // if (strategicFunctionWorkload.academicAdvisees?.file) {
+      //   academicAdviseesFile = await listAdviseesS3.uploadFile(
+      //     strategicFunctionWorkload.academicAdvisees.file
+      //   );
+      // }
 
-      strategicFunctionWorkload.memberAdhocFilePath = memberAdhocFile?.location;
-      strategicFunctionWorkload.academicAdviseesFilePath =
-        academicAdviseesFile?.location;
+      // strategicFunctionWorkload.sportsTrainorAcademicFilePath =
+      //   sportsTrainorAcademicFile?.location;
+
+      // strategicFunctionWorkload.memberAdhocFilePath = memberAdhocFile?.location;
+      // strategicFunctionWorkload.academicAdviseesFilePath =
+      //   academicAdviseesFile?.location;
       const { data } = await axios.post(
         `strategic-function-workload/${userId}/save`,
         strategicFunctionWorkload

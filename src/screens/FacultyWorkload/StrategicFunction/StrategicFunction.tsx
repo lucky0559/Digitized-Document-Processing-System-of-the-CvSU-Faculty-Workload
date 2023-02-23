@@ -1168,11 +1168,17 @@ const StrategicFunction = () => {
         // console.log(strategicFunctionWorkload);
         setStrategicFunctionWorkload({
           designationUniversityLevel: [
-            designationUniversity1!,
-            designationUniversity2!,
-            designationUniversity3!,
-            designationUniversity4!
+            designationUniversity1?.title!,
+            designationUniversity2?.title!,
+            designationUniversity3?.title!,
+            designationUniversity4?.title!
           ].filter(Boolean),
+          designationUniversityLevelFiles: [
+            designationUniversity1?.file!,
+            designationUniversity2?.file!,
+            designationUniversity3?.file!,
+            designationUniversity4?.file!
+          ],
           designationCollegeCampusLevel: [
             collegeCampusDesignation1!,
             collegeCampusDesignation2!,
@@ -1238,14 +1244,12 @@ const StrategicFunction = () => {
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        console.log(strategicFunctionWorkload);
+        try {
+          await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
+        } catch (e) {
+          console.log(e);
+        }
         setIsSubmitting(false);
-        // try {
-        //   await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-        //   setIsSubmitting(false);
-        // } catch (e) {
-        //   setIsSubmitting(false);
-        // }
       }
     })();
   }, [strategicFunctionWorkload]);
@@ -1398,6 +1402,7 @@ const StrategicFunction = () => {
               <FormButton
                 text={steps !== 2 ? "Next" : "Submit"}
                 onClicked={onNextSubmit}
+                isSubmitting={isSubmitting}
               ></FormButton>
             </ButtonContainer>
           </Buttons>

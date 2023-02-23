@@ -2,14 +2,14 @@ export const Default = {
   MINIMUM_PASSWORD_LENGTH: 8,
   ACCESS_TOKEN_STORAGE_KEY: "api/access_token",
   REFRESH_TOKEN_STORAGE_KEY: "api/refresh_token",
-  API_URL:
-    "https://digitized-document-processing-system-of-the-cvsu-c8nie5gk8.vercel.app/"
-  // API_URL: "http://localhost:3000/"
+  // API_URL:
+  //   "https://digitized-document-processing-system-of-the-cvsu-c8nie5gk8.vercel.app/"
+  API_URL: "http://localhost:3000/"
 };
 
 const AWS_CONFIG = {
-  ACCESS_KEY_ID: "AKIARXPIJAABWWF427VJ",
-  SECRET_ACCESS_KEY: "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"
+  ACCESS_KEY_ID: "AKIARXPIJAABRUOS45FB",
+  SECRET_ACCESS_KEY: "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"
 };
 
 export const twlAwsConfig = {

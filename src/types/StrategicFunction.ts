@@ -4,11 +4,9 @@ import {
 } from "../screens/FacultyWorkload/StrategicFunction/StrategicFunction";
 
 export type StrategicFunctionType = {
-  designationUniversityLevel?: Designation[];
-  approvedUniversityDesignationFilePath1?: string;
-  approvedUniversityDesignationFilePath2?: string;
-  approvedUniversityDesignationFilePath3?: string;
-  approvedUniversityDesignationFilePath4?: string;
+  designationUniversityLevel?: string[];
+  designationUniversityLevelFiles?: File[];
+  approvedUniversityDesignationFilePath?: string[];
   designationCollegeCampusLevel?: Designation[];
   approvedCollegeCampusDesignationFilePath1?: string;
   approvedCollegeCampusDesignationFilePath2?: string;
