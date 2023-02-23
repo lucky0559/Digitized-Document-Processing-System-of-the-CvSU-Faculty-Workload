@@ -84,6 +84,40 @@ export const DROPDOWN_LISTS = {
     "",
     "University Level",
     "College/Campus Level"
+  ],
+  DESIGNATION_UNIVERSITY_LEVEL: [
+    "-----",
+    "Dean/Director",
+    "University Pollution Control Officer",
+    "University Textbook Board Chairman/Member",
+    "University Project Head/Assistant Project Head",
+    "University Inspector/Engineer/Architect/Estimator",
+    "Head, Physical Planning/Project Implementation Unit",
+    "Curricular Program Head",
+    "Internal Assessment Body Member",
+    "Chair/Member of Review Boards",
+    "RECETS Council Members",
+    "Head of Research Monitoring & Evaluation"
+  ],
+  DESIGNATION_COLLEGE_CAMPUS_LEVEL: [
+    "-----",
+    "Department Chair/Principal/Administrator",
+    "College/Campus Secretary",
+    "College/Campus Registrar",
+    "College/Campus Coordinator",
+    "Graduate Program/Learning Center Coordinator",
+    "College/Campus Liaison Officer/MISO/PIO/Enterprise Laboratory/Resource Generation Officer",
+    "College/Campus Budget Officer/Property Custodian",
+    "College IMDU Chair/Member",
+    "Accreditation Task Force Chairman/Member",
+    "In-Charge of College Reading Room",
+    "College/Campus Student Misdemeanor Member"
+  ],
+  DESIGNATION_DEPARTMENT_LEVEL: [
+    "-----",
+    "Department Coordinator",
+    "Department MISO",
+    "IMDU Chair/Member"
   ]
 };
 

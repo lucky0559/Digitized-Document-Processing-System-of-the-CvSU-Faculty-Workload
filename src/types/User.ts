@@ -23,4 +23,8 @@ export type User = {
   approvedDesignationFilePath?: string;
   listOfAdviseesFilePath?: string;
   remarks?: string;
+  ewlPoints?: number;
+  rwlPoints?: number;
+  sfwlPoints?: number;
+  twlPoints?: number;
 };

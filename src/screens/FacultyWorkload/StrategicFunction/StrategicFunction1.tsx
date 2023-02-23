@@ -1,366 +1,209 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import UploadFileButton from "../../../components/UploadFileButton";
-import FormButton from "../../../components/FormButton";
-import Colors from "../../../constants/Colors";
-import { WorkloadType } from "../../../constants/Strings";
+import DropdownWithUpload from "../../../components/DropdownWithUpload";
+import TextInputWithUpload from "../../../components/TextInputWithUpload";
+import { DROPDOWN_LISTS } from "../../../constants/Strings";
 
 type StrategicFunction1Props = {
-  strategicFunction1Handler: () => void;
-  designationCampusCollegeLevelHandler: (value: string) => void;
-  approvedCollegeCampusDesignationFileHandler: (value?: File) => void;
-  backHandler: () => void;
-  approvedCollegeCampusDesignationFileName?: string;
-  designationCollegeCampusLevel: string[];
+  onUniversityLevelSelect1: (value: string) => void;
+  onUniversityLevelSelect2: (value: string) => void;
+  onUniversityLevelSelect3: (value: string) => void;
+  textInputUniversityLevel4: (value: string) => void;
+  universityLevelInputDesignation: string | undefined;
+  displayDesignationUniversity1: string | undefined;
+  displayDesignationUniversity2: string | undefined;
+  displayDesignationUniversity3: string | undefined;
+  onCollegeCampusLevelSelect1: (value: string) => void;
+  onCollegeCampusLevelSelect2: (value: string) => void;
+  onCollegeCampusLevelSelect3: (value: string) => void;
+  textInputCollegeCampusLevel4: (value: string) => void;
+  collegeCampusLevelInputDesignation: string | undefined;
+  displayDesignationCollegeCampus1: string | undefined;
+  displayDesignationCollegeCampus2: string | undefined;
+  displayDesignationCollegeCampus3: string | undefined;
+  onFileUniversityLevelSelect1: (file?: File) => void;
+  onFileUniversityLevelSelect2: (file?: File) => void;
+  onFileUniversityLevelSelect3: (file?: File) => void;
+  onFileCustomUniversityLevelSelect: (file?: File) => void;
+  universityLevelFileName1?: string;
+  universityLevelFileName2?: string;
+  universityLevelFileName3?: string;
+  customUniversityFileName?: string;
+  onFileCollegeCampusLevelSelect1: (file?: File) => void;
+  onFileCollegeCampusLevelSelect2: (file?: File) => void;
+  onFileCollegeCampusLevelSelect3: (file?: File) => void;
+  onFileCustomCollegeCampusLevelSelect: (file?: File) => void;
+  collegeCampusLevelFileName1?: string;
+  collegeCampusLevelFileName2?: string;
+  collegeCampusLevelFileName3?: string;
+  customcollegeCampusLevelFileName?: string;
 };
 
-const StrategicFunction1 = ({
-  strategicFunction1Handler,
-  designationCampusCollegeLevelHandler,
-  approvedCollegeCampusDesignationFileHandler,
-  backHandler,
-  approvedCollegeCampusDesignationFileName,
-  designationCollegeCampusLevel
-}: StrategicFunction1Props) => {
-  const fileHandler = (file?: File) => {
-    approvedCollegeCampusDesignationFileHandler(file);
-  };
-
-  const setDesignationUniversityLevel = (
-    designationUniversityLevelValue: string
-  ) => {
-    dataClicked(designationUniversityLevelValue);
-    designationCampusCollegeLevelHandler(designationUniversityLevelValue);
-  };
-
-  let dataValue: string[] = [...designationCollegeCampusLevel];
-
-  const [boxClicked, setBoxClicked] = useState(0);
-
-  const dataClicked = (value: string) => {
-    if (dataValue.includes(value)) {
-      const index = dataValue.indexOf(value);
-      if (index > -1) {
-        dataValue.splice(index, 1);
-      }
-    } else {
-      dataValue.push(value);
-    }
-    setBoxClicked(boxClicked + 1);
-  };
-
-  useEffect(() => {
-    dataValue = [...designationCollegeCampusLevel];
-  }, [boxClicked]);
-
-  const onSubmit = () => {
-    strategicFunction1Handler();
-  };
-
+function StrategicFunction1({
+  onUniversityLevelSelect1,
+  onUniversityLevelSelect2,
+  onUniversityLevelSelect3,
+  textInputUniversityLevel4,
+  universityLevelInputDesignation,
+  displayDesignationUniversity1,
+  displayDesignationUniversity2,
+  displayDesignationUniversity3,
+  onCollegeCampusLevelSelect1,
+  onCollegeCampusLevelSelect2,
+  onCollegeCampusLevelSelect3,
+  textInputCollegeCampusLevel4,
+  collegeCampusLevelInputDesignation,
+  displayDesignationCollegeCampus1,
+  displayDesignationCollegeCampus2,
+  displayDesignationCollegeCampus3,
+  onFileUniversityLevelSelect1,
+  onFileUniversityLevelSelect2,
+  onFileUniversityLevelSelect3,
+  onFileCustomUniversityLevelSelect,
+  universityLevelFileName1,
+  universityLevelFileName2,
+  universityLevelFileName3,
+  customUniversityFileName,
+  onFileCollegeCampusLevelSelect1,
+  onFileCollegeCampusLevelSelect2,
+  onFileCollegeCampusLevelSelect3,
+  onFileCustomCollegeCampusLevelSelect,
+  collegeCampusLevelFileName1,
+  collegeCampusLevelFileName2,
+  collegeCampusLevelFileName3,
+  customcollegeCampusLevelFileName
+}: StrategicFunction1Props) {
   return (
-    <Container>
-      <WorkloadTextContainer>
-        <WorkloadText>{WorkloadType.STRATEGIC_FUNCTION}</WorkloadText>
-      </WorkloadTextContainer>
-      <UniversityLabelContainer>
-        <UniversityLabelText>
-          Designation at the College/Campus Label:
-        </UniversityLabelText>
-      </UniversityLabelContainer>
-      <CheckBoxGroupContainer>
-        <CheckBoxColumnContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes("Department Chair/Principal/Administrator")!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Department Chair/Principal/Administrator"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Department Chair/Principal/Administrator
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes(
-                  "College/Campus Coordinator (Research, Extension, GAD, Sports, Job Placement, Guidance, Quality Assurance or Extramural Study)"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "College/Campus Coordinator (Research, Extension, GAD, Sports, Job Placement, Guidance, Quality Assurance or Extramural Study)"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              College/Campus Coordinator (Research, Extension, GAD, Sports, Job
-              Placement, Guidance, Quality Assurance or Extramural Study)
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes(
-                  "College/Campus Budget Officer/Property Custodian"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "College/Campus Budget Officer/Property Custodian"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              College/Campus Budget Officer/Property Custodian
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes("In-Charge of College Reading Room")!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "In-Charge of College Reading Room"
-                )
-              }
-            />
-            <CheckBoxLabel>In-Charge of College Reading Room</CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxColumnContainer>
-        <CheckBoxColumnContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={dataValue.includes("College/Campus Secretary")!}
-              onClick={() =>
-                setDesignationUniversityLevel("College/Campus Secretary")
-              }
-            />
-            <CheckBoxLabel>College/Campus Secretary</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes(
-                  "Graduate Program/Learning Center Coordinator"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Graduate Program/Learning Center Coordinator"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Graduate Program/Learning Center Coordinator
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={dataValue.includes("College IMDU Chair/Member")!}
-              onClick={() =>
-                setDesignationUniversityLevel("College IMDU Chair/Member")
-              }
-            />
-            <CheckBoxLabel>College IMDU Chair/Member</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes("College/Campus Student Misdemeanor Member")!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "College/Campus Student Misdemeanor Member"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              College/Campus Student Misdemeanor Member
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxColumnContainer>
-        <CheckBoxColumnContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={dataValue.includes("College/Campus Registrar")!}
-              onClick={() =>
-                setDesignationUniversityLevel("College/Campus Registrar")
-              }
-            />
-            <CheckBoxLabel>College/Campus Registrar</CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes(
-                  "College/Campus Liaison Officer/MISO/PIO/Enterprise Laboratory/Resource Generation Officer"
-                )!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "College/Campus Liaison Officer/MISO/PIO/Enterprise Laboratory/Resource Generation Officer"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              College/Campus Liaison Officer/MISO/PIO/Enterprise
-              Laboratory/Resource Generation Officer
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <CheckBox
-              isSelected={
-                dataValue.includes("Accreditation Task Force Chairman/Member")!
-              }
-              onClick={() =>
-                setDesignationUniversityLevel(
-                  "Accreditation Task Force Chairman/Member"
-                )
-              }
-            />
-            <CheckBoxLabel>
-              Accreditation Task Force Chairman/Member
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-        </CheckBoxColumnContainer>
-      </CheckBoxGroupContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload approved university designation here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={fileHandler}
-            workloadFileName={approvedCollegeCampusDesignationFileName}
+    <>
+      <UniversityLevelContainer>
+        <LevelLabel>Designation at the University Level</LevelLabel>
+        <div>
+          <DropdownWithUpload
+            inputLabel="Designation 1"
+            uploadLabel="Upload approved university designation here:"
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
+            onSelect={onUniversityLevelSelect1}
+            val={displayDesignationUniversity1}
+            selected={[
+              displayDesignationUniversity2!,
+              displayDesignationUniversity3!
+            ]}
+            onFileSelect={onFileUniversityLevelSelect1}
+            fileName={universityLevelFileName1}
           />
-        </UploadFileContainer>
-      </UploadContainer>
-      <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
-        <ButtonContainer>
-          <FormButton text="Next" onClicked={onSubmit}></FormButton>
-        </ButtonContainer>
-      </Buttons>
-    </Container>
+          <DropdownWithUpload
+            inputLabel="Designation 2"
+            uploadLabel="Upload approved university designation here:"
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
+            onSelect={onUniversityLevelSelect2}
+            val={displayDesignationUniversity2}
+            selected={[
+              displayDesignationUniversity1!,
+              displayDesignationUniversity3!
+            ]}
+            onFileSelect={onFileUniversityLevelSelect2}
+            fileName={universityLevelFileName2}
+          />
+          <DropdownWithUpload
+            inputLabel="Designation 3"
+            uploadLabel="Upload approved university designation here:"
+            options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
+            onSelect={onUniversityLevelSelect3}
+            val={displayDesignationUniversity3}
+            selected={[
+              displayDesignationUniversity1!,
+              displayDesignationUniversity2!
+            ]}
+            onFileSelect={onFileUniversityLevelSelect3}
+            fileName={universityLevelFileName3}
+          />
+          <TextInputWithUpload
+            inputLabel="Other Designation"
+            uploadLabel="Upload approved university designation here:"
+            onChangeTextInput={textInputUniversityLevel4}
+            val={universityLevelInputDesignation}
+            onFileSelect={onFileCustomUniversityLevelSelect}
+            fileName={customUniversityFileName}
+          />
+        </div>
+      </UniversityLevelContainer>
+      <CollegeCampusLevelContainer>
+        <LevelLabel>Designation at the College/Campus Level</LevelLabel>
+        <div>
+          <DropdownWithUpload
+            inputLabel="Designation 1"
+            uploadLabel="Upload approved college designation here:"
+            options={DROPDOWN_LISTS.DESIGNATION_COLLEGE_CAMPUS_LEVEL}
+            onSelect={onCollegeCampusLevelSelect1}
+            val={displayDesignationCollegeCampus1}
+            selected={[
+              displayDesignationCollegeCampus2!,
+              displayDesignationCollegeCampus3!
+            ]}
+            onFileSelect={onFileCollegeCampusLevelSelect1}
+            fileName={collegeCampusLevelFileName1}
+          />
+          <DropdownWithUpload
+            inputLabel="Designation 2"
+            uploadLabel="Upload approved college designation here:"
+            options={DROPDOWN_LISTS.DESIGNATION_COLLEGE_CAMPUS_LEVEL}
+            onSelect={onCollegeCampusLevelSelect2}
+            val={displayDesignationCollegeCampus2}
+            selected={[
+              displayDesignationCollegeCampus1!,
+              displayDesignationCollegeCampus3!
+            ]}
+            onFileSelect={onFileCollegeCampusLevelSelect2}
+            fileName={collegeCampusLevelFileName2}
+          />
+          <DropdownWithUpload
+            inputLabel="Designation 3"
+            uploadLabel="Upload approved college designation here:"
+            options={DROPDOWN_LISTS.DESIGNATION_COLLEGE_CAMPUS_LEVEL}
+            onSelect={onCollegeCampusLevelSelect3}
+            val={displayDesignationCollegeCampus3}
+            selected={[
+              displayDesignationCollegeCampus1!,
+              displayDesignationCollegeCampus2!
+            ]}
+            onFileSelect={onFileCollegeCampusLevelSelect3}
+            fileName={collegeCampusLevelFileName3}
+          />
+          <TextInputWithUpload
+            inputLabel="Other Designation"
+            uploadLabel="Upload approved college designation here:"
+            onChangeTextInput={textInputCollegeCampusLevel4}
+            val={collegeCampusLevelInputDesignation}
+            onFileSelect={onFileCustomCollegeCampusLevelSelect}
+            fileName={customcollegeCampusLevelFileName}
+          />
+        </div>
+      </CollegeCampusLevelContainer>
+    </>
   );
-};
+}
 
-const Container = styled.div`
-  padding: 30px;
-  width: auto;
-  max-width: 60%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-`;
-
-const WorkloadTextContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-`;
-
-const WorkloadText = styled.text`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
-  font-family: HurmeGeometricSans3;
-`;
-
-const UploadContainer = styled.div`
-  width: auto;
-  max-width: 500px;
-  flex-direction: row;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const UploadTextDescription = styled.label`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  font-family: HurmeGeometricSans3;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-self: flex-end;
-  margin: 20px 20px 0px 0px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+const UniversityLevelContainer = styled.div`
+  border: 2px solid black;
   width: 100%;
-  margin-top: 80px;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 20px 0;
 `;
 
-const UploadFileContainer = styled.div`
-  max-width: 100px;
+const CollegeCampusLevelContainer = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
 `;
 
-const UniversityLabelContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-  margin: 30px;
-`;
-
-const UniversityLabelText = styled.text`
+const LevelLabel = styled.text`
+  font-size: 20px;
+  line-height: 18px;
   font-family: HurmeGeometricSans3SemiBold;
-  font-size: 13px;
-  line-height: 15px;
-`;
-
-const CheckBoxGroupContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-left: 50px;
-`;
-
-const CheckBoxColumnContainer = styled.div`
-  display: flex;
-  align-items: start;
-  flex-direction: column;
-`;
-
-const CheckBoxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-`;
-
-const CheckBox = styled.div<{ isSelected: boolean }>`
-  border: 1px solid black;
-  min-width: 12px;
-  min-height: 12px;
-  margin-right: 5px;
-  cursor: pointer;
-  background-color: ${p => (p.isSelected ? Colors.active : "none")};
-  transition: opacity 0.1s ease-in-out;
-  &:hover {
-    opacity: 0.3;
-  }
-`;
-
-const CheckBoxLabel = styled.text`
-  font-family: HurmeGeometricSans3;
-  font-size: 12px;
-  line-height: 15px;
 `;
 
 export default StrategicFunction1;

@@ -6,20 +6,14 @@ import "../index.css";
 import { FaBars, FaUserCircle } from "react-icons/fa";
 
 type TopNavProps = {
-  menuHandler?: () => void;
   profileHandler?: () => void;
 };
 
-export default function TopNav({ menuHandler, profileHandler }: TopNavProps) {
+export default function TopNav({ profileHandler }: TopNavProps) {
   const user = localStorage.getItem("userId");
   return (
     <Container>
       <TopNavLeftContent>
-        {user && (
-          <BurgerContainer onClick={menuHandler}>
-            <FaBars size={20} color="white" />
-          </BurgerContainer>
-        )}
         <CvsuLogo src={CVSU_LOGO} />
         <TopNavTitleText>
           Digitized Document Processing System of the CvSU Faculty Workload
@@ -59,7 +53,7 @@ const CvsuLogo = styled.img`
 `;
 
 const TopNavTitleText = styled.text`
-  font-size: 12px;
+  font-size: 15px;
   margin-left: 20px;
   color: ${Colors.primaryHeaderText};
   font-family: HurmeGeometricSans3Bold;

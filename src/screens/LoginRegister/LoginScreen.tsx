@@ -10,6 +10,7 @@ import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
 import { useNavigate } from "react-router-dom";
 import { Login, LoginDTO } from "../../lib/user.hooks";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 type LoginScreenProps = {
   onLoginButtonClick?: () => void;
@@ -37,6 +38,7 @@ export default function LoginScreen({
 }: LoginScreenProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const width = window.innerWidth;
   const height = window.innerHeight;
   const isDesktopTablet = window.innerWidth > 1201;
@@ -50,7 +52,7 @@ export default function LoginScreen({
         setIsSubmitting(false);
         localStorage.setItem("userId", res.data.id);
         localStorage.setItem("role", res.data.role);
-        navigate("faculty-workload", { replace: true });
+        navigate("teaching-workload", { replace: true });
         setErrorMessage("");
       })
       .catch(error => {
@@ -75,15 +77,18 @@ export default function LoginScreen({
             <FormStyled>
               <FieldGroup>
                 <Label>Username</Label>
-                <TextInput
-                  type="text"
-                  name="username"
-                  value={values.username}
-                  onChange={handleChange}
-                  className={
-                    touched.username && errors.username ? "is-invalid" : ""
-                  }
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    type="text"
+                    name="username"
+                    value={values.username}
+                    onChange={handleChange}
+                    className={
+                      touched.username && errors.username ? "is-invalid" : ""
+                    }
+                  />
+                  <AiFillEye size={20} opacity={0} />
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="username"
@@ -92,15 +97,28 @@ export default function LoginScreen({
               </FieldGroup>
               <FieldGroup>
                 <Label>Password</Label>
-                <TextInput
-                  type="password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                  className={
-                    touched.password && errors.password ? "is-invalid" : ""
-                  }
-                />
+                <FieldIconContainer>
+                  <TextInput
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={values.password}
+                    onChange={handleChange}
+                    className={
+                      touched.password && errors.password ? "is-invalid" : ""
+                    }
+                  />
+                  {showPassword ? (
+                    <AiFillEye
+                      size={20}
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size={20}
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  )}
+                </FieldIconContainer>
                 <ErrorMessageStyle
                   component="div"
                   name="password"
@@ -184,7 +202,7 @@ const ForgotPasswordContainer = styled.div`
 `;
 
 const ForgotPasswordText = styled.text`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   font-family: HurmeGeometricSans3SemiBold;
   text-decoration-line: underline;
@@ -211,7 +229,7 @@ const FormStyled = styled(Form)`
 `;
 
 const ErrorMessageStyle = styled(ErrorMessage)`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
   font-weight: 400;
@@ -219,9 +237,14 @@ const ErrorMessageStyle = styled(ErrorMessage)`
 `;
 
 const TextInput = styled.input`
-  width: 180px;
+  width: 100%;
   background-color: ${Colors.textFieldBackground};
-  border-width: 1px;
+  font-family: HurmeGeometricSans3;
+  ::-ms-reveal {
+    display: none;
+  }
+  border: none;
+  outline: none;
   font-family: HurmeGeometricSans3;
 `;
 
@@ -232,7 +255,7 @@ const FieldGroup = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3;
   align-self: flex-start;
   font-weight: 400;
@@ -245,9 +268,17 @@ const ErrorMessageContainer = styled.div`
 `;
 
 const ErrorMessageText = styled.text`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
   font-weight: 400;
   color: red;
+`;
+
+const FieldIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ececec;
+  padding: 0 5px 0 5px;
 `;

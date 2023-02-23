@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
 
 type DropdownProps = {
   option: string[];
-  label: string;
+  label?: string;
   onSelect: (option: string) => void;
   val?: string;
+  selected?: string[];
 };
 
 export default function Dropdown({
   option,
   label,
+  selected,
   onSelect,
   val
 }: DropdownProps) {
@@ -35,7 +37,12 @@ export default function Dropdown({
             <option
               key={index}
               value={item}
-              hidden={item === ""}
+              hidden={
+                item === "-----" ||
+                item === selected?.[0] ||
+                item === selected?.[1] ||
+                item === selected?.[2]
+              }
               selected={val === item}
             >
               {item}
@@ -50,7 +57,6 @@ export default function Dropdown({
 const Container = styled.div`
   flex-direction: column;
   display: flex;
-  margin-top: 15px;
   width: 100%;
 `;
 
@@ -60,7 +66,7 @@ const Select = styled.select`
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3;
   font-weight: 400;
 `;

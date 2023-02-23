@@ -15,7 +15,7 @@ const UploadFileButton = ({
 
   return (
     <>
-      {!fileName && !workloadFileName ? (
+      {!workloadFileName && !fileName ? (
         <Container>
           <ButtonText>
             <FileInput
@@ -29,7 +29,7 @@ const UploadFileButton = ({
           </ButtonText>
         </Container>
       ) : (
-        <FileName> {fileName || workloadFileName} </FileName>
+        <FileName> {workloadFileName || fileName} </FileName>
       )}
     </>
   );
@@ -50,7 +50,7 @@ const Container = styled.div`
 const ButtonText = styled.label`
   font-family: HurmeGeometricSans3;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 15px;
   cursor: pointer;
   width: 100%;
@@ -68,7 +68,7 @@ const FileInput = styled.input`
 
 const FileName = styled.text`
   font-family: HurmeGeometricSans3Bold;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 15px;
   margin-left: 10px;
 `;

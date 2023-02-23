@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const TitleText = styled.h1`
-  font-size: 32px;
+  font-size: 35px;
   font-weight: 700;
   font-family: HurmeGeometricSans3;
   line-height: 41px;

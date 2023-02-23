@@ -16,8 +16,16 @@ const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
     navigate("/");
   };
 
+  window.setTimeout(() => {
+    document.getElementById("container")!.style.visibility = "visible";
+  }, 5000);
+
   return (
-    <Container isProfileOpen={isProfileOpen}>
+    <Container
+      id="container"
+      style={{ visibility: "hidden" }}
+      isProfileOpen={isProfileOpen}
+    >
       <NavButtonContainer
         onClick={() => navigate("/profile", { replace: true })}
       >
@@ -70,7 +78,7 @@ const NavButtonContainer = styled.div`
 const NavButtonText = styled.text<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 19px;
   line-height: 20px;
   color: ${Colors.white};
 `;

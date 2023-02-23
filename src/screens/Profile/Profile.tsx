@@ -48,6 +48,8 @@ function Profile() {
     useState(false);
   const [responseMessage, setResponseMessage] = useState("");
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   let editedUser = user;
   useEffect(() => {
     (async () => {
@@ -128,11 +130,13 @@ function Profile() {
 
   return (
     <Container>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu isMenuOpen={isMenuOpen} />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         {isLoading ? (
@@ -461,7 +465,7 @@ const ProfileContainer = styled.div`
 
 const ProfileText = styled.text`
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 23px;
   font-family: HurmeGeometricSans3Bold;
   line-height: 25.44px;
 `;
@@ -477,21 +481,21 @@ const DetailContainer = styled.div`
 const DetailLabel = styled.text`
   text-transform: uppercase;
   font-family: HurmeGeometricSans3Bold;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 15.26px;
 `;
 
 const DetailData = styled.text`
   text-transform: capitalize;
   font-family: HurmeGeometricSans3;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 15.26px;
 `;
 
 const DetailDataNoTextTransform = styled.text`
   text-transform: none;
   font-family: HurmeGeometricSans3;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 15.26px;
 `;
 
@@ -548,7 +552,7 @@ const TextField = styled.input`
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: 15px;
   line-height: 15.26px;
   font-family: HurmeGeometricSans3;
 `;
@@ -585,11 +589,12 @@ const ButtonStyled = styled.div`
 `;
 
 const ButtonText = styled.label`
-  font-size: 14px;
+  font-size: 17px;
   line-height: 17.81px;
   font-family: HurmeGeometricSans3SemiBold;
   color: ${Colors.primary};
   cursor: pointer;
+  text-align: center;
 `;
 
 const FieldIconContainer = styled.div`
@@ -602,7 +607,7 @@ const FieldIconContainer = styled.div`
 
 const ResponseMessage = styled.text<{ type: string }>`
   color: ${p => (p.type === "success" ? "#008000" : "red")};
-  font-size: 12px;
+  font-size: 15px;
   font-family: HurmeGeometricSans3Bold;
 `;
 

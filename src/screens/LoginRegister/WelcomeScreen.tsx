@@ -13,7 +13,7 @@ const WelcomeScreen = () => {
 
   useEffect(() => {
     if (userId) {
-      navigate("/faculty-workload", { replace: true });
+      navigate("/teaching-workload", { replace: true });
     }
   }, []);
 
