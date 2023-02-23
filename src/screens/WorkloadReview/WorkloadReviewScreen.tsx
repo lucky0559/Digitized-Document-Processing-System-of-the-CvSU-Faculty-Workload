@@ -36,6 +36,8 @@ const WorkloadReviewScreen = () => {
   const [allExtensionWorkload, setAllExtensionWorkload] = useState<User[]>();
   const [allStrategicWorkload, setAllStrategicWorkload] = useState<User[]>();
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   const userRole = localStorage.getItem("role");
@@ -96,11 +98,13 @@ const WorkloadReviewScreen = () => {
 
   return (
     <Container>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Workload Review" />

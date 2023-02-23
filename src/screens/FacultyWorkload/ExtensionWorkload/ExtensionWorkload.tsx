@@ -31,6 +31,8 @@ const ExtensionWorkload = () => {
   );
   const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   const extensionWorkloadHandler = () => {
     setExtensionWorkload({
       designationExtensionActivity,
@@ -153,11 +155,13 @@ const ExtensionWorkload = () => {
 
   return (
     <MainContainer>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <Container>

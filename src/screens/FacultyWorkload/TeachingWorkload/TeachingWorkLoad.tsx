@@ -20,6 +20,8 @@ const TeachingWorkLoad = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   const [teachingWorkLoad, setTeachingWorkLoad] =
     useState<TeachingWorkLoadType>();
   const [numberOfPreparations, setNumberOfPreparations] = useState("");
@@ -83,11 +85,13 @@ const TeachingWorkLoad = () => {
 
   return (
     <MainContainer>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />

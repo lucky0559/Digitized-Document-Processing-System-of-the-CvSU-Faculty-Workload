@@ -45,6 +45,8 @@ const ResearchWorkload = () => {
     string | undefined
   >("");
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   const [steps, setSteps] = useState(1);
 
   const fundingStudy = (fundingStudyValue?: string) => {
@@ -349,11 +351,13 @@ const ResearchWorkload = () => {
 
   return (
     <MainContainer>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />

@@ -18,7 +18,7 @@ const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
 
   window.setTimeout(() => {
     document.getElementById("container")!.style.visibility = "visible";
-  }, 1100);
+  }, 5000);
 
   return (
     <Container
