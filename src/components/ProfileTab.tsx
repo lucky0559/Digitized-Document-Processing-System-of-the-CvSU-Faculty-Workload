@@ -16,8 +16,16 @@ const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
     navigate("/");
   };
 
+  window.setTimeout(() => {
+    document.getElementById("container")!.style.visibility = "visible";
+  }, 1100);
+
   return (
-    <Container isProfileOpen={isProfileOpen}>
+    <Container
+      id="container"
+      style={{ visibility: "hidden" }}
+      isProfileOpen={isProfileOpen}
+    >
       <NavButtonContainer
         onClick={() => navigate("/profile", { replace: true })}
       >
