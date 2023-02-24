@@ -34,63 +34,72 @@ const ResearchWorkload3 = ({
 
   return (
     <Container>
-      <WorkloadTextContainer>
-        <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
-      </WorkloadTextContainer>
-      <InputsContainer>
-        <Dropdown
-          option={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
-          label="Disseminated research output in College or University In-House Review/Conferences"
-          onSelect={setDisseminatedResearch}
-          val={disseminatedResearchDisplay}
-        />
-      </InputsContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload certificate of presentation here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={fileHandler}
-            workloadFileName={rwlFile2Name}
+      <SubContainer>
+        <WorkloadTextContainer>
+          <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
+        </WorkloadTextContainer>
+        <InputsContainer>
+          <Dropdown
+            option={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            label="Disseminated research output in College or University In-House Review/Conferences"
+            onSelect={setDisseminatedResearch}
+            val={disseminatedResearchDisplay}
           />
-        </UploadFileContainer>
-      </UploadContainer>
-      <AddStudyContainer>
-        <AddStudyText>
-          Add another disseminated research output in College or University
-          In-House Review/Conferences
-        </AddStudyText>
-      </AddStudyContainer>
-      <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
-        <ButtonContainer>
-          <FormButton
-            text="Submit"
-            onClicked={researchWorkLoadHandler3}
-            isSubmitting={isSubmitting}
-            disabled={
-              disseminatedResearchDisplay?.length! <= 0 ||
-              disseminatedResearchDisplay === undefined ||
-              rwlFile2Name?.length! <= 0 ||
-              rwlFile2Name === undefined
-            }
-          ></FormButton>
-        </ButtonContainer>
-      </Buttons>
+        </InputsContainer>
+        <UploadContainer>
+          <UploadTextDescription>
+            Upload certificate of presentation here:
+          </UploadTextDescription>
+          <UploadFileContainer>
+            <UploadFileButton
+              fileHandler={fileHandler}
+              workloadFileName={rwlFile2Name}
+            />
+          </UploadFileContainer>
+        </UploadContainer>
+        {/* <AddStudyContainer>
+          <AddStudyText>
+            Add another disseminated research output in College or University
+            In-House Review/Conferences
+          </AddStudyText>
+        </AddStudyContainer> */}
+        <Buttons>
+          <ButtonContainer>
+            <FormButton text="Back" onClicked={backHandler}></FormButton>
+          </ButtonContainer>
+          <ButtonContainer>
+            <FormButton
+              text="Submit"
+              onClicked={researchWorkLoadHandler3}
+              isSubmitting={isSubmitting}
+              disabled={
+                disseminatedResearchDisplay?.length! <= 0 ||
+                disseminatedResearchDisplay === undefined ||
+                rwlFile2Name?.length! <= 0 ||
+                rwlFile2Name === undefined
+              }
+            ></FormButton>
+          </ButtonContainer>
+        </Buttons>
+      </SubContainer>
     </Container>
   );
 };
 
 const Container = styled.div`
   padding: 30px;
-  width: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+`;
+
+const SubContainer = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
 `;
 
 const WorkloadTextContainer = styled.div`
@@ -138,20 +147,20 @@ const ButtonContainer = styled.div`
   margin: 20px 20px 0px 0px;
 `;
 
-const AddStudyContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-  max-width: 400px;
-  margin-top: 50px;
-`;
+// const AddStudyContainer = styled.div`
+//   display: flex;
+//   align-self: flex-start;
+//   max-width: 400px;
+//   margin-top: 50px;
+// `;
 
-const AddStudyText = styled.text`
-  font-family: HurmeGeometricSans3SemiBold;
-  font-size: 17px;
-  line-height: 18px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+// const AddStudyText = styled.text`
+//   font-family: HurmeGeometricSans3SemiBold;
+//   font-size: 17px;
+//   line-height: 18px;
+//   text-decoration: underline;
+//   cursor: pointer;
+// `;
 
 const Buttons = styled.div`
   display: flex;

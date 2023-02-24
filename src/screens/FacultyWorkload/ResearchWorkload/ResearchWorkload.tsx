@@ -18,7 +18,6 @@ const ResearchWorkload = () => {
   const [researchWorkLoad, setResearchWorkLoad] =
     useState<ResearchWorkLoadType>();
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -363,36 +362,39 @@ const ResearchWorkload = () => {
         <ScreenTitle title="Faculty Workload" />
         {steps === 1 && (
           <Container>
-            <WorkloadTextContainer>
-              <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
-            </WorkloadTextContainer>
-            <InputsContainer>
-              <TextInputContainer>
-                <Label>Title of the Study</Label>
-                <TextInput
-                  type="text"
-                  value={titleOfStudy}
-                  onChange={e => titleOfStudyHandler(e.target.value)}
+            <SubContainer>
+              <WorkloadTextContainer>
+                <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
+              </WorkloadTextContainer>
+              <InputsContainer>
+                <TextInputContainer>
+                  <Label>Title of the Study</Label>
+                  <TextInput
+                    type="text"
+                    value={titleOfStudy}
+                    onChange={e => titleOfStudyHandler(e.target.value)}
+                  />
+                </TextInputContainer>
+                <Dropdown
+                  option={DROPDOWN_LISTS.FUNDING_OF_STUDY}
+                  label="Funding of the Study"
+                  onSelect={fundingStudy}
+                  val={fundDisplay}
                 />
-              </TextInputContainer>
-              <Dropdown
-                option={DROPDOWN_LISTS.FUNDING_OF_STUDY}
-                label="Funding of the Study"
-                onSelect={fundingStudy}
-                val={fundDisplay}
-              />
-            </InputsContainer>
-            <ButtonContainer>
-              <FormButton
-                text="Next"
-                onClicked={researchWorkLoadHandler}
-                disabled={
-                  (titleOfStudy.length <= 0 && fundingOfStudy?.length! <= 0) ||
-                  titleOfStudy.length <= 0 ||
-                  fundDisplay?.length! <= 0
-                }
-              ></FormButton>
-            </ButtonContainer>
+              </InputsContainer>
+              <ButtonContainer>
+                <FormButton
+                  text="Next"
+                  onClicked={researchWorkLoadHandler}
+                  disabled={
+                    (titleOfStudy.length <= 0 &&
+                      fundingOfStudy?.length! <= 0) ||
+                    titleOfStudy.length <= 0 ||
+                    fundDisplay?.length! <= 0
+                  }
+                ></FormButton>
+              </ButtonContainer>
+            </SubContainer>
           </Container>
         )}
         {steps === 2 && (
@@ -438,6 +440,7 @@ const MainContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const BodyContainer = styled.div`
@@ -445,15 +448,24 @@ const BodyContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border: 5px solid black;
+  border-radius: 15px;
+  margin: 120px auto;
 `;
 
 const Container = styled.div`
   padding: 30px;
-  width: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+`;
+const SubContainer = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
 `;
 
 const WorkloadTextContainer = styled.div`
@@ -501,7 +513,7 @@ const TextInput = styled.input`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-self: flex-end;
+  justify-content: flex-end;
   margin: 100px 20px 0px 0px;
 `;
 
