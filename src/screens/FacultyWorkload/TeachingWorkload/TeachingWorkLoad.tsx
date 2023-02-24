@@ -16,7 +16,6 @@ const TeachingWorkLoad = () => {
     twlFileHandler(file);
   };
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
