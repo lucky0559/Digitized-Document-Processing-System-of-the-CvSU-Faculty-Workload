@@ -4,17 +4,14 @@ import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
-import { useNavigate } from "react-router-dom";
 import { ExtensionWorkloadType } from "../../../types/ExtensionWorkload";
 import TopNav from "../../../components/TopNav";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
 import { SaveExtensionWorkload } from "../../../lib/faculty-workload.hooks";
+import ScreenTitle from "../../../components/ScreenTitle";
 
 const ExtensionWorkload = () => {
-  const navigate = useNavigate();
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -164,90 +161,93 @@ const ExtensionWorkload = () => {
       />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
+        <ScreenTitle title="Faculty Workload" />
         <Container>
-          <WorkloadTextContainer>
-            <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
-          </WorkloadTextContainer>
-          <InputsContainer>
-            <Dropdown
-              option={DROPDOWN_LISTS.DESIGNATION_EXTENSION_ACTIVITY}
-              label="Designation in Extension Activity"
-              onSelect={designationExtensionActivityHandler}
-              val={designationExtensionActivity}
-            />
-          </InputsContainer>
-          <UploadContainer>
-            <UploadTextDescription>
-              Upload Extension Activity Accomplishment Report here:
-            </UploadTextDescription>
-            <UploadFileContainer>
-              <UploadFileButton
-                fileHandler={setExtensionActivityFileHandler}
-                workloadFileName={extensionActivityFile?.name}
+          <SubContainer>
+            <WorkloadTextContainer>
+              <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
+            </WorkloadTextContainer>
+            <InputsContainer>
+              <Dropdown
+                option={DROPDOWN_LISTS.DESIGNATION_EXTENSION_ACTIVITY}
+                label="Designation in Extension Activity"
+                onSelect={designationExtensionActivityHandler}
+                val={designationExtensionActivity}
               />
-            </UploadFileContainer>
-          </UploadContainer>
-          <InputsContainer>
-            <Dropdown
-              option={DROPDOWN_LISTS.RESOURCE_PERSON}
-              label="Resource Person in an Extension Activity"
-              onSelect={resourcePersonHandler}
-              val={resourcePerson}
-            />
-          </InputsContainer>
-          <UploadContainer>
-            <UploadTextDescription>
-              Upload certificate of presentation here:
-            </UploadTextDescription>
-            <UploadFileContainer>
-              <UploadFileButton
-                fileHandler={setCertificateFileHandler}
-                workloadFileName={certificateFile?.name}
+            </InputsContainer>
+            <UploadContainer>
+              <UploadTextDescription>
+                Upload Extension Activity Accomplishment Report here:
+              </UploadTextDescription>
+              <UploadFileContainer>
+                <UploadFileButton
+                  fileHandler={setExtensionActivityFileHandler}
+                  workloadFileName={extensionActivityFile?.name}
+                />
+              </UploadFileContainer>
+            </UploadContainer>
+            <InputsContainer>
+              <Dropdown
+                option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                label="Resource Person in an Extension Activity"
+                onSelect={resourcePersonHandler}
+                val={resourcePerson}
               />
-            </UploadFileContainer>
-          </UploadContainer>
-          <InputsContainer>
-            <Label>
-              Total Number of Hours Rendered in Extension Activities
-            </Label>
-            <TextInput
-              type="number"
-              onChange={e => totalNumberHoursHandler(e.target.value)}
-              value={totalNumberHours}
-            />
-          </InputsContainer>
-          <UploadContainer>
-            <UploadTextDescription>
-              Upload Summary of hours rendered in extension activities:
-            </UploadTextDescription>
-            <UploadFileContainer>
-              <UploadFileButton
-                fileHandler={setSummaryOfHoursFileHandler}
-                workloadFileName={summaryOfHoursFile?.name}
+            </InputsContainer>
+            <UploadContainer>
+              <UploadTextDescription>
+                Upload certificate of presentation here:
+              </UploadTextDescription>
+              <UploadFileContainer>
+                <UploadFileButton
+                  fileHandler={setCertificateFileHandler}
+                  workloadFileName={certificateFile?.name}
+                />
+              </UploadFileContainer>
+            </UploadContainer>
+            <InputsContainer>
+              <Label>
+                Total Number of Hours Rendered in Extension Activities
+              </Label>
+              <TextInput
+                type="number"
+                onChange={e => totalNumberHoursHandler(e.target.value)}
+                value={totalNumberHours}
               />
-            </UploadFileContainer>
-          </UploadContainer>
-          <ButtonContainer>
-            <FormButton
-              text="Submit"
-              onClicked={extensionWorkloadHandler}
-              isSubmitting={isSubmitting}
-              disabled={
-                designationExtensionActivity?.length! <= 0 ||
-                designationExtensionActivity === undefined ||
-                extensionActivityFile?.name.length! <= 0 ||
-                extensionActivityFile?.name === undefined ||
-                resourcePerson?.length! <= 0 ||
-                resourcePerson === undefined ||
-                certificateFile?.name.length! <= 0 ||
-                certificateFile?.name === undefined ||
-                totalNumberHours?.length! <= 0 ||
-                totalNumberHours === undefined ||
-                summaryOfHoursFile?.name.length! <= 0 ||
-                summaryOfHoursFile?.name === undefined
-              }
-            ></FormButton>
-          </ButtonContainer>
+            </InputsContainer>
+            <UploadContainer>
+              <UploadTextDescription>
+                Upload Summary of hours rendered in extension activities:
+              </UploadTextDescription>
+              <UploadFileContainer>
+                <UploadFileButton
+                  fileHandler={setSummaryOfHoursFileHandler}
+                  workloadFileName={summaryOfHoursFile?.name}
+                />
+              </UploadFileContainer>
+            </UploadContainer>
+            <ButtonContainer>
+              <FormButton
+                text="Submit"
+                onClicked={extensionWorkloadHandler}
+                isSubmitting={isSubmitting}
+                disabled={
+                  designationExtensionActivity?.length! <= 0 ||
+                  designationExtensionActivity === undefined ||
+                  extensionActivityFile?.name.length! <= 0 ||
+                  extensionActivityFile?.name === undefined ||
+                  resourcePerson?.length! <= 0 ||
+                  resourcePerson === undefined ||
+                  certificateFile?.name.length! <= 0 ||
+                  certificateFile?.name === undefined ||
+                  totalNumberHours?.length! <= 0 ||
+                  totalNumberHours === undefined ||
+                  summaryOfHoursFile?.name.length! <= 0 ||
+                  summaryOfHoursFile?.name === undefined
+                }
+              ></FormButton>
+            </ButtonContainer>
+          </SubContainer>
         </Container>
       </BodyContainer>
     </MainContainer>
@@ -265,15 +265,25 @@ const BodyContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border: 5px solid black;
+  border-radius: 15px;
+  margin: 120px auto;
 `;
 
 const Container = styled.div`
   padding: 30px;
-  width: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+`;
+
+const SubContainer = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
 `;
 
 const WorkloadTextContainer = styled.div`
@@ -291,8 +301,6 @@ const WorkloadText = styled.text`
 const InputsContainer = styled.div`
   margin: 50px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   width: auto;
   max-width: 350px;
@@ -317,7 +325,7 @@ const UploadTextDescription = styled.label`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-self: flex-end;
+  justify-content: flex-end;
   margin: 100px 20px 0px 0px;
 `;
 
