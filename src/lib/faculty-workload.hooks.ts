@@ -9,7 +9,7 @@ import {
   rwlAwsConfig,
   strategicApprovedCollegeCampusDesignationAwsConfig,
   strategicApprovedDepartmentDesignationAwsConfig,
-  strategicApprovedDesignationAwsConfig,
+  strategicMemberAdhocAwsConfig,
   strategicApprovedUniversityDesignationAwsConfig,
   strategicSportsTrainorAwsConfig,
   strategicListOfAdviseesAwsConfig,
@@ -140,18 +140,16 @@ export const SaveStrategicFunctionWorkload = async (
   const strategicSportsTrainorS3 = new ReactS3Client(
     strategicSportsTrainorAwsConfig
   );
-  const approvedDesignationS3 = new ReactS3Client(
-    strategicApprovedDesignationAwsConfig
-  );
+  const memberAdhocS3 = new ReactS3Client(strategicMemberAdhocAwsConfig);
   const listAdviseesS3 = new ReactS3Client(strategicListOfAdviseesAwsConfig);
 
   if (
     strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 ||
-    strategicFunctionWorkload?.designationAsSportTrainorAcademic
-    // strategicFunctionWorkload?.designationAsMemberOfAdhoc &&
-    // strategicFunctionWorkload?.academicAdvisees
+    strategicFunctionWorkload?.designationAsSportTrainorAcademic ||
+    strategicFunctionWorkload?.designationAsMemberOfAdhoc ||
+    strategicFunctionWorkload?.academicAdvisees
   ) {
     let approvedUniversityDesignationFile1;
     let approvedUniversityDesignationFile2;
@@ -321,6 +319,7 @@ export const SaveStrategicFunctionWorkload = async (
           approvedDepartmentDesignationFile4?.location
         );
       }
+
       // SPORTS TRAINOR ACADEMIC
       if (
         strategicFunctionWorkload?.designationAsSportTrainorAcademic?.length! >
@@ -332,6 +331,30 @@ export const SaveStrategicFunctionWorkload = async (
         );
         strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath =
           sportsTrainorAcademicFile?.location;
+      }
+
+      // MEMBER OF ADHOC
+      if (
+        strategicFunctionWorkload?.designationAsMemberOfAdhoc?.length! > 0 &&
+        strategicFunctionWorkload?.designationAsMemberOfAdhocFile
+      ) {
+        memberAdhocFile = await memberAdhocS3.uploadFile(
+          strategicFunctionWorkload?.designationAsMemberOfAdhocFile
+        );
+        strategicFunctionWorkload.designationAsMemberOfAdhocFilePath =
+          memberAdhocFile?.location;
+      }
+
+      // ACADEMIC ADVISEES
+      if (
+        strategicFunctionWorkload?.academicAdvisees?.length! > 0 &&
+        strategicFunctionWorkload?.academicAdviseesFile
+      ) {
+        academicAdviseesFile = await listAdviseesS3.uploadFile(
+          strategicFunctionWorkload?.academicAdviseesFile
+        );
+        strategicFunctionWorkload.academicAdviseesFilePath =
+          academicAdviseesFile?.location;
       }
 
       // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {

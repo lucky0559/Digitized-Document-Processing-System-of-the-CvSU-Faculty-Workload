@@ -1207,8 +1207,10 @@ const StrategicFunction = () => {
           ],
           designationAsSportTrainorAcademic: sportsSocio?.title,
           designationAsSportTrainorAcademicFile: sportsSocio?.file,
-          designationAsMemberOfAdhoc: memberUniversity,
-          academicAdvisees: academicAdviser
+          designationAsMemberOfAdhoc: memberUniversity?.title,
+          designationAsMemberOfAdhocFile: memberUniversity?.file,
+          academicAdvisees: academicAdviser?.title,
+          academicAdviseesFile: academicAdviser?.file
         });
       }
 
