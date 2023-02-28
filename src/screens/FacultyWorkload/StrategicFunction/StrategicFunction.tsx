@@ -1269,6 +1269,7 @@ const StrategicFunction = () => {
       if (isSubmitting) {
         try {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
+          window.location.reload();
         } catch (e) {
           console.log(e);
         }
