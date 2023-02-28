@@ -41,83 +41,92 @@ const ResearchWorkload1 = ({
 
   return (
     <Container>
-      <WorkloadTextContainer>
-        <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
-      </WorkloadTextContainer>
-      <InputsContainer>
-        <TextInputContainer>
-          <Label>Type of Study:</Label>
-          <RadioInputContainer>
-            {typeOfStudy === "Approved Proposal" ? (
-              <VscCircleLargeFilled color={Colors.active} />
-            ) : (
-              <VscCircleLargeOutline
-                onClick={() => typeOfStudyHandler("Approved Proposal")}
-              />
-            )}
-            <Label>Approved Proposal</Label>
-          </RadioInputContainer>
-          <RadioInputContainer>
-            {typeOfStudy === "On-going Study" ? (
-              <VscCircleLargeFilled color={Colors.active} />
-            ) : (
-              <VscCircleLargeOutline
-                onClick={() => typeOfStudyHandler("On-going Study")}
-              />
-            )}
-            <Label>On-going Study</Label>
-          </RadioInputContainer>
-        </TextInputContainer>
-        <Dropdown
-          option={DROPDOWN_LISTS.DESIGNATION_IN_THE_STUDY}
-          label="Designation in the Study"
-          onSelect={setDesignationStudy}
-          val={designationStudy}
-        />
-      </InputsContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload Proposal (for Approved Proposal) or Progress Report (for
-          On-going Study) here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={fileHandler}
-            workloadFileName={rwlFileName}
+      <SubContainer>
+        <WorkloadTextContainer>
+          <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
+        </WorkloadTextContainer>
+        <InputsContainer>
+          <TextInputContainer>
+            <Label>Type of Study:</Label>
+            <RadioInputContainer>
+              {typeOfStudy === "Approved Proposal" ? (
+                <VscCircleLargeFilled color={Colors.active} />
+              ) : (
+                <VscCircleLargeOutline
+                  onClick={() => typeOfStudyHandler("Approved Proposal")}
+                />
+              )}
+              <Label>Approved Proposal</Label>
+            </RadioInputContainer>
+            <RadioInputContainer>
+              {typeOfStudy === "On-going Study" ? (
+                <VscCircleLargeFilled color={Colors.active} />
+              ) : (
+                <VscCircleLargeOutline
+                  onClick={() => typeOfStudyHandler("On-going Study")}
+                />
+              )}
+              <Label>On-going Study</Label>
+            </RadioInputContainer>
+          </TextInputContainer>
+          <Dropdown
+            option={DROPDOWN_LISTS.DESIGNATION_IN_THE_STUDY}
+            label="Designation in the Study"
+            onSelect={setDesignationStudy}
+            val={designationStudy}
           />
-        </UploadFileContainer>
-      </UploadContainer>
-      <AddStudyContainer>
-        <AddStudyText>Add Another Study</AddStudyText>
-      </AddStudyContainer>
-      <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
-        <ButtonContainer>
-          <FormButton
-            text="Submit"
-            onClicked={researchWorkLoadHandler1}
-            disabled={
-              typeOfStudy.length <= 0 ||
-              designationStudy?.length! <= 0 ||
-              rwlFileName?.length! <= 0
-            }
-            isSubmitting={isSubmitting}
-          ></FormButton>
-        </ButtonContainer>
-      </Buttons>
+        </InputsContainer>
+        <UploadContainer>
+          <UploadTextDescription>
+            Upload Proposal (for Approved Proposal) or Progress Report (for
+            On-going Study) here:
+          </UploadTextDescription>
+          <UploadFileContainer>
+            <UploadFileButton
+              fileHandler={fileHandler}
+              workloadFileName={rwlFileName}
+            />
+          </UploadFileContainer>
+        </UploadContainer>
+        {/* <AddStudyContainer>
+          <AddStudyText>Add Another Study</AddStudyText>
+        </AddStudyContainer> */}
+        <Buttons>
+          <ButtonContainer>
+            <FormButton text="Back" onClicked={backHandler}></FormButton>
+          </ButtonContainer>
+          <ButtonContainer>
+            <FormButton
+              text="Submit"
+              onClicked={researchWorkLoadHandler1}
+              disabled={
+                typeOfStudy.length <= 0 ||
+                designationStudy?.length! <= 0 ||
+                rwlFileName?.length! <= 0
+              }
+              isSubmitting={isSubmitting}
+            ></FormButton>
+          </ButtonContainer>
+        </Buttons>
+      </SubContainer>
     </Container>
   );
 };
 
 const Container = styled.div`
   padding: 30px;
-  width: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+`;
+
+const SubContainer = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
 `;
 
 const WorkloadTextContainer = styled.div`
@@ -184,19 +193,19 @@ const ButtonContainer = styled.div`
   margin: 20px 20px 0px 0px;
 `;
 
-const AddStudyContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-  margin-top: 50px;
-`;
+// const AddStudyContainer = styled.div`
+//   display: flex;
+//   align-self: flex-start;
+//   margin-top: 50px;
+// `;
 
-const AddStudyText = styled.text`
-  font-family: HurmeGeometricSans3SemiBold;
-  font-size: 17px;
-  line-height: 18px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+// const AddStudyText = styled.text`
+//   font-family: HurmeGeometricSans3SemiBold;
+//   font-size: 17px;
+//   line-height: 18px;
+//   text-decoration: underline;
+//   cursor: pointer;
+// `;
 
 const Buttons = styled.div`
   display: flex;

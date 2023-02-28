@@ -14,6 +14,8 @@ const ReportsScreen = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [usersReports, setUsersReports] = useState<User[]>();
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   useEffect(() => {
     (async () => {
       const reports = await GetTotalWorkloadPoints();
@@ -23,11 +25,13 @@ const ReportsScreen = () => {
 
   return (
     <Container>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu isMenuOpen={isMenuOpen} />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         <ScreenTitle title="Reports" />

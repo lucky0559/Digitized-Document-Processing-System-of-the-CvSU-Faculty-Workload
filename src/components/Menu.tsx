@@ -4,49 +4,68 @@ import styled, { keyframes } from "styled-components";
 import Colors from "../constants/Colors";
 
 type MenuProps = {
-  isMenuOpen: boolean;
+  isFacultySubmenuOpen: boolean;
+  facultySubMenuHandler: () => void;
 };
 
-const Menu = ({ isMenuOpen }: MenuProps) => {
+const Menu = ({ isFacultySubmenuOpen, facultySubMenuHandler }: MenuProps) => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
   const location = window.location.pathname;
+
   return (
-    <Container isMenuOpen={isMenuOpen}>
-      <NavButtonContainer>
+    <Container>
+      <NavButtonContainer onClick={facultySubMenuHandler}>
         <NavButtonText
-          isActive={location === "/teaching-workload"}
-          onClick={() => navigate("/teaching-workload", { replace: true })}
-        >
-          Teaching Workload
-        </NavButtonText>
-      </NavButtonContainer>
-      <NavButtonContainer>
-        <NavButtonText
-          isActive={location === "/research-workload"}
-          onClick={() => navigate("/research-workload", { replace: true })}
-        >
-          Research Workload
-        </NavButtonText>
-      </NavButtonContainer>
-      <NavButtonContainer>
-        <NavButtonText
-          isActive={location === "/extension-workload"}
-          onClick={() => navigate("/extension-workload", { replace: true })}
-        >
-          Extension Workload
-        </NavButtonText>
-      </NavButtonContainer>
-      <NavButtonContainer>
-        <NavButtonText
-          isActive={location === "/strategic-function-workload"}
-          onClick={() =>
-            navigate("/strategic-function-workload", { replace: true })
+          isActive={
+            location === "/teaching-workload" ||
+            location === "/research-workload" ||
+            location === "/extension-workload" ||
+            location === "/strategic-function-workload"
           }
         >
-          Strategic Function Workload
+          Faculty Workload
         </NavButtonText>
       </NavButtonContainer>
+      {isFacultySubmenuOpen && (
+        <>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/teaching-workload"}
+              onClick={() => navigate("/teaching-workload", { replace: true })}
+            >
+              Teaching Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/research-workload"}
+              onClick={() => navigate("/research-workload", { replace: true })}
+            >
+              Research Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/extension-workload"}
+              onClick={() => navigate("/extension-workload", { replace: true })}
+            >
+              Extension Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/strategic-function-workload"}
+              onClick={() =>
+                navigate("/strategic-function-workload", { replace: true })
+              }
+            >
+              Strategic Function Workload
+            </SubMenuText>
+          </SubMenuContainer>
+        </>
+      )}
+
       {userRole !== "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
@@ -70,45 +89,72 @@ const Menu = ({ isMenuOpen }: MenuProps) => {
   );
 };
 
-const slideInAnimation = keyframes`
- 0% { left: -248px }
- 100% { left: 0; }
- `;
+// const slideInAnimation = keyframes`
+//  0% { top: -54px }
+//  100% { top: 54px; }
+//  `;
 
-const slideOutAnimation = keyframes`
- 0% { left: 0 }
- 100% { left: -248px; }
- `;
+// const slideOutAnimation = keyframes`
+//  0% { top: 54px }
+//  100% { top: -54px; }
+//  `;
 
-const Container = styled.div<{ isMenuOpen: boolean }>`
+const Container = styled.div`
   width: 248px;
-  height: calc(100% - 54px);
   background-color: ${Colors.secondary};
-  position: absolute;
+  position: fixed;
   top: 54px;
-  left: ${p => (p.isMenuOpen ? 0 : -248)}px;
-  animation-name: ${p => (p.isMenuOpen ? slideInAnimation : slideOutAnimation)};
-  animation-duration: 0.5s;
+  height: ${window.outerHeight}px;
 `;
 
 const NavButtonContainer = styled.div`
   border-bottom: 1px solid ${Colors.primary};
-  width: 100%;
   height: 50px;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   cursor: pointer;
   transition: opacity 0.2s ease-in-out;
   &:hover {
     opacity: 0.6;
   }
+  padding: 0 20px;
 `;
 
 const NavButtonText = styled.text<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
   font-size: 19px;
+  line-height: 20px;
+  color: ${p => (p.isActive ? Colors.active : Colors.white)};
+`;
+
+// const SubMenuParent = styled.div<{ isFacultySubmenuOpen: boolean }>`
+//   top: ${p => (p.isFacultySubmenuOpen ? 54 : -248)}px;
+//   animation-name: ${p =>
+//     p.isFacultySubmenuOpen ? slideInAnimation : slideOutAnimation};
+//   animation-duration: 0.5s;
+//   align-self: flex-end;
+// `;
+
+const SubMenuContainer = styled.div`
+  border-bottom: 1px solid ${Colors.primary};
+  height: 50px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.6;
+  }
+  padding: 0 50px;
+`;
+
+const SubMenuText = styled.text<{ isActive: boolean }>`
+  font-family: HurmeGeometricSans3;
+  font-weight: 600;
+  font-size: 14px;
   line-height: 20px;
   color: ${p => (p.isActive ? Colors.active : Colors.white)};
 `;

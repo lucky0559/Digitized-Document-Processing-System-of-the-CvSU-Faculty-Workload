@@ -40,6 +40,8 @@ const StrategicFunction = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   const [
     designationAsSportTrainorAcademic,
     setDesignationAsSportTrainorAcademic
@@ -1262,166 +1264,177 @@ const StrategicFunction = () => {
 
   return (
     <MainContainer>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
-      />
-      <Menu isMenuOpen={isMenuOpen} />
-      <ProfileTab isProfileOpen={isProfileOpen} />
-      <BodyContainer>
-        <ScreenTitle title="Strategic Functions (SF)" />
-        <Container>
-          {steps === 1 && (
-            <StrategicFunction1
-              onUniversityLevelSelect1={onSelectDesignationUniversity1}
-              onUniversityLevelSelect2={onSelectDesignationUniversity2}
-              onUniversityLevelSelect3={onSelectDesignationUniversity3}
-              textInputUniversityLevel4={textInputDesignationUniversity4}
-              universityLevelInputDesignation={designationUniversity4?.title}
-              displayDesignationUniversity1={designationUniversity1?.title}
-              displayDesignationUniversity2={designationUniversity2?.title}
-              displayDesignationUniversity3={designationUniversity3?.title}
-              onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
-              onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
-              onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
-              textInputCollegeCampusLevel4={textInputCollegeCampusDesignation4}
-              displayDesignationCollegeCampus1={
-                collegeCampusDesignation1?.title
-              }
-              displayDesignationCollegeCampus2={
-                collegeCampusDesignation2?.title
-              }
-              displayDesignationCollegeCampus3={
-                collegeCampusDesignation3?.title
-              }
-              collegeCampusLevelInputDesignation={
-                collegeCampusDesignation4?.title
-              }
-              onFileUniversityLevelSelect1={
-                approvedUniversityDesignationFileHandler1
-              }
-              onFileUniversityLevelSelect2={
-                approvedUniversityDesignationFileHandler2
-              }
-              onFileUniversityLevelSelect3={
-                approvedUniversityDesignationFileHandler3
-              }
-              onFileCustomUniversityLevelSelect={
-                customApprovedUniversityDesignationFileHandler
-              }
-              customUniversityFileName={designationUniversity4?.file?.name}
-              universityLevelFileName1={designationUniversity1?.file?.name}
-              universityLevelFileName2={designationUniversity2?.file?.name}
-              universityLevelFileName3={designationUniversity3?.file?.name}
-              onFileCollegeCampusLevelSelect1={
-                approvedCollegeCampusDesignationFileHandler1
-              }
-              onFileCollegeCampusLevelSelect2={
-                approvedCollegeCampusDesignationFileHandler2
-              }
-              onFileCollegeCampusLevelSelect3={
-                approvedCollegeCampusDesignationFileHandler3
-              }
-              onFileCustomCollegeCampusLevelSelect={
-                customApprovedCollegeCampusDesignationFileHandler
-              }
-              collegeCampusLevelFileName1={
-                collegeCampusDesignation1?.file?.name
-              }
-              collegeCampusLevelFileName2={
-                collegeCampusDesignation2?.file?.name
-              }
-              collegeCampusLevelFileName3={
-                collegeCampusDesignation3?.file?.name
-              }
-              customcollegeCampusLevelFileName={
-                collegeCampusDesignation4?.file?.name
-              }
-            />
-          )}
-          {steps === 2 && (
-            <StrategicFunction2
-              onSelectDepartmentDesignation1={onSelectDepartmentDesignation1}
-              onSelectDepartmentDesignation2={onSelectDepartmentDesignation2}
-              onSelectDepartmentDesignation3={onSelectDepartmentDesignation3}
-              textInputDepartmentDesignation4={textInputDepartmentDesignation4}
-              displayDesignationDepartment1={departmentDesignation1?.title}
-              displayDesignationDepartment2={departmentDesignation2?.title}
-              displayDesignationDepartment3={departmentDesignation3?.title}
-              departmentLevelInputDesignation={departmentDesignation4?.title}
-              onFileDepartmentLevelSelect1={
-                approvedDepartmentDesignationFileHandler1
-              }
-              onFileDepartmentLevelSelect2={
-                approvedDepartmentDesignationFileHandler2
-              }
-              onFileDepartmentLevelSelect3={
-                approvedDepartmentDesignationFileHandler3
-              }
-              onFileCustomDepartmentLevelSelect={
-                customApprovedDepartmentDesignationFileHandler
-              }
-              departmentLevelFileName1={departmentDesignation1?.file?.name}
-              departmentLevelFileName2={departmentDesignation2?.file?.name}
-              departmentLevelFileName3={departmentDesignation3?.file?.name}
-              customDepartmentFileName={departmentDesignation4?.file?.name}
-              onTextInputSportsSocioDesignationTitle={textInputTitleSportsSocio}
-              onTextInputSportsSocioDesignationPoints={
-                textInputPointsSportsSocio
-              }
-              sportsSocioTitle={sportsSocio?.title}
-              sportsSocioPoints={sportsSocio?.points}
-              fileHandlerSportsSocio={fileHandlerSportsSocio}
-              fileNameSportsSocio={sportsSocio?.file?.name}
-              onTextInputMemberUniversityWideDesignationTitle={
-                textInputTitleMemberUniversity
-              }
-              onTextInputMemberUniversityWideDesignationPoints={
-                textInputPointsMemberUniversity
-              }
-              memberUniversityTitle={memberUniversity?.title}
-              memberUniversityPoints={memberUniversity?.points}
-              fileHandlerMemberUniversity={fileHandlerMemberUniversity}
-              fileNameMemberUniversity={memberUniversity?.file?.name}
-              onTextInputAcademicAdviserDesignationTitle={
-                textInputTitleAcademicAdviser
-              }
-              onTextInputAcademicAdviserDesignationPoints={
-                textInputPointsAcademicAdviser
-              }
-              academicAdviserTitle={academicAdviser?.title}
-              academicAdviserPoints={academicAdviser?.points}
-              fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
-              fileNameAcademicAdviser={academicAdviser?.file?.name}
-            />
-          )}
-          <Buttons>
-            {steps > 1 && (
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Content>
+        <Menu
+          isFacultySubmenuOpen={isFacultySubmenuOpen}
+          facultySubMenuHandler={() =>
+            setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+          }
+        />
+        <ProfileTab isProfileOpen={isProfileOpen} />
+        <BodyContainer>
+          <ScreenTitle title="Strategic Functions (SF)" />
+          <Container>
+            {steps === 1 && (
+              <StrategicFunction1
+                onUniversityLevelSelect1={onSelectDesignationUniversity1}
+                onUniversityLevelSelect2={onSelectDesignationUniversity2}
+                onUniversityLevelSelect3={onSelectDesignationUniversity3}
+                textInputUniversityLevel4={textInputDesignationUniversity4}
+                universityLevelInputDesignation={designationUniversity4?.title}
+                displayDesignationUniversity1={designationUniversity1?.title}
+                displayDesignationUniversity2={designationUniversity2?.title}
+                displayDesignationUniversity3={designationUniversity3?.title}
+                onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
+                onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
+                onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
+                textInputCollegeCampusLevel4={
+                  textInputCollegeCampusDesignation4
+                }
+                displayDesignationCollegeCampus1={
+                  collegeCampusDesignation1?.title
+                }
+                displayDesignationCollegeCampus2={
+                  collegeCampusDesignation2?.title
+                }
+                displayDesignationCollegeCampus3={
+                  collegeCampusDesignation3?.title
+                }
+                collegeCampusLevelInputDesignation={
+                  collegeCampusDesignation4?.title
+                }
+                onFileUniversityLevelSelect1={
+                  approvedUniversityDesignationFileHandler1
+                }
+                onFileUniversityLevelSelect2={
+                  approvedUniversityDesignationFileHandler2
+                }
+                onFileUniversityLevelSelect3={
+                  approvedUniversityDesignationFileHandler3
+                }
+                onFileCustomUniversityLevelSelect={
+                  customApprovedUniversityDesignationFileHandler
+                }
+                customUniversityFileName={designationUniversity4?.file?.name}
+                universityLevelFileName1={designationUniversity1?.file?.name}
+                universityLevelFileName2={designationUniversity2?.file?.name}
+                universityLevelFileName3={designationUniversity3?.file?.name}
+                onFileCollegeCampusLevelSelect1={
+                  approvedCollegeCampusDesignationFileHandler1
+                }
+                onFileCollegeCampusLevelSelect2={
+                  approvedCollegeCampusDesignationFileHandler2
+                }
+                onFileCollegeCampusLevelSelect3={
+                  approvedCollegeCampusDesignationFileHandler3
+                }
+                onFileCustomCollegeCampusLevelSelect={
+                  customApprovedCollegeCampusDesignationFileHandler
+                }
+                collegeCampusLevelFileName1={
+                  collegeCampusDesignation1?.file?.name
+                }
+                collegeCampusLevelFileName2={
+                  collegeCampusDesignation2?.file?.name
+                }
+                collegeCampusLevelFileName3={
+                  collegeCampusDesignation3?.file?.name
+                }
+                customcollegeCampusLevelFileName={
+                  collegeCampusDesignation4?.file?.name
+                }
+              />
+            )}
+            {steps === 2 && (
+              <StrategicFunction2
+                onSelectDepartmentDesignation1={onSelectDepartmentDesignation1}
+                onSelectDepartmentDesignation2={onSelectDepartmentDesignation2}
+                onSelectDepartmentDesignation3={onSelectDepartmentDesignation3}
+                textInputDepartmentDesignation4={
+                  textInputDepartmentDesignation4
+                }
+                displayDesignationDepartment1={departmentDesignation1?.title}
+                displayDesignationDepartment2={departmentDesignation2?.title}
+                displayDesignationDepartment3={departmentDesignation3?.title}
+                departmentLevelInputDesignation={departmentDesignation4?.title}
+                onFileDepartmentLevelSelect1={
+                  approvedDepartmentDesignationFileHandler1
+                }
+                onFileDepartmentLevelSelect2={
+                  approvedDepartmentDesignationFileHandler2
+                }
+                onFileDepartmentLevelSelect3={
+                  approvedDepartmentDesignationFileHandler3
+                }
+                onFileCustomDepartmentLevelSelect={
+                  customApprovedDepartmentDesignationFileHandler
+                }
+                departmentLevelFileName1={departmentDesignation1?.file?.name}
+                departmentLevelFileName2={departmentDesignation2?.file?.name}
+                departmentLevelFileName3={departmentDesignation3?.file?.name}
+                customDepartmentFileName={departmentDesignation4?.file?.name}
+                onTextInputSportsSocioDesignationTitle={
+                  textInputTitleSportsSocio
+                }
+                onTextInputSportsSocioDesignationPoints={
+                  textInputPointsSportsSocio
+                }
+                sportsSocioTitle={sportsSocio?.title}
+                sportsSocioPoints={sportsSocio?.points}
+                fileHandlerSportsSocio={fileHandlerSportsSocio}
+                fileNameSportsSocio={sportsSocio?.file?.name}
+                onTextInputMemberUniversityWideDesignationTitle={
+                  textInputTitleMemberUniversity
+                }
+                onTextInputMemberUniversityWideDesignationPoints={
+                  textInputPointsMemberUniversity
+                }
+                memberUniversityTitle={memberUniversity?.title}
+                memberUniversityPoints={memberUniversity?.points}
+                fileHandlerMemberUniversity={fileHandlerMemberUniversity}
+                fileNameMemberUniversity={memberUniversity?.file?.name}
+                onTextInputAcademicAdviserDesignationTitle={
+                  textInputTitleAcademicAdviser
+                }
+                onTextInputAcademicAdviserDesignationPoints={
+                  textInputPointsAcademicAdviser
+                }
+                academicAdviserTitle={academicAdviser?.title}
+                academicAdviserPoints={academicAdviser?.points}
+                fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
+                fileNameAcademicAdviser={academicAdviser?.file?.name}
+              />
+            )}
+            <Buttons>
+              {steps > 1 && (
+                <ButtonContainer>
+                  <FormButton
+                    text="Back"
+                    onClicked={() => setSteps(steps - 1)}
+                  ></FormButton>
+                </ButtonContainer>
+              )}
               <ButtonContainer>
                 <FormButton
-                  text="Back"
-                  onClicked={() => setSteps(steps - 1)}
+                  text={steps !== 2 ? "Next" : "Submit"}
+                  onClicked={onNextSubmit}
                 ></FormButton>
               </ButtonContainer>
-            )}
-            <ButtonContainer>
-              <FormButton
-                text={steps !== 2 ? "Next" : "Submit"}
-                onClicked={onNextSubmit}
-                isSubmitting={isSubmitting}
-              ></FormButton>
-            </ButtonContainer>
-          </Buttons>
-        </Container>
-      </BodyContainer>
+            </Buttons>
+          </Container>
+        </BodyContainer>
+      </Content>
     </MainContainer>
   );
 };
 
 const MainContainer = styled.div`
   min-height: 100vh;
+`;
+
+const Content = styled.div`
   display: flex;
-  flex-direction: column;
 `;
 
 const BodyContainer = styled.div`
@@ -1431,7 +1444,7 @@ const BodyContainer = styled.div`
   flex-direction: column;
   border: 5px solid black;
   border-radius: 15px;
-  margin: 80px;
+  margin: 120px auto;
 `;
 
 const Container = styled.div`

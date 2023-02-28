@@ -32,60 +32,69 @@ const ResearchWorkload2 = ({
 
   return (
     <Container>
-      <WorkloadTextContainer>
-        <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
-      </WorkloadTextContainer>
-      <InputsContainer>
-        <Dropdown
-          option={DROPDOWN_LISTS.FUND_GENERATED_PER_SEMESTER}
-          label="Fund Generated per Semester (in peso)"
-          onSelect={setFundGenerated}
-          val={fundGeneratedDisplay}
-        />
-      </InputsContainer>
-      <UploadContainer>
-        <UploadTextDescription>
-          Upload Proposal (for Approved Externally Funded Proposal) or Progress
-          Report (for On-going Externally Funded Study) here:
-        </UploadTextDescription>
-        <UploadFileContainer>
-          <UploadFileButton
-            fileHandler={fileHandler}
-            workloadFileName={rwlFileName1}
+      <SubContainer>
+        <WorkloadTextContainer>
+          <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
+        </WorkloadTextContainer>
+        <InputsContainer>
+          <Dropdown
+            option={DROPDOWN_LISTS.FUND_GENERATED_PER_SEMESTER}
+            label="Fund Generated per Semester (in peso)"
+            onSelect={setFundGenerated}
+            val={fundGeneratedDisplay}
           />
-        </UploadFileContainer>
-      </UploadContainer>
-      <AddStudyContainer>
-        <AddStudyText>Add Another Study</AddStudyText>
-      </AddStudyContainer>
-      <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
-        <ButtonContainer>
-          <FormButton
-            text="Next"
-            onClicked={researchWorkLoadHandler2}
-            disabled={
-              fundGeneratedDisplay?.length! <= 0 ||
-              fundGeneratedDisplay === undefined ||
-              rwlFileName1?.length! <= 0 ||
-              rwlFileName1 === undefined
-            }
-          ></FormButton>
-        </ButtonContainer>
-      </Buttons>
+        </InputsContainer>
+        <UploadContainer>
+          <UploadTextDescription>
+            Upload Proposal (for Approved Externally Funded Proposal) or
+            Progress Report (for On-going Externally Funded Study) here:
+          </UploadTextDescription>
+          <UploadFileContainer>
+            <UploadFileButton
+              fileHandler={fileHandler}
+              workloadFileName={rwlFileName1}
+            />
+          </UploadFileContainer>
+        </UploadContainer>
+        {/* <AddStudyContainer>
+          <AddStudyText>Add Another Study</AddStudyText>
+        </AddStudyContainer> */}
+        <Buttons>
+          <ButtonContainer>
+            <FormButton text="Back" onClicked={backHandler}></FormButton>
+          </ButtonContainer>
+          <ButtonContainer>
+            <FormButton
+              text="Next"
+              onClicked={researchWorkLoadHandler2}
+              disabled={
+                fundGeneratedDisplay?.length! <= 0 ||
+                fundGeneratedDisplay === undefined ||
+                rwlFileName1?.length! <= 0 ||
+                rwlFileName1 === undefined
+              }
+            ></FormButton>
+          </ButtonContainer>
+        </Buttons>
+      </SubContainer>
     </Container>
   );
 };
 
 const Container = styled.div`
   padding: 30px;
-  width: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+`;
+
+const SubContainer = styled.div`
+  border: 2px solid black;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
 `;
 
 const WorkloadTextContainer = styled.div`
@@ -132,19 +141,19 @@ const ButtonContainer = styled.div`
   margin: 20px 20px 0px 0px;
 `;
 
-const AddStudyContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-  margin-top: 50px;
-`;
+// const AddStudyContainer = styled.div`
+//   display: flex;
+//   align-self: flex-start;
+//   margin-top: 50px;
+// `;
 
-const AddStudyText = styled.text`
-  font-family: HurmeGeometricSans3SemiBold;
-  font-size: 17px;
-  line-height: 18px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+// const AddStudyText = styled.text`
+//   font-family: HurmeGeometricSans3SemiBold;
+//   font-size: 17px;
+//   line-height: 18px;
+//   text-decoration: underline;
+//   cursor: pointer;
+// `;
 
 const Buttons = styled.div`
   display: flex;

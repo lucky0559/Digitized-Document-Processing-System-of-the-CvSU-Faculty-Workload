@@ -48,6 +48,8 @@ function Profile() {
     useState(false);
   const [responseMessage, setResponseMessage] = useState("");
 
+  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
   let editedUser = user;
   useEffect(() => {
     (async () => {
@@ -128,11 +130,13 @@ function Profile() {
 
   return (
     <Container>
-      <TopNav
-        menuHandler={() => setIsMenuOpen(!isMenuOpen)}
-        profileHandler={() => setIsProfileOpen(!isProfileOpen)}
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Menu
+        isFacultySubmenuOpen={isFacultySubmenuOpen}
+        facultySubMenuHandler={() =>
+          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+        }
       />
-      <Menu isMenuOpen={isMenuOpen} />
       <ProfileTab isProfileOpen={isProfileOpen} />
       <BodyContainer>
         {isLoading ? (
