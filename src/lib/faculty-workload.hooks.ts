@@ -11,7 +11,7 @@ import {
   strategicApprovedDepartmentDesignationAwsConfig,
   strategicApprovedDesignationAwsConfig,
   strategicApprovedUniversityDesignationAwsConfig,
-  strategicCoachAdviserCertificateAwsConfig,
+  strategicSportsTrainorAwsConfig,
   strategicListOfAdviseesAwsConfig,
   twlAwsConfig
 } from "../constants/Defaults";
@@ -137,8 +137,8 @@ export const SaveStrategicFunctionWorkload = async (
   const approvedDepartmentDesignationS3 = new ReactS3Client(
     strategicApprovedDepartmentDesignationAwsConfig
   );
-  const coachAdviserCertificateS3 = new ReactS3Client(
-    strategicCoachAdviserCertificateAwsConfig
+  const strategicSportsTrainorS3 = new ReactS3Client(
+    strategicSportsTrainorAwsConfig
   );
   const approvedDesignationS3 = new ReactS3Client(
     strategicApprovedDesignationAwsConfig
@@ -148,8 +148,8 @@ export const SaveStrategicFunctionWorkload = async (
   if (
     strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 ||
-    strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0
-    // strategicFunctionWorkload?.designationAsSportTrainorAcademic &&
+    strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 ||
+    strategicFunctionWorkload?.designationAsSportTrainorAcademic
     // strategicFunctionWorkload?.designationAsMemberOfAdhoc &&
     // strategicFunctionWorkload?.academicAdvisees
   ) {
@@ -320,6 +320,18 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
           approvedDepartmentDesignationFile4?.location
         );
+      }
+      // SPORTS TRAINOR ACADEMIC
+      if (
+        strategicFunctionWorkload?.designationAsSportTrainorAcademic?.length! >
+          0 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicFile
+      ) {
+        sportsTrainorAcademicFile = await strategicSportsTrainorS3.uploadFile(
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile
+        );
+        strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath =
+          sportsTrainorAcademicFile?.location;
       }
 
       // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {

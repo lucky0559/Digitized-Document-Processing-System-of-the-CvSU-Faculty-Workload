@@ -1205,7 +1205,8 @@ const StrategicFunction = () => {
             departmentDesignation3?.file!,
             departmentDesignation4?.file!
           ],
-          designationAsSportTrainorAcademic: sportsSocio,
+          designationAsSportTrainorAcademic: sportsSocio?.title,
+          designationAsSportTrainorAcademicFile: sportsSocio?.file,
           designationAsMemberOfAdhoc: memberUniversity,
           academicAdvisees: academicAdviser
         });
@@ -1431,6 +1432,7 @@ const StrategicFunction = () => {
                 <FormButton
                   text={steps !== 2 ? "Next" : "Submit"}
                   onClicked={onNextSubmit}
+                  isSubmitting={isSubmitting}
                 ></FormButton>
               </ButtonContainer>
             </Buttons>

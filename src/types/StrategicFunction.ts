@@ -13,7 +13,9 @@ export type StrategicFunctionType = {
   designationDepartmentLevel?: string[];
   designationDepartmentLevelFiles?: File[];
   approvedDepartmentDesignationFilePath?: string[];
-  designationAsSportTrainorAcademic?: DesignationWithPoints;
+  designationAsSportTrainorAcademic?: string;
+  designationAsSportTrainorAcademicFile?: File;
+  designationAsSportTrainorAcademicFilePath?: string;
   sportsTrainorAcademicFilePath?: string;
   designationAsMemberOfAdhoc?: DesignationWithPoints;
   memberAdhocFilePath?: string;

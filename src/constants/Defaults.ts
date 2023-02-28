@@ -82,8 +82,8 @@ export const strategicApprovedDepartmentDesignationAwsConfig = {
   secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
 };
 
-export const strategicCoachAdviserCertificateAwsConfig = {
-  bucketName: "strategic-coach-adviser-certificate",
+export const strategicSportsTrainorAwsConfig = {
+  bucketName: "strategic-sports-trainor",
   region: "ap-southeast-1",
   accessKeyId: AWS_CONFIG.ACCESS_KEY_ID,
   secretAccessKey: AWS_CONFIG.SECRET_ACCESS_KEY
