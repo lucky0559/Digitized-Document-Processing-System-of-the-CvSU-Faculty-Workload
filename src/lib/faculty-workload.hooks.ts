@@ -147,8 +147,8 @@ export const SaveStrategicFunctionWorkload = async (
 
   if (
     strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 ||
-    strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0
-    // strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+    strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 ||
+    strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0
     // strategicFunctionWorkload?.designationAsSportTrainorAcademic &&
     // strategicFunctionWorkload?.designationAsMemberOfAdhoc &&
     // strategicFunctionWorkload?.academicAdvisees
@@ -271,6 +271,57 @@ export const SaveStrategicFunctionWorkload = async (
           approvedCollegeCampusDesignationFile4?.location
         );
       }
+
+      // DEPARTMENT
+      if (
+        strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationDepartmentLevelFiles?.[0]
+      ) {
+        approvedDepartmentDesignationFile1 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload?.designationDepartmentLevelFiles[0]
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath = [
+          approvedDepartmentDesignationFile1?.location
+        ];
+      }
+      if (
+        strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationDepartmentLevelFiles?.[1]
+      ) {
+        approvedDepartmentDesignationFile2 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationDepartmentLevelFiles[1]
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
+          approvedDepartmentDesignationFile2?.location
+        );
+      }
+      if (
+        strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationDepartmentLevelFiles?.[2]
+      ) {
+        approvedDepartmentDesignationFile3 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationDepartmentLevelFiles[2]
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
+          approvedDepartmentDesignationFile3?.location
+        );
+      }
+      if (
+        strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 &&
+        strategicFunctionWorkload?.designationDepartmentLevelFiles?.[3]
+      ) {
+        approvedDepartmentDesignationFile4 =
+          await approvedDepartmentDesignationS3.uploadFile(
+            strategicFunctionWorkload.designationDepartmentLevelFiles[3]
+          );
+        strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
+          approvedDepartmentDesignationFile4?.location
+        );
+      }
+
       // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {
       //   approvedCollegeCampusDesignationFile1 =
       //     await approvedCollegeCampusDesignationS3.uploadFile(

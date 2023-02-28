@@ -1193,6 +1193,18 @@ const StrategicFunction = () => {
             collegeCampusDesignation3?.file!,
             collegeCampusDesignation4?.file!
           ],
+          designationDepartmentLevel: [
+            departmentDesignation1?.title!,
+            departmentDesignation2?.title!,
+            departmentDesignation3?.title!,
+            departmentDesignation4?.title!
+          ].filter(Boolean),
+          designationDepartmentLevelFiles: [
+            departmentDesignation1?.file!,
+            departmentDesignation2?.file!,
+            departmentDesignation3?.file!,
+            departmentDesignation4?.file!
+          ],
           designationAsSportTrainorAcademic: sportsSocio,
           designationAsMemberOfAdhoc: memberUniversity,
           academicAdvisees: academicAdviser
