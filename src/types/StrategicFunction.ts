@@ -7,11 +7,9 @@ export type StrategicFunctionType = {
   designationUniversityLevel?: string[];
   designationUniversityLevelFiles?: File[];
   approvedUniversityDesignationFilePath?: string[];
-  designationCollegeCampusLevel?: Designation[];
-  approvedCollegeCampusDesignationFilePath1?: string;
-  approvedCollegeCampusDesignationFilePath2?: string;
-  approvedCollegeCampusDesignationFilePath3?: string;
-  approvedCollegeCampusDesignationFilePath4?: string;
+  designationCollegeCampusLevel?: string[];
+  designationCollegeCampusLevelFiles?: File[];
+  approvedCollegeCampusDesignationFilePath?: string[];
   designationDepartmentLevel?: Designation[];
   approvedDepartmentDesignationFilePath1?: string;
   approvedDepartmentDesignationFilePath2?: string;
