@@ -15,13 +15,16 @@ export type StrategicFunctionType = {
   approvedDepartmentDesignationFilePath?: string[];
   designationAsSportTrainorAcademic?: string;
   designationAsSportTrainorAcademicFile?: File;
+  designationAsSportTrainorAcademicPoints?: number;
   designationAsSportTrainorAcademicFilePath?: string;
   designationAsMemberOfAdhoc?: string;
   designationAsMemberOfAdhocFile?: File;
+  designationAsMemberOfAdhocPoints?: number;
   designationAsMemberOfAdhocFilePath?: string;
   memberAdhocFilePath?: string;
   academicAdvisees?: string;
   academicAdviseesFile?: File;
+  academicAdviseesPoints?: number;
   academicAdviseesFilePath?: string;
   sfwPoints?: number;
   remarks?: string;

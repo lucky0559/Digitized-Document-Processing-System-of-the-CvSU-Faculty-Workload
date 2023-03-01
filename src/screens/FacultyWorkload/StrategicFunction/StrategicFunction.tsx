@@ -1170,10 +1170,10 @@ const StrategicFunction = () => {
         // console.log(strategicFunctionWorkload);
         setStrategicFunctionWorkload({
           designationUniversityLevel: [
-            designationUniversity1?.title!,
-            designationUniversity2?.title!,
-            designationUniversity3?.title!,
-            designationUniversity4?.title!
+            designationUniversity1?.file! && designationUniversity1?.title!,
+            designationUniversity2?.file! && designationUniversity2?.title!,
+            designationUniversity3?.file! && designationUniversity3?.title!,
+            designationUniversity4?.file! && designationUniversity4?.title!
           ].filter(Boolean),
           designationUniversityLevelFiles: [
             designationUniversity1?.file!,
@@ -1182,10 +1182,14 @@ const StrategicFunction = () => {
             designationUniversity4?.file!
           ],
           designationCollegeCampusLevel: [
-            collegeCampusDesignation1?.title!,
-            collegeCampusDesignation2?.title!,
-            collegeCampusDesignation3?.title!,
-            collegeCampusDesignation4?.title!
+            collegeCampusDesignation1?.file! &&
+              collegeCampusDesignation1?.title!,
+            collegeCampusDesignation2?.file! &&
+              collegeCampusDesignation2?.title!,
+            collegeCampusDesignation3?.file! &&
+              collegeCampusDesignation3?.title!,
+            collegeCampusDesignation4?.file! &&
+              collegeCampusDesignation4?.title!
           ].filter(Boolean),
           designationCollegeCampusLevelFiles: [
             collegeCampusDesignation1?.file!,
@@ -1194,10 +1198,10 @@ const StrategicFunction = () => {
             collegeCampusDesignation4?.file!
           ],
           designationDepartmentLevel: [
-            departmentDesignation1?.title!,
-            departmentDesignation2?.title!,
-            departmentDesignation3?.title!,
-            departmentDesignation4?.title!
+            departmentDesignation1?.file! && departmentDesignation1?.title!,
+            departmentDesignation2?.file! && departmentDesignation2?.title!,
+            departmentDesignation3?.file! && departmentDesignation3?.title!,
+            departmentDesignation4?.file! && departmentDesignation4?.title!
           ].filter(Boolean),
           designationDepartmentLevelFiles: [
             departmentDesignation1?.file!,
@@ -1207,10 +1211,13 @@ const StrategicFunction = () => {
           ],
           designationAsSportTrainorAcademic: sportsSocio?.title,
           designationAsSportTrainorAcademicFile: sportsSocio?.file,
+          designationAsSportTrainorAcademicPoints: Number(sportsSocio?.points),
           designationAsMemberOfAdhoc: memberUniversity?.title,
           designationAsMemberOfAdhocFile: memberUniversity?.file,
+          designationAsMemberOfAdhocPoints: Number(memberUniversity?.points),
           academicAdvisees: academicAdviser?.title,
-          academicAdviseesFile: academicAdviser?.file
+          academicAdviseesFile: academicAdviser?.file,
+          academicAdviseesPoints: Number(academicAdviser?.points)
         });
       }
 
