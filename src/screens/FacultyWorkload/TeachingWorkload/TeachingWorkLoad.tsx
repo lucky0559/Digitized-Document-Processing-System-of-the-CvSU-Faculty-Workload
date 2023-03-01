@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Footer from "../../../components/Footer";
 import FormButton from "../../../components/FormButton";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
@@ -162,6 +163,9 @@ const TeachingWorkLoad = () => {
           </SubContainer>
         </Container>
       </BodyContainer>
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </MainContainer>
   );
 };
@@ -255,6 +259,13 @@ const ButtonContainer = styled.div`
 
 const UploadFileButtonContainer = styled.div`
   max-width: 100px;
+`;
+
+const FooterContainer = styled.div`
+  margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1;
 `;
 
 export default TeachingWorkLoad;

@@ -10,6 +10,7 @@ import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
 import { SaveExtensionWorkload } from "../../../lib/faculty-workload.hooks";
 import ScreenTitle from "../../../components/ScreenTitle";
+import Footer from "../../../components/Footer";
 
 const ExtensionWorkload = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -250,6 +251,9 @@ const ExtensionWorkload = () => {
           </SubContainer>
         </Container>
       </BodyContainer>
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </MainContainer>
   );
 };
@@ -341,5 +345,12 @@ const Label = styled.label`
 `;
 
 const TextInput = styled.input``;
+
+const FooterContainer = styled.div`
+  margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1;
+`;
 
 export default ExtensionWorkload;

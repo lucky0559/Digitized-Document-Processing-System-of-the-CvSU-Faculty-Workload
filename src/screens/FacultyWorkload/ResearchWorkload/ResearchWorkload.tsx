@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
+import Footer from "../../../components/Footer";
 import FormButton from "../../../components/FormButton";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
@@ -432,6 +433,9 @@ const ResearchWorkload = () => {
           />
         )}
       </BodyContainer>
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </MainContainer>
   );
 };
@@ -515,6 +519,13 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 100px 20px 0px 0px;
+`;
+
+const FooterContainer = styled.div`
+  margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1;
 `;
 
 export default ResearchWorkload;

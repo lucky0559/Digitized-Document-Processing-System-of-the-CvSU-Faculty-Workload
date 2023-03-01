@@ -13,6 +13,7 @@ import ProfileTab from "../../../components/ProfileTab";
 import ScreenTitle from "../../../components/ScreenTitle";
 import StrategicFunction1 from "./StrategicFunction1";
 import StrategicFunction2 from "./StrategicFunction2";
+import Footer from "../../../components/Footer";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -1449,6 +1450,9 @@ const StrategicFunction = () => {
           </Container>
         </BodyContainer>
       </Content>
+      {/* <FooterContainer>
+        <Footer />
+      </FooterContainer> */}
     </MainContainer>
   );
 };
@@ -1578,6 +1582,13 @@ const CheckBoxLabel = styled.text`
   font-family: HurmeGeometricSans3;
   font-size: 15px;
   line-height: 15px;
+`;
+
+const FooterContainer = styled.div`
+  margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1000;
 `;
 
 export default StrategicFunction;

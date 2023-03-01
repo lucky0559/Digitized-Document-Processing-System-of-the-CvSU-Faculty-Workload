@@ -26,7 +26,15 @@ export const SaveTeachingWorkload = async (
   const userId = localStorage.getItem("userId");
   const s3 = new ReactS3Client(twlAwsConfig);
 
-  if (teachingWorkload.twlFile) {
+  if (
+    teachingWorkload.twlFile &&
+    teachingWorkload.numberOfPreparations &&
+    Number(teachingWorkload.numberOfPreparations) > 0 &&
+    teachingWorkload.contactHours &&
+    Number(teachingWorkload.contactHours) > 0 &&
+    teachingWorkload.totalNoOfStudents &&
+    Number(teachingWorkload.totalNoOfStudents) > 0
+  ) {
     try {
       const res = await s3.uploadFile(teachingWorkload.twlFile);
       teachingWorkload.twlFilePath = res.location;

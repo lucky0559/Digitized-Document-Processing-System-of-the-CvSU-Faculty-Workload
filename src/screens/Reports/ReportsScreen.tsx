@@ -59,6 +59,9 @@ const BodyContainer = styled.div`
 
 const FooterContainer = styled.div`
   margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1;
 `;
 
 const WorkloadsContainer = styled.div`
