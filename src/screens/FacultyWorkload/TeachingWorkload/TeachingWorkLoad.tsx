@@ -85,6 +85,18 @@ const TeachingWorkLoad = () => {
     setTwlFile(value);
   };
 
+  useEffect(() => {
+    if (numberOfPreparations && contactHours && totalNoOfStudents && twlFile) {
+      const totalNoOfStudentsPoints = Number(totalNoOfStudents) * 0.23;
+      return setPoints(
+        Number(numberOfPreparations) +
+          Number(contactHours) +
+          totalNoOfStudentsPoints
+      );
+    }
+    setPoints(0);
+  }, [numberOfPreparations, contactHours, totalNoOfStudents, twlFile]);
+
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
