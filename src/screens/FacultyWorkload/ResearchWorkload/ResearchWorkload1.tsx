@@ -18,6 +18,7 @@ type ResearchWorkload1Props = {
   rwlFileName?: string;
   rwlFileNameDisplay?: string;
   isSubmitting: boolean;
+  points: number;
 };
 
 const ResearchWorkload1 = ({
@@ -29,7 +30,8 @@ const ResearchWorkload1 = ({
   typeOfStudy,
   designationStudy,
   rwlFileName,
-  isSubmitting
+  isSubmitting,
+  points
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -91,6 +93,11 @@ const ResearchWorkload1 = ({
         {/* <AddStudyContainer>
           <AddStudyText>Add Another Study</AddStudyText>
         </AddStudyContainer> */}
+        <div style={{ marginTop: 50 }}>
+          <Label style={{ fontWeight: "bold" }}>
+            Total Teaching Workload = {points.toString()}
+          </Label>
+        </div>
         <Buttons>
           <ButtonContainer>
             <FormButton text="Back" onClicked={backHandler}></FormButton>
@@ -189,7 +196,8 @@ const UploadTextDescription = styled.label`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-self: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin: 20px 20px 0px 0px;
 `;
 
@@ -212,7 +220,7 @@ const Buttons = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin-top: 80px;
+  margin-top: 40px;
 `;
 
 const UploadFileContainer = styled.div`

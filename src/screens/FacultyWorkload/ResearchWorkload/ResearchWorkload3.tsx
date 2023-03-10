@@ -4,32 +4,75 @@ import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
+import DropdownWithUpload from "../../../components/DropdownWithUpload";
 
 type ResearchWorkload3Props = {
   researchWorkLoadHandler3: () => void;
   backHandler: () => void;
-  disseminatedResearchHandler: (value?: string) => void;
-  rwlFile2Handler: (value?: File) => void;
-  disseminatedResearchDisplay?: string;
-  rwlFile2Name?: string;
   isSubmitting: boolean;
+  onSelectStudy1: (value: string) => void;
+  study1?: string;
+  onStudy1FileSelect: (value?: File) => void;
+  study1FileName?: string;
+  onSelectStudy2: (value: string) => void;
+  study2?: string;
+  onStudy2FileSelect: (value?: File) => void;
+  study2FileName?: string;
+  onSelectStudy3: (value: string) => void;
+  study3?: string;
+  onStudy3FileSelect: (value?: File) => void;
+  study3FileName?: string;
+  onSelectStudy4: (value: string) => void;
+  study4?: string;
+  onStudy4FileSelect: (value?: File) => void;
+  study4FileName?: string;
+  points: number;
+  study1Points: number;
+  study2Points: number;
+  study3Points: number;
+  study4Points: number;
 };
 
 const ResearchWorkload3 = ({
   researchWorkLoadHandler3,
   backHandler,
-  disseminatedResearchHandler,
-  rwlFile2Handler,
-  disseminatedResearchDisplay,
-  rwlFile2Name,
-  isSubmitting
+  isSubmitting,
+  onSelectStudy1,
+  study1,
+  onStudy1FileSelect,
+  study1FileName,
+  onSelectStudy2,
+  study2,
+  onStudy2FileSelect,
+  study2FileName,
+  onSelectStudy3,
+  study3,
+  onStudy3FileSelect,
+  study3FileName,
+  onSelectStudy4,
+  study4,
+  onStudy4FileSelect,
+  study4FileName,
+  points,
+  study1Points,
+  study2Points,
+  study3Points,
+  study4Points
 }: ResearchWorkload3Props) => {
-  const fileHandler = (file?: File) => {
-    rwlFile2Handler(file);
+  const onStudy1FileSelectHandler = (value?: File) => {
+    onStudy1FileSelect(value);
   };
 
-  const setDisseminatedResearch = (disseminatedResearchValue?: string) => {
-    disseminatedResearchHandler(disseminatedResearchValue);
+  const onStudy2FileSelectHandler = (value?: File) => {
+    onStudy2FileSelect(value);
+  };
+
+  const onStudy3FileSelectHandler = (value?: File) => {
+    onStudy3FileSelect(value);
+  };
+
+  const onStudy4FileSelectHandler = (value?: File) => {
+    onStudy4FileSelect(value);
   };
 
   return (
@@ -38,31 +81,67 @@ const ResearchWorkload3 = ({
         <WorkloadTextContainer>
           <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
         </WorkloadTextContainer>
-        <InputsContainer>
-          <Dropdown
-            option={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
-            label="Disseminated research output in College or University In-House Review/Conferences"
-            onSelect={setDisseminatedResearch}
-            val={disseminatedResearchDisplay}
+        <text>
+          Disseminated research output in College or University In-House
+          Review/Conferences
+        </text>
+        <div>
+          <DropdownWithUpload
+            inputLabel="Study 1"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy1}
+            val={study1}
+            onFileSelect={onStudy1FileSelectHandler}
+            fileName={study1FileName}
           />
-        </InputsContainer>
-        <UploadContainer>
-          <UploadTextDescription>
-            Upload certificate of presentation here:
-          </UploadTextDescription>
-          <UploadFileContainer>
-            <UploadFileButton
-              fileHandler={fileHandler}
-              workloadFileName={rwlFile2Name}
-            />
-          </UploadFileContainer>
-        </UploadContainer>
+          <DropdownWithUpload
+            inputLabel="Study 2"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy2}
+            val={study2}
+            onFileSelect={onStudy2FileSelectHandler}
+            fileName={study2FileName}
+          />
+          <DropdownWithUpload
+            inputLabel="Study 3"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy3}
+            val={study3}
+            onFileSelect={onStudy3FileSelectHandler}
+            fileName={study3FileName}
+          />
+          <DropdownWithUpload
+            inputLabel="Study 4"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy4}
+            val={study4}
+            onFileSelect={onStudy4FileSelectHandler}
+            fileName={study4FileName}
+          />
+        </div>
+
         {/* <AddStudyContainer>
           <AddStudyText>
             Add another disseminated research output in College or University
             In-House Review/Conferences
           </AddStudyText>
         </AddStudyContainer> */}
+        <div style={{ marginTop: 50 }}>
+          <Label style={{ fontWeight: "bold" }}>
+            Total Teaching Workload ={" "}
+            {(
+              points +
+              study1Points +
+              study2Points +
+              study3Points +
+              study4Points
+            ).toString()}
+          </Label>
+        </div>
         <Buttons>
           <ButtonContainer>
             <FormButton text="Back" onClicked={backHandler}></FormButton>
@@ -73,10 +152,10 @@ const ResearchWorkload3 = ({
               onClicked={researchWorkLoadHandler3}
               isSubmitting={isSubmitting}
               disabled={
-                disseminatedResearchDisplay?.length! <= 0 ||
-                disseminatedResearchDisplay === undefined ||
-                rwlFile2Name?.length! <= 0 ||
-                rwlFile2Name === undefined
+                study1?.length! <= 0 ||
+                study1 === undefined ||
+                study1FileName?.length! <= 0 ||
+                study1FileName === undefined
               }
             ></FormButton>
           </ButtonContainer>
@@ -143,8 +222,16 @@ const UploadTextDescription = styled.label`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-self: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin: 20px 20px 0px 0px;
+`;
+
+const Label = styled.label`
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
 `;
 
 // const AddStudyContainer = styled.div`
@@ -167,7 +254,7 @@ const Buttons = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin-top: 80px;
+  margin-top: 40px;
 `;
 
 const UploadFileContainer = styled.div`

@@ -11,6 +11,7 @@ import Colors from "../../../constants/Colors";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import { SaveResearchWorkload } from "../../../lib/faculty-workload.hooks";
 import { ResearchWorkLoadType } from "../../../types/ResearchWorkLoad";
+import { Designation } from "../StrategicFunction/StrategicFunction";
 import ResearchWorkload1 from "./ResearchWorkload1";
 import ResearchWorkload2 from "./ResearchWorkload2";
 import ResearchWorkload3 from "./ResearchWorkload3";
@@ -48,6 +49,8 @@ const ResearchWorkload = () => {
   const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
 
   const [steps, setSteps] = useState(1);
+
+  const [points, setPoints] = useState(0);
 
   const fundingStudy = (fundingStudyValue?: string) => {
     fundingOfStudyHandler(fundingStudyValue);
@@ -349,6 +352,161 @@ const ResearchWorkload = () => {
     setResearchWorkLoad(undefined);
   };
 
+  const [study1, setStudy1] = useState<Designation>();
+  const [study2, setStudy2] = useState<Designation>();
+  const [study3, setStudy3] = useState<Designation>();
+  const [study4, setStudy4] = useState<Designation>();
+
+  const onSelectStudy1 = (value: string) => {
+    if (value.length >= 0 && value !== "") {
+      setStudy1({
+        ...study1,
+        title: value
+      });
+    }
+  };
+
+  const onStudy1FileSelect = (value?: File) => {
+    setStudy1({
+      ...study1,
+      file: value
+    });
+  };
+
+  const onSelectStudy2 = (value: string) => {
+    if (value.length >= 0 && value !== "") {
+      setStudy2({
+        ...study2,
+        title: value
+      });
+    }
+  };
+
+  const onStudy2FileSelect = (value?: File) => {
+    setStudy2({
+      ...study2,
+      file: value
+    });
+  };
+
+  const onSelectStudy3 = (value: string) => {
+    if (value.length >= 0 && value !== "") {
+      setStudy3({
+        ...study3,
+        title: value
+      });
+    }
+  };
+
+  const onStudy3FileSelect = (value?: File) => {
+    setStudy3({
+      ...study3,
+      file: value
+    });
+  };
+
+  const onSelectStudy4 = (value: string) => {
+    if (value.length >= 0 && value !== "") {
+      setStudy4({
+        ...study4,
+        title: value
+      });
+    }
+  };
+
+  const onStudy4FileSelect = (value?: File) => {
+    setStudy4({
+      ...study4,
+      file: value
+    });
+  };
+
+  let designationStudyPoints = 0;
+  let fundGeneratedPoints = 0;
+  const [study1Points, setStudy1Points] = useState(0);
+  const [study2Points, setStudy2Points] = useState(0);
+  const [study3Points, setStudy3Points] = useState(0);
+  const [study4Points, setStudy4Points] = useState(0);
+
+  useEffect(() => {
+    if (
+      designationStudy === "Program Leader/Co-Program Leader" &&
+      typeOfStudy &&
+      rwlFile
+    ) {
+      designationStudyPoints = 9;
+      return setPoints(designationStudyPoints);
+    } else if (
+      designationStudy === "Project Leader/Co-Project Leader" &&
+      typeOfStudy &&
+      rwlFile
+    ) {
+      designationStudyPoints = 6;
+      return setPoints(designationStudyPoints);
+    } else if (
+      designationStudy === "Study Leader/Co-Study Leader" &&
+      typeOfStudy &&
+      rwlFile
+    ) {
+      designationStudyPoints = 3;
+      return setPoints(designationStudyPoints);
+    }
+  }, [designationStudy, rwlFile, fundGenerated]);
+
+  useEffect(() => {
+    if (fundGenerated === "Above 1,000,000.00" && rwlFile1) {
+      fundGeneratedPoints = 3;
+    } else if (fundGenerated === "500,001.00 - 1,000,000.00" && rwlFile1) {
+      fundGeneratedPoints = 2;
+    } else if (fundGenerated === "500,000.00 and below" && rwlFile1) {
+      fundGeneratedPoints = 1;
+    }
+
+    setPoints(points + fundGeneratedPoints);
+  }, [fundGenerated, rwlFile1]);
+
+  useEffect(() => {
+    if (study1?.title === "International" && study1.file) {
+      setStudy1Points(4);
+    } else if (study1?.title === "National" && study1.file) {
+      setStudy1Points(3);
+    } else if (study1?.title === "Regional" && study1.file) {
+      setStudy1Points(2);
+    } else if (study1?.title === "Local" && study1.file) {
+      setStudy1Points(1);
+    }
+
+    if (study2?.title === "International" && study2.file) {
+      setStudy2Points(4);
+    } else if (study2?.title === "National" && study2.file) {
+      setStudy2Points(3);
+    } else if (study2?.title === "Regional" && study2.file) {
+      setStudy2Points(2);
+    } else if (study2?.title === "Local" && study2.file) {
+      setStudy2Points(1);
+    }
+
+    if (study3?.title === "International" && study3.file) {
+      setStudy3Points(4);
+    } else if (study3?.title === "National" && study3.file) {
+      setStudy3Points(3);
+    } else if (study3?.title === "Regional" && study3.file) {
+      setStudy3Points(2);
+    } else if (study3?.title === "Local" && study3.file) {
+      setStudy3Points(1);
+    }
+
+    if (study4?.title === "International" && study4.file) {
+      setStudy4Points(4);
+    } else if (study4?.title === "National" && study4.file) {
+      setStudy4Points(3);
+    } else if (study4?.title === "Regional" && study4.file) {
+      setStudy4Points(2);
+    } else if (study4?.title === "Local" && study4.file) {
+      setStudy4Points(1);
+    }
+  }, [study1, study2, study3, study4]);
+
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -383,6 +541,11 @@ const ResearchWorkload = () => {
                   val={fundDisplay}
                 />
               </InputsContainer>
+              <div style={{ marginTop: 50 }}>
+                <Label style={{ fontWeight: "bold" }}>
+                  Total Teaching Workload = 0
+                </Label>
+              </div>
               <ButtonContainer>
                 <FormButton
                   text="Next"
@@ -409,6 +572,7 @@ const ResearchWorkload = () => {
             designationStudy={designationStudyDisplay}
             rwlFileName={rwlFile?.name}
             isSubmitting={isSubmitting}
+            points={points}
           />
         )}
         {steps === 3 && (
@@ -419,17 +583,35 @@ const ResearchWorkload = () => {
             backHandler={backHandler}
             fundGeneratedDisplay={fundGeneratedDisplay}
             rwlFileName1={rwlFile1?.name}
+            points={points}
           />
         )}
         {steps === 4 && (
           <ResearchWorkload3
             researchWorkLoadHandler3={researchWorkLoadHandler3}
             backHandler={backHandler}
-            disseminatedResearchHandler={disseminatedResearchHandler}
-            rwlFile2Handler={rwlFile2Handler}
-            disseminatedResearchDisplay={disseminatedResearchDisplay}
-            rwlFile2Name={rwlFile2?.name}
             isSubmitting={isSubmitting}
+            onSelectStudy1={onSelectStudy1}
+            study1={study1?.title}
+            onStudy1FileSelect={onStudy1FileSelect}
+            study1FileName={study1?.file?.name}
+            onSelectStudy2={onSelectStudy2}
+            study2={study2?.title}
+            onStudy2FileSelect={onStudy2FileSelect}
+            study2FileName={study2?.file?.name}
+            onSelectStudy3={onSelectStudy3}
+            study3={study3?.title}
+            onStudy3FileSelect={onStudy3FileSelect}
+            study3FileName={study3?.file?.name}
+            onSelectStudy4={onSelectStudy4}
+            study4={study4?.title}
+            onStudy4FileSelect={onStudy4FileSelect}
+            study4FileName={study4?.file?.name}
+            points={points}
+            study1Points={study1Points}
+            study2Points={study2Points}
+            study3Points={study3Points}
+            study4Points={study4Points}
           />
         )}
       </BodyContainer>
@@ -518,7 +700,8 @@ const TextInput = styled.input`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 100px 20px 0px 0px;
+  align-items: center;
+  margin: 40px 20px 0px 0px;
 `;
 
 const FooterContainer = styled.div`
