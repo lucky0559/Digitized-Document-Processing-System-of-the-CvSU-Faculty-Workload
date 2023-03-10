@@ -543,7 +543,7 @@ const ResearchWorkload = () => {
               </InputsContainer>
               <div style={{ marginTop: 50 }}>
                 <Label style={{ fontWeight: "bold" }}>
-                  Total Teaching Workload = 0
+                  Total Research Workload = 0
                 </Label>
               </div>
               <ButtonContainer>

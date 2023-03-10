@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
@@ -30,6 +30,12 @@ const ExtensionWorkload = () => {
   const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
 
   const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
+
+  const [points, setPoints] = useState(0);
+
+  const [designationActivityPoints, setDesignationActivityPoints] = useState(0);
+  const [resourcePersonActivityPoints, setResourcePersonActivityPoints] =
+    useState(0);
 
   const extensionWorkloadHandler = () => {
     setExtensionWorkload({
@@ -132,7 +138,11 @@ const ExtensionWorkload = () => {
   };
 
   const totalNumberHoursHandler = (value?: string) => {
-    setTotalNumberHours(value);
+    if (value?.length! > 1 || Number(value) > 3) {
+      return;
+    } else {
+      setTotalNumberHours(value);
+    }
   };
 
   const summaryOfHoursFileHandler = (value?: File) => {
@@ -150,6 +160,44 @@ const ExtensionWorkload = () => {
   const setSummaryOfHoursFileHandler = (file?: File) => {
     summaryOfHoursFileHandler(file);
   };
+
+  useEffect(() => {
+    if (
+      designationExtensionActivity === "Project Leader" &&
+      extensionActivityFile
+    ) {
+      setDesignationActivityPoints(3);
+    } else if (
+      designationExtensionActivity === "Project Coordinator" &&
+      extensionActivityFile
+    ) {
+      setDesignationActivityPoints(2.5);
+    } else if (
+      designationExtensionActivity === "Project Facilitator" &&
+      extensionActivityFile
+    ) {
+      setDesignationActivityPoints(2);
+    } else if (
+      designationExtensionActivity === "Project Assistants" &&
+      extensionActivityFile
+    ) {
+      setDesignationActivityPoints(1);
+    }
+  }, [designationExtensionActivity, extensionActivityFile]);
+
+  useEffect(() => {
+    if (resourcePerson === "International" && certificateFile) {
+      setResourcePersonActivityPoints(4);
+    } else if (resourcePerson === "National" && certificateFile) {
+      setResourcePersonActivityPoints(3);
+    } else if (resourcePerson === "Regional" && certificateFile) {
+      setResourcePersonActivityPoints(2);
+    } else if (resourcePerson === "Local" && certificateFile) {
+      setResourcePersonActivityPoints(1);
+    }
+  }, [resourcePerson, certificateFile]);
+
+  useEffect(() => {}, []);
 
   return (
     <MainContainer>
@@ -227,6 +275,17 @@ const ExtensionWorkload = () => {
                 />
               </UploadFileContainer>
             </UploadContainer>
+            <div style={{ marginTop: 50 }}>
+              <Label style={{ fontWeight: "bold" }}>
+                Total Extension Workload ={" "}
+                {(
+                  points +
+                  designationActivityPoints +
+                  resourcePersonActivityPoints +
+                  (summaryOfHoursFile ? Number(totalNumberHours) * 0.05556 : 0)
+                ).toString()}
+              </Label>
+            </div>
             <ButtonContainer>
               <FormButton
                 text="Submit"

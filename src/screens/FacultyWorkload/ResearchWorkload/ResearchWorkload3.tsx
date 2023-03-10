@@ -132,7 +132,7 @@ const ResearchWorkload3 = ({
         </AddStudyContainer> */}
         <div style={{ marginTop: 50 }}>
           <Label style={{ fontWeight: "bold" }}>
-            Total Teaching Workload ={" "}
+            Total Research Workload ={" "}
             {(
               points +
               study1Points +
