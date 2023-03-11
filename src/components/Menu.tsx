@@ -15,76 +15,99 @@ const Menu = ({ isFacultySubmenuOpen, facultySubMenuHandler }: MenuProps) => {
 
   return (
     <Container>
-      <NavButtonContainer onClick={facultySubMenuHandler}>
-        <NavButtonText
-          isActive={
-            location === "/teaching-workload" ||
-            location === "/research-workload" ||
-            location === "/extension-workload" ||
-            location === "/strategic-function-workload"
-          }
-        >
-          Faculty Workload
-        </NavButtonText>
-      </NavButtonContainer>
-      {isFacultySubmenuOpen && (
-        <>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/teaching-workload"}
-              onClick={() => navigate("/teaching-workload", { replace: true })}
-            >
-              Teaching Workload
-            </SubMenuText>
-          </SubMenuContainer>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/research-workload"}
-              onClick={() => navigate("/research-workload", { replace: true })}
-            >
-              Research Workload
-            </SubMenuText>
-          </SubMenuContainer>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/extension-workload"}
-              onClick={() => navigate("/extension-workload", { replace: true })}
-            >
-              Extension Workload
-            </SubMenuText>
-          </SubMenuContainer>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/strategic-function-workload"}
-              onClick={() =>
-                navigate("/strategic-function-workload", { replace: true })
-              }
-            >
-              Strategic Function Workload
-            </SubMenuText>
-          </SubMenuContainer>
-        </>
-      )}
-
-      {userRole !== "System Administrator" && (
+      {userRole === "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/workload-review", { replace: true })}
             isActive={location === "/workload-review"}
           >
-            Workload Review
+            Accounts
           </NavButtonText>
         </NavButtonContainer>
       )}
+      {userRole !== "System Administrator" && (
+        <>
+          <NavButtonContainer onClick={facultySubMenuHandler}>
+            <NavButtonText
+              isActive={
+                location === "/teaching-workload" ||
+                location === "/research-workload" ||
+                location === "/extension-workload" ||
+                location === "/strategic-function-workload"
+              }
+            >
+              Faculty Workload
+            </NavButtonText>
+          </NavButtonContainer>
 
-      <NavButtonContainer>
-        <NavButtonText
-          isActive={location === "/reports"}
-          onClick={() => navigate("/reports", { replace: true })}
-        >
-          Reports
-        </NavButtonText>
-      </NavButtonContainer>
+          {isFacultySubmenuOpen && (
+            <>
+              <SubMenuContainer>
+                <SubMenuText
+                  isActive={location === "/teaching-workload"}
+                  onClick={() =>
+                    navigate("/teaching-workload", { replace: true })
+                  }
+                >
+                  Teaching Workload
+                </SubMenuText>
+              </SubMenuContainer>
+              <SubMenuContainer>
+                <SubMenuText
+                  isActive={location === "/research-workload"}
+                  onClick={() =>
+                    navigate("/research-workload", { replace: true })
+                  }
+                >
+                  Research Workload
+                </SubMenuText>
+              </SubMenuContainer>
+              <SubMenuContainer>
+                <SubMenuText
+                  isActive={location === "/extension-workload"}
+                  onClick={() =>
+                    navigate("/extension-workload", { replace: true })
+                  }
+                >
+                  Extension Workload
+                </SubMenuText>
+              </SubMenuContainer>
+              <SubMenuContainer>
+                <SubMenuText
+                  isActive={location === "/strategic-function-workload"}
+                  onClick={() =>
+                    navigate("/strategic-function-workload", { replace: true })
+                  }
+                >
+                  Strategic Function Workload
+                </SubMenuText>
+              </SubMenuContainer>
+            </>
+          )}
+
+          <NavButtonContainer>
+            <NavButtonText
+              onClick={() => navigate("/workload-review", { replace: true })}
+              isActive={location === "/workload-review"}
+            >
+              Workload Review
+            </NavButtonText>
+          </NavButtonContainer>
+        </>
+      )}
+
+      {userRole === "Dean" ||
+        userRole === "Department Chairperson" ||
+        (userRole === "OVPAA" && (
+          <NavButtonContainer>
+            <NavButtonText
+              isActive={location === "/reports"}
+              onClick={() => navigate("/reports", { replace: true })}
+            >
+              Reports
+            </NavButtonText>
+          </NavButtonContainer>
+        ))}
     </Container>
   );
 };
