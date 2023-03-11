@@ -316,9 +316,28 @@ export default function RegisterScreen({
                   onSelect={campusHandler}
                 />
                 <Dropdown
-                  option={DROPDOWN_LISTS.DEPARTMENT}
+                  option={
+                    campus === "Bacoor Campus"
+                      ? DROPDOWN_LISTS.BACOOR_DEPARTMENT
+                      : campus === "Carmona Campus"
+                      ? DROPDOWN_LISTS.CARMONA_DEPARTMENT
+                      : campus === "Cavite City Campus"
+                      ? DROPDOWN_LISTS.CAVITE_CITY_DEPARTMENT
+                      : campus === "Gen. Trias Campus"
+                      ? DROPDOWN_LISTS.GEN_TRIAS_DEPARTMENT
+                      : campus === "Imus Campus"
+                      ? DROPDOWN_LISTS.IMUS_DEPARTMENT
+                      : campus === "Silang Campus"
+                      ? DROPDOWN_LISTS.SILANG_DEPARTMENT
+                      : campus === "Tanza Campus"
+                      ? DROPDOWN_LISTS.TANZA_DEPARTMENT
+                      : campus === "Trece Campus"
+                      ? DROPDOWN_LISTS.TRECE_DEPARTMENT
+                      : DROPDOWN_LISTS.DEPARTMENT
+                  }
                   label="Department"
                   onSelect={departmentHandler}
+                  isDisable={!campus || campus === "-----"}
                 />
                 <Dropdown
                   option={DROPDOWN_LISTS.ACADEMIC_RANK}

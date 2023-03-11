@@ -8,6 +8,7 @@ type DropdownProps = {
   onSelect: (option: string) => void;
   val?: string;
   selected?: string[];
+  isDisable?: boolean;
 };
 
 export default function Dropdown({
@@ -15,7 +16,8 @@ export default function Dropdown({
   label,
   selected,
   onSelect,
-  val
+  val,
+  isDisable
 }: DropdownProps) {
   const [value, setValue] = useState("");
 
@@ -31,6 +33,7 @@ export default function Dropdown({
           setValue(e.target.value);
         }}
         style={{ width: "100%" }}
+        disabled={isDisable}
       >
         {option.map((item, index) => {
           return (

@@ -31,6 +31,67 @@ export const DROPDOWN_LISTS = {
     "CSPEAR",
     "CVMBS"
   ],
+  BACOOR_DEPARTMENT: [
+    "-----",
+    "Department of Teacher Education",
+    "Department of Arts and Sciences",
+    "Department of Computer Studies",
+    "Department of Criminology",
+    "Department of Management Studies"
+  ],
+  CARMONA_DEPARTMENT: [
+    "-----",
+    "Department of Arts and Sciences",
+    "Department of Teacher Education",
+    "Department of Industrial and Information Technology",
+    "Department of Management"
+  ],
+  CAVITE_CITY_DEPARTMENT: [
+    "-----",
+    "Department of Teacher Education and Languages",
+    "Department of Arts and Sciences",
+    "Department of Information Technology",
+    "Department of Management"
+  ],
+  GEN_TRIAS_DEPARTMENT: [
+    "-----",
+    "Department of Arts, Sciences, Education and Technology",
+    "Department of Management Studies"
+  ],
+  IMUS_DEPARTMENT: [
+    "-----",
+    "Department of Information Technology and Computer Science",
+    "Department of Teacher Education",
+    "Department of Languages and Mass Communication",
+    "Department of Social Science and Humanities",
+    "Department of Business Management",
+    "Department of Biological and Physical Sciences",
+    "Department of Physical Education",
+    "Department of Hospitality Management",
+    "Department of Entrepreneurship"
+  ],
+  SILANG_DEPARTMENT: [
+    "-----",
+    "Department of Information Technology",
+    "Department of Teacher Education",
+    "Department of Arts and Sciences",
+    "Department of Management"
+  ],
+  TANZA_DEPARTMENT: [
+    "-----",
+    "Department of Arts and Sciences",
+    "Department of Management",
+    "Department of Information Technology",
+    "Department of Teacher Education"
+  ],
+  TRECE_DEPARTMENT: [
+    "-----",
+    "Department of Arts and Sciences",
+    "Department of Information Technology",
+    "Department of Teacher Education",
+    "Department of Hospitality Management",
+    "Department of Management"
+  ],
   ACADEMIC_RANK: [
     "-----",
     "Instructor I",
