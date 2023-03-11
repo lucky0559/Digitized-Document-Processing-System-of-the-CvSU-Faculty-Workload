@@ -18,8 +18,8 @@ const Menu = ({ isFacultySubmenuOpen, facultySubMenuHandler }: MenuProps) => {
       {userRole === "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
-            onClick={() => navigate("/workload-review", { replace: true })}
-            isActive={location === "/workload-review"}
+            onClick={() => navigate("/accounts", { replace: true })}
+            isActive={location === "/accounts"}
           >
             Accounts
           </NavButtonText>

@@ -52,6 +52,10 @@ export default function LoginScreen({
         setIsSubmitting(false);
         localStorage.setItem("userId", res.data.id);
         localStorage.setItem("role", res.data.role);
+        if (res.data.role === "System Administrator") {
+          setErrorMessage("");
+          return navigate("accounts", { replace: true });
+        }
         navigate("teaching-workload", { replace: true });
         setErrorMessage("");
       })

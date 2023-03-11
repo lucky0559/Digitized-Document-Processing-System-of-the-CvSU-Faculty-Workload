@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AccountsScreen from "./screens/Admin/AccountsScreen";
 import ExtensionWorkload from "./screens/FacultyWorkload/ExtensionWorkload/ExtensionWorkload";
 import ResearchWorkload from "./screens/FacultyWorkload/ResearchWorkload/ResearchWorkload";
 import StrategicFunction from "./screens/FacultyWorkload/StrategicFunction/StrategicFunction";
@@ -26,6 +27,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/workload-review" element={<WorkloadReviewScreen />} />
         <Route path="/reports" element={<ReportsScreen />} />
+        <Route path="/accounts" element={<AccountsScreen />} />
       </Routes>
     </BrowserRouter>
   );
