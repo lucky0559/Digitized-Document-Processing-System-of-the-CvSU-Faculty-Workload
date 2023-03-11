@@ -102,7 +102,7 @@ export default function RegisterScreen({
       values
     ) as Required<RegisterFormValueType>;
     finalValues.campus = campus || DROPDOWN_LISTS.CAMPUS[0];
-    finalValues.department = department || DROPDOWN_LISTS.DEPARTMENT[0];
+    finalValues.department = department;
     finalValues.academicRank = academicRank || DROPDOWN_LISTS.ACADEMIC_RANK[0];
     await Register(finalValues)
       .then(() => {
@@ -333,7 +333,23 @@ export default function RegisterScreen({
                       ? DROPDOWN_LISTS.TANZA_DEPARTMENT
                       : campus === "Trece Campus"
                       ? DROPDOWN_LISTS.TRECE_DEPARTMENT
-                      : DROPDOWN_LISTS.DEPARTMENT
+                      : campus === "CAFENR"
+                      ? DROPDOWN_LISTS.CAFENR_COLLEGE
+                      : campus === "CAS"
+                      ? DROPDOWN_LISTS.CAS_COLLEGE
+                      : campus === "CCJ"
+                      ? DROPDOWN_LISTS.CCJ_COLLEGE
+                      : campus === "CED"
+                      ? DROPDOWN_LISTS.CED_COLLEGE
+                      : campus === "CEIT"
+                      ? DROPDOWN_LISTS.CEIT_COLLEGE
+                      : campus === "CEMDS"
+                      ? DROPDOWN_LISTS.CEMDS_COLLEGE
+                      : campus === "CON"
+                      ? DROPDOWN_LISTS.CON_COLLEGE
+                      : campus === "CSPEAR"
+                      ? DROPDOWN_LISTS.CSPEAR_COLLEGE
+                      : DROPDOWN_LISTS.CVMBS_COLLEGE
                   }
                   label="Department"
                   onSelect={departmentHandler}

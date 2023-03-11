@@ -9,7 +9,15 @@ export enum ErrorMessages {
 export const DROPDOWN_LISTS = {
   CAMPUS: [
     "-----",
-    "Main Campus",
+    "CAFENR",
+    "CAS",
+    "CCJ",
+    "CED",
+    "CEIT",
+    "CEMDS",
+    "CON",
+    "CSPEAR",
+    "CVMBS",
     "Bacoor Campus",
     "Carmona Campus",
     "Cavite City Campus",
@@ -19,17 +27,64 @@ export const DROPDOWN_LISTS = {
     "Tanza Campus",
     "Trece Campus"
   ],
-  DEPARTMENT: [
+  CAFENR_COLLEGE: [
     "-----",
-    "CAFENR",
-    "CAS",
-    "CCJ",
-    "CED",
-    "CEIT",
-    "CEMDS",
-    "CON",
-    "CSPEAR",
-    "CVMBS"
+    "Department of Crop Science",
+    "Department of Animal Science",
+    "Department of Agricultural Entrepreneurship",
+    "Department of Forestry and Environmental Science",
+    "Institute of Food Science and Technology"
+  ],
+  CAS_COLLEGE: [
+    "-----",
+    "Department of Humanities",
+    "Department of Physical Sciences",
+    "Department of Biological Sciences",
+    "Department of Communication",
+    "Department of Social Sciences"
+  ],
+  CCJ_COLLEGE: [
+    "-----",
+    "Department of Criminology",
+    "Department of Industrial Security Administration"
+  ],
+  CED_COLLEGE: [
+    "-----",
+    "Teacher Education Department",
+    "Home Economics, Vocational and Technical Education Department",
+    "CvSU Laboratory Science Laboratory School"
+  ],
+  CEIT_COLLEGE: [
+    "-----",
+    "Department of Agricultural and Food Engineering",
+    "Department of Civil Engineering",
+    "Department of Computer and Electronic Engineering",
+    "Department of Industrial Engineering and Technology",
+    "Department of Information Technology"
+  ],
+  CEMDS_COLLEGE: [
+    "-----",
+    "Department of Management",
+    "Department of Economics",
+    "Department of Development Studies",
+    "Department of Accountancy"
+  ],
+  CON_COLLEGE: [
+    "-----",
+    "Department of Midwifery",
+    "Department of Medical Technology"
+  ],
+  CSPEAR_COLLEGE: [
+    "-----",
+    "Department of Physical Education, Exercise and Sports Science",
+    "Department of Service Physical Education"
+  ],
+  CVMBS_COLLEGE: [
+    "-----",
+    "Department of Basic Veterinary Science",
+    "Department of Immunopathology and Microbiology",
+    "Department of Clinical and Population Health",
+    "Veterinary Medical Center"
   ],
   BACOOR_DEPARTMENT: [
     "-----",
