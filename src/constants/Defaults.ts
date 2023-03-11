@@ -2,9 +2,9 @@ export const Default = {
   MINIMUM_PASSWORD_LENGTH: 8,
   ACCESS_TOKEN_STORAGE_KEY: "api/access_token",
   REFRESH_TOKEN_STORAGE_KEY: "api/refresh_token",
-  API_URL:
-    "https://digitized-document-processing-system-of-the-cvsu-4qcq9l8m5.vercel.app/"
-  // API_URL: "http://localhost:3000/"
+  // API_URL:
+  //   "https://digitized-document-processing-system-of-th-git-0f2f66-lucky0559.vercel.app/"
+  API_URL: "http://localhost:3000/"
 };
 
 const AWS_CONFIG = {

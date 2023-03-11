@@ -137,19 +137,19 @@ const ResearchWorkload = () => {
     }
 
     if (steps === 4) {
-      if (disseminatedResearch) {
-        setResearchWorkLoad({
-          ...researchWorkLoad,
-          disseminatedResearch,
-          rwlFile2
-        });
-      } else {
-        setResearchWorkLoad({
-          disseminatedResearch,
-          rwlFile2,
-          ...researchWorkLoad
-        });
-      }
+      // if (disseminatedResearch) {
+      //   setResearchWorkLoad({
+      //     ...researchWorkLoad,
+      //     disseminatedResearch,
+      //     rwlFile2
+      //   });
+      // } else {
+      //   setResearchWorkLoad({
+      //     disseminatedResearch,
+      //     rwlFile2,
+      //     ...researchWorkLoad
+      //   });
+      // }
 
       setSteps(steps - 1);
     }
@@ -242,8 +242,18 @@ const ResearchWorkload = () => {
   const researchWorkLoadHandler3 = () => {
     setResearchWorkLoad({
       ...researchWorkLoad,
-      disseminatedResearch,
-      rwlFile2
+      disseminatedResearch: [
+        study1?.file! && study1?.title!,
+        study2?.file! && study2?.title!,
+        study3?.file! && study3?.title!,
+        study4?.file! && study4?.title!
+      ].filter(Boolean),
+      disseminatedResearchFiles: [
+        study1?.file!,
+        study2?.file!,
+        study3?.file!,
+        study4?.file!
+      ]
     });
     researchWorkLoad!.typeOfStudy = undefined;
     researchWorkLoad!.designationStudy = undefined;
@@ -260,21 +270,21 @@ const ResearchWorkload = () => {
     setRwlFile2(value);
   };
 
-  useEffect(() => {
-    if (
-      disseminatedResearchDisplay !== researchWorkLoad?.disseminatedResearch
-    ) {
-      setResearchWorkLoad({
-        ...researchWorkLoad,
-        disseminatedResearch: disseminatedResearchDisplay
-      });
-    }
-    if (researchWorkLoad?.disseminatedResearch) {
-      setDisseminatedResearchDisplay(researchWorkLoad?.disseminatedResearch);
-    } else {
-      setDisseminatedResearchDisplay(disseminatedResearch);
-    }
-  }, [disseminatedResearch]);
+  // useEffect(() => {
+  //   if (
+  //     disseminatedResearchDisplay !== researchWorkLoad?.disseminatedResearch
+  //   ) {
+  //     setResearchWorkLoad({
+  //       ...researchWorkLoad,
+  //       disseminatedResearch: disseminatedResearchDisplay
+  //     });
+  //   }
+  //   if (researchWorkLoad?.disseminatedResearch) {
+  //     setDisseminatedResearchDisplay(researchWorkLoad?.disseminatedResearch);
+  //   } else {
+  //     setDisseminatedResearchDisplay(disseminatedResearch);
+  //   }
+  // }, [disseminatedResearch]);
 
   const onSubmit = async () => {
     setIsSubmitting(true);
@@ -309,7 +319,6 @@ const ResearchWorkload = () => {
         } else {
           // for external funded
           let fundGeneratedPoints;
-          let disseminatedResearchPoints;
 
           if (researchWorkLoad?.fundGenerated === "Above 1,000,000.00") {
             fundGeneratedPoints = 3;
@@ -321,18 +330,12 @@ const ResearchWorkload = () => {
             fundGeneratedPoints = 1;
           }
 
-          if (researchWorkLoad?.disseminatedResearch === "International") {
-            disseminatedResearchPoints = 4;
-          } else if (researchWorkLoad?.disseminatedResearch === "National") {
-            disseminatedResearchPoints = 3;
-          } else if (researchWorkLoad?.disseminatedResearch === "Regional") {
-            disseminatedResearchPoints = 2;
-          } else {
-            disseminatedResearchPoints = 1;
-          }
-
           researchWorkLoad!.rwlPoints =
-            fundGeneratedPoints + disseminatedResearchPoints;
+            fundGeneratedPoints +
+            study1Points +
+            study2Points +
+            study3Points +
+            study4Points;
           await SaveResearchWorkload(researchWorkLoad!);
         }
       }
