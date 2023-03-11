@@ -6,15 +6,20 @@ import Colors from "../constants/Colors";
 type MenuProps = {
   isFacultySubmenuOpen: boolean;
   facultySubMenuHandler: () => void;
+  position?: string;
 };
 
-const Menu = ({ isFacultySubmenuOpen, facultySubMenuHandler }: MenuProps) => {
+const Menu = ({
+  isFacultySubmenuOpen,
+  facultySubMenuHandler,
+  position
+}: MenuProps) => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
   const location = window.location.pathname;
 
   return (
-    <Container>
+    <Container position={position}>
       {userRole === "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
@@ -122,10 +127,10 @@ const Menu = ({ isFacultySubmenuOpen, facultySubMenuHandler }: MenuProps) => {
 //  100% { top: -54px; }
 //  `;
 
-const Container = styled.div`
+const Container = styled.div<{ position: string | undefined }>`
   width: 248px;
   background-color: ${Colors.secondary};
-  position: fixed;
+  position: ${p => (p.position ? "relative" : "fixed")};
   top: 54px;
   height: ${window.outerHeight}px;
 `;
