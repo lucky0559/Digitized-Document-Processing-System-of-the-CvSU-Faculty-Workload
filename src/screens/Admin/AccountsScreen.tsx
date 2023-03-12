@@ -167,6 +167,7 @@ const AccountsScreen = () => {
                     System Administrator
                   </MenuItem>
                   <MenuItem value={"Faculty"}>Faculty</MenuItem>
+                  <MenuItem value={"Dean"}>College Dean</MenuItem>
                   <MenuItem value={"OVPAA"}>OVPAA</MenuItem>
                 </Select>
               </Box>
