@@ -16,6 +16,8 @@ import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import { User } from "../../types/User";
 import { ChangeUserRole, GetAllUser } from "../../lib/user.hooks";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import Colors from "../../constants/Colors";
 
 const AccountsScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,12 +30,22 @@ const AccountsScreen = () => {
 
   const [onLoadingSave, setOnLoadingSave] = useState(false);
 
+  const [isDataLoading, setIsDataLoading] = useState(false);
+
   useEffect(() => {
     (async () => {
       const { data } = await GetAllUser();
       setUsers(data as User[]);
     })();
   }, [isModalOpen]);
+
+  useEffect(() => {
+    if (users) {
+      setIsDataLoading(false);
+    } else {
+      setIsDataLoading(true);
+    }
+  }, [users]);
 
   const columns = useMemo(
     () => [
@@ -134,10 +146,12 @@ const AccountsScreen = () => {
           <Container>
             <DataTable
               columns={columns}
-              data={users!}
+              data={users?.sort(a => (a.role ? 1 : -1))!}
               customStyles={tableCustomStyle}
               pagination
               paginationRowsPerPageOptions={[5, 10]}
+              progressPending={isDataLoading}
+              progressComponent={<LoadingSpinner color={Colors.primary} />}
             />
           </Container>
           <Modal open={isModalOpen}>

@@ -30,7 +30,7 @@ const Menu = ({
           </NavButtonText>
         </NavButtonContainer>
       )}
-      {userRole !== "System Administrator" && (
+      {userRole !== "System Administrator" && userRole !== "OVPAA" && (
         <>
           <NavButtonContainer onClick={facultySubMenuHandler}>
             <NavButtonText
@@ -89,29 +89,30 @@ const Menu = ({
               </SubMenuContainer>
             </>
           )}
-
-          <NavButtonContainer>
-            <NavButtonText
-              onClick={() => navigate("/workload-review", { replace: true })}
-              isActive={location === "/workload-review"}
-            >
-              Workload Review
-            </NavButtonText>
-          </NavButtonContainer>
         </>
       )}
 
       {userRole === "Dean" ||
         userRole === "Department Chairperson" ||
         (userRole === "OVPAA" && (
-          <NavButtonContainer>
-            <NavButtonText
-              isActive={location === "/reports"}
-              onClick={() => navigate("/reports", { replace: true })}
-            >
-              Reports
-            </NavButtonText>
-          </NavButtonContainer>
+          <>
+            <NavButtonContainer>
+              <NavButtonText
+                onClick={() => navigate("/workload-review", { replace: true })}
+                isActive={location === "/workload-review"}
+              >
+                Workload Review
+              </NavButtonText>
+            </NavButtonContainer>
+            <NavButtonContainer>
+              <NavButtonText
+                isActive={location === "/reports"}
+                onClick={() => navigate("/reports", { replace: true })}
+              >
+                Reports
+              </NavButtonText>
+            </NavButtonContainer>
+          </>
         ))}
     </Container>
   );
