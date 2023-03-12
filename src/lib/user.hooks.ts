@@ -70,3 +70,13 @@ export const ChangePassword = async (
   );
   return { data };
 };
+
+export const ChangeUserRole = async (id: string, role: string) => {
+  const { data } = await axios.patch(`user/${id}/${role}/change-role`);
+  return { data };
+};
+
+export const GetAllUser = async () => {
+  const { data } = await axios.get("/user");
+  return { data };
+};

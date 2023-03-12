@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
   Box,
@@ -14,6 +14,8 @@ import FormButton from "../../components/FormButton";
 import Menu from "../../components/Menu";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
+import { User } from "../../types/User";
+import { GetAllUser } from "../../lib/user.hooks";
 
 type UserToEdit = {
   id: string;
@@ -25,25 +27,36 @@ type UserToEdit = {
 const AccountsScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [userToEdit, setUserToEdit] = useState<UserToEdit>();
+  const [userToEdit, setUserToEdit] = useState<User>();
+
+  const [users, setUsers] = useState<User[]>();
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await GetAllUser();
+      setUsers(data as User[]);
+      console.log(data);
+    })();
+  }, []);
 
   const columns = useMemo(
     () => [
       {
         name: "Name",
-        selector: (row: UserToEdit) => row.name
+        selector: (row: User) =>
+          row.firstName.toUpperCase() + " " + row.surname.toUpperCase()
       },
       {
         name: "Campus",
-        selector: (row: UserToEdit) => row.campus
+        selector: (row: User) => row.campus.toUpperCase()
       },
       {
         name: "Role",
-        selector: (row: UserToEdit) => row.role
+        selector: (row: User) => row.role?.toUpperCase()!
       },
       {
-        cell: (row: UserToEdit) => (
-          <FormButton text="Edit" onClicked={() => onEdit(row)} />
+        cell: (user: User) => (
+          <FormButton text="Edit" onClicked={() => onEdit(user)} />
         ),
         ignoreRowClick: true,
         allowOverflow: true,
@@ -142,17 +155,14 @@ const AccountsScreen = () => {
     }
   };
 
-  const onEdit = (row: UserToEdit) => {
-    setUserToEdit(row);
+  const onEdit = (user: User) => {
+    setUserToEdit(user);
     setIsModalOpen(true);
   };
 
   const onModalClose = () => {
     setUserToEdit({
-      id: "",
-      name: "",
-      campus: "",
-      role: ""
+      ...userToEdit!
     });
     setIsModalOpen(false);
   };
@@ -179,12 +189,11 @@ const AccountsScreen = () => {
   const onSave = () => {
     console.log(userToEdit);
     setIsModalOpen(false);
-    setUserToEdit({
-      id: "",
-      name: "",
-      campus: "",
-      role: ""
-    });
+    // setUserToEdit({
+    //   name: "",
+    //   campus: "",
+    //   role: ""
+    // });
   };
 
   return (
@@ -203,7 +212,7 @@ const AccountsScreen = () => {
           <Container>
             <DataTable
               columns={columns}
-              data={data}
+              data={users!}
               customStyles={tableCustomStyle}
               pagination
               paginationRowsPerPageOptions={[5, 10]}
@@ -216,18 +225,27 @@ const AccountsScreen = () => {
               </Typography>
               <Box mb={10} paddingLeft={2}>
                 <Typography paddingBottom={2}>
-                  Name: {userToEdit?.name}
+                  Name:{" "}
+                  {userToEdit?.firstName.toUpperCase()! +
+                    " " +
+                    userToEdit?.surname.toUpperCase()}
                 </Typography>
-                <Typography paddingBottom={2}>{userToEdit?.campus}</Typography>
+                <Typography paddingBottom={2}>
+                  {userToEdit?.campus.toUpperCase()}
+                </Typography>
                 <Select
                   defaultValue={userToEdit?.role}
                   value={userToEdit?.role}
                   onChange={onSelectRoleChangeHandler}
                 >
-                  <MenuItem value={"QA"}>QA</MenuItem>
-                  <MenuItem value={"Developer"}>Developer</MenuItem>
-                  <MenuItem value={"Teacher"}>Teacher</MenuItem>
-                  <MenuItem value={"Police"}>Police</MenuItem>
+                  <MenuItem value={"Department Chairperson"}>
+                    Department Chairperson
+                  </MenuItem>
+                  <MenuItem value={"System Administrator"}>
+                    System Administrator
+                  </MenuItem>
+                  <MenuItem value={"Faculty"}>Faculty</MenuItem>
+                  <MenuItem value={"OVPAA"}>OVPAA</MenuItem>
                 </Select>
               </Box>
 
