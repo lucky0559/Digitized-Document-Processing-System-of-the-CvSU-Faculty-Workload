@@ -15,14 +15,7 @@ import Menu from "../../components/Menu";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import { User } from "../../types/User";
-import { GetAllUser } from "../../lib/user.hooks";
-
-type UserToEdit = {
-  id: string;
-  name: string;
-  campus: string;
-  role: string;
-};
+import { ChangeUserRole, GetAllUser } from "../../lib/user.hooks";
 
 const AccountsScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,13 +24,16 @@ const AccountsScreen = () => {
 
   const [users, setUsers] = useState<User[]>();
 
+  const [userRecentRole, setUserRecentRole] = useState("");
+
+  const [onLoadingSave, setOnLoadingSave] = useState(false);
+
   useEffect(() => {
     (async () => {
       const { data } = await GetAllUser();
       setUsers(data as User[]);
-      console.log(data);
     })();
-  }, []);
+  }, [isModalOpen]);
 
   const columns = useMemo(
     () => [
@@ -66,81 +62,6 @@ const AccountsScreen = () => {
     []
   );
 
-  const data = [
-    {
-      id: "1",
-      name: "Lucky 1",
-      campus: "CEIT",
-      role: "Developer"
-    },
-    {
-      id: "2",
-      name: "Lucky 2",
-      campus: "CAS",
-      role: "QA"
-    },
-    {
-      id: "3",
-      name: "Lucky 3",
-      campus: "CSPEAR",
-      role: "Designer"
-    },
-    {
-      id: "4",
-      name: "Lucky 4",
-      campus: "CEMDS",
-      role: "Unicorn"
-    },
-    {
-      id: "5",
-      name: "Lucky 1",
-      campus: "CEIT",
-      role: "Developer"
-    },
-    {
-      id: "6",
-      name: "Lucky 2",
-      campus: "CAS",
-      role: "QA"
-    },
-    {
-      id: "7",
-      name: "Lucky 3",
-      campus: "CSPEAR",
-      role: "Designer"
-    },
-    {
-      id: "8",
-      name: "Lucky 4",
-      campus: "CEMDS",
-      role: "Unicorn"
-    },
-    {
-      id: "9",
-      name: "Lucky 1",
-      campus: "CEIT",
-      role: "Developer"
-    },
-    {
-      id: "10",
-      name: "Lucky 2",
-      campus: "CAS",
-      role: "QA"
-    },
-    {
-      id: "13",
-      name: "Lucky 3",
-      campus: "CSPEAR",
-      role: "Designer"
-    },
-    {
-      id: "14",
-      name: "Lucky 4",
-      campus: "CEMDS",
-      role: "Unicorn"
-    }
-  ];
-
   const tableCustomStyle = {
     headCells: {
       style: {
@@ -157,13 +78,12 @@ const AccountsScreen = () => {
 
   const onEdit = (user: User) => {
     setUserToEdit(user);
+    setUserRecentRole(user.role!);
     setIsModalOpen(true);
   };
 
   const onModalClose = () => {
-    setUserToEdit({
-      ...userToEdit!
-    });
+    setUserToEdit(undefined);
     setIsModalOpen(false);
   };
 
@@ -186,14 +106,16 @@ const AccountsScreen = () => {
     });
   };
 
-  const onSave = () => {
-    console.log(userToEdit);
+  const onSave = async () => {
+    setOnLoadingSave(true);
+    try {
+      await ChangeUserRole(userToEdit?.email!, userToEdit?.role!);
+      setUserToEdit(undefined);
+    } catch (e) {
+      return e;
+    }
+    setOnLoadingSave(false);
     setIsModalOpen(false);
-    // setUserToEdit({
-    //   name: "",
-    //   campus: "",
-    //   role: ""
-    // });
   };
 
   return (
@@ -254,7 +176,12 @@ const AccountsScreen = () => {
                 flexDirection={"row"}
                 display={"flex"}
               >
-                <FormButton text="Save" onClicked={onSave} />
+                <FormButton
+                  text="Save"
+                  onClicked={onSave}
+                  disabled={userToEdit?.role === userRecentRole}
+                  isSubmitting={onLoadingSave}
+                />
                 <FormButton text="Close" onClicked={onModalClose} />
               </Box>
             </Box>
