@@ -18,9 +18,11 @@ import { User } from "../../types/User";
 import { ChangeUserRole, GetAllUser } from "../../lib/user.hooks";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
+import ProfileTab from "../../components/ProfileTab";
 
 const AccountsScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const [userToEdit, setUserToEdit] = useState<User>();
 
@@ -132,7 +134,7 @@ const AccountsScreen = () => {
 
   return (
     <MainContainer>
-      <TopNav profileHandler={() => {}} />
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
       <div
         style={{ display: "flex", flexDirection: "row", position: "relative" }}
       >
@@ -141,6 +143,7 @@ const AccountsScreen = () => {
           facultySubMenuHandler={() => {}}
           position="relative"
         />
+        <ProfileTab isProfileOpen={isProfileOpen} />
         <BodyContainer>
           <ScreenTitle title="Accounts" />
           <Container>
