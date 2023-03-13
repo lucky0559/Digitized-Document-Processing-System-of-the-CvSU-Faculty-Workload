@@ -16,7 +16,11 @@ import ResearchWorkload1 from "./ResearchWorkload1";
 import ResearchWorkload2 from "./ResearchWorkload2";
 import ResearchWorkload3 from "./ResearchWorkload3";
 
-const ResearchWorkload = () => {
+type ResearchWorkLoadProps = {
+  UseLogout: () => void;
+};
+
+const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const [researchWorkLoad, setResearchWorkLoad] =
     useState<ResearchWorkLoadType>();
 
@@ -519,7 +523,7 @@ const ResearchWorkload = () => {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
         {steps === 1 && (

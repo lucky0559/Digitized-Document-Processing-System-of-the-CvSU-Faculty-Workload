@@ -12,7 +12,11 @@ import { WorkloadType } from "../../../constants/Strings";
 import { SaveTeachingWorkload } from "../../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../../types/TeachingWorkload";
 
-const TeachingWorkLoad = () => {
+type TeachingWorkLoadProps = {
+  UseLogout: () => void;
+};
+
+const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
   const fileHandler = (file?: File) => {
     twlFileHandler(file);
   };
@@ -106,7 +110,7 @@ const TeachingWorkLoad = () => {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
         <Container>

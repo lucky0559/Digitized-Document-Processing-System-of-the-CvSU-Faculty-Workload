@@ -22,7 +22,11 @@ import { ESignature } from "../../types/ESignature";
 import { User } from "../../types/User";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-function Profile() {
+type ProfileProps = {
+  UseLogout: () => void;
+};
+
+function Profile({ UseLogout }: ProfileProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const userId = localStorage.getItem("userId");
@@ -137,7 +141,7 @@ function Profile() {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         {isLoading ? (
           <LoadingSpinner color={Colors.primary} />

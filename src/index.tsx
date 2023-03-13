@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalFonts from "./GlobalFonts";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <div>
     <GlobalFonts />
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </div>
 );
 

@@ -11,10 +11,13 @@ import { ErrorMessages } from "../../constants/Strings";
 import { useNavigate } from "react-router-dom";
 import { Login, LoginDTO } from "../../lib/user.hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { User } from "../../types/User";
 
 type LoginScreenProps = {
   onLoginButtonClick?: () => void;
   onRegisterButtonClick?: () => void;
+  UseLogin: (values: LoginDTO) => void;
+  user?: User;
 };
 
 type LoginFormValueType = {
@@ -34,7 +37,9 @@ const LoginFormSchema = Yup.object().shape({
 
 export default function LoginScreen({
   onLoginButtonClick,
-  onRegisterButtonClick
+  onRegisterButtonClick,
+  UseLogin,
+  user
 }: LoginScreenProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,25 +50,41 @@ export default function LoginScreen({
 
   const navigate = useNavigate();
 
+  const userId = localStorage.getItem("userId");
+  const userRole = localStorage.getItem("role");
+
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+
   const onSubmit = async (values: LoginDTO) => {
     setIsSubmitting(true);
-    await Login(values)
-      .then(res => {
-        setIsSubmitting(false);
-        localStorage.setItem("userId", res.data.id);
-        localStorage.setItem("role", res.data.role);
-        if (res.data.role === "System Administrator") {
-          setErrorMessage("");
-          return navigate("accounts", { replace: true });
-        }
-        navigate("teaching-workload", { replace: true });
-        setErrorMessage("");
-      })
-      .catch(error => {
-        setErrorMessage(error.response.data.message);
-        setIsSubmitting(false);
-      });
+    // await Login(values)
+    //   .then(res => {
+    //     setIsSubmitting(false);
+    //     localStorage.setItem("userId", res.data.id);
+    //     localStorage.setItem("role", res.data.role);
+    //     if (res.data.role === "System Administrator") {
+    //       setErrorMessage("");
+    //       return navigate("accounts", { replace: true });
+    //     }
+    //     navigate("teaching-workload", { replace: true });
+    //     setErrorMessage("");
+    //   })
+    //   .catch(error => {
+    //     setErrorMessage(error.response.data.message);
+    //     setIsSubmitting(false);
+    //   });
+    UseLogin(values);
+    setErrorMessage("");
   };
+
+  // useEffect(() => {
+  //   if (user && user.role === "System Administrator") {
+  //     navigate("acccounts", { replace: true });
+  //   } else if (user) {
+  //     navigate("teaching-workload", { replace: true });
+  //   }
+  //   setIsLoginSuccess(!isLoginSuccess);
+  // }, [user, setIsSubmitting]);
 
   return (
     <Container width={width} height={height} isDesktopTablet={isDesktopTablet}>

@@ -3,16 +3,26 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import TopNav from "../../components/TopNav";
+import { LoginDTO } from "../../lib/user.hooks";
+import { User } from "../../types/User";
 import LoginScreen from "./LoginScreen";
 import RegisterScreen from "./RegisterScreen";
 
-const WelcomeScreen = () => {
+type WelcomeScreenProps = {
+  UseLogin: (value: LoginDTO) => void;
+  user?: User;
+};
+
+const WelcomeScreen = ({ UseLogin, user }: WelcomeScreenProps) => {
   const [activeScreen, setActiveScreen] = useState("login");
   const userId = localStorage.getItem("userId");
+  const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userId) {
+    if (userId?.length! > 0 && userRole === "System Administrator") {
+      navigate("/accounts", { replace: true });
+    } else if (userId?.length! > 0 && userRole !== "System Administrator") {
       navigate("/teaching-workload", { replace: true });
     }
   }, []);
@@ -25,6 +35,8 @@ const WelcomeScreen = () => {
           <LoginScreen
             onLoginButtonClick={() => setActiveScreen("login")}
             onRegisterButtonClick={() => setActiveScreen("register")}
+            UseLogin={UseLogin}
+            user={user}
           />
         ) : (
           <RegisterScreen onLoginButtonClick={() => setActiveScreen("login")} />

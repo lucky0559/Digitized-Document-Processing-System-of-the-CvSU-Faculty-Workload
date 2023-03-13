@@ -27,7 +27,11 @@ import { User } from "../../types/User";
 import RemarksWorkload from "./RemarksWorkload";
 import Workload from "./Workload";
 
-const WorkloadReviewScreen = () => {
+type WorkloadReviewScreenProps = {
+  UseLogout: () => void;
+};
+
+const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -105,7 +109,7 @@ const WorkloadReviewScreen = () => {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Workload Review" />
 

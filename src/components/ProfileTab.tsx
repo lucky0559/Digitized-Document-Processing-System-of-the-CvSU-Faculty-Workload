@@ -5,15 +5,14 @@ import Colors from "../constants/Colors";
 
 type ProfileTabProps = {
   isProfileOpen: boolean;
+  UseLogout: () => void;
 };
 
-const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
+const ProfileTab = ({ isProfileOpen, UseLogout }: ProfileTabProps) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-    navigate("/");
+    UseLogout();
   };
 
   window.setTimeout(() => {

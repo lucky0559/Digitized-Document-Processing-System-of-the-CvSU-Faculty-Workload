@@ -12,7 +12,11 @@ import { SaveExtensionWorkload } from "../../../lib/faculty-workload.hooks";
 import ScreenTitle from "../../../components/ScreenTitle";
 import Footer from "../../../components/Footer";
 
-const ExtensionWorkload = () => {
+type ExtensionWorkloadProps = {
+  UseLogout: () => void;
+};
+
+const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -208,7 +212,7 @@ const ExtensionWorkload = () => {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Faculty Workload" />
         <Container>

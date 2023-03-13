@@ -31,7 +31,11 @@ export type Designation = {
   file?: File;
 };
 
-const StrategicFunction = () => {
+type StrategicFunctionProps = {
+  UseLogout: () => void;
+};
+
+const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
     useState<StrategicFunctionType>();
 
@@ -1514,7 +1518,7 @@ const StrategicFunction = () => {
             setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
           }
         />
-        <ProfileTab isProfileOpen={isProfileOpen} />
+        <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
         <BodyContainer>
           <ScreenTitle title="Strategic Functions (SF)" />
           <Container>

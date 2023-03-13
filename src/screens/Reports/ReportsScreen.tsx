@@ -9,7 +9,11 @@ import { GetTotalWorkloadPoints } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
 import ReportsLists from "./ReportsLists";
 
-const ReportsScreen = () => {
+type ReportsScreenProps = {
+  UseLogout: () => void;
+};
+
+const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [usersReports, setUsersReports] = useState<User[]>();
@@ -32,7 +36,7 @@ const ReportsScreen = () => {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Reports" />
         <ReportsLists usersReports={usersReports} />

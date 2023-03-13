@@ -20,7 +20,11 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ProfileTab from "../../components/ProfileTab";
 
-const AccountsScreen = () => {
+type AccountsScreenProps = {
+  UseLogout: () => void;
+};
+
+const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -143,7 +147,7 @@ const AccountsScreen = () => {
           facultySubMenuHandler={() => {}}
           position="relative"
         />
-        <ProfileTab isProfileOpen={isProfileOpen} />
+        <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
         <BodyContainer>
           <ScreenTitle title="Accounts" />
           <Container>

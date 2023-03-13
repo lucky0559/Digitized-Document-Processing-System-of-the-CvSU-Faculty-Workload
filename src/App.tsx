@@ -1,6 +1,6 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Default } from "./constants/Defaults";
+import React, { useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Login, LoginDTO } from "./lib/user.hooks";
 import AccountsScreen from "./screens/Admin/AccountsScreen";
 import ExtensionWorkload from "./screens/FacultyWorkload/ExtensionWorkload/ExtensionWorkload";
 import ResearchWorkload from "./screens/FacultyWorkload/ResearchWorkload/ResearchWorkload";
@@ -12,104 +12,137 @@ import ReportsScreen from "./screens/Reports/ReportsScreen";
 import UnauthorizedPage from "./screens/Unauthorized";
 import VerifyScreen from "./screens/Verify/VerifyScreen";
 import WorkloadReviewScreen from "./screens/WorkloadReview/WorkloadReviewScreen";
+import { User } from "./types/User";
 
 function App() {
-  const userAccessToken = localStorage.getItem(
-    Default.ACCESS_TOKEN_STORAGE_KEY
-  );
-  const userRefreshToken = localStorage.getItem(
-    Default.REFRESH_TOKEN_STORAGE_KEY
-  );
   const userRole = localStorage.getItem("role");
 
+  const [user, setUser] = useState<User>();
+
+  const hasAccessInFacultyWorkloads =
+    userRole === "Department Chairperson" ||
+    userRole === "Dean" ||
+    userRole === "Faculty";
+
+  const hasAccessInWorkloadReview =
+    userRole === "Department Chairperson" ||
+    userRole === "Dean" ||
+    userRole === "OVPAA";
+
+  const hasAccessInReports =
+    userRole === "Department Chairperson" ||
+    userRole === "Dean" ||
+    userRole === "OVPAA";
+
+  const userId = localStorage.getItem("userId");
+
+  const navigate = useNavigate();
+
+  const UseLogin = async (values: LoginDTO) => {
+    await Login(values).then(res => {
+      localStorage.setItem("userId", res.data.id);
+      localStorage.setItem("role", res.data.role);
+      if (res.data.role === "System Administrator") {
+        navigate("accounts", { replace: true });
+      } else {
+        navigate("teaching-workload", { replace: true });
+      }
+      setUser(res.data);
+    });
+  };
+
+  const UseLogout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+    setUser(undefined);
+    navigate("/", { replace: true });
+  };
+
   return (
-    <BrowserRouter>
+    <>
       <Routes>
-        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/" element={<WelcomeScreen UseLogin={UseLogin} />} />
         <Route
           path="/teaching-workload"
           element={
-            userAccessToken && userRefreshToken ? (
-              <TeachingWorkLoad />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!userId}>
+              <TeachingWorkLoad UseLogout={UseLogout} />
+            </Protected>
           }
         />
         <Route
           path="/research-workload"
           element={
-            userAccessToken && userRefreshToken ? (
-              <ResearchWorkload />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <ResearchWorkload UseLogout={UseLogout} />
+            </Protected>
           }
         />
         <Route
           path="/extension-workload"
           element={
-            userAccessToken && userRefreshToken ? (
-              <ExtensionWorkload />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <ExtensionWorkload UseLogout={UseLogout} />
+            </Protected>
           }
         />
         <Route
           path="/strategic-function-workload"
           element={
-            userAccessToken && userRefreshToken ? (
-              <StrategicFunction />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <StrategicFunction UseLogout={UseLogout} />
+            </Protected>
           }
         />
         <Route path="verify/:token" element={<VerifyScreen />} />
         <Route
           path="/profile"
           element={
-            userAccessToken && userRefreshToken ? (
-              <Profile />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <Profile UseLogout={UseLogout} />
+            </Protected>
           }
         />
         <Route
           path="/workload-review"
           element={
-            userAccessToken && userRefreshToken ? (
-              <WorkloadReviewScreen />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <WorkloadReviewScreen UseLogout={UseLogout} />
+            </Protected>
           }
         />
         <Route
           path="/reports"
           element={
-            userAccessToken && userRefreshToken ? (
-              <ReportsScreen />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <ReportsScreen UseLogout={UseLogout} />
+            </Protected>
           }
         />
+        <Route path="*" element={<UnauthorizedPage />} />
         <Route
           path="/accounts"
           element={
-            userAccessToken && userRefreshToken ? (
-              <AccountsScreen />
-            ) : (
-              <UnauthorizedPage />
-            )
+            <Protected isSignedIn={!!user || !!(userId && userRole)}>
+              <AccountsScreen UseLogout={UseLogout} />
+            </Protected>
           }
         />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
+
+type ProtectedProps = {
+  isSignedIn: boolean;
+  children: any;
+};
+
+export const Protected = ({ isSignedIn, children }: ProtectedProps) => {
+  if (!isSignedIn) {
+    return <Navigate to="*" replace />;
+  }
+  return children;
+};
 
 export default App;
