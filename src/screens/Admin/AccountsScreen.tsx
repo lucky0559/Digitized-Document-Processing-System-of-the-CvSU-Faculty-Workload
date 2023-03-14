@@ -147,7 +147,11 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
           facultySubMenuHandler={() => {}}
           position="relative"
         />
-        <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
+        <ProfileTab
+          isProfileOpen={isProfileOpen}
+          UseLogout={UseLogout}
+          isAdmin={true}
+        />
         <BodyContainer>
           <ScreenTitle title="Accounts" />
           <Container>

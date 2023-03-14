@@ -6,9 +6,10 @@ import Colors from "../constants/Colors";
 type ProfileTabProps = {
   isProfileOpen: boolean;
   UseLogout: () => void;
+  isAdmin?: boolean;
 };
 
-const ProfileTab = ({ isProfileOpen, UseLogout }: ProfileTabProps) => {
+const ProfileTab = ({ isProfileOpen, UseLogout, isAdmin }: ProfileTabProps) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
@@ -25,11 +26,13 @@ const ProfileTab = ({ isProfileOpen, UseLogout }: ProfileTabProps) => {
       style={{ visibility: "hidden" }}
       isProfileOpen={isProfileOpen}
     >
-      <NavButtonContainer
-        onClick={() => navigate("/profile", { replace: true })}
-      >
-        <NavButtonText isActive={true}>Profile</NavButtonText>
-      </NavButtonContainer>
+      {!isAdmin && (
+        <NavButtonContainer
+          onClick={() => navigate("/profile", { replace: true })}
+        >
+          <NavButtonText isActive={true}>Profile</NavButtonText>
+        </NavButtonContainer>
+      )}
       <NavButtonContainer onClick={logoutHandler}>
         <NavButtonText isActive={true}>Logout</NavButtonText>
       </NavButtonContainer>
