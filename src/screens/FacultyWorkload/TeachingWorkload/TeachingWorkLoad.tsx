@@ -71,6 +71,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
     setTotalNoOfStudents("");
     setTwlFile(undefined);
     setTeachingWorkLoad(undefined);
+    window.location.reload();
   };
 
   const numberOfPreparationsHandler = (value: string) => {
