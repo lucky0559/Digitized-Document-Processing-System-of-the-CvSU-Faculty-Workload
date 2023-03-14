@@ -131,7 +131,7 @@ function App() {
           element={
             <Protected
               isSignedIn={
-                !!user && !!(userId && userRole) && hasAccessInWorkloadReview
+                (!!user && !!(userId && userRole)) || hasAccessInWorkloadReview
               }
             >
               <WorkloadReviewScreen UseLogout={UseLogout} />
