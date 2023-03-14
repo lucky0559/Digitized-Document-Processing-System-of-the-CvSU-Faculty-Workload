@@ -91,7 +91,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   useEffect(() => {
     if (numberOfPreparations && contactHours && totalNoOfStudents && twlFile) {
-      const totalNoOfStudentsPoints = Number(totalNoOfStudents) * 0.23;
+      const totalNoOfStudentsPoints = Number(totalNoOfStudents) * 0.023;
       return setPoints(
         Number(numberOfPreparations) +
           Number(contactHours) +
@@ -120,7 +120,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             </WorkloadTextContainer>
             <InputsContainer>
               <Label style={{ marginBottom: 40, alignSelf: "flex-start" }}>
-                TWL = NP + CH + TNS(0.23)
+                TWL = NP + CH + TNS(0.023)
               </Label>
               <TextInputContainer>
                 <Label style={{ fontWeight: "bold" }}>NP</Label>
