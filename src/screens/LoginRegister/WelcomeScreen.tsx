@@ -27,8 +27,6 @@ const WelcomeScreen = ({ UseLogin, user }: WelcomeScreenProps) => {
     }
   }, []);
 
-  console.log(userRole);
-
   return (
     <WelcomeScreenContainer>
       <TopNav />
