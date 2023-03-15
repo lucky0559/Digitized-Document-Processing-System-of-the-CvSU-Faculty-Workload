@@ -45,50 +45,40 @@ const Menu = ({
             </NavButtonText>
           </NavButtonContainer>
 
-          {isFacultySubmenuOpen && (
-            <>
-              <SubMenuContainer>
-                <SubMenuText
-                  isActive={location === "/teaching-workload"}
-                  onClick={() =>
-                    navigate("/teaching-workload", { replace: true })
-                  }
-                >
-                  Teaching Workload
-                </SubMenuText>
-              </SubMenuContainer>
-              <SubMenuContainer>
-                <SubMenuText
-                  isActive={location === "/research-workload"}
-                  onClick={() =>
-                    navigate("/research-workload", { replace: true })
-                  }
-                >
-                  Research Workload
-                </SubMenuText>
-              </SubMenuContainer>
-              <SubMenuContainer>
-                <SubMenuText
-                  isActive={location === "/extension-workload"}
-                  onClick={() =>
-                    navigate("/extension-workload", { replace: true })
-                  }
-                >
-                  Extension Workload
-                </SubMenuText>
-              </SubMenuContainer>
-              <SubMenuContainer>
-                <SubMenuText
-                  isActive={location === "/strategic-function-workload"}
-                  onClick={() =>
-                    navigate("/strategic-function-workload", { replace: true })
-                  }
-                >
-                  Strategic Function Workload
-                </SubMenuText>
-              </SubMenuContainer>
-            </>
-          )}
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/teaching-workload"}
+              onClick={() => navigate("/teaching-workload", { replace: true })}
+            >
+              Teaching Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/research-workload"}
+              onClick={() => navigate("/research-workload", { replace: true })}
+            >
+              Research Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/extension-workload"}
+              onClick={() => navigate("/extension-workload", { replace: true })}
+            >
+              Extension Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer>
+            <SubMenuText
+              isActive={location === "/strategic-function-workload"}
+              onClick={() =>
+                navigate("/strategic-function-workload", { replace: true })
+              }
+            >
+              Strategic Function Workload
+            </SubMenuText>
+          </SubMenuContainer>
         </>
       )}
 
