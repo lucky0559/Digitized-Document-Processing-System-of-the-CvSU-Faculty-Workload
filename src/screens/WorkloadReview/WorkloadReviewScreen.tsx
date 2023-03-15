@@ -147,9 +147,10 @@ const Container = styled.div`
 `;
 
 const BodyContainer = styled.div`
-  display: flex;
+  padding: 30px;
   align-items: center;
   justify-content: center;
+  display: flex;
   flex-direction: column;
 `;
 
