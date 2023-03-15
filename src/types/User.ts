@@ -27,4 +27,5 @@ export type User = {
   rwlPoints?: number;
   sfwlPoints?: number;
   twlPoints?: number;
+  status?: string;
 };

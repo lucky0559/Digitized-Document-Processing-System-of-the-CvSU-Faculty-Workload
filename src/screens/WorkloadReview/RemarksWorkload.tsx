@@ -27,6 +27,7 @@ function RemarksWorkload({
           <ThStyle>Academic Rank</ThStyle>
           <ThStyle>Workload Type</ThStyle>
           <ThStyle>Remarks</ThStyle>
+          <ThStyle>Status</ThStyle>
         </tr>
         {isDataLoading && (
           <div
@@ -54,11 +55,15 @@ function RemarksWorkload({
                   <TdText key={index}>Teaching Workload</TdText>
                 </TdStyle>
                 <TdStyle>
-                  <CheckboxWorkload
+                  {/* <CheckboxWorkload
                     twlFilePath={item.twlFilePath}
                     workloadId={item.workloadId}
                     workloadType="Teaching Workload"
-                  />
+                  /> */}
+                  <TdText>This is teaching remarks</TdText>
+                </TdStyle>
+                <TdStyle>
+                  <TdText key={index}>{item.status?.toUpperCase()}</TdText>
                 </TdStyle>
               </tr>
             );
@@ -77,14 +82,18 @@ function RemarksWorkload({
                   <TdText key={index}>Research Workload</TdText>
                 </TdStyle>
                 <TdStyle>
-                  <CheckboxWorkload
+                  {/* <CheckboxWorkload
                     rwlFilePath={item.rwlFilePath}
                     rwlFilePath1={item.rwlFilePath1}
                     rwlFilePath2={item.rwlFilePath2}
                     workloadType="Research Workload"
                     workloadId={item.workloadId}
                     remarksText={item.remarks}
-                  />
+                  /> */}
+                  <TdText>This is research remarks</TdText>
+                </TdStyle>
+                <TdStyle>
+                  <TdText key={index}>{item.status?.toUpperCase()}</TdText>
                 </TdStyle>
               </tr>
             );
@@ -103,14 +112,18 @@ function RemarksWorkload({
                   <TdText key={index}>Extension Workload</TdText>
                 </TdStyle>
                 <TdStyle>
-                  <CheckboxWorkload
+                  {/* <CheckboxWorkload
                     extensionActivityFilePath={item.extensionActivityFilePath}
                     certificateFilePath={item.certificateFilePath}
                     summaryOfHoursFilePath={item.summaryOfHoursFilePath}
                     workloadType="Extension Workload"
                     workloadId={item.workloadId}
                     remarksText={item.remarks}
-                  />
+                  /> */}
+                  <TdText>This is extension remarks</TdText>
+                </TdStyle>
+                <TdStyle>
+                  <TdText key={index}>{item.status?.toUpperCase()}</TdText>
                 </TdStyle>
               </tr>
             );
@@ -129,7 +142,7 @@ function RemarksWorkload({
                   <TdText key={index}>Strategic Function Workload</TdText>
                 </TdStyle>
                 <TdStyle>
-                  <CheckboxWorkload
+                  {/* <CheckboxWorkload
                     approvedUniversityDesignationFilePath={
                       item.approvedUniversityDesignationFilePath
                     }
@@ -149,7 +162,11 @@ function RemarksWorkload({
                     workloadType="Strategic Function Workload"
                     workloadId={item.workloadId}
                     remarksText={item.remarks}
-                  />
+                  /> */}
+                  <TdText>This is strategic remarks</TdText>
+                </TdStyle>
+                <TdStyle>
+                  <TdText key={index}>{item.status?.toUpperCase()}</TdText>
                 </TdStyle>
               </tr>
             );
@@ -161,7 +178,9 @@ function RemarksWorkload({
 
 const Container = styled.div``;
 
-const Table = styled.table``;
+const Table = styled.table`
+  margin-left: 22%;
+`;
 
 const TdText = styled.text`
   // align-text: center;
@@ -173,7 +192,7 @@ const TdStyle = styled.td`
 `;
 
 const ThStyle = styled.th`
-  padding: 50px;
+  padding: 80px;
   padding-bottom: 70px;
 `;
 

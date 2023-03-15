@@ -77,7 +77,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         setAllExtensionWorkload(extensionWorkloads.data);
         const strategicWorkloads = await GetAllPendingStrategicWorkloadOVPAA();
         setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (userRole === "faculty") {
+      } else if (userRole === "Faculty") {
         const teachingWorkloads = await GetTeachingWorkloadRemarksFaculty(
           userId!
         );
@@ -114,7 +114,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         <ScreenTitle title="Workload Review" />
 
         <WorkloadsContainer>
-          {userRole === "faculty" ? (
+          {userRole === "Faculty" ? (
             <RemarksWorkload
               teachingWorkload={allTeachingWorkload}
               researchWorkload={allResearchWorkload}
