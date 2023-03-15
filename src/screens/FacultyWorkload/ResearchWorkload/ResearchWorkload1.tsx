@@ -178,7 +178,7 @@ const RadioInputContainer = styled.div`
 `;
 
 const UploadContainer = styled.div`
-  width: auto;
+  width: 80%;
   max-width: 500px;
   flex-direction: row;
   display: flex;

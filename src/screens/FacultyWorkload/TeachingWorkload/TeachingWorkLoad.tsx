@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../../components/Footer";
 import FormButton from "../../../components/FormButton";
@@ -35,6 +36,8 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   const [points, setPoints] = useState(0);
 
+  const navigate = useNavigate();
+
   const onSubmit = async () => {
     setTeachingWorkLoad({
       numberOfPreparations,
@@ -60,6 +63,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           await SaveTeachingWorkload(teachingWorkLoad);
           setIsSubmitting(false);
           clearStates();
+          navigate("/research-workload", { replace: true });
         }
       }
     })();
@@ -71,7 +75,6 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
     setTotalNoOfStudents("");
     setTwlFile(undefined);
     setTeachingWorkLoad(undefined);
-    window.location.reload();
   };
 
   const numberOfPreparationsHandler = (value: string) => {

@@ -11,6 +11,7 @@ import ProfileTab from "../../../components/ProfileTab";
 import { SaveExtensionWorkload } from "../../../lib/faculty-workload.hooks";
 import ScreenTitle from "../../../components/ScreenTitle";
 import Footer from "../../../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 type ExtensionWorkloadProps = {
   UseLogout: () => void;
@@ -19,6 +20,8 @@ type ExtensionWorkloadProps = {
 const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const [extensionWorkload, setExtensionWorkload] =
     useState<ExtensionWorkloadType>();
@@ -109,7 +112,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           await SaveExtensionWorkload(extensionWorkload);
           setIsSubmitting(false);
           clearStates();
-          window.location.reload();
+          navigate("/strategic-function-workload", { replace: true });
         }
       }
     })();

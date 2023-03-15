@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
 import Footer from "../../../components/Footer";
@@ -59,6 +60,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const fundingStudy = (fundingStudyValue?: string) => {
     fundingOfStudyHandler(fundingStudyValue);
   };
+
+  const navigate = useNavigate();
 
   const researchWorkLoadHandler = () => {
     if (fundingOfStudy) {
@@ -320,6 +323,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           }
           researchWorkLoad.rwlPoints = designationStudyPoints;
           await SaveResearchWorkload(researchWorkLoad);
+          navigate("/extension-workload", { replace: true });
         } else {
           // for external funded
           let fundGeneratedPoints;
@@ -341,11 +345,11 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study3Points +
             study4Points;
           await SaveResearchWorkload(researchWorkLoad!);
+          navigate("/extension-workload", { replace: true });
         }
       }
       clearStates();
       setIsSubmitting(false);
-      setSteps(1);
     })();
   }, [isSubmitting]);
 

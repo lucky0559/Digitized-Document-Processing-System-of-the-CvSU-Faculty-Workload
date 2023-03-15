@@ -82,7 +82,8 @@ function App() {
           element={
             <Protected
               isSignedIn={
-                !!user && !!(userId && userRole) && hasAccessInFacultyWorkloads
+                (!!user && !!(userId && userRole)) ||
+                hasAccessInFacultyWorkloads
               }
             >
               <ResearchWorkload UseLogout={UseLogout} />
@@ -94,7 +95,8 @@ function App() {
           element={
             <Protected
               isSignedIn={
-                !!user && !!(userId && userRole) && hasAccessInFacultyWorkloads
+                (!!user && !!(userId && userRole)) ||
+                hasAccessInFacultyWorkloads
               }
             >
               <ExtensionWorkload UseLogout={UseLogout} />
@@ -106,7 +108,8 @@ function App() {
           element={
             <Protected
               isSignedIn={
-                !!user && !!(userId && userRole) && hasAccessInFacultyWorkloads
+                (!!user && !!(userId && userRole)) ||
+                hasAccessInFacultyWorkloads
               }
             >
               <StrategicFunction UseLogout={UseLogout} />
@@ -143,7 +146,7 @@ function App() {
           element={
             <Protected
               isSignedIn={
-                !!user && !!(userId && userRole) && hasAccessInReports
+                (!!user && !!(userId && userRole)) || hasAccessInReports
               }
             >
               <ReportsScreen UseLogout={UseLogout} />
