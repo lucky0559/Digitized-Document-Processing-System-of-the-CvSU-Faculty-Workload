@@ -433,7 +433,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   let designationStudyPoints = 0;
-  let fundGeneratedPoints = 0;
+  const [fundGeneratedPoints, setFundGeneratedPoints] = useState(0);
   const [study1Points, setStudy1Points] = useState(0);
   const [study2Points, setStudy2Points] = useState(0);
   const [study3Points, setStudy3Points] = useState(0);
@@ -466,14 +466,12 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   useEffect(() => {
     if (fundGenerated === "Above 1,000,000.00" && rwlFile1) {
-      fundGeneratedPoints = 3;
+      setFundGeneratedPoints(3);
     } else if (fundGenerated === "500,001.00 - 1,000,000.00" && rwlFile1) {
-      fundGeneratedPoints = 2;
+      setFundGeneratedPoints(2);
     } else if (fundGenerated === "500,000.00 and below" && rwlFile1) {
-      fundGeneratedPoints = 1;
+      setFundGeneratedPoints(1);
     }
-
-    setPoints(points + fundGeneratedPoints);
   }, [fundGenerated, rwlFile1]);
 
   useEffect(() => {
@@ -552,11 +550,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
                   val={fundDisplay}
                 />
               </InputsContainer>
-              <div style={{ marginTop: 50 }}>
-                <Label style={{ fontWeight: "bold" }}>
-                  Total Research Workload = 0
-                </Label>
-              </div>
               <ButtonContainer>
                 <FormButton
                   text="Next"
@@ -592,9 +585,10 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             fundGeneratedHandler={fundGeneratedHandler}
             rwlFile1Handler={rwlFile1Handler}
             backHandler={backHandler}
-            fundGeneratedDisplay={fundGeneratedDisplay}
+            fundGeneratedDisplay={fundGenerated || fundGeneratedDisplay}
             rwlFileName1={rwlFile1?.name}
             points={points}
+            fundGeneratedPoints={fundGeneratedPoints}
           />
         )}
         {steps === 4 && (
@@ -623,6 +617,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study2Points={study2Points}
             study3Points={study3Points}
             study4Points={study4Points}
+            fundGeneratedPoints={fundGeneratedPoints}
           />
         )}
       </BodyContainer>
@@ -648,6 +643,7 @@ const BodyContainer = styled.div`
   border: 5px solid black;
   border-radius: 15px;
   margin: 120px auto;
+  width: 50%;
 `;
 
 const Container = styled.div`

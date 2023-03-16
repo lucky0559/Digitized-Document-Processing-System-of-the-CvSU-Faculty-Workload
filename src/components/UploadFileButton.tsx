@@ -71,6 +71,7 @@ const FileName = styled.text`
   font-size: 15px;
   line-height: 15px;
   margin-left: 10px;
+  overflow-wrap: break-word;
 `;
 
 export default UploadFileButton;

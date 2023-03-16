@@ -31,6 +31,7 @@ type ResearchWorkload3Props = {
   study2Points: number;
   study3Points: number;
   study4Points: number;
+  fundGeneratedPoints: number;
 };
 
 const ResearchWorkload3 = ({
@@ -57,7 +58,8 @@ const ResearchWorkload3 = ({
   study1Points,
   study2Points,
   study3Points,
-  study4Points
+  study4Points,
+  fundGeneratedPoints
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -138,7 +140,8 @@ const ResearchWorkload3 = ({
               study1Points +
               study2Points +
               study3Points +
-              study4Points
+              study4Points +
+              fundGeneratedPoints
             ).toString()}
           </Label>
         </div>

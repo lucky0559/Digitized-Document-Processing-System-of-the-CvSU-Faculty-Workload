@@ -158,7 +158,9 @@ function Workload({
 
 const Container = styled.div``;
 
-const Table = styled.table``;
+const Table = styled.table`
+  margin-left: 22%;
+`;
 
 const TdText = styled.text`
   // align-text: center;

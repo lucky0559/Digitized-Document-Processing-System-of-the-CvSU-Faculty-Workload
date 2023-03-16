@@ -13,6 +13,7 @@ type ResearchWorkload2Props = {
   fundGeneratedDisplay?: string;
   rwlFileName1?: string;
   points: number;
+  fundGeneratedPoints: number;
 };
 
 const ResearchWorkload2 = ({
@@ -22,7 +23,8 @@ const ResearchWorkload2 = ({
   backHandler,
   fundGeneratedDisplay,
   rwlFileName1,
-  points
+  points,
+  fundGeneratedPoints
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
     rwlFile1Handler(file);
@@ -58,14 +60,6 @@ const ResearchWorkload2 = ({
             />
           </UploadFileContainer>
         </UploadContainer>
-        {/* <AddStudyContainer>
-          <AddStudyText>Add Another Study</AddStudyText>
-        </AddStudyContainer> */}
-        <div style={{ marginTop: 50 }}>
-          <Label style={{ fontWeight: "bold" }}>
-            Total Research Workload = {points.toString()}
-          </Label>
-        </div>
         <Buttons>
           <ButtonContainer>
             <FormButton text="Back" onClicked={backHandler}></FormButton>
@@ -94,6 +88,7 @@ const Container = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
+  width: 90%;
 `;
 
 const SubContainer = styled.div`
@@ -126,8 +121,8 @@ const InputsContainer = styled.div`
 `;
 
 const UploadContainer = styled.div`
-  width: auto;
-  max-width: 500px;
+  width: 100%;
+  max-width: 50rem;
   flex-direction: row;
   display: flex;
   align-items: center;
@@ -140,6 +135,7 @@ const UploadTextDescription = styled.label`
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
+  padding: 20px;
 `;
 
 const ButtonContainer = styled.div`
