@@ -65,6 +65,7 @@ const UploadContainer = styled.div`
 
 const Input = styled.input`
   margin-left: 42px;
+  width: 490.35px;
 `;
 
 export default TextInputWithUpload;
