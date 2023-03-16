@@ -145,7 +145,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   };
 
   const totalNumberHoursHandler = (value?: string) => {
-    if (value?.length! > 1 || Number(value) > 3) {
+    if (value?.length! > 3 || Number(value) > 100) {
       return;
     } else {
       setTotalNumberHours(value);
@@ -203,8 +203,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       setResourcePersonActivityPoints(1);
     }
   }, [resourcePerson, certificateFile]);
-
-  useEffect(() => {}, []);
 
   return (
     <MainContainer>
