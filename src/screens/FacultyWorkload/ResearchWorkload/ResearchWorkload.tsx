@@ -193,7 +193,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     } else {
       setDesignationStudyDisplay(designationStudy);
     }
-  }, [designationStudy]);
+  }, [designationStudy, designationStudyDisplay, researchWorkLoad]);
 
   const typeOfStudyHandler = (value: string) => {
     setTypeOfStudy(value);

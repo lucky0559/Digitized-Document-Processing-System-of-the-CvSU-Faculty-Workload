@@ -109,7 +109,7 @@ const ResearchWorkload1 = ({
               disabled={
                 typeOfStudy.length <= 0 ||
                 designationStudy?.length! <= 0 ||
-                rwlFileName?.length! <= 0
+                rwlFileName === undefined
               }
               isSubmitting={isSubmitting}
             ></FormButton>
