@@ -98,7 +98,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             resourcePersonPoints = 1;
           }
 
-          if (parseFloat(extensionWorkload.totalNumberHours) >= 3) {
+          if (Number(extensionWorkload.totalNumberHours) * 0.05556 >= 3) {
             totalNumberHoursPoints = 3;
           } else {
             totalNumberHoursPoints =
@@ -287,7 +287,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                   points +
                   designationActivityPoints +
                   resourcePersonActivityPoints +
-                  (summaryOfHoursFile ? Number(totalNumberHours) * 0.05556 : 0)
+                  (!summaryOfHoursFile
+                    ? 0
+                    : Number(totalNumberHours) * 0.05556 >= 3
+                    ? 3
+                    : Number((Number(totalNumberHours) * 0.05556).toFixed(2)))
                 ).toString()}
               </Label>
             </div>
