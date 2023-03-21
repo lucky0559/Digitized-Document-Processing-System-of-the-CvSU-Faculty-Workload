@@ -588,6 +588,10 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             fundGeneratedDisplay={fundGenerated || fundGeneratedDisplay}
             rwlFileName1={rwlFile1?.name}
             points={points}
+            study1Points={study1Points}
+            study2Points={study2Points}
+            study3Points={study3Points}
+            study4Points={study4Points}
             fundGeneratedPoints={fundGeneratedPoints}
           />
         )}

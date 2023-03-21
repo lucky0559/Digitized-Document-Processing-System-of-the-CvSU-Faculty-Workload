@@ -13,6 +13,10 @@ type ResearchWorkload2Props = {
   fundGeneratedDisplay?: string;
   rwlFileName1?: string;
   points: number;
+  study1Points: number;
+  study2Points: number;
+  study3Points: number;
+  study4Points: number;
   fundGeneratedPoints: number;
 };
 
@@ -24,6 +28,10 @@ const ResearchWorkload2 = ({
   fundGeneratedDisplay,
   rwlFileName1,
   points,
+  study1Points,
+  study2Points,
+  study3Points,
+  study4Points,
   fundGeneratedPoints
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
@@ -60,6 +68,19 @@ const ResearchWorkload2 = ({
             />
           </UploadFileContainer>
         </UploadContainer>
+        <div style={{ marginTop: 50 }}>
+          <Label style={{ fontWeight: "bold" }}>
+            Total Research Workload ={" "}
+            {(
+              points +
+              study1Points +
+              study2Points +
+              study3Points +
+              study4Points +
+              fundGeneratedPoints
+            ).toString()}
+          </Label>
+        </div>
         <Buttons>
           <ButtonContainer>
             <FormButton text="Back" onClicked={backHandler}></FormButton>
