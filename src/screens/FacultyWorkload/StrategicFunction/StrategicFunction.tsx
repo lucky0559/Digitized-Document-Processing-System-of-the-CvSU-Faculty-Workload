@@ -139,9 +139,14 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     setCustomApprovedDepartmentDesignationFile
   ] = useState<File>();
   const [sportsSocio, setSportsSocio] = useState<DesignationWithPoints>();
+  const [sportsSocio1, setSportsSocio1] = useState<DesignationWithPoints>();
   const [memberUniversity, setMemberUniversity] =
     useState<DesignationWithPoints>();
+  const [memberUniversity1, setMemberUniversity1] =
+    useState<DesignationWithPoints>();
   const [academicAdviser, setAcademicAdviser] =
+    useState<DesignationWithPoints>();
+  const [academicAdviser1, setAcademicAdviser1] =
     useState<DesignationWithPoints>();
   const [coachAdviserCertificateFile, setCoachAdviserCertificateFile] =
     useState<File>();
@@ -674,10 +679,28 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     // }
   };
 
+  const textInputTitleSportsSocio1 = (value: string) => {
+    // if (value.length >= 0 && value !== "") {
+    setSportsSocio1({
+      ...sportsSocio1,
+      title: value
+    });
+    // }
+  };
+
   const textInputPointsSportsSocio = (value: string) => {
     // if (value.length >= 0 && value !== "") {
     setSportsSocio({
       ...sportsSocio,
+      points: value
+    });
+    // }
+  };
+
+  const textInputPointsSportsSocio1 = (value: string) => {
+    // if (value.length >= 0 && value !== "") {
+    setSportsSocio1({
+      ...sportsSocio1,
       points: value
     });
     // }
@@ -690,10 +713,26 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     });
   };
 
+  const fileHandlerSportsSocio1 = (value?: File) => {
+    setSportsSocio1({
+      ...sportsSocio1,
+      file: value
+    });
+  };
+
   const textInputTitleMemberUniversity = (value: string) => {
     // if (value.length >= 0 && value !== "") {
     setMemberUniversity({
       ...memberUniversity,
+      title: value
+    });
+    // }
+  };
+
+  const textInputTitleMemberUniversity1 = (value: string) => {
+    // if (value.length >= 0 && value !== "") {
+    setMemberUniversity1({
+      ...memberUniversity1,
       title: value
     });
     // }
@@ -708,9 +747,25 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     // }
   };
 
+  const textInputPointsMemberUniversity1 = (value: string) => {
+    // if (value.length >= 0 && value !== "") {
+    setMemberUniversity1({
+      ...memberUniversity1,
+      points: value
+    });
+    // }
+  };
+
   const fileHandlerMemberUniversity = (value?: File) => {
     setMemberUniversity({
       ...memberUniversity,
+      file: value
+    });
+  };
+
+  const fileHandlerMemberUniversity1 = (value?: File) => {
+    setMemberUniversity1({
+      ...memberUniversity1,
       file: value
     });
   };
@@ -719,6 +774,15 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     // if (value.length >= 0 && value !== "") {
     setAcademicAdviser({
       ...academicAdviser,
+      title: value
+    });
+    // }
+  };
+
+  const textInputTitleAcademicAdviser1 = (value: string) => {
+    // if (value.length >= 0 && value !== "") {
+    setAcademicAdviser1({
+      ...academicAdviser1,
       title: value
     });
     // }
@@ -733,9 +797,25 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     // }
   };
 
+  const textInputPointsAcademicAdviser1 = (value: string) => {
+    // if (value.length >= 0 && value !== "") {
+    setAcademicAdviser1({
+      ...academicAdviser1,
+      points: value
+    });
+    // }
+  };
+
   const fileHandlerAcademicAdviser = (value?: File) => {
     setAcademicAdviser({
       ...academicAdviser,
+      file: value
+    });
+  };
+
+  const fileHandlerAcademicAdviser1 = (value?: File) => {
+    setAcademicAdviser1({
+      ...academicAdviser1,
       file: value
     });
   };
@@ -1630,6 +1710,16 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                 sportsSocioPoints={sportsSocio?.points}
                 fileHandlerSportsSocio={fileHandlerSportsSocio}
                 fileNameSportsSocio={sportsSocio?.file?.name}
+                onTextInputSportsSocioDesignationTitle1={
+                  textInputTitleSportsSocio1
+                }
+                onTextInputSportsSocioDesignationPoints1={
+                  textInputPointsSportsSocio1
+                }
+                sportsSocioTitle1={sportsSocio1?.title}
+                sportsSocioPoints1={sportsSocio1?.points}
+                fileHandlerSportsSocio1={fileHandlerSportsSocio1}
+                fileNameSportsSocio1={sportsSocio1?.file?.name}
                 onTextInputMemberUniversityWideDesignationTitle={
                   textInputTitleMemberUniversity
                 }
@@ -1640,6 +1730,16 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                 memberUniversityPoints={memberUniversity?.points}
                 fileHandlerMemberUniversity={fileHandlerMemberUniversity}
                 fileNameMemberUniversity={memberUniversity?.file?.name}
+                onTextInputMemberUniversityWideDesignationTitle1={
+                  textInputTitleMemberUniversity1
+                }
+                onTextInputMemberUniversityWideDesignationPoints1={
+                  textInputPointsMemberUniversity1
+                }
+                memberUniversityTitle1={memberUniversity1?.title}
+                memberUniversityPoints1={memberUniversity1?.points}
+                fileHandlerMemberUniversity1={fileHandlerMemberUniversity1}
+                fileNameMemberUniversity1={memberUniversity1?.file?.name}
                 onTextInputAcademicAdviserDesignationTitle={
                   textInputTitleAcademicAdviser
                 }
@@ -1650,6 +1750,16 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                 academicAdviserPoints={academicAdviser?.points}
                 fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
                 fileNameAcademicAdviser={academicAdviser?.file?.name}
+                onTextInputAcademicAdviserDesignationTitle1={
+                  textInputTitleAcademicAdviser1
+                }
+                onTextInputAcademicAdviserDesignationPoints1={
+                  textInputPointsAcademicAdviser1
+                }
+                academicAdviserTitle1={academicAdviser1?.title}
+                academicAdviserPoints1={academicAdviser1?.points}
+                fileHandlerAcademicAdviser1={fileHandlerAcademicAdviser1}
+                fileNameAcademicAdviser1={academicAdviser1?.file?.name}
               />
             )}
             <FormFooterContainer>
