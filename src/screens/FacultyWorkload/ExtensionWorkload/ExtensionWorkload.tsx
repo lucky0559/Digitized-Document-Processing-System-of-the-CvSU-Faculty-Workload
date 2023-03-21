@@ -301,18 +301,12 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                 onClicked={extensionWorkloadHandler}
                 isSubmitting={isSubmitting}
                 disabled={
-                  designationExtensionActivity?.length! <= 0 ||
-                  designationExtensionActivity === undefined ||
-                  extensionActivityFile?.name.length! <= 0 ||
-                  extensionActivityFile?.name === undefined ||
-                  resourcePerson?.length! <= 0 ||
-                  resourcePerson === undefined ||
-                  certificateFile?.name.length! <= 0 ||
-                  certificateFile?.name === undefined ||
-                  totalNumberHours?.length! <= 0 ||
-                  totalNumberHours === undefined ||
-                  summaryOfHoursFile?.name.length! <= 0 ||
-                  summaryOfHoursFile?.name === undefined
+                  !designationExtensionActivity &&
+                  !extensionActivityFile?.name &&
+                  !resourcePerson &&
+                  !certificateFile &&
+                  !totalNumberHours &&
+                  !summaryOfHoursFile?.name
                 }
               ></FormButton>
             </ButtonContainer>
