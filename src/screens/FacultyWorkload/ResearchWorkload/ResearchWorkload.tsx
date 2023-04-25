@@ -321,7 +321,12 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           } else {
             designationStudyPoints = 3;
           }
-          researchWorkLoad.rwlPoints = designationStudyPoints;
+          researchWorkLoad.rwlPoints =
+            designationStudyPoints +
+            study1Points +
+            study2Points +
+            study3Points +
+            study4Points;
           await SaveResearchWorkload(researchWorkLoad);
           navigate("/extension-workload", { replace: true });
         } else {
