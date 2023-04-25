@@ -80,9 +80,6 @@ const ResearchWorkload3 = ({
   return (
     <Container>
       <SubContainer>
-        <WorkloadTextContainer>
-          <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
-        </WorkloadTextContainer>
         <text>
           Disseminated research output in College or University In-House
           Review/Conferences
@@ -149,7 +146,9 @@ const ResearchWorkload3 = ({
           <ButtonContainer>
             <FormButton text="Back" onClicked={backHandler}></FormButton>
           </ButtonContainer>
-          <ButtonContainer>
+          <ButtonContainer
+            style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
+          >
             <FormButton
               text="Submit"
               onClicked={researchWorkLoadHandler3}
@@ -174,60 +173,23 @@ const Container = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const SubContainer = styled.div`
   border: 2px solid black;
-  width: 100%;
+  width: 90%;
   height: auto;
   border-radius: 15px;
   padding: 15px;
-`;
-
-const WorkloadTextContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-`;
-
-const WorkloadText = styled.text`
-  font-size: 19px;
-  font-weight: 600;
-  line-height: 20px;
-  font-family: HurmeGeometricSans3;
-`;
-
-const InputsContainer = styled.div`
-  margin: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: auto;
-  max-width: 350px;
-`;
-
-const UploadContainer = styled.div`
-  width: auto;
-  max-width: 500px;
-  flex-direction: row;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const UploadTextDescription = styled.label`
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 18px;
-  font-family: HurmeGeometricSans3;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 20px 0px 0px;
+  width: 100%;
+  padding: 20px;
 `;
 
 const Label = styled.label`
@@ -255,9 +217,8 @@ const Label = styled.label`
 const Buttons = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   width: 100%;
-  margin-top: 40px;
+  margin-top: 30px;
 `;
 
 const UploadFileContainer = styled.div`
