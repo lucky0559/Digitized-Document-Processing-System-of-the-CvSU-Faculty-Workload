@@ -833,243 +833,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   // }, [backHandler]);
 
   const onNextSubmit = () => {
-    if (steps === 1) {
-      // // UNIVERSITY
-      // if (
-      //   approvedUniversityDesignationFile.length !== 0 ||
-      //   strategicFunctionWorkload?.approvedUniversityDesignationFile?.length! <
-      //     approvedUniversityDesignationFile.length
-      // ) {
-      //   if (
-      //     approvedUniversityDesignationFile[0] &&
-      //     approvedUniversityDesignationFile[1] &&
-      //     approvedUniversityDesignationFile[2]
-      //   ) {
-      //     console.log(approvedUniversityDesignationFile);
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (
-      //     approvedUniversityDesignationFile[0] &&
-      //     approvedUniversityDesignationFile[1]
-      //   ) {
-      //     approvedUniversityDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (
-      //     approvedUniversityDesignationFile[0] &&
-      //     approvedUniversityDesignationFile[2]
-      //   ) {
-      //     approvedUniversityDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (
-      //     approvedUniversityDesignationFile[1] &&
-      //     approvedUniversityDesignationFile[2]
-      //   ) {
-      //     approvedUniversityDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (approvedUniversityDesignationFile[0]) {
-      //     approvedUniversityDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-      //     approvedUniversityDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (approvedUniversityDesignationFile[1]) {
-      //     approvedUniversityDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-      //     approvedUniversityDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (approvedUniversityDesignationFile[2]) {
-      //     approvedUniversityDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-      //     approvedUniversityDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   }
-      // }
-      // // COLEGE CAMPUS
-      // if (
-      //   approvedCollegeCampusDesignationFile.length !== 0 ||
-      //   strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
-      //     ?.length! < approvedCollegeCampusDesignationFile.length
-      // ) {
-      //   if (
-      //     approvedCollegeCampusDesignationFile[0] &&
-      //     approvedCollegeCampusDesignationFile[1] &&
-      //     approvedCollegeCampusDesignationFile[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (
-      //     approvedCollegeCampusDesignationFile[0] &&
-      //     approvedCollegeCampusDesignationFile[1]
-      //   ) {
-      //     approvedCollegeCampusDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (
-      //     approvedCollegeCampusDesignationFile[0] &&
-      //     approvedCollegeCampusDesignationFile[2]
-      //   ) {
-      //     approvedCollegeCampusDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (
-      //     approvedCollegeCampusDesignationFile[1] &&
-      //     approvedCollegeCampusDesignationFile[2]
-      //   ) {
-      //     approvedCollegeCampusDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (approvedCollegeCampusDesignationFile[0]) {
-      //     approvedCollegeCampusDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-      //     approvedCollegeCampusDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (approvedCollegeCampusDesignationFile[1]) {
-      //     approvedCollegeCampusDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-      //     approvedCollegeCampusDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (approvedCollegeCampusDesignationFile[2]) {
-      //     approvedCollegeCampusDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-      //     approvedCollegeCampusDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   }
-      // }
-      setSteps(steps + 1);
-    }
-    if (steps === 2) {
-      // DEPARTMENT CAMPUS
-      // if (
-      //   approvedDepartmentDesignationFile.length !== 0 ||
-      //   strategicFunctionWorkload?.approvedDepartmentDesignationFile?.length! <
-      //     approvedDepartmentDesignationFile.length
-      // ) {
-      //   if (
-      //     approvedDepartmentDesignationFile[0] &&
-      //     approvedDepartmentDesignationFile[1] &&
-      //     approvedDepartmentDesignationFile[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (
-      //     approvedDepartmentDesignationFile[0] &&
-      //     approvedDepartmentDesignationFile[1]
-      //   ) {
-      //     approvedDepartmentDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (
-      //     approvedDepartmentDesignationFile[0] &&
-      //     approvedDepartmentDesignationFile[2]
-      //   ) {
-      //     approvedDepartmentDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (
-      //     approvedDepartmentDesignationFile[1] &&
-      //     approvedDepartmentDesignationFile[2]
-      //   ) {
-      //     approvedDepartmentDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (approvedDepartmentDesignationFile[0]) {
-      //     approvedDepartmentDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-      //     approvedDepartmentDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (approvedDepartmentDesignationFile[1]) {
-      //     approvedDepartmentDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-      //     approvedDepartmentDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (approvedDepartmentDesignationFile[2]) {
-      //     approvedDepartmentDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-      //     approvedDepartmentDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   }
-      // }
-      // setDesignationDepartmentLevel(
-      //   [
-      //     departmentDesignation1,
-      //     departmentDesignation2,
-      //     departmentDesignation3,
-      //     departmentLevelInputDesignation
-      //   ].filter(Boolean)
-      // );
-      setIsSubmitting(true);
-    }
+    setIsSubmitting(true);
   };
 
   // DESIGNATION UNIVERSITY
@@ -1616,74 +1380,180 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           <ScreenTitle title="Strategic Functions (SF)" />
           <Container>
             {steps === 1 && (
-              <StrategicFunction1
-                onUniversityLevelSelect1={onSelectDesignationUniversity1}
-                onUniversityLevelSelect2={onSelectDesignationUniversity2}
-                onUniversityLevelSelect3={onSelectDesignationUniversity3}
-                textInputUniversityLevel4={textInputDesignationUniversity4}
-                universityLevelInputDesignation={designationUniversity4?.title}
-                displayDesignationUniversity1={designationUniversity1?.title}
-                displayDesignationUniversity2={designationUniversity2?.title}
-                displayDesignationUniversity3={designationUniversity3?.title}
-                onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
-                onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
-                onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
-                textInputCollegeCampusLevel4={
-                  textInputCollegeCampusDesignation4
-                }
-                displayDesignationCollegeCampus1={
-                  collegeCampusDesignation1?.title
-                }
-                displayDesignationCollegeCampus2={
-                  collegeCampusDesignation2?.title
-                }
-                displayDesignationCollegeCampus3={
-                  collegeCampusDesignation3?.title
-                }
-                collegeCampusLevelInputDesignation={
-                  collegeCampusDesignation4?.title
-                }
-                onFileUniversityLevelSelect1={
-                  approvedUniversityDesignationFileHandler1
-                }
-                onFileUniversityLevelSelect2={
-                  approvedUniversityDesignationFileHandler2
-                }
-                onFileUniversityLevelSelect3={
-                  approvedUniversityDesignationFileHandler3
-                }
-                onFileCustomUniversityLevelSelect={
-                  customApprovedUniversityDesignationFileHandler
-                }
-                customUniversityFileName={designationUniversity4?.file?.name}
-                universityLevelFileName1={designationUniversity1?.file?.name}
-                universityLevelFileName2={designationUniversity2?.file?.name}
-                universityLevelFileName3={designationUniversity3?.file?.name}
-                onFileCollegeCampusLevelSelect1={
-                  approvedCollegeCampusDesignationFileHandler1
-                }
-                onFileCollegeCampusLevelSelect2={
-                  approvedCollegeCampusDesignationFileHandler2
-                }
-                onFileCollegeCampusLevelSelect3={
-                  approvedCollegeCampusDesignationFileHandler3
-                }
-                onFileCustomCollegeCampusLevelSelect={
-                  customApprovedCollegeCampusDesignationFileHandler
-                }
-                collegeCampusLevelFileName1={
-                  collegeCampusDesignation1?.file?.name
-                }
-                collegeCampusLevelFileName2={
-                  collegeCampusDesignation2?.file?.name
-                }
-                collegeCampusLevelFileName3={
-                  collegeCampusDesignation3?.file?.name
-                }
-                customcollegeCampusLevelFileName={
-                  collegeCampusDesignation4?.file?.name
-                }
-              />
+              <>
+                <StrategicFunction1
+                  onUniversityLevelSelect1={onSelectDesignationUniversity1}
+                  onUniversityLevelSelect2={onSelectDesignationUniversity2}
+                  onUniversityLevelSelect3={onSelectDesignationUniversity3}
+                  textInputUniversityLevel4={textInputDesignationUniversity4}
+                  universityLevelInputDesignation={
+                    designationUniversity4?.title
+                  }
+                  displayDesignationUniversity1={designationUniversity1?.title}
+                  displayDesignationUniversity2={designationUniversity2?.title}
+                  displayDesignationUniversity3={designationUniversity3?.title}
+                  onCollegeCampusLevelSelect1={
+                    onSelectCollegeCampusDesignation1
+                  }
+                  onCollegeCampusLevelSelect2={
+                    onSelectCollegeCampusDesignation2
+                  }
+                  onCollegeCampusLevelSelect3={
+                    onSelectCollegeCampusDesignation3
+                  }
+                  textInputCollegeCampusLevel4={
+                    textInputCollegeCampusDesignation4
+                  }
+                  displayDesignationCollegeCampus1={
+                    collegeCampusDesignation1?.title
+                  }
+                  displayDesignationCollegeCampus2={
+                    collegeCampusDesignation2?.title
+                  }
+                  displayDesignationCollegeCampus3={
+                    collegeCampusDesignation3?.title
+                  }
+                  collegeCampusLevelInputDesignation={
+                    collegeCampusDesignation4?.title
+                  }
+                  onFileUniversityLevelSelect1={
+                    approvedUniversityDesignationFileHandler1
+                  }
+                  onFileUniversityLevelSelect2={
+                    approvedUniversityDesignationFileHandler2
+                  }
+                  onFileUniversityLevelSelect3={
+                    approvedUniversityDesignationFileHandler3
+                  }
+                  onFileCustomUniversityLevelSelect={
+                    customApprovedUniversityDesignationFileHandler
+                  }
+                  customUniversityFileName={designationUniversity4?.file?.name}
+                  universityLevelFileName1={designationUniversity1?.file?.name}
+                  universityLevelFileName2={designationUniversity2?.file?.name}
+                  universityLevelFileName3={designationUniversity3?.file?.name}
+                  onFileCollegeCampusLevelSelect1={
+                    approvedCollegeCampusDesignationFileHandler1
+                  }
+                  onFileCollegeCampusLevelSelect2={
+                    approvedCollegeCampusDesignationFileHandler2
+                  }
+                  onFileCollegeCampusLevelSelect3={
+                    approvedCollegeCampusDesignationFileHandler3
+                  }
+                  onFileCustomCollegeCampusLevelSelect={
+                    customApprovedCollegeCampusDesignationFileHandler
+                  }
+                  collegeCampusLevelFileName1={
+                    collegeCampusDesignation1?.file?.name
+                  }
+                  collegeCampusLevelFileName2={
+                    collegeCampusDesignation2?.file?.name
+                  }
+                  collegeCampusLevelFileName3={
+                    collegeCampusDesignation3?.file?.name
+                  }
+                  customcollegeCampusLevelFileName={
+                    collegeCampusDesignation4?.file?.name
+                  }
+                />
+                <StrategicFunction2
+                  onSelectDepartmentDesignation1={
+                    onSelectDepartmentDesignation1
+                  }
+                  onSelectDepartmentDesignation2={
+                    onSelectDepartmentDesignation2
+                  }
+                  onSelectDepartmentDesignation3={
+                    onSelectDepartmentDesignation3
+                  }
+                  textInputDepartmentDesignation4={
+                    textInputDepartmentDesignation4
+                  }
+                  displayDesignationDepartment1={departmentDesignation1?.title}
+                  displayDesignationDepartment2={departmentDesignation2?.title}
+                  displayDesignationDepartment3={departmentDesignation3?.title}
+                  departmentLevelInputDesignation={
+                    departmentDesignation4?.title
+                  }
+                  onFileDepartmentLevelSelect1={
+                    approvedDepartmentDesignationFileHandler1
+                  }
+                  onFileDepartmentLevelSelect2={
+                    approvedDepartmentDesignationFileHandler2
+                  }
+                  onFileDepartmentLevelSelect3={
+                    approvedDepartmentDesignationFileHandler3
+                  }
+                  onFileCustomDepartmentLevelSelect={
+                    customApprovedDepartmentDesignationFileHandler
+                  }
+                  departmentLevelFileName1={departmentDesignation1?.file?.name}
+                  departmentLevelFileName2={departmentDesignation2?.file?.name}
+                  departmentLevelFileName3={departmentDesignation3?.file?.name}
+                  customDepartmentFileName={departmentDesignation4?.file?.name}
+                  onTextInputSportsSocioDesignationTitle={
+                    textInputTitleSportsSocio
+                  }
+                  onTextInputSportsSocioDesignationPoints={
+                    textInputPointsSportsSocio
+                  }
+                  sportsSocioTitle={sportsSocio?.title}
+                  sportsSocioPoints={sportsSocio?.points}
+                  fileHandlerSportsSocio={fileHandlerSportsSocio}
+                  fileNameSportsSocio={sportsSocio?.file?.name}
+                  onTextInputSportsSocioDesignationTitle1={
+                    textInputTitleSportsSocio1
+                  }
+                  onTextInputSportsSocioDesignationPoints1={
+                    textInputPointsSportsSocio1
+                  }
+                  sportsSocioTitle1={sportsSocio1?.title}
+                  sportsSocioPoints1={sportsSocio1?.points}
+                  fileHandlerSportsSocio1={fileHandlerSportsSocio1}
+                  fileNameSportsSocio1={sportsSocio1?.file?.name}
+                  onTextInputMemberUniversityWideDesignationTitle={
+                    textInputTitleMemberUniversity
+                  }
+                  onTextInputMemberUniversityWideDesignationPoints={
+                    textInputPointsMemberUniversity
+                  }
+                  memberUniversityTitle={memberUniversity?.title}
+                  memberUniversityPoints={memberUniversity?.points}
+                  fileHandlerMemberUniversity={fileHandlerMemberUniversity}
+                  fileNameMemberUniversity={memberUniversity?.file?.name}
+                  onTextInputMemberUniversityWideDesignationTitle1={
+                    textInputTitleMemberUniversity1
+                  }
+                  onTextInputMemberUniversityWideDesignationPoints1={
+                    textInputPointsMemberUniversity1
+                  }
+                  memberUniversityTitle1={memberUniversity1?.title}
+                  memberUniversityPoints1={memberUniversity1?.points}
+                  fileHandlerMemberUniversity1={fileHandlerMemberUniversity1}
+                  fileNameMemberUniversity1={memberUniversity1?.file?.name}
+                  onTextInputAcademicAdviserDesignationTitle={
+                    textInputTitleAcademicAdviser
+                  }
+                  onTextInputAcademicAdviserDesignationPoints={
+                    textInputPointsAcademicAdviser
+                  }
+                  academicAdviserTitle={academicAdviser?.title}
+                  academicAdviserPoints={academicAdviser?.points}
+                  fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
+                  fileNameAcademicAdviser={academicAdviser?.file?.name}
+                  onTextInputAcademicAdviserDesignationTitle1={
+                    textInputTitleAcademicAdviser1
+                  }
+                  onTextInputAcademicAdviserDesignationPoints1={
+                    textInputPointsAcademicAdviser1
+                  }
+                  academicAdviserTitle1={academicAdviser1?.title}
+                  academicAdviserPoints1={academicAdviser1?.points}
+                  fileHandlerAcademicAdviser1={fileHandlerAcademicAdviser1}
+                  fileNameAcademicAdviser1={academicAdviser1?.file?.name}
+                />
+              </>
             )}
             {steps === 2 && (
               <StrategicFunction2
@@ -2135,17 +2005,9 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                   `Total Strategic Function Workload = ${points}`}
               </Label>
               <Buttons>
-                {steps > 1 && (
-                  <ButtonContainer>
-                    <FormButton
-                      text="Back"
-                      onClicked={() => setSteps(steps - 1)}
-                    ></FormButton>
-                  </ButtonContainer>
-                )}
                 <ButtonContainer>
                   <FormButton
-                    text={steps !== 2 ? "Next" : "Submit"}
+                    text="Submit"
                     onClicked={onNextSubmit}
                     isSubmitting={isSubmitting}
                   ></FormButton>
