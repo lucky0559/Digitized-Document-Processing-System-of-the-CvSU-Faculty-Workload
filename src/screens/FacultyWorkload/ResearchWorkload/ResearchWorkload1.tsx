@@ -6,6 +6,7 @@ import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import { VscCircleLargeOutline, VscCircleLargeFilled } from "react-icons/vsc";
 import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
+import DropdownWithUpload from "../../../components/DropdownWithUpload";
 
 type ResearchWorkload1Props = {
   researchWorkLoadHandler1: () => void;
@@ -19,6 +20,27 @@ type ResearchWorkload1Props = {
   rwlFileNameDisplay?: string;
   isSubmitting: boolean;
   points: number;
+  onSelectStudy1: (value: string) => void;
+  study1?: string;
+  onStudy1FileSelect: (value?: File) => void;
+  study1FileName?: string;
+  onSelectStudy2: (value: string) => void;
+  study2?: string;
+  onStudy2FileSelect: (value?: File) => void;
+  study2FileName?: string;
+  onSelectStudy3: (value: string) => void;
+  study3?: string;
+  onStudy3FileSelect: (value?: File) => void;
+  study3FileName?: string;
+  onSelectStudy4: (value: string) => void;
+  study4?: string;
+  onStudy4FileSelect: (value?: File) => void;
+  study4FileName?: string;
+  study1Points: number;
+  study2Points: number;
+  study3Points: number;
+  study4Points: number;
+  fundGeneratedPoints: number;
 };
 
 const ResearchWorkload1 = ({
@@ -31,7 +53,28 @@ const ResearchWorkload1 = ({
   designationStudy,
   rwlFileName,
   isSubmitting,
-  points
+  points,
+  onSelectStudy1,
+  study1,
+  onStudy1FileSelect,
+  study1FileName,
+  onSelectStudy2,
+  study2,
+  onStudy2FileSelect,
+  study2FileName,
+  onSelectStudy3,
+  study3,
+  onStudy3FileSelect,
+  study3FileName,
+  onSelectStudy4,
+  study4,
+  onStudy4FileSelect,
+  study4FileName,
+  study1Points,
+  study2Points,
+  study3Points,
+  study4Points,
+  fundGeneratedPoints
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -39,6 +82,22 @@ const ResearchWorkload1 = ({
 
   const setDesignationStudy = (designationStudyValue?: string) => {
     designationStudyHandler(designationStudyValue);
+  };
+
+  const onStudy1FileSelectHandler = (value?: File) => {
+    onStudy1FileSelect(value);
+  };
+
+  const onStudy2FileSelectHandler = (value?: File) => {
+    onStudy2FileSelect(value);
+  };
+
+  const onStudy3FileSelectHandler = (value?: File) => {
+    onStudy3FileSelect(value);
+  };
+
+  const onStudy4FileSelectHandler = (value?: File) => {
+    onStudy4FileSelect(value);
   };
 
   return (
@@ -90,12 +149,62 @@ const ResearchWorkload1 = ({
             />
           </UploadFileContainer>
         </UploadContainer>
+        <text>
+          Disseminated research output in College or University In-House
+          Review/Conferences
+        </text>
+        <div>
+          <DropdownWithUpload
+            inputLabel="Study 1"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy1}
+            val={study1}
+            onFileSelect={onStudy1FileSelectHandler}
+            fileName={study1FileName}
+          />
+          <DropdownWithUpload
+            inputLabel="Study 2"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy2}
+            val={study2}
+            onFileSelect={onStudy2FileSelectHandler}
+            fileName={study2FileName}
+          />
+          <DropdownWithUpload
+            inputLabel="Study 3"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy3}
+            val={study3}
+            onFileSelect={onStudy3FileSelectHandler}
+            fileName={study3FileName}
+          />
+          <DropdownWithUpload
+            inputLabel="Study 4"
+            uploadLabel="Upload Certificate of Presentation here:"
+            options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
+            onSelect={onSelectStudy4}
+            val={study4}
+            onFileSelect={onStudy4FileSelectHandler}
+            fileName={study4FileName}
+          />
+        </div>
         {/* <AddStudyContainer>
           <AddStudyText>Add Another Study</AddStudyText>
         </AddStudyContainer> */}
         <div style={{ marginTop: 50 }}>
           <Label style={{ fontWeight: "bold" }}>
-            Total Research Workload = {points.toString()}
+            Total Research Workload ={" "}
+            {(
+              points +
+              study1Points +
+              study2Points +
+              study3Points +
+              study4Points +
+              fundGeneratedPoints
+            ).toString()}
           </Label>
         </div>
         <Buttons>
@@ -185,6 +294,7 @@ const UploadContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const UploadTextDescription = styled.label`

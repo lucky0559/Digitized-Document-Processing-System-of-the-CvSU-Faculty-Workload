@@ -577,6 +577,27 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             rwlFileName={rwlFile?.name}
             isSubmitting={isSubmitting}
             points={points}
+            onSelectStudy1={onSelectStudy1}
+            study1={study1?.title}
+            onStudy1FileSelect={onStudy1FileSelect}
+            study1FileName={study1?.file?.name}
+            onSelectStudy2={onSelectStudy2}
+            study2={study2?.title}
+            onStudy2FileSelect={onStudy2FileSelect}
+            study2FileName={study2?.file?.name}
+            onSelectStudy3={onSelectStudy3}
+            study3={study3?.title}
+            onStudy3FileSelect={onStudy3FileSelect}
+            study3FileName={study3?.file?.name}
+            onSelectStudy4={onSelectStudy4}
+            study4={study4?.title}
+            onStudy4FileSelect={onStudy4FileSelect}
+            study4FileName={study4?.file?.name}
+            study1Points={study1Points}
+            study2Points={study2Points}
+            study3Points={study3Points}
+            study4Points={study4Points}
+            fundGeneratedPoints={fundGeneratedPoints}
           />
         )}
         {steps === 3 && (
