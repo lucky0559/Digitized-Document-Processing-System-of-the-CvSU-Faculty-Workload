@@ -1424,7 +1424,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
       if (isSubmitting) {
         try {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-          window.location.reload();
+          // window.location.reload();
         } catch (e) {
           console.log(e);
         }
@@ -1580,13 +1580,26 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const hasSportsSocio =
     sportsSocio?.points && sportsSocio?.file && sportsSocio?.title;
 
+  const hasSportsSocio1 =
+    sportsSocio1?.points && sportsSocio1?.file && sportsSocio1?.title;
+
   const hasMemberUniversity =
     memberUniversity?.points &&
     memberUniversity?.file &&
     memberUniversity?.title;
 
+  const hasMemberUniversity1 =
+    memberUniversity1?.points &&
+    memberUniversity1?.file &&
+    memberUniversity1?.title;
+
   const hasAcademicAdviser =
     academicAdviser?.points && academicAdviser?.file && academicAdviser?.title;
+
+  const hasAcademicAdviser1 =
+    academicAdviser1?.points &&
+    academicAdviser1?.file &&
+    academicAdviser1?.title;
 
   return (
     <MainContainer>
@@ -1765,55 +1778,356 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
             <FormFooterContainer>
               <Label style={{ fontWeight: "bold" }}>
                 {hasSportsSocio &&
+                  hasSportsSocio1 &&
                   !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
                   !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
                   `Total Strategic Function Workload = ${
-                    points + Number(sportsSocio.points)
+                    points +
+                    Number(sportsSocio?.points) +
+                    Number(sportsSocio1?.points)
+                  }`}
+                {hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(sportsSocio?.points) +
+                    Number(sportsSocio1?.points) +
+                    Number(memberUniversity.points)
+                  }`}
+                {hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(sportsSocio?.points) +
+                    Number(sportsSocio1?.points) +
+                    Number(memberUniversity1.points)
+                  }`}
+                {hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points + Number(sportsSocio?.points)
+                  }`}
+                {!hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points + Number(sportsSocio1?.points)
                   }`}
                 {hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
                   !hasSportsSocio &&
+                  !hasSportsSocio1 &&
                   !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
                   `Total Strategic Function Workload = ${
                     points + Number(memberUniversity.points)
                   }`}
-                {hasAcademicAdviser &&
+                {!hasMemberUniversity &&
+                  hasMemberUniversity1 &&
                   !hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points + Number(memberUniversity1.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  !hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity.points) +
+                    Number(memberUniversity1.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity.points) +
+                    Number(memberUniversity1.points) +
+                    Number(sportsSocio.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  !hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity.points) +
+                    Number(memberUniversity1.points) +
+                    Number(sportsSocio1.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity.points) +
+                    Number(memberUniversity1.points) +
+                    Number(sportsSocio1.points) +
+                    Number(sportsSocio.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity.points) +
+                    Number(memberUniversity1.points) +
+                    Number(sportsSocio1.points) +
+                    Number(sportsSocio.points) +
+                    Number(academicAdviser.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity.points) +
+                    Number(memberUniversity1.points) +
+                    Number(sportsSocio1.points) +
+                    Number(sportsSocio.points) +
+                    Number(academicAdviser1.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  !hasAcademicAdviser1 &&
+                  !hasSportsSocio &&
+                  !hasSportsSocio1 &&
                   !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
                   `Total Strategic Function Workload = ${
                     points + Number(academicAdviser.points)
                   }`}
-                {hasSportsSocio &&
-                  hasMemberUniversity &&
-                  hasAcademicAdviser &&
+                {!hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  !hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points + Number(academicAdviser1.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  !hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
                   `Total Strategic Function Workload = ${
                     points +
+                    Number(academicAdviser.points) +
+                    Number(academicAdviser1.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(academicAdviser.points) +
+                    Number(academicAdviser1.points) +
+                    Number(sportsSocio.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  !hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(academicAdviser.points) +
+                    Number(academicAdviser1.points) +
+                    Number(sportsSocio1.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(academicAdviser.points) +
+                    Number(academicAdviser1.points) +
+                    Number(sportsSocio1.points) +
+                    Number(sportsSocio.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(academicAdviser.points) +
+                    Number(academicAdviser1.points) +
+                    Number(sportsSocio1.points) +
                     Number(sportsSocio.points) +
-                    Number(memberUniversity?.points) +
-                    Number(academicAdviser?.points)
+                    Number(memberUniversity.points)
+                  }`}
+                {hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  !hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(academicAdviser.points) +
+                    Number(academicAdviser1.points) +
+                    Number(sportsSocio1.points) +
+                    Number(sportsSocio.points) +
+                    Number(memberUniversity1.points)
                   }`}
                 {hasSportsSocio &&
+                  hasSportsSocio1 &&
                   hasMemberUniversity &&
-                  !hasAcademicAdviser &&
+                  hasMemberUniversity1 &&
+                  hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
                   `Total Strategic Function Workload = ${
                     points +
                     Number(sportsSocio.points) +
+                    Number(sportsSocio1.points) +
+                    Number(memberUniversity?.points) +
+                    Number(memberUniversity1?.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points)
+                  }`}
+                {hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  !hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(sportsSocio.points) +
+                    Number(sportsSocio1.points) +
+                    Number(memberUniversity?.points) +
+                    Number(memberUniversity1?.points) +
+                    Number(academicAdviser1?.points)
+                  }`}
+                {hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  !hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(sportsSocio.points) +
+                    Number(sportsSocio1.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points)
+                  }`}
+                {hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  hasMemberUniversity &&
+                  !hasMemberUniversity1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(sportsSocio.points) +
+                    Number(sportsSocio1.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points) +
                     Number(memberUniversity?.points)
                   }`}
                 {hasSportsSocio &&
+                  hasSportsSocio1 &&
                   hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
                   !hasMemberUniversity &&
+                  hasMemberUniversity1 &&
                   `Total Strategic Function Workload = ${
                     points +
                     Number(sportsSocio.points) +
-                    Number(academicAdviser?.points)
+                    Number(sportsSocio1.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points) +
+                    Number(memberUniversity1?.points)
                   }`}
                 {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
                   hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
                   !hasSportsSocio &&
+                  !hasSportsSocio1 &&
                   `Total Strategic Function Workload = ${
                     points +
                     Number(memberUniversity?.points) +
-                    Number(academicAdviser?.points)
+                    Number(memberUniversity1?.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  hasSportsSocio &&
+                  !hasSportsSocio1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity?.points) +
+                    Number(memberUniversity1?.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points) +
+                    Number(sportsSocio.points)
+                  }`}
+                {hasMemberUniversity &&
+                  hasMemberUniversity1 &&
+                  hasAcademicAdviser &&
+                  hasAcademicAdviser1 &&
+                  !hasSportsSocio &&
+                  hasSportsSocio1 &&
+                  `Total Strategic Function Workload = ${
+                    points +
+                    Number(memberUniversity?.points) +
+                    Number(memberUniversity1?.points) +
+                    Number(academicAdviser?.points) +
+                    Number(academicAdviser1?.points) +
+                    Number(sportsSocio1.points)
                   }`}
                 {!hasSportsSocio &&
                   !hasMemberUniversity &&
@@ -1863,12 +2177,12 @@ const BodyContainer = styled.div`
   flex-direction: column;
   border: 5px solid black;
   border-radius: 15px;
-  margin: 120px auto;
+  margin: 120px 120px 120px 268px;
 `;
 
 const Container = styled.div`
   padding: 30px;
-  width: 95%;
+  width: 85%;
   align-items: center;
   justify-content: center;
   display: flex;

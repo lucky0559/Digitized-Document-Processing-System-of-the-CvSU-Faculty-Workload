@@ -207,8 +207,11 @@ export const SaveStrategicFunctionWorkload = async (
     strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationAsSportTrainorAcademic ||
+    strategicFunctionWorkload?.designationAsSportTrainorAcademic1 ||
     strategicFunctionWorkload?.designationAsMemberOfAdhoc ||
-    strategicFunctionWorkload?.academicAdvisees
+    strategicFunctionWorkload?.designationAsMemberOfAdhoc1 ||
+    strategicFunctionWorkload?.academicAdvisees ||
+    strategicFunctionWorkload?.academicAdvisees1
   ) {
     let approvedUniversityDesignationFile1;
     let approvedUniversityDesignationFile2;
@@ -224,10 +227,13 @@ export const SaveStrategicFunctionWorkload = async (
     let approvedDepartmentDesignationFile4;
 
     let sportsTrainorAcademicFile;
+    let sportsTrainorAcademicFile1;
 
     let memberAdhocFile;
+    let memberAdhocFile1;
 
     let academicAdviseesFile;
+    let academicAdviseesFile1;
 
     let numberOfUniversity = 0;
     let numberOfCollegeCampus = 0;
@@ -237,6 +243,8 @@ export const SaveStrategicFunctionWorkload = async (
     let academicAdviseesPoints = 0;
 
     strategicFunctionWorkload!.sfwPoints = 0;
+
+    console.log('hello')
 
     try {
       // UNIVERSITY
@@ -402,19 +410,26 @@ export const SaveStrategicFunctionWorkload = async (
 
       // SPORTS TRAINOR ACADEMIC
       if (
-        strategicFunctionWorkload?.designationAsSportTrainorAcademic?.length! >
+        (strategicFunctionWorkload?.designationAsSportTrainorAcademic?.length! >
           0 &&
-        strategicFunctionWorkload?.designationAsSportTrainorAcademicFile &&
-        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints &&
-        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints! > 0
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile &&
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints &&
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints! >
+            0) ||
+        (strategicFunctionWorkload?.designationAsSportTrainorAcademic1
+          ?.length! > 0 &&
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile1 &&
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1 &&
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1! >
+            0)
       ) {
         sportsTrainorAcademicFile = await strategicSportsTrainorS3.uploadFile(
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile!
         );
         strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath =
           sportsTrainorAcademicFile?.location;
         sportsTrainorPoints =
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints;
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints!;
       }
 
       // MEMBER OF ADHOC

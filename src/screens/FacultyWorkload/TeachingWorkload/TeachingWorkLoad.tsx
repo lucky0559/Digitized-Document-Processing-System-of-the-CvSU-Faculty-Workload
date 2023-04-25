@@ -165,7 +165,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             </InputsContainer>
             <ButtonContainer>
               <Label style={{ fontWeight: "bold" }}>
-                Total Teaching Workload = {points.toString()}
+                Total Teaching Workload = {points.toFixed(2).toString()}
               </Label>
               <FormButton
                 text="Submit"
