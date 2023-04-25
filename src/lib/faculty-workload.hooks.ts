@@ -244,8 +244,6 @@ export const SaveStrategicFunctionWorkload = async (
 
     strategicFunctionWorkload!.sfwPoints = 0;
 
-    console.log('hello')
-
     try {
       // UNIVERSITY
       if (
@@ -423,6 +421,7 @@ export const SaveStrategicFunctionWorkload = async (
           strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1! >
             0)
       ) {
+        console.log("sports");
         sportsTrainorAcademicFile = await strategicSportsTrainorS3.uploadFile(
           strategicFunctionWorkload?.designationAsSportTrainorAcademicFile!
         );
