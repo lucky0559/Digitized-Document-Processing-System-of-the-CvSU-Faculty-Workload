@@ -408,26 +408,37 @@ export const SaveStrategicFunctionWorkload = async (
 
       // SPORTS TRAINOR ACADEMIC
       if (
-        (strategicFunctionWorkload?.designationAsSportTrainorAcademic?.length! >
+        strategicFunctionWorkload?.designationAsSportTrainorAcademic?.length! >
           0 &&
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile &&
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints &&
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints! >
-            0) ||
-        (strategicFunctionWorkload?.designationAsSportTrainorAcademic1
-          ?.length! > 0 &&
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile1 &&
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1 &&
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1! >
-            0)
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicFile &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints > 0
       ) {
-        console.log("sports");
         sportsTrainorAcademicFile = await strategicSportsTrainorS3.uploadFile(
           strategicFunctionWorkload?.designationAsSportTrainorAcademicFile!
         );
         strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath =
           sportsTrainorAcademicFile?.location;
         sportsTrainorPoints =
+          sportsTrainorPoints +
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints!;
+      }
+
+      // SPORTS TRAINOR ACADEMIC1
+      if (
+        strategicFunctionWorkload?.designationAsSportTrainorAcademic1?.length! >
+          0 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicFile1 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1 > 0
+      ) {
+        sportsTrainorAcademicFile1 = await strategicSportsTrainorS3.uploadFile(
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile1!
+        );
+        strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath1 =
+          sportsTrainorAcademicFile1?.location;
+        sportsTrainorPoints =
+          sportsTrainorPoints +
           strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints!;
       }
 
@@ -444,7 +455,25 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.designationAsMemberOfAdhocFilePath =
           memberAdhocFile?.location;
         memberOfAdhocPoints =
+          memberOfAdhocPoints +
           strategicFunctionWorkload.designationAsMemberOfAdhocPoints;
+      }
+
+      // MEMBER OF ADHOC1
+      if (
+        strategicFunctionWorkload?.designationAsMemberOfAdhoc1?.length! > 0 &&
+        strategicFunctionWorkload?.designationAsMemberOfAdhocFile1 &&
+        strategicFunctionWorkload?.designationAsMemberOfAdhocPoints1 &&
+        strategicFunctionWorkload?.designationAsMemberOfAdhocPoints1! > 0
+      ) {
+        memberAdhocFile1 = await memberAdhocS3.uploadFile(
+          strategicFunctionWorkload?.designationAsMemberOfAdhocFile1
+        );
+        strategicFunctionWorkload.designationAsMemberOfAdhocFilePath1 =
+          memberAdhocFile1?.location;
+        memberOfAdhocPoints =
+          memberOfAdhocPoints +
+          strategicFunctionWorkload.designationAsMemberOfAdhocPoints1;
       }
 
       // ACADEMIC ADVISEES
@@ -460,7 +489,25 @@ export const SaveStrategicFunctionWorkload = async (
         strategicFunctionWorkload.academicAdviseesFilePath =
           academicAdviseesFile?.location;
         academicAdviseesPoints =
+          academicAdviseesPoints +
           strategicFunctionWorkload.academicAdviseesPoints;
+      }
+
+      // ACADEMIC ADVISEES1
+      if (
+        strategicFunctionWorkload?.academicAdvisees1?.length! > 0 &&
+        strategicFunctionWorkload?.academicAdviseesFile1 &&
+        strategicFunctionWorkload?.academicAdviseesPoints1 &&
+        strategicFunctionWorkload?.academicAdviseesPoints1! > 0
+      ) {
+        academicAdviseesFile1 = await listAdviseesS3.uploadFile(
+          strategicFunctionWorkload?.academicAdviseesFile1
+        );
+        strategicFunctionWorkload.academicAdviseesFilePath1 =
+          academicAdviseesFile1?.location;
+        academicAdviseesPoints =
+          academicAdviseesPoints +
+          strategicFunctionWorkload.academicAdviseesPoints1;
       }
 
       // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {
@@ -562,6 +609,7 @@ export const SaveStrategicFunctionWorkload = async (
         numberOfUniversity +
         numberOfCollegeCampus +
         numberOfDepartmentLevel +
+        sportsTrainorPoints +
         sportsTrainorPoints +
         memberOfAdhocPoints +
         academicAdviseesPoints;

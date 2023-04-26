@@ -1122,14 +1122,25 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
             departmentDesignation4?.file!
           ],
           designationAsSportTrainorAcademic: sportsSocio?.title,
+          designationAsSportTrainorAcademic1: sportsSocio1?.title,
           designationAsSportTrainorAcademicFile: sportsSocio?.file,
+          designationAsSportTrainorAcademicFile1: sportsSocio1?.file,
           designationAsSportTrainorAcademicPoints: Number(sportsSocio?.points),
+          designationAsSportTrainorAcademicPoints1: Number(
+            sportsSocio1?.points
+          ),
           designationAsMemberOfAdhoc: memberUniversity?.title,
+          designationAsMemberOfAdhoc1: memberUniversity1?.title,
           designationAsMemberOfAdhocFile: memberUniversity?.file,
+          designationAsMemberOfAdhocFile1: memberUniversity1?.file,
           designationAsMemberOfAdhocPoints: Number(memberUniversity?.points),
+          designationAsMemberOfAdhocPoints1: Number(memberUniversity1?.points),
           academicAdvisees: academicAdviser?.title,
+          academicAdvisees1: academicAdviser1?.title,
           academicAdviseesFile: academicAdviser?.file,
-          academicAdviseesPoints: Number(academicAdviser?.points)
+          academicAdviseesFile1: academicAdviser1?.file,
+          academicAdviseesPoints: Number(academicAdviser?.points),
+          academicAdviseesPoints1: Number(academicAdviser1?.points)
         });
       }
 
@@ -1188,7 +1199,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
       if (isSubmitting) {
         try {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-          // window.location.reload();
+          window.location.reload();
         } catch (e) {
           console.log(e);
         }
