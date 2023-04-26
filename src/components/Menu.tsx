@@ -128,7 +128,7 @@ const Container = styled.div<{ position: string | undefined }>`
   background-color: ${Colors.secondary};
   position: ${p => (p.position ? "relative" : "fixed")};
   top: 54px;
-  height: ${window.outerHeight}px;
+  height: 100%;
 `;
 
 const NavButtonContainer = styled.div`
