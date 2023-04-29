@@ -23,7 +23,7 @@ const ProfileTab = ({ isProfileOpen, UseLogout, isAdmin }: ProfileTabProps) => {
   return (
     <Container
       id="container"
-      style={{ visibility: "hidden" }}
+      // style={{ visibility: "hidden" }}
       isProfileOpen={isProfileOpen}
     >
       {!isAdmin && (
