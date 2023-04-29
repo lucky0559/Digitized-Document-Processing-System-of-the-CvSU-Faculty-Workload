@@ -102,37 +102,52 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   return (
     <Container>
-      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-      <Menu
-        isFacultySubmenuOpen={isFacultySubmenuOpen}
-        facultySubMenuHandler={() =>
-          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-        }
-      />
-      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
-      <BodyContainer>
-        <ScreenTitle title="Workload Review" />
-
-        <WorkloadsContainer>
-          {userRole === "Faculty" ? (
-            <RemarksWorkload
-              teachingWorkload={allTeachingWorkload}
-              researchWorkload={allResearchWorkload}
-              extensionWorkload={allExtensionWorkload}
-              allStrategicWorkload={allStrategicWorkload}
-              isDataLoading={isDataLoading}
-            />
-          ) : (
-            <Workload
-              teachingWorkload={allTeachingWorkload}
-              researchWorkload={allResearchWorkload}
-              extensionWorkload={allExtensionWorkload}
-              allStrategicWorkload={allStrategicWorkload}
-              isDataLoading={isDataLoading}
-            />
-          )}
-        </WorkloadsContainer>
-      </BodyContainer>
+      <div>
+        <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+        <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
+      </div>
+      <div style={{ flexDirection: "row", marginTop: 54, display: "flex" }}>
+        {/* <div style={{ backgroundColor: "red" }}>
+          <Menu
+            isFacultySubmenuOpen={isFacultySubmenuOpen}
+            facultySubMenuHandler={() =>
+              setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+            }
+          />
+        </div> */}
+        <div style={{ width: 248 }}>
+          <Menu
+            isFacultySubmenuOpen={isFacultySubmenuOpen}
+            facultySubMenuHandler={() =>
+              setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+            }
+          />
+        </div>
+        <BodyContainer>
+          <ScreenTitleContainer>
+            <ScreenTitle title="Workload Review" />
+          </ScreenTitleContainer>
+          <WorkloadsContainer>
+            {userRole === "Faculty" ? (
+              <RemarksWorkload
+                teachingWorkload={allTeachingWorkload}
+                researchWorkload={allResearchWorkload}
+                extensionWorkload={allExtensionWorkload}
+                allStrategicWorkload={allStrategicWorkload}
+                isDataLoading={isDataLoading}
+              />
+            ) : (
+              <Workload
+                teachingWorkload={allTeachingWorkload}
+                researchWorkload={allResearchWorkload}
+                extensionWorkload={allExtensionWorkload}
+                allStrategicWorkload={allStrategicWorkload}
+                isDataLoading={isDataLoading}
+              />
+            )}
+          </WorkloadsContainer>
+        </BodyContainer>
+      </div>
       <FooterContainer>
         <Footer />
       </FooterContainer>
@@ -147,11 +162,12 @@ const Container = styled.div`
 `;
 
 const BodyContainer = styled.div`
-  padding: 30px;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  flex: 1;
 `;
 
 const FooterContainer = styled.div`
@@ -162,7 +178,14 @@ const FooterContainer = styled.div`
 `;
 
 const WorkloadsContainer = styled.div`
-  margin-right: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ScreenTitleContainer = styled.div`
+  align-self: start;
 `;
 
 export default WorkloadReviewScreen;

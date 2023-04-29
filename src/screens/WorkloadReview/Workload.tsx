@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import { User } from "../../types/User";
+import { GetUser } from "../../lib/user.hooks";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -18,46 +19,70 @@ function Workload({
   allStrategicWorkload,
   isDataLoading
 }: WorkloadProps) {
+  const userId = localStorage.getItem("userId");
+
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    (async () => {
+      setUser(await GetUser(userId!));
+    })();
+  }, []);
+
   return (
     <Container>
-      <Table>
-        <tr>
-          <ThStyle>List of Faculty</ThStyle>
-          <ThStyle>Academic Rank</ThStyle>
-          {/* <ThStyle>Workload Type</ThStyle>
-          <ThStyle>Approved/Disapproved with Remarks</ThStyle> */}
-        </tr>
-        {isDataLoading && (
-          <div
-            style={{
-              position: "absolute",
-              marginLeft: "27%",
-              marginTop: "10%"
-            }}
-          >
-            <LoadingSpinner color={Colors.primary} />
-          </div>
-        )}
+      {isDataLoading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      )}
 
-        {!isDataLoading &&
-          teachingWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <Button>
-                    <ButtonText>Review</ButtonText>
-                  </Button>
-                </TdStyle>
-                <TdStyle>
-                  <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                </TdStyle>
-                {/* <TdStyle>
+      {(teachingWorkload?.length! > 0 ||
+        researchWorkload?.length! > 0 ||
+        extensionWorkload?.length! > 0 ||
+        allStrategicWorkload?.length! > 0) &&
+        !isDataLoading && (
+          <Table>
+            <TableCaption>
+              {user?.role === "Department Chairperson"
+                ? user.department
+                : user?.role === "OVPAA"
+                ? ""
+                : user?.campus}
+            </TableCaption>
+            <tr>
+              <ThStyle>List of Faculty</ThStyle>
+              <ThStyle>Academic Rank</ThStyle>
+              {/* <ThStyle>Workload Type</ThStyle>
+          <ThStyle>Approved/Disapproved with Remarks</ThStyle> */}
+            </tr>
+
+            {!isDataLoading &&
+              teachingWorkload?.map((item, index) => {
+                return (
+                  <tr>
+                    <TdStyle>
+                      <TdText key={index}>{item.firstName}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText key={index}>{item.academicRank}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <Button>
+                        <ButtonText>Review</ButtonText>
+                      </Button>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                    </TdStyle>
+                    {/* <TdStyle>
                   <TdText key={index}>Teaching Workload</TdText>
                 </TdStyle>
                 <TdStyle>
@@ -67,28 +92,28 @@ function Workload({
                     workloadType="Teaching Workload"
                   />
                 </TdStyle> */}
-              </tr>
-            );
-          })}
-        {!isDataLoading &&
-          researchWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <Button>
-                    <ButtonText>Review</ButtonText>
-                  </Button>
-                </TdStyle>
-                <TdStyle>
-                  <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                </TdStyle>
-                {/* <TdStyle>
+                  </tr>
+                );
+              })}
+            {!isDataLoading &&
+              researchWorkload?.map((item, index) => {
+                return (
+                  <tr>
+                    <TdStyle>
+                      <TdText key={index}>{item.firstName}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText key={index}>{item.academicRank}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <Button>
+                        <ButtonText>Review</ButtonText>
+                      </Button>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                    </TdStyle>
+                    {/* <TdStyle>
                   <TdText key={index}>Research Workload</TdText>
                 </TdStyle>
                 <TdStyle>
@@ -100,28 +125,28 @@ function Workload({
                     workloadId={item.workloadId}
                   />
                 </TdStyle> */}
-              </tr>
-            );
-          })}
-        {!isDataLoading &&
-          extensionWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <Button>
-                    <ButtonText>Review</ButtonText>
-                  </Button>
-                </TdStyle>
-                <TdStyle>
-                  <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                </TdStyle>
-                {/* <TdStyle>
+                  </tr>
+                );
+              })}
+            {!isDataLoading &&
+              extensionWorkload?.map((item, index) => {
+                return (
+                  <tr>
+                    <TdStyle>
+                      <TdText key={index}>{item.firstName}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText key={index}>{item.academicRank}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <Button>
+                        <ButtonText>Review</ButtonText>
+                      </Button>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                    </TdStyle>
+                    {/* <TdStyle>
                   <TdText key={index}>Extension Workload</TdText>
                 </TdStyle>
                 <TdStyle>
@@ -133,28 +158,28 @@ function Workload({
                     workloadId={item.workloadId}
                   />
                 </TdStyle> */}
-              </tr>
-            );
-          })}
-        {!isDataLoading &&
-          allStrategicWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <Button>
-                    <ButtonText>Review</ButtonText>
-                  </Button>
-                </TdStyle>
-                <TdStyle>
-                  <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                </TdStyle>
-                {/* <TdStyle>
+                  </tr>
+                );
+              })}
+            {!isDataLoading &&
+              allStrategicWorkload?.map((item, index) => {
+                return (
+                  <tr>
+                    <TdStyle>
+                      <TdText key={index}>{item.firstName}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText key={index}>{item.academicRank}</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <Button>
+                        <ButtonText>Review</ButtonText>
+                      </Button>
+                    </TdStyle>
+                    <TdStyle>
+                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                    </TdStyle>
+                    {/* <TdStyle>
                   <TdText key={index}>Strategic Function Workload</TdText>
                 </TdStyle>
                 <TdStyle>
@@ -179,23 +204,30 @@ function Workload({
                     workloadId={item.workloadId}
                   />
                 </TdStyle> */}
-              </tr>
-            );
-          })}
-      </Table>
+                  </tr>
+                );
+              })}
+          </Table>
+        )}
     </Container>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 90%;
+`;
 
 const Table = styled.table`
-  margin-left: 22%;
   width: 100%;
+  border: 2px solid black;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 20px 0;
 `;
 
 const TdText = styled.text`
-  // align-text: center;
+  font-family: HurmeGeometricSans3;
 `;
 
 const TdStyle = styled.td`
@@ -205,6 +237,7 @@ const TdStyle = styled.td`
 
 const ThStyle = styled.th`
   padding: 15px;
+  font-family: HurmeGeometricSans3;
 `;
 
 const Button = styled.div`
@@ -230,6 +263,12 @@ const ButtonText = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const TableCaption = styled.caption`
+  font-size: 20px;
+  font-weight: bold;
+  font-family: HurmeGeometricSans3;
 `;
 
 export default Workload;
