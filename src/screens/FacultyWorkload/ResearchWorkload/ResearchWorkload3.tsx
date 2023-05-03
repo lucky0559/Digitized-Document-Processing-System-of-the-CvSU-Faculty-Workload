@@ -129,40 +129,40 @@ const ResearchWorkload3 = ({
             In-House Review/Conferences
           </AddStudyText>
         </AddStudyContainer> */}
-        <div style={{ marginTop: 50 }}>
-          <Label style={{ fontWeight: "bold" }}>
-            Total Research Workload ={" "}
-            {(
-              points +
-              study1Points +
-              study2Points +
-              study3Points +
-              study4Points +
-              fundGeneratedPoints
-            ).toString()}
-          </Label>
-        </div>
-        <Buttons>
-          <ButtonContainer>
-            <FormButton text="Back" onClicked={backHandler}></FormButton>
-          </ButtonContainer>
-          <ButtonContainer
-            style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
-          >
-            <FormButton
-              text="Submit"
-              onClicked={researchWorkLoadHandler3}
-              isSubmitting={isSubmitting}
-              disabled={
-                study1?.length! <= 0 ||
-                study1 === undefined ||
-                study1FileName?.length! <= 0 ||
-                study1FileName === undefined
-              }
-            ></FormButton>
-          </ButtonContainer>
-        </Buttons>
       </SubContainer>
+      <TotalPointsContainer>
+        <Label style={{ fontWeight: "bold" }}>
+          Total Research Workload ={" "}
+          {(
+            points +
+            study1Points +
+            study2Points +
+            study3Points +
+            study4Points +
+            fundGeneratedPoints
+          ).toString()}
+        </Label>
+      </TotalPointsContainer>
+      <Buttons>
+        <ButtonContainer>
+          <FormButton text="Back" onClicked={backHandler}></FormButton>
+        </ButtonContainer>
+        <ButtonContainer
+          style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
+        >
+          <FormButton
+            text="Submit"
+            onClicked={researchWorkLoadHandler3}
+            isSubmitting={isSubmitting}
+            disabled={
+              study1?.length! <= 0 ||
+              study1 === undefined ||
+              study1FileName?.length! <= 0 ||
+              study1FileName === undefined
+            }
+          ></FormButton>
+        </ButtonContainer>
+      </Buttons>
     </Container>
   );
 };
@@ -197,6 +197,12 @@ const Label = styled.label`
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
+`;
+
+const TotalPointsContainer = styled.div`
+  margin-top: 50px;
+  width: 100%;
+  padding-left: 40px;
 `;
 
 // const AddStudyContainer = styled.div`
