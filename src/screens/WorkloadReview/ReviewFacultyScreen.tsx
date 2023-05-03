@@ -1,11 +1,19 @@
 import React from "react";
 
 type ReviewFacultyScreenProps = {
-  UseLogout: () => void;
+  userEmail?: string;
+  onCloseReviewScreen: () => void;
 };
 
-const ReviewFacultyScreen = ({ UseLogout }: ReviewFacultyScreenProps) => {
-  return <div>ReviewFacultyScreen</div>;
+const ReviewFacultyScreen = ({
+  userEmail,
+  onCloseReviewScreen
+}: ReviewFacultyScreenProps) => {
+  return (
+    <div>
+      <p onClick={onCloseReviewScreen}>{userEmail}</p>
+    </div>
+  );
 };
 
 export default ReviewFacultyScreen;

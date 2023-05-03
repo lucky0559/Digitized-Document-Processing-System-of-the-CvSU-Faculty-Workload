@@ -143,18 +143,6 @@ function App() {
           }
         />
         <Route
-          path="/review-faculty"
-          element={
-            <Protected
-              isSignedIn={
-                (!!user && !!(userId && userRole)) || hasAccessInWorkloadReview
-              }
-            >
-              <ReviewFacultyScreen UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route
           path="/reports"
           element={
             <Protected

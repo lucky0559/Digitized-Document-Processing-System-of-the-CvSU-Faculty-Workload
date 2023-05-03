@@ -4,6 +4,9 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import { User } from "../../types/User";
 import { GetUser } from "../../lib/user.hooks";
+import { useNavigate } from "react-router-dom";
+import ReviewFacultyScreen from "./ReviewFacultyScreen";
+import WorkloadReviewScreen from "./WorkloadReviewScreen";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -25,6 +28,10 @@ function Workload({
 
   const [users, setUsers] = useState<User[]>();
 
+  const [isReviewing, setIsReviewing] = useState(false);
+
+  const [selectedUserEmail, setSelectedUserEmail] = useState<string>();
+
   useEffect(() => {
     (async () => {
       setUser(await GetUser(userId!));
@@ -41,9 +48,19 @@ function Workload({
     })();
   }, []);
 
+  const onCloseReviewScreen = () => {
+    setIsReviewing(false);
+  };
+
   return (
     <Container>
-      {isDataLoading && (
+      {isReviewing && (
+        <ReviewFacultyScreen
+          userEmail={selectedUserEmail}
+          onCloseReviewScreen={onCloseReviewScreen}
+        />
+      )}
+      {isDataLoading && !isReviewing && (
         <div
           style={{
             display: "flex",
@@ -60,7 +77,8 @@ function Workload({
         researchWorkload?.length! > 0 ||
         extensionWorkload?.length! > 0 ||
         allStrategicWorkload?.length! > 0) &&
-        !isDataLoading && (
+        !isDataLoading &&
+        !isReviewing && (
           <Table>
             <TableCaption>
               {user?.role === "Department Chairperson"
@@ -69,44 +87,51 @@ function Workload({
                 ? ""
                 : user?.campus}
             </TableCaption>
-            <tr>
-              <ThStyle>List of Faculty</ThStyle>
-              <ThStyle>Academic Rank</ThStyle>
-              {/* <ThStyle>Workload Type</ThStyle>
-          <ThStyle>Approved/Disapproved with Remarks</ThStyle> */}
-            </tr>
+            <tbody>
+              <tr>
+                <ThStyle>List of Faculty</ThStyle>
+                <ThStyle>Academic Rank</ThStyle>
+                {/* <ThStyle>Workload Type</ThStyle>
+            <ThStyle>Approved/Disapproved with Remarks</ThStyle> */}
+              </tr>
 
-            {!isDataLoading &&
-              users?.map((item, index) => {
-                return (
-                  <tr>
-                    <TdStyle>
-                      <TdText key={index}>{item.firstName}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText key={index}>{item.academicRank}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <Button>
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                    </TdStyle>
-                    {/* <TdStyle>
-                  <TdText key={index}>Teaching Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    twlFilePath={item.twlFilePath}
-                    workloadId={item.workloadId}
-                    workloadType="Teaching Workload"
-                  />
-                </TdStyle> */}
-                  </tr>
-                );
-              })}
+              {!isDataLoading &&
+                users?.map((item, index) => {
+                  return (
+                    <tr>
+                      <TdStyle>
+                        <TdText key={index}>{item.firstName}</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <TdText key={index}>{item.academicRank}</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <Button
+                          onClick={() => {
+                            setSelectedUserEmail(item.email);
+                            setIsReviewing(true);
+                          }}
+                        >
+                          <ButtonText>Review</ButtonText>
+                        </Button>
+                      </TdStyle>
+                      <TdStyle>
+                        <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                      </TdStyle>
+                      {/* <TdStyle>
+                    <TdText key={index}>Teaching Workload</TdText>
+                  </TdStyle>
+                  <TdStyle>
+                    <CheckboxWorkload
+                      twlFilePath={item.twlFilePath}
+                      workloadId={item.workloadId}
+                      workloadType="Teaching Workload"
+                    />
+                  </TdStyle> */}
+                    </tr>
+                  );
+                })}
+            </tbody>
           </Table>
         )}
     </Container>
