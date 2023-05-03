@@ -23,9 +23,21 @@ function Workload({
 
   const [user, setUser] = useState<User>();
 
+  const [users, setUsers] = useState<User[]>();
+
   useEffect(() => {
     (async () => {
       setUser(await GetUser(userId!));
+      const data1 = Array.prototype.concat(teachingWorkload, researchWorkload);
+      const data2 = Array.prototype.concat(
+        extensionWorkload,
+        allStrategicWorkload
+      );
+      const mergeData = Array.prototype.concat(data1, data2);
+      const reduceData = [
+        ...new Map(mergeData?.map(v => [v.email, v])).values()
+      ];
+      setUsers(reduceData);
     })();
   }, []);
 
@@ -65,7 +77,7 @@ function Workload({
             </tr>
 
             {!isDataLoading &&
-              teachingWorkload?.map((item, index) => {
+              users?.map((item, index) => {
                 return (
                   <tr>
                     <TdStyle>
@@ -90,118 +102,6 @@ function Workload({
                     twlFilePath={item.twlFilePath}
                     workloadId={item.workloadId}
                     workloadType="Teaching Workload"
-                  />
-                </TdStyle> */}
-                  </tr>
-                );
-              })}
-            {!isDataLoading &&
-              researchWorkload?.map((item, index) => {
-                return (
-                  <tr>
-                    <TdStyle>
-                      <TdText key={index}>{item.firstName}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText key={index}>{item.academicRank}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <Button>
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                    </TdStyle>
-                    {/* <TdStyle>
-                  <TdText key={index}>Research Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    rwlFilePath={item.rwlFilePath}
-                    rwlFilePath1={item.rwlFilePath1}
-                    rwlFilePath2={item.rwlFilePath2}
-                    workloadType="Research Workload"
-                    workloadId={item.workloadId}
-                  />
-                </TdStyle> */}
-                  </tr>
-                );
-              })}
-            {!isDataLoading &&
-              extensionWorkload?.map((item, index) => {
-                return (
-                  <tr>
-                    <TdStyle>
-                      <TdText key={index}>{item.firstName}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText key={index}>{item.academicRank}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <Button>
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                    </TdStyle>
-                    {/* <TdStyle>
-                  <TdText key={index}>Extension Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    extensionActivityFilePath={item.extensionActivityFilePath}
-                    certificateFilePath={item.certificateFilePath}
-                    summaryOfHoursFilePath={item.summaryOfHoursFilePath}
-                    workloadType="Extension Workload"
-                    workloadId={item.workloadId}
-                  />
-                </TdStyle> */}
-                  </tr>
-                );
-              })}
-            {!isDataLoading &&
-              allStrategicWorkload?.map((item, index) => {
-                return (
-                  <tr>
-                    <TdStyle>
-                      <TdText key={index}>{item.firstName}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText key={index}>{item.academicRank}</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <Button>
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </TdStyle>
-                    <TdStyle>
-                      <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                    </TdStyle>
-                    {/* <TdStyle>
-                  <TdText key={index}>Strategic Function Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    approvedUniversityDesignationFilePath={
-                      item.approvedUniversityDesignationFilePath
-                    }
-                    approvedCollegeCampusDesignationFilePath={
-                      item.approvedCollegeCampusDesignationFilePath
-                    }
-                    approvedDepartmentDesignationFilePath={
-                      item.approvedDepartmentDesignationFilePath
-                    }
-                    coachAdviserCertificateFilePath={
-                      item.coachAdviserCertificateFilePath
-                    }
-                    approvedDesignationFilePath={
-                      item.approvedDesignationFilePath
-                    }
-                    listOfAdviseesFilePath={item.listOfAdviseesFilePath}
-                    workloadType="Strategic Function Workload"
-                    workloadId={item.workloadId}
                   />
                 </TdStyle> */}
                   </tr>

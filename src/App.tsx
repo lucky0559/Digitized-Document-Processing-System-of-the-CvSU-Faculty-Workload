@@ -13,6 +13,7 @@ import UnauthorizedPage from "./screens/Unauthorized";
 import VerifyScreen from "./screens/Verify/VerifyScreen";
 import WorkloadReviewScreen from "./screens/WorkloadReview/WorkloadReviewScreen";
 import { User } from "./types/User";
+import ReviewFacultyScreen from "./screens/WorkloadReview/ReviewFacultyScreen";
 
 function App() {
   const userRole = localStorage.getItem("role");
@@ -138,6 +139,18 @@ function App() {
               }
             >
               <WorkloadReviewScreen UseLogout={UseLogout} />
+            </Protected>
+          }
+        />
+        <Route
+          path="/review-faculty"
+          element={
+            <Protected
+              isSignedIn={
+                (!!user && !!(userId && userRole)) || hasAccessInWorkloadReview
+              }
+            >
+              <ReviewFacultyScreen UseLogout={UseLogout} />
             </Protected>
           }
         />
