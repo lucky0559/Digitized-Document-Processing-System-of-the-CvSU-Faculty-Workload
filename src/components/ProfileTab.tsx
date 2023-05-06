@@ -16,9 +16,9 @@ const ProfileTab = ({ isProfileOpen, UseLogout, isAdmin }: ProfileTabProps) => {
     UseLogout();
   };
 
-  window.setTimeout(() => {
-    document.getElementById("container")!.style.visibility = "visible";
-  }, 5000);
+  // window.setTimeout(() => {
+  //   document.getElementById("container")!.style.visibility = "visible";
+  // }, 5000);
 
   return (
     <Container

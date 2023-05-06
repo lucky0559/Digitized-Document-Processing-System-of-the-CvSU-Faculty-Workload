@@ -7,6 +7,8 @@ import { GetUser } from "../../lib/user.hooks";
 import { useNavigate } from "react-router-dom";
 import ReviewFacultyScreen from "./ReviewFacultyScreen";
 import WorkloadReviewScreen from "./WorkloadReviewScreen";
+import _ from "lodash";
+import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -41,9 +43,7 @@ function Workload({
         allStrategicWorkload
       );
       const mergeData = Array.prototype.concat(data1, data2);
-      const reduceData = [
-        ...new Map(mergeData?.map(v => [v.email, v])).values()
-      ];
+      const reduceData = _.uniqBy(mergeData, "email");
       setUsers(reduceData);
     })();
   }, []);
@@ -56,7 +56,7 @@ function Workload({
     <Container>
       {isReviewing && (
         <ReviewFacultyScreen
-          userEmail={selectedUserEmail}
+          userEmail={selectedUserEmail!}
           onCloseReviewScreen={onCloseReviewScreen}
         />
       )}
@@ -78,7 +78,8 @@ function Workload({
         extensionWorkload?.length! > 0 ||
         allStrategicWorkload?.length! > 0) &&
         !isDataLoading &&
-        !isReviewing && (
+        !isReviewing &&
+        users && (
           <Table>
             <TableCaption>
               {user?.role === "Department Chairperson"
@@ -96,14 +97,15 @@ function Workload({
               </tr>
 
               {!isDataLoading &&
+                users &&
                 users?.map((item, index) => {
                   return (
                     <tr>
                       <TdStyle>
-                        <TdText key={index}>{item.firstName}</TdText>
+                        <TdText>{item?.firstName}</TdText>
                       </TdStyle>
                       <TdStyle>
-                        <TdText key={index}>{item.academicRank}</TdText>
+                        <TdText>{item?.academicRank}</TdText>
                       </TdStyle>
                       <TdStyle>
                         <Button

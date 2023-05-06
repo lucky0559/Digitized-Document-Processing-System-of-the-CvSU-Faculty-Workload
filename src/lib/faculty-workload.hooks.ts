@@ -834,3 +834,28 @@ export const GetTotalWorkloadPoints = async () => {
 
   return { data };
 };
+
+export const GetAllUserPendingWorkloads = async (email: string) => {
+  const { data: teachingWorkloads } = await axios.get(
+    `teaching-workload/${email}/all-pending-workloads`
+  );
+
+  const { data: extensionWorkloads } = await axios.get(
+    `extension-workload/${email}/all-pending-workloads`
+  );
+
+  const { data: researchWorkloads } = await axios.get(
+    `research-workload/${email}/all-pending-workloads`
+  );
+
+  const { data: strategicFunctionWorkloads } = await axios.get(
+    `strategic-function-workload/${email}/all-pending-workloads`
+  );
+
+  return {
+    teachingWorkloads,
+    extensionWorkloads,
+    researchWorkloads,
+    strategicFunctionWorkloads
+  };
+};
