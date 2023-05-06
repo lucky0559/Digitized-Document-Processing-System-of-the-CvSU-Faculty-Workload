@@ -54,20 +54,6 @@ const ReviewFacultyScreen = ({
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(
-      allTeachingWorkloads,
-      allExtensionWorkloads,
-      allResearchWorkloads,
-      allStrategicFunctionWorkloads
-    );
-  }, [
-    allTeachingWorkloads,
-    allExtensionWorkloads,
-    allResearchWorkloads,
-    allStrategicFunctionWorkloads
-  ]);
-
   return (
     <>
       {!allTeachingWorkloads &&
@@ -130,7 +116,11 @@ const ReviewFacultyScreen = ({
                 <BoldText>TOTAL:</BoldText>
               </ColumnContainer>
               <ColumnContainer>
-                <BoldText>no points should fix</BoldText>
+                <BoldText>
+                  {Number(
+                    allTeachingWorkloads?.[0].totalTeachingWorkload
+                  ).toFixed(2)}
+                </BoldText>
               </ColumnContainer>
             </div>
           </WorkloadDetailContainer>

@@ -99,39 +99,45 @@ function Workload({
               {!isDataLoading &&
                 users &&
                 users?.map((item, index) => {
+                  // if (!item) {
+                  //   return null;
+                  // } else {
                   return (
-                    <tr>
-                      <TdStyle>
-                        <TdText>{item?.firstName}</TdText>
-                      </TdStyle>
-                      <TdStyle>
-                        <TdText>{item?.academicRank}</TdText>
-                      </TdStyle>
-                      <TdStyle>
-                        <Button
-                          onClick={() => {
-                            setSelectedUserEmail(item.email);
-                            setIsReviewing(true);
-                          }}
-                        >
-                          <ButtonText>Review</ButtonText>
-                        </Button>
-                      </TdStyle>
-                      <TdStyle>
-                        <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                      </TdStyle>
-                      {/* <TdStyle>
-                    <TdText key={index}>Teaching Workload</TdText>
-                  </TdStyle>
-                  <TdStyle>
-                    <CheckboxWorkload
-                      twlFilePath={item.twlFilePath}
-                      workloadId={item.workloadId}
-                      workloadType="Teaching Workload"
-                    />
-                  </TdStyle> */}
-                    </tr>
+                    item && (
+                      <tr key={index}>
+                        <TdStyle>
+                          <TdText>{item.firstName}</TdText>
+                        </TdStyle>
+                        <TdStyle>
+                          <TdText>{item.academicRank}</TdText>
+                        </TdStyle>
+                        <TdStyle>
+                          <Button
+                            onClick={() => {
+                              setSelectedUserEmail(item.email);
+                              setIsReviewing(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </TdStyle>
+                        <TdStyle>
+                          <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                        </TdStyle>
+                        {/* <TdStyle>
+                      <TdText key={index}>Teaching Workload</TdText>
+                    </TdStyle>
+                    <TdStyle>
+                      <CheckboxWorkload
+                        twlFilePath={item.twlFilePath}
+                        workloadId={item.workloadId}
+                        workloadType="Teaching Workload"
+                      />
+                    </TdStyle> */}
+                      </tr>
+                    )
                   );
+                  // }
                 })}
             </tbody>
           </Table>

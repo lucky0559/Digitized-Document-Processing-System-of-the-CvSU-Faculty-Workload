@@ -26,6 +26,8 @@ import {
 import { User } from "../../types/User";
 import RemarksWorkload from "./RemarksWorkload";
 import Workload from "./Workload";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import Colors from "../../constants/Colors";
 
 type WorkloadReviewScreenProps = {
   UseLogout: () => void;
@@ -128,22 +130,35 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
             <ScreenTitle title="Workload Review" />
           </ScreenTitleContainer>
           <WorkloadsContainer>
-            {userRole === "Faculty" ? (
-              <RemarksWorkload
-                teachingWorkload={allTeachingWorkload}
-                researchWorkload={allResearchWorkload}
-                extensionWorkload={allExtensionWorkload}
-                allStrategicWorkload={allStrategicWorkload}
-                isDataLoading={isDataLoading}
-              />
+            {!isDataLoading ? (
+              userRole === "Faculty" ? (
+                <RemarksWorkload
+                  teachingWorkload={allTeachingWorkload}
+                  researchWorkload={allResearchWorkload}
+                  extensionWorkload={allExtensionWorkload}
+                  allStrategicWorkload={allStrategicWorkload}
+                  isDataLoading={isDataLoading}
+                />
+              ) : (
+                <Workload
+                  teachingWorkload={allTeachingWorkload}
+                  researchWorkload={allResearchWorkload}
+                  extensionWorkload={allExtensionWorkload}
+                  allStrategicWorkload={allStrategicWorkload}
+                  isDataLoading={isDataLoading}
+                />
+              )
             ) : (
-              <Workload
-                teachingWorkload={allTeachingWorkload}
-                researchWorkload={allResearchWorkload}
-                extensionWorkload={allExtensionWorkload}
-                allStrategicWorkload={allStrategicWorkload}
-                isDataLoading={isDataLoading}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: 30
+                }}
+              >
+                <LoadingSpinner color={Colors.primary} />
+              </div>
             )}
           </WorkloadsContainer>
         </BodyContainer>
