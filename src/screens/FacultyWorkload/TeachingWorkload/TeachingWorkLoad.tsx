@@ -163,24 +163,24 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
                 </UploadFileButtonContainer>
               </UploadFileContainer>
             </InputsContainer>
-            <ButtonContainer>
-              <Label style={{ fontWeight: "bold" }}>
-                Total Teaching Workload = {points.toFixed(2).toString()}
-              </Label>
-              <FormButton
-                text="Submit"
-                onClicked={onSubmit}
-                isSubmitting={isSubmitting}
-                disabled={
-                  numberOfPreparations.length <= 0 ||
-                  contactHours.length <= 0 ||
-                  totalNoOfStudents.length <= 0 ||
-                  twlFile?.name.length! <= 0 ||
-                  twlFile?.name === undefined
-                }
-              ></FormButton>
-            </ButtonContainer>
           </SubContainer>
+          <ButtonContainer>
+            <Label style={{ fontWeight: "bold" }}>
+              Total Teaching Workload = {points.toFixed(2).toString()}
+            </Label>
+            <FormButton
+              text="Submit"
+              onClicked={onSubmit}
+              isSubmitting={isSubmitting}
+              disabled={
+                numberOfPreparations.length <= 0 ||
+                contactHours.length <= 0 ||
+                totalNoOfStudents.length <= 0 ||
+                twlFile?.name.length! <= 0 ||
+                twlFile?.name === undefined
+              }
+            ></FormButton>
+          </ButtonContainer>
         </Container>
       </BodyContainer>
       <FooterContainer>
@@ -275,6 +275,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 20px 20px 0px 0px;
+  width: 100%;
 `;
 
 const UploadFileButtonContainer = styled.div`

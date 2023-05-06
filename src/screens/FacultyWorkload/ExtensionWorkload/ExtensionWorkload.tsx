@@ -280,7 +280,10 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                 />
               </UploadFileContainer>
             </UploadContainer>
-            <div style={{ marginTop: 50 }}>
+          </SubContainer>
+
+          <ButtonContainer>
+            <div>
               <Label style={{ fontWeight: "bold" }}>
                 Total Extension Workload ={" "}
                 {(
@@ -295,22 +298,20 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                 ).toString()}
               </Label>
             </div>
-            <ButtonContainer>
-              <FormButton
-                text="Submit"
-                onClicked={extensionWorkloadHandler}
-                isSubmitting={isSubmitting}
-                disabled={
-                  !designationExtensionActivity &&
-                  !extensionActivityFile?.name &&
-                  !resourcePerson &&
-                  !certificateFile &&
-                  !totalNumberHours &&
-                  !summaryOfHoursFile?.name
-                }
-              ></FormButton>
-            </ButtonContainer>
-          </SubContainer>
+            <FormButton
+              text="Submit"
+              onClicked={extensionWorkloadHandler}
+              isSubmitting={isSubmitting}
+              disabled={
+                !designationExtensionActivity &&
+                !extensionActivityFile?.name &&
+                !resourcePerson &&
+                !certificateFile &&
+                !totalNumberHours &&
+                !summaryOfHoursFile?.name
+              }
+            ></FormButton>
+          </ButtonContainer>
         </Container>
       </BodyContainer>
       <FooterContainer>
@@ -391,8 +392,10 @@ const UploadTextDescription = styled.label`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
-  margin: 100px 20px 0px 0px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 20px 0px 0px;
+  width: 100%;
 `;
 
 const UploadFileContainer = styled.div`
