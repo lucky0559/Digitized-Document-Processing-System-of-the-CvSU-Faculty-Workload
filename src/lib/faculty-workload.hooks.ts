@@ -859,3 +859,31 @@ export const GetAllUserPendingWorkloads = async (email: string) => {
     strategicFunctionWorkloads
   };
 };
+
+export const getAllPendingWorkloadByIdAndCurrentProcessRole = async (
+  userId: string,
+  currentProcessRole: string
+) => {
+  const { data: teachingWorkloads } = await axios.get(
+    `teaching-workload/${userId}/${currentProcessRole}/all-pending-by-process-role`
+  );
+
+  const { data: researchWorkloads } = await axios.get(
+    `research-workload/${userId}/${currentProcessRole}/all-pending-by-process-role`
+  );
+
+  const { data: extensionWorkloads } = await axios.get(
+    `extension-workload/${userId}/${currentProcessRole}/all-pending-by-process-role`
+  );
+
+  const { data: strategicFunctionWorkloads } = await axios.get(
+    `strategic-function-workload/${userId}/${currentProcessRole}/all-pending-by-process-role`
+  );
+
+  return {
+    teachingWorkloads,
+    researchWorkloads,
+    extensionWorkloads,
+    strategicFunctionWorkloads
+  };
+};

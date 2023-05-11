@@ -6,6 +6,12 @@ export enum ErrorMessages {
   INVALID_USERNAME = "Username already taken"
 }
 
+export enum RoleType {
+  DEPARTMENT_CHAIRPERSON = "Department Chairperson",
+  DEAN = "Dean",
+  OVPAA = "OVPAA"
+}
+
 export const DROPDOWN_LISTS = {
   CAMPUS: [
     "-----",

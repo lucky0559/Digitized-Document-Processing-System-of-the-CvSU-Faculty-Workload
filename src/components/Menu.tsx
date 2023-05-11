@@ -76,7 +76,7 @@ const Menu = ({
                 navigate("/strategic-function-workload", { replace: true })
               }
             >
-              Strategic Function Workload
+              Strategic Function
             </SubMenuText>
           </SubMenuContainer>
         </>

@@ -28,6 +28,8 @@ import RemarksWorkload from "./RemarksWorkload";
 import Workload from "./Workload";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
+import ReviewFacultyScreen from "./ReviewFacultyScreen";
+import { GetUser } from "../../lib/user.hooks";
 
 type WorkloadReviewScreenProps = {
   UseLogout: () => void;
@@ -46,12 +48,16 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
 
+  const [user, setUser] = useState<User>();
+
   const userRole = localStorage.getItem("role");
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     setIsDataLoading(true);
     (async () => {
+      const userData = await GetUser(userId!);
+      setUser(userData);
       if (userRole === "Department Chairperson") {
         const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
         setAllTeachingWorkload(teachingWorkloads.data);
@@ -132,13 +138,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
           <WorkloadsContainer>
             {!isDataLoading ? (
               userRole === "Faculty" ? (
-                <RemarksWorkload
-                  teachingWorkload={allTeachingWorkload}
-                  researchWorkload={allResearchWorkload}
-                  extensionWorkload={allExtensionWorkload}
-                  allStrategicWorkload={allStrategicWorkload}
-                  isDataLoading={isDataLoading}
-                />
+                <ReviewFacultyScreen userEmail={user?.email} />
               ) : (
                 <Workload
                   teachingWorkload={allTeachingWorkload}

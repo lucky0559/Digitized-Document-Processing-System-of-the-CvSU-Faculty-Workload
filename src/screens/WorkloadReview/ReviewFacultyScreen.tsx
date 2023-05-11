@@ -13,14 +13,10 @@ import FormButton from "../../components/FormButton";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 type ReviewFacultyScreenProps = {
-  userEmail: string;
-  onCloseReviewScreen: () => void;
+  userEmail?: string;
 };
 
-const ReviewFacultyScreen = ({
-  userEmail,
-  onCloseReviewScreen
-}: ReviewFacultyScreenProps) => {
+const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
   const [allTeachingWorkloads, setAllTeachingWorkloads] =
     useState<TeachingWorkLoadType[]>();
   const [allExtensionWorkloads, setAllExtensionWorkloads] =
@@ -45,7 +41,7 @@ const ReviewFacultyScreen = ({
         extensionWorkloads,
         researchWorkloads,
         strategicFunctionWorkloads
-      } = await GetAllUserPendingWorkloads(userEmail);
+      } = await GetAllUserPendingWorkloads(userEmail!);
       setAllTeachingWorkloads(teachingWorkloads);
       setAllExtensionWorkloads(extensionWorkloads);
       setAllResearchWorkloads(researchWorkloads);
@@ -155,7 +151,9 @@ const ReviewFacultyScreen = ({
                       <BoldText>{workload.titleOfStudy}</BoldText>
                       <BoldText>{workload.fundingOfStudy}</BoldText>
                       <BoldText>{workload.designationStudy}</BoldText>
-                      <BoldText>No status in database</BoldText>
+                      <BoldText style={{ textTransform: "capitalize" }}>
+                        {workload.status}
+                      </BoldText>
                     </ColumnContainer>
                   </ColumnParentContainer>
                   <div
@@ -337,7 +335,7 @@ const ReviewFacultyScreen = ({
           <ButtonContainer>
             <FormButton text="Print" />
             <GroupButtonContainer>
-              <FormButton text="Back" onClicked={onCloseReviewScreen} />
+              <FormButton text="Back" onClicked={() => {}} />
               <FormButton text="Submit" />
             </GroupButtonContainer>
           </ButtonContainer>

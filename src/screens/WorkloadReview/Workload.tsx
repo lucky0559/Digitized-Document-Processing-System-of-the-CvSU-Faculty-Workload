@@ -9,6 +9,7 @@ import ReviewFacultyScreen from "./ReviewFacultyScreen";
 import WorkloadReviewScreen from "./WorkloadReviewScreen";
 import _ from "lodash";
 import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
+import RemarksWorkload from "./RemarksWorkload";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -32,7 +33,7 @@ function Workload({
 
   const [isReviewing, setIsReviewing] = useState(false);
 
-  const [selectedUserEmail, setSelectedUserEmail] = useState<string>();
+  const [accountReviewing, setAccountReviewing] = useState<User>();
 
   useEffect(() => {
     (async () => {
@@ -54,12 +55,7 @@ function Workload({
 
   return (
     <Container>
-      {isReviewing && (
-        <ReviewFacultyScreen
-          userEmail={selectedUserEmail!}
-          onCloseReviewScreen={onCloseReviewScreen}
-        />
-      )}
+      {isReviewing && <RemarksWorkload user={accountReviewing!} />}
       {isDataLoading && !isReviewing && (
         <div
           style={{
@@ -114,7 +110,7 @@ function Workload({
                         <TdStyle>
                           <Button
                             onClick={() => {
-                              setSelectedUserEmail(item.email);
+                              setAccountReviewing(item);
                               setIsReviewing(true);
                             }}
                           >
