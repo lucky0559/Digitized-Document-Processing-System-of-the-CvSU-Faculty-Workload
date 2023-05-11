@@ -42,6 +42,7 @@ function TextInputWithTitlePointUpload({
             onChange={e => onChangeTextInputPoints(e.target.value)}
             value={pointsVal}
             type="number"
+            min={0}
           />
         </div>
       </InputContainer>
