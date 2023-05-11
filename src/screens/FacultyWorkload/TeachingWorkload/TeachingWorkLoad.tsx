@@ -133,6 +133,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
                   type="number"
                   value={numberOfPreparations}
                   onChange={e => numberOfPreparationsHandler(e.target.value)}
+                  min={0}
                 />
               </TextInputContainer>
               <TextInputContainer>
