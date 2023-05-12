@@ -1,5 +1,5 @@
 export type ExtensionWorkloadType = {
-  designationExtensionActivity?: string;
+  designationExtensionActivity?: string[];
   extensionActivityFile?: File;
   extensionActivityFilePath?: string;
   resourcePerson?: string;
