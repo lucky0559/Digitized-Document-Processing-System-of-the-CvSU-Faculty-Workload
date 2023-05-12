@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -9,7 +9,7 @@ import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
 import { useNavigate } from "react-router-dom";
-import { Login, LoginDTO, SendResetPasswordLink } from "../../lib/user.hooks";
+import { LoginDTO, SendResetPasswordLink } from "../../lib/user.hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { User } from "../../types/User";
 
@@ -48,13 +48,6 @@ export default function LoginScreen({
   const height = window.innerHeight;
   const isDesktopTablet = window.innerWidth > 1201;
 
-  const navigate = useNavigate();
-
-  const userId = localStorage.getItem("userId");
-  const userRole = localStorage.getItem("role");
-
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
-
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -63,34 +56,9 @@ export default function LoginScreen({
 
   const onSubmit = async (values: LoginDTO) => {
     setIsSubmitting(true);
-    // await Login(values)
-    //   .then(res => {
-    //     setIsSubmitting(false);
-    //     localStorage.setItem("userId", res.data.id);
-    //     localStorage.setItem("role", res.data.role);
-    //     if (res.data.role === "System Administrator") {
-    //       setErrorMessage("");
-    //       return navigate("accounts", { replace: true });
-    //     }
-    //     navigate("teaching-workload", { replace: true });
-    //     setErrorMessage("");
-    //   })
-    //   .catch(error => {
-    //     setErrorMessage(error.response.data.message);
-    //     setIsSubmitting(false);
-    //   });
     UseLogin(values);
     setErrorMessage("");
   };
-
-  // useEffect(() => {
-  //   if (user && user.role === "System Administrator") {
-  //     navigate("acccounts", { replace: true });
-  //   } else if (user) {
-  //     navigate("teaching-workload", { replace: true });
-  //   }
-  //   setIsLoginSuccess(!isLoginSuccess);
-  // }, [user, setIsSubmitting]);
 
   const onSendResetPasswordLink = async () => {
     setIsSubmitting(true);

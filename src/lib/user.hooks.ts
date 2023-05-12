@@ -85,3 +85,20 @@ export const SendResetPasswordLink = async (email: string) => {
   const { data } = await axios.post(`user/${email}/reset-password`);
   return { data };
 };
+
+export const FindUserByPasswordCode = async (passwordCode: string) => {
+  const { data: user } = await axios.get(
+    `user/${passwordCode}/find-by-passwordResetCode`
+  );
+  return { user };
+};
+
+export const ResetChangePassword = async (
+  username: string,
+  password: string
+) => {
+  const { data } = await axios.patch(
+    `user/${username}/${password}/reset-change-password`
+  );
+  return { data };
+};

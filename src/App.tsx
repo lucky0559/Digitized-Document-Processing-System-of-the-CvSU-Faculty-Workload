@@ -13,7 +13,7 @@ import UnauthorizedPage from "./screens/Unauthorized";
 import VerifyScreen from "./screens/Verify/VerifyScreen";
 import WorkloadReviewScreen from "./screens/WorkloadReview/WorkloadReviewScreen";
 import { User } from "./types/User";
-import ReviewFacultyScreen from "./screens/WorkloadReview/ReviewFacultyScreen";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 
 function App() {
   const userRole = localStorage.getItem("role");
@@ -118,6 +118,10 @@ function App() {
           }
         />
         <Route path="verify/:token" element={<VerifyScreen />} />
+        <Route
+          path="reset-password/:resetPasswordCode"
+          element={<ResetPasswordScreen />}
+        />
         <Route
           path="/profile"
           element={
