@@ -55,6 +55,10 @@ export default function LoginScreen({
 
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+
+  const [email, setEmail] = useState("");
+
   const onSubmit = async (values: LoginDTO) => {
     setIsSubmitting(true);
     // await Login(values)
@@ -86,6 +90,10 @@ export default function LoginScreen({
   //   setIsLoginSuccess(!isLoginSuccess);
   // }, [user, setIsSubmitting]);
 
+  const onSendResetPasswordLink = () => {
+    setIsSubmitting(true);
+  };
+
   return (
     <Container width={width} height={height} isDesktopTablet={isDesktopTablet}>
       <Header>
@@ -93,89 +101,119 @@ export default function LoginScreen({
         <CvsuLogoImg src={CvsuLogo} />
       </Header>
       <FormContainer>
-        <Formik
-          initialValues={initialFormValues}
-          validationSchema={LoginFormSchema}
-          onSubmit={onSubmit}
-        >
-          {({ values, errors, handleSubmit, touched, handleChange }) => (
-            <FormStyled>
-              <FieldGroup>
-                <Label>Username</Label>
-                <FieldIconContainer>
-                  <TextInput
-                    type="text"
+        {isForgotPassword ? (
+          <SendEmailContainer>
+            <FieldGroup style={{ marginBottom: 20 }}>
+              <Label>Email</Label>
+              <FieldIconContainer>
+                <TextInput
+                  type={"email"}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </FieldIconContainer>
+            </FieldGroup>
+            <Button
+              type="button"
+              text="Send Reset Link"
+              color={Colors.buttonPrimary}
+              onClick={onSendResetPasswordLink}
+              isSubmitting={isSubmitting}
+            />
+            <Button
+              type="button"
+              text="Back"
+              color={Colors.buttonSecondary}
+              onClick={() => setIsForgotPassword(false)}
+            />
+          </SendEmailContainer>
+        ) : (
+          <Formik
+            initialValues={initialFormValues}
+            validationSchema={LoginFormSchema}
+            onSubmit={onSubmit}
+          >
+            {({ values, errors, handleSubmit, touched, handleChange }) => (
+              <FormStyled>
+                <FieldGroup>
+                  <Label>Username</Label>
+                  <FieldIconContainer>
+                    <TextInput
+                      type="text"
+                      name="username"
+                      value={values.username}
+                      onChange={handleChange}
+                      className={
+                        touched.username && errors.username ? "is-invalid" : ""
+                      }
+                    />
+                    <AiFillEye size={20} opacity={0} />
+                  </FieldIconContainer>
+                  <ErrorMessageStyle
+                    component="div"
                     name="username"
-                    value={values.username}
-                    onChange={handleChange}
-                    className={
-                      touched.username && errors.username ? "is-invalid" : ""
-                    }
+                    className="invalid-feedback"
                   />
-                  <AiFillEye size={20} opacity={0} />
-                </FieldIconContainer>
-                <ErrorMessageStyle
-                  component="div"
-                  name="username"
-                  className="invalid-feedback"
-                />
-              </FieldGroup>
-              <FieldGroup>
-                <Label>Password</Label>
-                <FieldIconContainer>
-                  <TextInput
-                    type={showPassword ? "text" : "password"}
+                </FieldGroup>
+                <FieldGroup>
+                  <Label>Password</Label>
+                  <FieldIconContainer>
+                    <TextInput
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      className={
+                        touched.password && errors.password ? "is-invalid" : ""
+                      }
+                    />
+                    {showPassword ? (
+                      <AiFillEye
+                        size={20}
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    ) : (
+                      <AiFillEyeInvisible
+                        size={20}
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    )}
+                  </FieldIconContainer>
+                  <ErrorMessageStyle
+                    component="div"
                     name="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    className={
-                      touched.password && errors.password ? "is-invalid" : ""
-                    }
+                    className="invalid-feedback"
                   />
-                  {showPassword ? (
-                    <AiFillEye
-                      size={20}
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <AiFillEyeInvisible
-                      size={20}
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </FieldIconContainer>
-                <ErrorMessageStyle
-                  component="div"
-                  name="password"
-                  className="invalid-feedback"
-                />
-              </FieldGroup>
-              {errorMessage && (
-                <ErrorMessageContainer>
-                  <ErrorMessageText>{errorMessage}</ErrorMessageText>
-                </ErrorMessageContainer>
-              )}
-              <ForgotPasswordContainer>
-                <ForgotPasswordText>Forgot Password</ForgotPasswordText>
-              </ForgotPasswordContainer>
-              <ButtonsContainer>
-                <Button
-                  type="submit"
-                  text="Log In"
-                  color={Colors.buttonPrimary}
-                  onClick={() => handleSubmit}
-                  isSubmitting={isSubmitting}
-                />
-                <Button
-                  type="button"
-                  text="Register"
-                  color={Colors.buttonSecondary}
-                  onClick={onRegisterButtonClick}
-                />
-              </ButtonsContainer>
-            </FormStyled>
-          )}
-        </Formik>
+                </FieldGroup>
+                {errorMessage && (
+                  <ErrorMessageContainer>
+                    <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                  </ErrorMessageContainer>
+                )}
+                <ForgotPasswordContainer
+                  onClick={() => setIsForgotPassword(true)}
+                >
+                  <ForgotPasswordText>Forgot Password</ForgotPasswordText>
+                </ForgotPasswordContainer>
+                <ButtonsContainer>
+                  <Button
+                    type="submit"
+                    text="Log In"
+                    color={Colors.buttonPrimary}
+                    onClick={() => handleSubmit}
+                    isSubmitting={isSubmitting}
+                  />
+                  <Button
+                    type="button"
+                    text="Register"
+                    color={Colors.buttonSecondary}
+                    onClick={onRegisterButtonClick}
+                  />
+                </ButtonsContainer>
+              </FormStyled>
+            )}
+          </Formik>
+        )}
       </FormContainer>
     </Container>
   );
@@ -306,4 +344,10 @@ const FieldIconContainer = styled.div`
   align-items: center;
   background-color: #ececec;
   padding: 0 5px 0 5px;
+`;
+
+const SendEmailContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
 `;
