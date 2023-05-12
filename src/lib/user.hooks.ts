@@ -80,3 +80,8 @@ export const GetAllUser = async () => {
   const { data } = await axios.get("/user");
   return { data };
 };
+
+export const SendResetPasswordLink = async (email: string) => {
+  const { data } = await axios.post(`user/${email}/reset-password`);
+  return { data };
+};

@@ -9,7 +9,7 @@ import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
 import { useNavigate } from "react-router-dom";
-import { Login, LoginDTO } from "../../lib/user.hooks";
+import { Login, LoginDTO, SendResetPasswordLink } from "../../lib/user.hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { User } from "../../types/User";
 
@@ -59,6 +59,8 @@ export default function LoginScreen({
 
   const [email, setEmail] = useState("");
 
+  const [successResetSendMessage, setSuccessResetSendMessage] = useState("");
+
   const onSubmit = async (values: LoginDTO) => {
     setIsSubmitting(true);
     // await Login(values)
@@ -90,8 +92,19 @@ export default function LoginScreen({
   //   setIsLoginSuccess(!isLoginSuccess);
   // }, [user, setIsSubmitting]);
 
-  const onSendResetPasswordLink = () => {
+  const onSendResetPasswordLink = async () => {
     setIsSubmitting(true);
+    setSuccessResetSendMessage("");
+    setErrorMessage("");
+    try {
+      await SendResetPasswordLink(email);
+      setEmail("");
+      setSuccessResetSendMessage("Reset Link Successfully sent to your email.");
+    } catch (e) {
+      setErrorMessage("Email not registered.");
+      console.log(e);
+    }
+    setIsSubmitting(false);
   };
 
   return (
@@ -112,6 +125,26 @@ export default function LoginScreen({
                   onChange={e => setEmail(e.target.value)}
                 />
               </FieldIconContainer>
+              {errorMessage && (
+                <ErrorMessageContainer
+                  style={{
+                    marginLeft: 0
+                  }}
+                >
+                  <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                </ErrorMessageContainer>
+              )}
+              {successResetSendMessage && (
+                <ErrorMessageContainer
+                  style={{
+                    marginLeft: 0
+                  }}
+                >
+                  <ErrorMessageText style={{ color: "green" }}>
+                    {successResetSendMessage}
+                  </ErrorMessageText>
+                </ErrorMessageContainer>
+              )}
             </FieldGroup>
             <Button
               type="button"
@@ -119,6 +152,10 @@ export default function LoginScreen({
               color={Colors.buttonPrimary}
               onClick={onSendResetPasswordLink}
               isSubmitting={isSubmitting}
+              disable={!email || !email.includes("@cvsu.edu.ph")}
+              hoverOpacity={
+                !email || !email.includes("@cvsu.edu.ph") ? ".5" : undefined
+              }
             />
             <Button
               type="button"
@@ -350,4 +387,7 @@ const SendEmailContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;

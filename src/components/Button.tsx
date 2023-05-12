@@ -62,7 +62,7 @@ const ButtonContainer = styled.button<{
   display: flex;
   cursor: ${p => (p.disabled ? "auto" : "pointer")};
   margin: 10px;
-  transition: opacity 0.2s ease-in-out;
+  transition: ${p => (p.disabled ? "opacity 0.2s ease-in-out" : null)};
   border: none;
   &:hover {
     opacity: ${p => (p.hoverOpacity ? p.hoverOpacity : "0.9")};
