@@ -312,25 +312,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                     </UploadFileContainer>
                   </UploadContainer>
                   <InputsContainer>
-                    <Dropdown
-                      option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                      label="Resource Person in an Extension Activity"
-                      onSelect={resourcePersonHandler}
-                      val={resourcePerson}
-                    />
-                  </InputsContainer>
-                  <UploadContainer>
-                    <UploadTextDescription>
-                      Upload certificate of presentation here:
-                    </UploadTextDescription>
-                    <UploadFileContainer>
-                      <UploadFileButton
-                        fileHandler={setCertificateFileHandler}
-                        workloadFileName={certificateFile?.name}
-                      />
-                    </UploadFileContainer>
-                  </UploadContainer>
-                  <InputsContainer>
                     <Label>
                       Total Number of Hours Rendered in Extension Activities
                     </Label>
@@ -348,6 +329,25 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       <UploadFileButton
                         fileHandler={setSummaryOfHoursFileHandler}
                         workloadFileName={summaryOfHoursFile?.name}
+                      />
+                    </UploadFileContainer>
+                  </UploadContainer>
+                  <InputsContainer>
+                    <Dropdown
+                      option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                      label="Resource Person in an Extension Activity"
+                      onSelect={resourcePersonHandler}
+                      val={resourcePerson}
+                    />
+                  </InputsContainer>
+                  <UploadContainer>
+                    <UploadTextDescription>
+                      Upload certificate of presentation here:
+                    </UploadTextDescription>
+                    <UploadFileContainer>
+                      <UploadFileButton
+                        fileHandler={setCertificateFileHandler}
+                        workloadFileName={certificateFile?.name}
                       />
                     </UploadFileContainer>
                   </UploadContainer>
