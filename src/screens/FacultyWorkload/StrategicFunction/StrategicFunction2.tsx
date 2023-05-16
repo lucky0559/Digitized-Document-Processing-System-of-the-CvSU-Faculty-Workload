@@ -4,7 +4,6 @@ import DropdownWithUpload from "../../../components/DropdownWithUpload";
 import TextInputWithTitlePointUpload from "../../../components/TextInputWithTitlePointsUpload";
 import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
-import { DesignationWithTitleAndPoints } from "./StrategicFunction";
 
 type StrategicFunction2Props = {
   onSelectDepartmentDesignation1: (value: string) => void;
@@ -53,12 +52,6 @@ type StrategicFunction2Props = {
   academicAdviserPoints?: string;
   fileHandlerAcademicAdviser: (value?: File) => void;
   fileNameAcademicAdviser?: string;
-  onTextInputAcademicAdviserDesignationTitle1: (value: string) => void;
-  onTextInputAcademicAdviserDesignationPoints1: (value: string) => void;
-  academicAdviserTitle1?: string;
-  academicAdviserPoints1?: string;
-  fileHandlerAcademicAdviser1: (value?: File) => void;
-  fileNameAcademicAdviser1?: string;
 };
 
 function StrategicFunction2({
@@ -107,13 +100,7 @@ function StrategicFunction2({
   academicAdviserTitle,
   academicAdviserPoints,
   fileHandlerAcademicAdviser,
-  fileNameAcademicAdviser,
-  onTextInputAcademicAdviserDesignationTitle1,
-  onTextInputAcademicAdviserDesignationPoints1,
-  academicAdviserTitle1,
-  academicAdviserPoints1,
-  fileHandlerAcademicAdviser1,
-  fileNameAcademicAdviser1
+  fileNameAcademicAdviser
 }: StrategicFunction2Props) {
   return (
     <>
@@ -230,18 +217,6 @@ function StrategicFunction2({
             pointsVal={academicAdviserPoints}
             fileHandler={fileHandlerAcademicAdviser}
             fileName={fileNameAcademicAdviser}
-          />
-          <TextInputWithTitlePointUpload
-            inputLabel="Designation as Academic Adviser"
-            uploadLabel="Upload list of advisees here:"
-            onChangeTextInputTitle={onTextInputAcademicAdviserDesignationTitle1}
-            onChangeTextInputPoints={
-              onTextInputAcademicAdviserDesignationPoints1
-            }
-            titleVal={academicAdviserTitle1}
-            pointsVal={academicAdviserPoints1}
-            fileHandler={fileHandlerAcademicAdviser1}
-            fileName={fileNameAcademicAdviser1}
           />
         </div>
       </DepartmentLevelContainer>

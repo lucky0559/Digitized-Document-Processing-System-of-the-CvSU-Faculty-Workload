@@ -210,8 +210,7 @@ export const SaveStrategicFunctionWorkload = async (
     strategicFunctionWorkload?.designationAsSportTrainorAcademic1 ||
     strategicFunctionWorkload?.designationAsMemberOfAdhoc ||
     strategicFunctionWorkload?.designationAsMemberOfAdhoc1 ||
-    strategicFunctionWorkload?.academicAdvisees ||
-    strategicFunctionWorkload?.academicAdvisees1
+    strategicFunctionWorkload?.academicAdvisees
   ) {
     let approvedUniversityDesignationFile1;
     let approvedUniversityDesignationFile2;
@@ -233,7 +232,6 @@ export const SaveStrategicFunctionWorkload = async (
     let memberAdhocFile1;
 
     let academicAdviseesFile;
-    let academicAdviseesFile1;
 
     let numberOfUniversity = 0;
     let numberOfCollegeCampus = 0;
@@ -491,23 +489,6 @@ export const SaveStrategicFunctionWorkload = async (
         academicAdviseesPoints =
           academicAdviseesPoints +
           strategicFunctionWorkload.academicAdviseesPoints;
-      }
-
-      // ACADEMIC ADVISEES1
-      if (
-        strategicFunctionWorkload?.academicAdvisees1?.length! > 0 &&
-        strategicFunctionWorkload?.academicAdviseesFile1 &&
-        strategicFunctionWorkload?.academicAdviseesPoints1 &&
-        strategicFunctionWorkload?.academicAdviseesPoints1! > 0
-      ) {
-        academicAdviseesFile1 = await listAdviseesS3.uploadFile(
-          strategicFunctionWorkload?.academicAdviseesFile1
-        );
-        strategicFunctionWorkload.academicAdviseesFilePath1 =
-          academicAdviseesFile1?.location;
-        academicAdviseesPoints =
-          academicAdviseesPoints +
-          strategicFunctionWorkload.academicAdviseesPoints1;
       }
 
       // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {

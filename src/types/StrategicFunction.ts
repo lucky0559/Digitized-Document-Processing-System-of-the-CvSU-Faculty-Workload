@@ -35,10 +35,6 @@ export type StrategicFunctionType = {
   academicAdviseesFile?: File;
   academicAdviseesPoints?: number;
   academicAdviseesFilePath?: string;
-  academicAdvisees1?: string;
-  academicAdviseesFile1?: File;
-  academicAdviseesPoints1?: number;
-  academicAdviseesFilePath1?: string;
   sfwPoints?: number;
   remarks?: string;
 };

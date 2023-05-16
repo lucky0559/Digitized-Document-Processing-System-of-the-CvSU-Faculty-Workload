@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FormButton from "../../../components/FormButton";
 import { StrategicFunctionType } from "../../../types/StrategicFunction";
-import { useNavigate } from "react-router";
 import { SaveStrategicFunctionWorkload } from "../../../lib/faculty-workload.hooks";
 import TopNav from "../../../components/TopNav";
 import Menu from "../../../components/Menu";
@@ -103,8 +102,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const [memberUniversity1, setMemberUniversity1] =
     useState<DesignationWithPoints>();
   const [academicAdviser, setAcademicAdviser] =
-    useState<DesignationWithPoints>();
-  const [academicAdviser1, setAcademicAdviser1] =
     useState<DesignationWithPoints>();
 
   // UNIVERSITY FILE SELECT
@@ -211,33 +208,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     useState<Designation>();
   const [departmentDesignation4, setDepartmentDesignation4] =
     useState<Designation>();
-
-  const [
-    sportsSocioInputDesignationTitle,
-    setSportsSocioInputDesignationTitle
-  ] = useState("");
-  const [
-    sportsSocioInputDesignationPoints,
-    setSportsSocioInputDesignationPoints
-  ] = useState("");
-
-  const [
-    memberUniversityWideInputDesignationTitle,
-    setMemberUniversityWideInputDesignationTitle
-  ] = useState("");
-  const [
-    memberUniversityWideInputDesignationPoints,
-    setMemberUniversityWideInputDesignationPoints
-  ] = useState("");
-
-  const [
-    academicAdviserInputDesignationTitle,
-    setAcademicAdviserInputDesignationTitle
-  ] = useState("");
-  const [
-    academicAdviserInputDesignationPoints,
-    setAcademicAdviserInputDesignationPoints
-  ] = useState("");
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length >= 0 && value !== "") {
@@ -432,13 +402,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     });
   };
 
-  const textInputTitleAcademicAdviser1 = (value: string) => {
-    setAcademicAdviser1({
-      ...academicAdviser1,
-      title: value
-    });
-  };
-
   const textInputPointsAcademicAdviser = (value: string) => {
     setAcademicAdviser({
       ...academicAdviser,
@@ -446,23 +409,9 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     });
   };
 
-  const textInputPointsAcademicAdviser1 = (value: string) => {
-    setAcademicAdviser1({
-      ...academicAdviser1,
-      points: value
-    });
-  };
-
   const fileHandlerAcademicAdviser = (value?: File) => {
     setAcademicAdviser({
       ...academicAdviser,
-      file: value
-    });
-  };
-
-  const fileHandlerAcademicAdviser1 = (value?: File) => {
-    setAcademicAdviser1({
-      ...academicAdviser1,
       file: value
     });
   };
@@ -530,11 +479,8 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationAsMemberOfAdhocPoints: Number(memberUniversity?.points),
           designationAsMemberOfAdhocPoints1: Number(memberUniversity1?.points),
           academicAdvisees: academicAdviser?.title,
-          academicAdvisees1: academicAdviser1?.title,
           academicAdviseesFile: academicAdviser?.file,
-          academicAdviseesFile1: academicAdviser1?.file,
-          academicAdviseesPoints: Number(academicAdviser?.points),
-          academicAdviseesPoints1: Number(academicAdviser1?.points)
+          academicAdviseesPoints: Number(academicAdviser?.points)
         });
       }
     })();
@@ -717,11 +663,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const hasAcademicAdviser =
     academicAdviser?.points && academicAdviser?.file && academicAdviser?.title;
 
-  const hasAcademicAdviser1 =
-    academicAdviser1?.points &&
-    academicAdviser1?.file &&
-    academicAdviser1?.title;
-
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -882,16 +823,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                 academicAdviserPoints={academicAdviser?.points}
                 fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
                 fileNameAcademicAdviser={academicAdviser?.file?.name}
-                onTextInputAcademicAdviserDesignationTitle1={
-                  textInputTitleAcademicAdviser1
-                }
-                onTextInputAcademicAdviserDesignationPoints1={
-                  textInputPointsAcademicAdviser1
-                }
-                academicAdviserTitle1={academicAdviser1?.title}
-                academicAdviserPoints1={academicAdviser1?.points}
-                fileHandlerAcademicAdviser1={fileHandlerAcademicAdviser1}
-                fileNameAcademicAdviser1={academicAdviser1?.file?.name}
               />
             </>
             <FormFooterContainer>
@@ -904,7 +835,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(sportsSocio?.points) +
@@ -915,7 +845,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(sportsSocio?.points) +
@@ -927,7 +856,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(sportsSocio?.points) +
@@ -939,7 +867,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points + Number(sportsSocio?.points)
                         }`}
@@ -948,7 +875,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points + Number(sportsSocio1?.points)
                         }`}
@@ -957,7 +883,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasSportsSocio &&
                         !hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points + Number(memberUniversity.points)
                         }`}
@@ -966,7 +891,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasSportsSocio &&
                         !hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points + Number(memberUniversity1.points)
                         }`}
@@ -975,7 +899,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasSportsSocio &&
                         !hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity.points) +
@@ -986,7 +909,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         hasSportsSocio &&
                         !hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity.points) +
@@ -998,7 +920,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         !hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity.points) +
@@ -1010,7 +931,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity.points) +
@@ -1023,7 +943,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         hasSportsSocio &&
                         hasSportsSocio1 &&
                         hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity.points) +
@@ -1037,17 +956,28 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity.points) +
                           Number(memberUniversity1.points) +
                           Number(sportsSocio1.points) +
-                          Number(sportsSocio.points) +
-                          Number(academicAdviser1.points)
+                          Number(sportsSocio.points)
                         }`}
+                      {/* {hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        `Total Strategic Function Workload = ${
+                          points + Number(academicAdviser.points)
+                        }`} */}
+                      {/* {!hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        `Total Strategic Function Workload = ${points}`} */}
                       {hasAcademicAdviser &&
-                        !hasAcademicAdviser1 &&
                         !hasSportsSocio &&
                         !hasSportsSocio1 &&
                         !hasMemberUniversity &&
@@ -1055,28 +985,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         `Total Strategic Function Workload = ${
                           points + Number(academicAdviser.points)
                         }`}
-                      {!hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
-                        !hasSportsSocio &&
-                        !hasSportsSocio1 &&
-                        !hasMemberUniversity &&
-                        !hasMemberUniversity1 &&
-                        `Total Strategic Function Workload = ${
-                          points + Number(academicAdviser1.points)
-                        }`}
                       {hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
-                        !hasSportsSocio &&
-                        !hasSportsSocio1 &&
-                        !hasMemberUniversity &&
-                        !hasMemberUniversity1 &&
-                        `Total Strategic Function Workload = ${
-                          points +
-                          Number(academicAdviser.points) +
-                          Number(academicAdviser1.points)
-                        }`}
-                      {hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         hasSportsSocio &&
                         !hasSportsSocio1 &&
                         !hasMemberUniversity &&
@@ -1084,11 +993,9 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         `Total Strategic Function Workload = ${
                           points +
                           Number(academicAdviser.points) +
-                          Number(academicAdviser1.points) +
                           Number(sportsSocio.points)
                         }`}
                       {hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         !hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasMemberUniversity &&
@@ -1096,11 +1003,9 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         `Total Strategic Function Workload = ${
                           points +
                           Number(academicAdviser.points) +
-                          Number(academicAdviser1.points) +
                           Number(sportsSocio1.points)
                         }`}
                       {hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasMemberUniversity &&
@@ -1108,12 +1013,10 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         `Total Strategic Function Workload = ${
                           points +
                           Number(academicAdviser.points) +
-                          Number(academicAdviser1.points) +
                           Number(sportsSocio1.points) +
                           Number(sportsSocio.points)
                         }`}
                       {hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         hasSportsSocio &&
                         hasSportsSocio1 &&
                         hasMemberUniversity &&
@@ -1121,13 +1024,11 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         `Total Strategic Function Workload = ${
                           points +
                           Number(academicAdviser.points) +
-                          Number(academicAdviser1.points) +
                           Number(sportsSocio1.points) +
                           Number(sportsSocio.points) +
                           Number(memberUniversity.points)
                         }`}
                       {hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasMemberUniversity &&
@@ -1135,7 +1036,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         `Total Strategic Function Workload = ${
                           points +
                           Number(academicAdviser.points) +
-                          Number(academicAdviser1.points) +
                           Number(sportsSocio1.points) +
                           Number(sportsSocio.points) +
                           Number(memberUniversity1.points)
@@ -1145,47 +1045,40 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                         hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(sportsSocio.points) +
                           Number(sportsSocio1.points) +
                           Number(memberUniversity?.points) +
                           Number(memberUniversity1?.points) +
-                          Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points)
+                          Number(academicAdviser?.points)
                         }`}
                       {hasSportsSocio &&
                         hasSportsSocio1 &&
                         hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(sportsSocio.points) +
                           Number(sportsSocio1.points) +
                           Number(memberUniversity?.points) +
-                          Number(memberUniversity1?.points) +
-                          Number(academicAdviser1?.points)
+                          Number(memberUniversity1?.points)
                         }`}
                       {hasSportsSocio &&
                         hasSportsSocio1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         !hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(sportsSocio.points) +
                           Number(sportsSocio1.points) +
-                          Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points)
+                          Number(academicAdviser?.points)
                         }`}
                       {hasSportsSocio &&
                         hasSportsSocio1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         `Total Strategic Function Workload = ${
@@ -1193,13 +1086,11 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           Number(sportsSocio.points) +
                           Number(sportsSocio1.points) +
                           Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points) +
                           Number(memberUniversity?.points)
                         }`}
                       {hasSportsSocio &&
                         hasSportsSocio1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         !hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         `Total Strategic Function Workload = ${
@@ -1207,26 +1098,22 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           Number(sportsSocio.points) +
                           Number(sportsSocio1.points) +
                           Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points) +
                           Number(memberUniversity1?.points)
                         }`}
                       {hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         !hasSportsSocio &&
                         !hasSportsSocio1 &&
                         `Total Strategic Function Workload = ${
                           points +
                           Number(memberUniversity?.points) +
                           Number(memberUniversity1?.points) +
-                          Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points)
+                          Number(academicAdviser?.points)
                         }`}
                       {hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         hasSportsSocio &&
                         !hasSportsSocio1 &&
                         `Total Strategic Function Workload = ${
@@ -1234,13 +1121,11 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           Number(memberUniversity?.points) +
                           Number(memberUniversity1?.points) +
                           Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points) +
                           Number(sportsSocio.points)
                         }`}
                       {hasMemberUniversity &&
                         hasMemberUniversity1 &&
                         hasAcademicAdviser &&
-                        hasAcademicAdviser1 &&
                         !hasSportsSocio &&
                         hasSportsSocio1 &&
                         `Total Strategic Function Workload = ${
@@ -1248,7 +1133,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           Number(memberUniversity?.points) +
                           Number(memberUniversity1?.points) +
                           Number(academicAdviser?.points) +
-                          Number(academicAdviser1?.points) +
                           Number(sportsSocio1.points)
                         }`}
                       {!hasSportsSocio &&

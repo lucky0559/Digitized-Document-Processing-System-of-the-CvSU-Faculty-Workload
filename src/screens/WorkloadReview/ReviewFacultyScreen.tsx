@@ -296,7 +296,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                         </ColumnContainer>
                         <ColumnContainer>
                           <BoldText>{workload.academicAdvisees}</BoldText>
-                          <BoldText>{workload.academicAdvisees1}</BoldText>
                         </ColumnContainer>
                       </LevelContainer>
                     </ParentLevelContainer>

@@ -614,7 +614,6 @@ function RemarksWorkload({ user }: WorkloadProps) {
                       </ColumnContainer>
                       <ColumnContainer style={{ display: "flex", flex: 2 }}>
                         <BoldText>{workload.academicAdvisees}</BoldText>
-                        <BoldText>{workload.academicAdvisees1}</BoldText>
                       </ColumnContainer>
                     </LevelContainer>
                     <LevelContainer>
