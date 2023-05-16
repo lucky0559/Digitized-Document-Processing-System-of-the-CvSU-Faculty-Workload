@@ -209,6 +209,8 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const [departmentDesignation4, setDepartmentDesignation4] =
     useState<Designation>();
 
+  const [numberOfStudents, setNumberOfStudents] = useState("");
+
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length >= 0 && value !== "") {
       setDesignationUniversity1({
@@ -403,9 +405,10 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   };
 
   const textInputPointsAcademicAdviser = (value: string) => {
+    setNumberOfStudents(value);
     setAcademicAdviser({
       ...academicAdviser,
-      points: value
+      points: (Number(value) * 0.023).toString()
     });
   };
 
@@ -820,7 +823,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                   textInputPointsAcademicAdviser
                 }
                 academicAdviserTitle={academicAdviser?.title}
-                academicAdviserPoints={academicAdviser?.points}
+                academicAdviserPoints={numberOfStudents}
                 fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
                 fileNameAcademicAdviser={academicAdviser?.file?.name}
               />

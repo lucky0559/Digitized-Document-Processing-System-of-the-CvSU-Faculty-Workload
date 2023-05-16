@@ -217,6 +217,7 @@ function StrategicFunction2({
             pointsVal={academicAdviserPoints}
             fileHandler={fileHandlerAcademicAdviser}
             fileName={fileNameAcademicAdviser}
+            pointsLabel="Number of Students"
           />
         </div>
       </DepartmentLevelContainer>

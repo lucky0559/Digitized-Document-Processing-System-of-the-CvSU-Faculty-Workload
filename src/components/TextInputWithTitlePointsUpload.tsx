@@ -12,6 +12,7 @@ type TextInputWithTitlePointUploadProps = {
   pointsVal?: string;
   fileHandler: (value?: File) => void;
   fileName?: string;
+  pointsLabel?: string;
 };
 
 function TextInputWithTitlePointUpload({
@@ -22,7 +23,8 @@ function TextInputWithTitlePointUpload({
   onChangeTextInputTitle,
   onChangeTextInputPoints,
   fileHandler,
-  fileName
+  fileName,
+  pointsLabel
 }: TextInputWithTitlePointUploadProps) {
   return (
     <Container>
@@ -37,7 +39,9 @@ function TextInputWithTitlePointUpload({
           />
         </div>
         <div style={{ flexDirection: "column" }}>
-          <Label style={{ marginLeft: 42 }}>Points</Label>
+          <Label style={{ marginLeft: 42 }}>
+            {pointsLabel ? pointsLabel : "Points"}
+          </Label>
           <Input
             onChange={e => onChangeTextInputPoints(e.target.value)}
             value={pointsVal}
