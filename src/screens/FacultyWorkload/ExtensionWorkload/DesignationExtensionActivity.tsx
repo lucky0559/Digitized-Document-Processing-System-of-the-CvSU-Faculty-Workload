@@ -110,25 +110,6 @@ const DesignationExtensionActivity = ({
           </Td>
           <Td>1</Td>
         </tr>
-        <tr>
-          <Td>Resource Person</Td>
-          <Td>
-            <ul>
-              <Li>Internation</Li>
-              <Li>National</Li>
-              <Li>Regional</Li>
-              <Li>Local</Li>
-            </ul>
-          </Td>
-          <Td>
-            <ul style={{ listStyle: "none" }}>
-              <Li>4</Li>
-              <Li>3</Li>
-              <Li>2</Li>
-              <Li>1</Li>
-            </ul>
-          </Td>
-        </tr>
       </Table>
     </Container>
   );
