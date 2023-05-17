@@ -372,39 +372,54 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                     flexDirection: "column"
                   }}
                 >
-                  <UploadContainer>
-                    <UploadTextDescription>
-                      Upload Extension Activity Accomplishment Report here:
-                    </UploadTextDescription>
-                    <UploadFileContainer>
-                      <UploadFileButton
-                        fileHandler={setExtensionActivityFileHandler}
-                        workloadFileName={extensionActivityFile?.name}
-                      />
-                    </UploadFileContainer>
-                  </UploadContainer>
-                  <InputsContainer style={{ alignSelf: "center" }}>
-                    <Label>
-                      Total Number of Hours Rendered in Extension Activities
-                    </Label>
-                    <TextInput
-                      type="number"
-                      onChange={e => totalNumberHoursHandler(e.target.value)}
-                      value={totalNumberHours}
-                      min={0}
-                    />
-                  </InputsContainer>
-                  <UploadContainer>
-                    <UploadTextDescription>
-                      Upload Summary of hours rendered in extension activities:
-                    </UploadTextDescription>
-                    <UploadFileContainer>
-                      <UploadFileButton
-                        fileHandler={setSummaryOfHoursFileHandler}
-                        workloadFileName={summaryOfHoursFile?.name}
-                      />
-                    </UploadFileContainer>
-                  </UploadContainer>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div>
+                      <InputsContainer
+                        style={{
+                          alignSelf: "center",
+                          alignItems: "flex-start"
+                        }}
+                      >
+                        <Label>
+                          Total Number of Hours Rendered in Extension Activities
+                        </Label>
+                        <TextInput
+                          type="number"
+                          onChange={e =>
+                            totalNumberHoursHandler(e.target.value)
+                          }
+                          value={totalNumberHours}
+                          min={0}
+                        />
+                      </InputsContainer>
+                    </div>
+                    <div>
+                      <UploadContainer>
+                        <UploadTextDescription>
+                          Upload Extension Activity Accomplishment Report here:
+                        </UploadTextDescription>
+                        <UploadFileContainer>
+                          <UploadFileButton
+                            fileHandler={setExtensionActivityFileHandler}
+                            workloadFileName={extensionActivityFile?.name}
+                          />
+                        </UploadFileContainer>
+                      </UploadContainer>
+                      <UploadContainer>
+                        <UploadTextDescription>
+                          Upload Summary of hours rendered in extension
+                          activities:
+                        </UploadTextDescription>
+                        <UploadFileContainer>
+                          <UploadFileButton
+                            fileHandler={setSummaryOfHoursFileHandler}
+                            workloadFileName={summaryOfHoursFile?.name}
+                          />
+                        </UploadFileContainer>
+                      </UploadContainer>
+                    </div>
+                  </div>
+
                   <ResourcePersonContainer>
                     <InputsContainer>
                       <Dropdown
