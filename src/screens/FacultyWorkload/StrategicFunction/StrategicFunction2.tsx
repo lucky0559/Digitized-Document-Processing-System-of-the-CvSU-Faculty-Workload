@@ -47,7 +47,7 @@ type StrategicFunction2Props = {
   fileHandlerMemberUniversity1: (value?: File) => void;
   fileNameMemberUniversity1?: string;
   onTextInputAcademicAdviserDesignationTitle: (value: string) => void;
-  onTextInputAcademicAdviserDesignationPoints: (value: string) => void;
+  onTextInputAcademicAdviserDesignationPoints?: (value: string) => void;
   academicAdviserTitle?: string;
   academicAdviserPoints?: string;
   fileHandlerAcademicAdviser: (value?: File) => void;
@@ -210,14 +210,15 @@ function StrategicFunction2({
             inputLabel="Designation as Academic Adviser"
             uploadLabel="Upload list of advisees here:"
             onChangeTextInputTitle={onTextInputAcademicAdviserDesignationTitle}
-            onChangeTextInputPoints={
-              onTextInputAcademicAdviserDesignationPoints
-            }
+            onChangeTextInputPoints={() => {}}
             titleVal={academicAdviserTitle}
             pointsVal={academicAdviserPoints}
             fileHandler={fileHandlerAcademicAdviser}
             fileName={fileNameAcademicAdviser}
-            pointsLabel="Number of Students"
+            pointsLabel="0.023 per Advisee"
+            textField={true}
+            customize={true}
+            customLabel="Number of Advisee"
           />
         </div>
       </DepartmentLevelContainer>

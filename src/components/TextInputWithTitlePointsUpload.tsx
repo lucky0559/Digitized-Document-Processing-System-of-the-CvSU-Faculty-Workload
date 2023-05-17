@@ -13,6 +13,9 @@ type TextInputWithTitlePointUploadProps = {
   fileHandler: (value?: File) => void;
   fileName?: string;
   pointsLabel?: string;
+  textField?: boolean;
+  customize?: boolean;
+  customLabel?: string;
 };
 
 function TextInputWithTitlePointUpload({
@@ -24,30 +27,55 @@ function TextInputWithTitlePointUpload({
   onChangeTextInputPoints,
   fileHandler,
   fileName,
-  pointsLabel
+  pointsLabel,
+  textField,
+  customize,
+  customLabel
 }: TextInputWithTitlePointUploadProps) {
   return (
     <Container>
       <InputContainer>
         <Label>{inputLabel}</Label>
         <div style={{ flexDirection: "column" }}>
-          <Label style={{ marginLeft: 42 }}>Title</Label>
-          <Input
-            onChange={e => onChangeTextInputTitle(e.target.value)}
-            value={titleVal}
-            type="text"
-          />
+          {customize ? (
+            <>
+              <Label style={{ marginLeft: 42 }}>{customLabel}</Label>
+              <Input
+                onChange={e => onChangeTextInputTitle(e.target.value)}
+                value={pointsVal === "0" || !pointsVal ? "" : pointsVal}
+                type="number"
+                min={0}
+              />
+            </>
+          ) : (
+            <>
+              <Label style={{ marginLeft: 42 }}>Title</Label>
+              <Input
+                onChange={e => onChangeTextInputTitle(e.target.value)}
+                value={titleVal}
+                type="text"
+              />
+            </>
+          )}
         </div>
         <div style={{ flexDirection: "column" }}>
           <Label style={{ marginLeft: 42 }}>
             {pointsLabel ? pointsLabel : "Points"}
           </Label>
-          <Input
-            onChange={e => onChangeTextInputPoints(e.target.value)}
-            value={pointsVal}
-            type="number"
-            min={0}
-          />
+          {textField ? (
+            <Input
+              style={{ textAlign: "center" }}
+              value={Number(pointsVal) * 0.023}
+              disabled={true}
+            />
+          ) : (
+            <Input
+              onChange={e => onChangeTextInputPoints(e.target.value)}
+              value={pointsVal}
+              type="number"
+              min={0}
+            />
+          )}
         </div>
       </InputContainer>
       <UploadContainer>
