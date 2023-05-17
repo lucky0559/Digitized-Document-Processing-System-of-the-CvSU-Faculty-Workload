@@ -441,52 +441,54 @@ function RemarksWorkload({ user }: WorkloadProps) {
                         </div>
                       </div>
                     )}
-                    {workload.certificateFilePath && (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <a
-                          href={workload.certificateFilePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
-                          }}
-                        >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
+                    {workload.certificateFilePath?.map(filePath => {
+                      return (
                         <div
                           style={{
-                            width: 277,
                             display: "flex",
-                            justifyContent: "space-between",
-                            marginRight: 15
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between"
                           }}
                         >
-                          <InputPoints type="number" min={0} />
-                          <InputRemarks />
+                          <a
+                            href={filePath}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              textDecoration: "none",
+                              alignItems: "flex-start",
+                              display: "flex"
+                            }}
+                          >
+                            <ThinText
+                              style={{
+                                color: "white",
+                                fontSize: 12,
+                                backgroundColor: Colors.buttonPrimary,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                cursor: "pointer"
+                              }}
+                              onClick={() => {}}
+                            >
+                              Attachment
+                            </ThinText>
+                          </a>
+                          <div
+                            style={{
+                              width: 277,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints type="number" min={0} />
+                            <InputRemarks />
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })}
                     {workload.summaryOfHoursFilePath && (
                       <div
                         style={{

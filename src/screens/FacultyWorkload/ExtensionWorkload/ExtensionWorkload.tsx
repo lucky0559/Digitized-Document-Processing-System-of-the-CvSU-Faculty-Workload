@@ -34,8 +34,12 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const [facilitator, setFacilitator] = useState("");
   const [assistants, setAssistants] = useState("");
   const [extensionActivityFile, setExtensionActivityFile] = useState<File>();
-  const [resourcePerson, setResourcePerson] = useState<string | undefined>("");
+  const [resourcePerson, setResourcePerson] = useState<string>("");
+  const [resourcePerson1, setResourcePerson1] = useState<string>("");
+  const [resourcePerson2, setResourcePerson2] = useState<string>("");
   const [certificateFile, setCertificateFile] = useState<File>();
+  const [certificateFile1, setCertificateFile1] = useState<File>();
+  const [certificateFile2, setCertificateFile2] = useState<File>();
   const [totalNumberHours, setTotalNumberHours] = useState<string | undefined>(
     ""
   );
@@ -48,6 +52,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const [designationActivityPoints, setDesignationActivityPoints] = useState(0);
   const [resourcePersonActivityPoints, setResourcePersonActivityPoints] =
     useState(0);
+  const [resourcePersonPoints, setResourcePersonPoints] = useState(0);
+  const [resourcePersonPoints1, setResourcePersonPoints1] = useState(0);
+  const [resourcePersonPoints2, setResourcePersonPoints2] = useState(0);
 
   const extensionWorkloadHandler = () => {
     setExtensionWorkload({
@@ -58,8 +65,14 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         assistants
       ].filter(Boolean),
       extensionActivityFile,
-      resourcePerson,
-      certificateFile,
+      resourcePerson: [resourcePerson, resourcePerson1, resourcePerson2].filter(
+        Boolean
+      ),
+      certificateFile: [
+        certificateFile!,
+        certificateFile1!,
+        certificateFile2!
+      ].filter(Boolean),
       totalNumberHours,
       summaryOfHoursFile
     });
@@ -113,14 +126,16 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               Number(designationExtensionActivityPoints) + 1;
           }
 
-          if (extensionWorkload.resourcePerson === "International") {
-            resourcePersonPoints = 4;
-          } else if (extensionWorkload.resourcePerson === "National") {
-            resourcePersonPoints = 3;
-          } else if (extensionWorkload.resourcePerson === "Regional") {
-            resourcePersonPoints = 2;
-          } else {
-            resourcePersonPoints = 1;
+          for (let i = 0; i > extensionWorkload.resourcePerson.length; i++) {
+            if (extensionWorkload.resourcePerson[i] === "International") {
+              resourcePersonPoints = Number(resourcePersonPoints) + 4;
+            } else if (extensionWorkload.resourcePerson[i] === "National") {
+              resourcePersonPoints = Number(resourcePersonPoints) + 3;
+            } else if (extensionWorkload.resourcePerson[i] === "Regional") {
+              resourcePersonPoints = Number(resourcePersonPoints) + 2;
+            } else {
+              resourcePersonPoints = Number(resourcePersonPoints) + 1;
+            }
           }
 
           if (Number(extensionWorkload.totalNumberHours) * 0.05556 >= 3) {
@@ -132,7 +147,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
           extensionWorkload.ewlPoints =
             Number(designationExtensionActivityPoints) +
-            resourcePersonPoints +
+            Number(resourcePersonPoints) +
             totalNumberHoursPoints;
           await SaveExtensionWorkload(extensionWorkload);
           setIsSubmitting(false);
@@ -147,7 +162,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
     setDesignationExtensionActivity(undefined);
     setExtensionActivityFile(undefined);
     setResourcePerson("");
+    setResourcePerson1("");
+    setResourcePerson2("");
     setCertificateFile(undefined);
+    setCertificateFile1(undefined);
+    setCertificateFile2(undefined);
     setTotalNumberHours("");
     setSummaryOfHoursFile(undefined);
     setExtensionWorkload(undefined);
@@ -157,12 +176,28 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
     setExtensionActivityFile(value);
   };
 
-  const resourcePersonHandler = (value?: string) => {
+  const resourcePersonHandler = (value: string) => {
     setResourcePerson(value);
+  };
+
+  const resourcePersonHandler1 = (value: string) => {
+    setResourcePerson1(value);
+  };
+
+  const resourcePersonHandler2 = (value: string) => {
+    setResourcePerson2(value);
   };
 
   const certificateFileHandler = (value?: File) => {
     setCertificateFile(value);
+  };
+
+  const certificateFileHandler1 = (value?: File) => {
+    setCertificateFile1(value);
+  };
+
+  const certificateFileHandler2 = (value?: File) => {
+    setCertificateFile2(value);
   };
 
   const totalNumberHoursHandler = (value?: string) => {
@@ -183,6 +218,14 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   const setCertificateFileHandler = (file?: File) => {
     certificateFileHandler(file);
+  };
+
+  const setCertificateFileHandler1 = (file?: File) => {
+    certificateFileHandler1(file);
+  };
+
+  const setCertificateFileHandler2 = (file?: File) => {
+    certificateFileHandler2(file);
   };
 
   const setSummaryOfHoursFileHandler = (file?: File) => {
@@ -218,15 +261,45 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   useEffect(() => {
     if (resourcePerson === "International" && certificateFile) {
-      setResourcePersonActivityPoints(4);
+      setResourcePersonPoints(4);
     } else if (resourcePerson === "National" && certificateFile) {
-      setResourcePersonActivityPoints(3);
+      setResourcePersonPoints(3);
     } else if (resourcePerson === "Regional" && certificateFile) {
-      setResourcePersonActivityPoints(2);
+      setResourcePersonPoints(2);
     } else if (resourcePerson === "Local" && certificateFile) {
-      setResourcePersonActivityPoints(1);
+      setResourcePersonPoints(1);
     }
   }, [resourcePerson, certificateFile]);
+
+  useEffect(() => {
+    if (resourcePerson1 === "International" && certificateFile1) {
+      setResourcePersonPoints1(4);
+    } else if (resourcePerson1 === "National" && certificateFile1) {
+      setResourcePersonPoints1(3);
+    } else if (resourcePerson1 === "Regional" && certificateFile1) {
+      setResourcePersonPoints1(2);
+    } else if (resourcePerson1 === "Local" && certificateFile1) {
+      setResourcePersonPoints1(1);
+    }
+  }, [resourcePerson1, certificateFile1]);
+
+  useEffect(() => {
+    if (resourcePerson2 === "International" && certificateFile2) {
+      setResourcePersonPoints2(4);
+    } else if (resourcePerson2 === "National" && certificateFile2) {
+      setResourcePersonPoints2(3);
+    } else if (resourcePerson2 === "Regional" && certificateFile2) {
+      setResourcePersonPoints2(2);
+    } else if (resourcePerson2 === "Local" && certificateFile2) {
+      setResourcePersonPoints2(1);
+    }
+  }, [resourcePerson2, certificateFile2]);
+
+  useEffect(() => {
+    setResourcePersonActivityPoints(
+      resourcePersonPoints + resourcePersonPoints1 + resourcePersonPoints2
+    );
+  }, [resourcePersonPoints, resourcePersonPoints1, resourcePersonPoints2]);
 
   const onChangeValueCheckbox = (isChecked: boolean, value: string) => {
     console.log(isChecked, value);
@@ -295,7 +368,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               >
                 <div
                   style={{
-                    maxWidth: 450,
                     display: "flex",
                     flexDirection: "column"
                   }}
@@ -311,7 +383,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       />
                     </UploadFileContainer>
                   </UploadContainer>
-                  <InputsContainer>
+                  <InputsContainer style={{ alignSelf: "center" }}>
                     <Label>
                       Total Number of Hours Rendered in Extension Activities
                     </Label>
@@ -319,6 +391,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       type="number"
                       onChange={e => totalNumberHoursHandler(e.target.value)}
                       value={totalNumberHours}
+                      min={0}
                     />
                   </InputsContainer>
                   <UploadContainer>
@@ -332,25 +405,69 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       />
                     </UploadFileContainer>
                   </UploadContainer>
-                  <InputsContainer>
-                    <Dropdown
-                      option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                      label="Resource Person in an Extension Activity"
-                      onSelect={resourcePersonHandler}
-                      val={resourcePerson}
-                    />
-                  </InputsContainer>
-                  <UploadContainer>
-                    <UploadTextDescription>
-                      Upload certificate of presentation here:
-                    </UploadTextDescription>
-                    <UploadFileContainer>
-                      <UploadFileButton
-                        fileHandler={setCertificateFileHandler}
-                        workloadFileName={certificateFile?.name}
+                  <ResourcePersonContainer>
+                    <InputsContainer>
+                      <Dropdown
+                        option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                        label="Resource Person in an Extension Activity"
+                        onSelect={resourcePersonHandler}
+                        val={resourcePerson}
                       />
-                    </UploadFileContainer>
-                  </UploadContainer>
+                    </InputsContainer>
+                    <UploadContainer>
+                      <UploadTextDescription>
+                        Upload certificate of presentation here:
+                      </UploadTextDescription>
+                      <UploadFileContainer>
+                        <UploadFileButton
+                          fileHandler={setCertificateFileHandler}
+                          workloadFileName={certificateFile?.name}
+                        />
+                      </UploadFileContainer>
+                    </UploadContainer>
+                  </ResourcePersonContainer>
+                  <ResourcePersonContainer>
+                    <InputsContainer>
+                      <Dropdown
+                        option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                        label="Resource Person in an Extension Activity"
+                        onSelect={resourcePersonHandler1}
+                        val={resourcePerson1}
+                      />
+                    </InputsContainer>
+                    <UploadContainer>
+                      <UploadTextDescription>
+                        Upload certificate of presentation here:
+                      </UploadTextDescription>
+                      <UploadFileContainer>
+                        <UploadFileButton
+                          fileHandler={setCertificateFileHandler1}
+                          workloadFileName={certificateFile1?.name}
+                        />
+                      </UploadFileContainer>
+                    </UploadContainer>
+                  </ResourcePersonContainer>
+                  <ResourcePersonContainer>
+                    <InputsContainer>
+                      <Dropdown
+                        option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                        label="Resource Person in an Extension Activity"
+                        onSelect={resourcePersonHandler2}
+                        val={resourcePerson2}
+                      />
+                    </InputsContainer>
+                    <UploadContainer>
+                      <UploadTextDescription>
+                        Upload certificate of presentation here:
+                      </UploadTextDescription>
+                      <UploadFileContainer>
+                        <UploadFileButton
+                          fileHandler={setCertificateFileHandler2}
+                          workloadFileName={certificateFile2?.name}
+                        />
+                      </UploadFileContainer>
+                    </UploadContainer>
+                  </ResourcePersonContainer>
                 </div>
               </div>
             </SubContainer>
@@ -447,6 +564,8 @@ const InputsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: auto;
+  justify-content: center;
+  align-items: center;
 `;
 
 const UploadContainer = styled.div`
@@ -484,13 +603,19 @@ const Label = styled.label`
   font-weight: 400;
 `;
 
-const TextInput = styled.input``;
+const TextInput = styled.input`
+  max-width: 100px;
+`;
 
 const FooterContainer = styled.div`
   margin-top: auto;
   align-self: flex-end;
   width: 100%;
   z-index: 1;
+`;
+
+const ResourcePersonContainer = styled.div`
+  display: flex;
 `;
 
 export default ExtensionWorkload;

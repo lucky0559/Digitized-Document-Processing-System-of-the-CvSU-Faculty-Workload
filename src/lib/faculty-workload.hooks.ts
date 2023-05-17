@@ -159,16 +159,36 @@ export const SaveExtensionWorkload = async (
     extensionWorkload.summaryOfHoursFile
   ) {
     try {
-      const certificateFile = await extensionActivityS3.uploadFile(
-        extensionWorkload.certificateFile
-      );
+      let certificateFile;
+      let certificateFile1;
+      let certificateFile2;
+      if (extensionWorkload.certificateFile[0]) {
+        certificateFile = await extensionActivityS3.uploadFile(
+          extensionWorkload.certificateFile[0]
+        );
+      }
+      if (extensionWorkload.certificateFile[1]) {
+        certificateFile1 = await extensionActivityS3.uploadFile(
+          extensionWorkload.certificateFile[1]
+        );
+      }
+      if (extensionWorkload.certificateFile[2]) {
+        certificateFile2 = await extensionActivityS3.uploadFile(
+          extensionWorkload.certificateFile[2]
+        );
+      }
+
       const extensionActivityFile = await extensionCertificateFileS3.uploadFile(
         extensionWorkload.extensionActivityFile
       );
       const summaryOfHoursFile = await extensionSummaryHoursS3.uploadFile(
         extensionWorkload.summaryOfHoursFile
       );
-      extensionWorkload.certificateFilePath = certificateFile.location;
+      extensionWorkload.certificateFilePath = [
+        certificateFile?.location!,
+        certificateFile1?.location!,
+        certificateFile2?.location!
+      ].filter(Boolean);
       extensionWorkload.extensionActivityFilePath =
         extensionActivityFile.location;
       extensionWorkload.summaryOfHoursFilePath = summaryOfHoursFile.location;
