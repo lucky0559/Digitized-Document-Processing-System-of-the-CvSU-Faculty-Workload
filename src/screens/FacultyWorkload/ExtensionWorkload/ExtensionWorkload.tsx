@@ -232,32 +232,32 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
     summaryOfHoursFileHandler(file);
   };
 
-  useEffect(() => {
-    if (
-      designationExtensionActivity?.includes("Project Leader") &&
-      extensionActivityFile
-    ) {
-      setDesignationActivityPoints(designationActivityPoints + 3);
-    }
-    if (
-      designationExtensionActivity?.includes("Project Coordinator") &&
-      extensionActivityFile
-    ) {
-      setDesignationActivityPoints(designationActivityPoints + 2.5);
-    }
-    if (
-      designationExtensionActivity?.includes("Project Facilitator") &&
-      extensionActivityFile
-    ) {
-      setDesignationActivityPoints(designationActivityPoints + 2);
-    }
-    if (
-      designationExtensionActivity?.includes("Project Assistants") &&
-      extensionActivityFile
-    ) {
-      setDesignationActivityPoints(designationActivityPoints + 1);
-    }
-  }, [designationExtensionActivity, extensionActivityFile]);
+  // useEffect(() => {
+  //   if (
+  //     designationExtensionActivity?.includes("Project Leader") &&
+  //     extensionActivityFile
+  //   ) {
+  //     setDesignationActivityPoints(designationActivityPoints + 3);
+  //   }
+  //   if (
+  //     designationExtensionActivity?.includes("Project Coordinator") &&
+  //     extensionActivityFile
+  //   ) {
+  //     setDesignationActivityPoints(designationActivityPoints + 2.5);
+  //   }
+  //   if (
+  //     designationExtensionActivity?.includes("Project Facilitator") &&
+  //     extensionActivityFile
+  //   ) {
+  //     setDesignationActivityPoints(designationActivityPoints + 2);
+  //   }
+  //   if (
+  //     designationExtensionActivity?.includes("Project Assistants") &&
+  //     extensionActivityFile
+  //   ) {
+  //     setDesignationActivityPoints(designationActivityPoints + 1);
+  //   }
+  // }, [designationExtensionActivity, extensionActivityFile]);
 
   useEffect(() => {
     if (resourcePerson === "International" && certificateFile) {
@@ -302,29 +302,58 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   }, [resourcePersonPoints, resourcePersonPoints1, resourcePersonPoints2]);
 
   const onChangeValueCheckbox = (isChecked: boolean, value: string) => {
-    console.log(isChecked, value);
     if (isChecked) {
       if (value === "Project Leader") {
         setLeader("Project Leader");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints + 3);
+        }
       } else if (value === "Project Coordinator") {
         setCoordinator("Project Coordinator");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints + 2.5);
+        }
       } else if (value === "Project Facilitator") {
         setFacilitator("Project Facilitator");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints + 2);
+        }
       } else {
         setAssistants("Project Assistants");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints + 1);
+        }
       }
     } else {
       if (value === "Project Leader") {
         setLeader("");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints - 3);
+        }
       } else if (value === "Project Coordinator") {
         setCoordinator("");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints - 2.5);
+        }
       } else if (value === "Project Facilitator") {
         setFacilitator("");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints - 2);
+        }
       } else {
         setAssistants("");
+        if (extensionActivityFile) {
+          setDesignationActivityPoints(designationActivityPoints - 1);
+        }
       }
     }
   };
+
+  useEffect(() => {
+    setDesignationExtensionActivity(
+      [leader, coordinator, facilitator, assistants].filter(Boolean)
+    );
+  }, [leader, coordinator, facilitator, assistants]);
 
   return (
     <MainContainer>
