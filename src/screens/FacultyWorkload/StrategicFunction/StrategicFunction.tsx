@@ -1153,7 +1153,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                     </Label>
                   </div>
                   <FormButton
-                    text="Submit"
+                    text="Save"
                     onClicked={onNextSubmit}
                     isSubmitting={isSubmitting}
                   ></FormButton>

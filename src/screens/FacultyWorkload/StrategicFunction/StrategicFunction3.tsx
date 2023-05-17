@@ -124,7 +124,7 @@ const StrategicFunction3 = ({
         </ButtonContainer>
         <ButtonContainer>
           <FormButton
-            text="Submit"
+            text="Save"
             onClicked={setStrategicFunction3Handler}
             isSubmitting={isSubmitting}
           ></FormButton>

@@ -151,7 +151,7 @@ const ResearchWorkload3 = ({
           style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
         >
           <FormButton
-            text="Submit"
+            text="Save"
             onClicked={researchWorkLoadHandler3}
             isSubmitting={isSubmitting}
             disabled={

@@ -172,7 +172,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
               Total Teaching Workload = {points.toFixed(2).toString()}
             </Label>
             <FormButton
-              text="Submit"
+              text="Save"
               onClicked={onSubmit}
               isSubmitting={isSubmitting}
               disabled={

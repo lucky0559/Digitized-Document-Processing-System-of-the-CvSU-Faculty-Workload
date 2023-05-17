@@ -559,7 +559,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                 </Label>
               </div>
               <FormButton
-                text="Submit"
+                text="Save"
                 onClicked={extensionWorkloadHandler}
                 isSubmitting={isSubmitting}
                 disabled={
