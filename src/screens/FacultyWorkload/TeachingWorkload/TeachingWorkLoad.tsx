@@ -143,6 +143,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
                   type="number"
                   value={contactHours}
                   onChange={e => contactHoursHandler(e.target.value)}
+                  min={0}
                 />
               </TextInputContainer>
               <TextInputContainer>
@@ -152,6 +153,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
                   type="number"
                   value={totalNoOfStudents}
                   onChange={e => totalNoOfStudentsHandler(e.target.value)}
+                  min={0}
                 />
               </TextInputContainer>
               <UploadFileContainer>
