@@ -65,7 +65,7 @@ function TextInputWithTitlePointUpload({
           {textField ? (
             <Input
               style={{ textAlign: "center" }}
-              value={Number(pointsVal) * 0.023}
+              value={!pointsVal ? 0 : (Number(pointsVal) * 0.023).toFixed(2)}
               disabled={true}
             />
           ) : (
