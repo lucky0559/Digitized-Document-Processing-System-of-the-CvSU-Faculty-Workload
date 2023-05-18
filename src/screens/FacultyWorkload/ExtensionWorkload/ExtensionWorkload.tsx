@@ -426,7 +426,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       >
                         <InputsContainer
                           style={{
-                            alignSelf: "center",
+                            alignSelf: "end",
                             alignItems: "flex-start",
                             justifyContent: "flex-start",
                             flexDirection: "row"
