@@ -9,6 +9,7 @@ import ProfileTab from "../../../components/ProfileTab";
 import ScreenTitle from "../../../components/ScreenTitle";
 import StrategicFunction1 from "./StrategicFunction1";
 import StrategicFunction2 from "./StrategicFunction2";
+import { WorkloadType } from "../../../constants/Strings";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -676,9 +677,13 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
         />
         <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
         <BodyContainer>
-          <ScreenTitle title="Strategic Functions (SF)" />
+          <ScreenTitle title="Faculty Workload" />
+          {/* <ScreenTitle title="Strategic Functions (SF)" /> */}
           <Container>
             <>
+              <WorkloadTextContainer>
+                <WorkloadText>{WorkloadType.STRATEGIC_FUNCTION}</WorkloadText>
+              </WorkloadTextContainer>
               <StrategicFunction1
                 onUniversityLevelSelect1={onSelectDesignationUniversity1}
                 onUniversityLevelSelect2={onSelectDesignationUniversity2}
@@ -1225,6 +1230,18 @@ const Label = styled.label`
 const FormFooterContainer = styled.div`
   display: flex;
   width: 100%;
+`;
+
+const WorkloadTextContainer = styled.div`
+  display: flex;
+  align-self: flex-start;
+`;
+
+const WorkloadText = styled.text`
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 20px;
+  font-family: HurmeGeometricSans3;
 `;
 
 export default StrategicFunction;
