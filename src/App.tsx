@@ -21,9 +21,7 @@ function App() {
   const [user, setUser] = useState<User>();
 
   const hasAccessInFacultyWorkloads =
-    userRole === "Department Chairperson" ||
-    userRole === "Dean" ||
-    userRole === "Faculty";
+    userRole === "Department Chairperson" || userRole === "Faculty";
 
   const hasAccessInWorkloadReview =
     userRole === "Department Chairperson" ||

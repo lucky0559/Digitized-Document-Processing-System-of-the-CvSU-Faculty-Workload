@@ -30,57 +30,65 @@ const Menu = ({
           </NavButtonText>
         </NavButtonContainer>
       )}
-      {userRole !== "System Administrator" && userRole !== "OVPAA" && (
-        <>
-          <NavButtonContainer onClick={facultySubMenuHandler}>
-            <NavButtonText
-              isActive={
-                location === "/teaching-workload" ||
-                location === "/research-workload" ||
-                location === "/extension-workload" ||
-                location === "/strategic-function-workload"
-              }
-            >
-              Faculty Workload
-            </NavButtonText>
-          </NavButtonContainer>
+      {userRole !== "System Administrator" &&
+        userRole !== "OVPAA" &&
+        userRole !== "Dean" && (
+          <>
+            <NavButtonContainer onClick={facultySubMenuHandler}>
+              <NavButtonText
+                isActive={
+                  location === "/teaching-workload" ||
+                  location === "/research-workload" ||
+                  location === "/extension-workload" ||
+                  location === "/strategic-function-workload"
+                }
+              >
+                Faculty Workload
+              </NavButtonText>
+            </NavButtonContainer>
 
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/teaching-workload"}
-              onClick={() => navigate("/teaching-workload", { replace: true })}
-            >
-              Teaching Workload
-            </SubMenuText>
-          </SubMenuContainer>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/research-workload"}
-              onClick={() => navigate("/research-workload", { replace: true })}
-            >
-              Research Workload
-            </SubMenuText>
-          </SubMenuContainer>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/extension-workload"}
-              onClick={() => navigate("/extension-workload", { replace: true })}
-            >
-              Extension Workload
-            </SubMenuText>
-          </SubMenuContainer>
-          <SubMenuContainer>
-            <SubMenuText
-              isActive={location === "/strategic-function-workload"}
-              onClick={() =>
-                navigate("/strategic-function-workload", { replace: true })
-              }
-            >
-              Strategic Function
-            </SubMenuText>
-          </SubMenuContainer>
-        </>
-      )}
+            <SubMenuContainer>
+              <SubMenuText
+                isActive={location === "/teaching-workload"}
+                onClick={() =>
+                  navigate("/teaching-workload", { replace: true })
+                }
+              >
+                Teaching Workload
+              </SubMenuText>
+            </SubMenuContainer>
+            <SubMenuContainer>
+              <SubMenuText
+                isActive={location === "/research-workload"}
+                onClick={() =>
+                  navigate("/research-workload", { replace: true })
+                }
+              >
+                Research Workload
+              </SubMenuText>
+            </SubMenuContainer>
+            <SubMenuContainer>
+              <SubMenuText
+                isActive={location === "/extension-workload"}
+                onClick={() =>
+                  navigate("/extension-workload", { replace: true })
+                }
+              >
+                Extension Workload
+              </SubMenuText>
+            </SubMenuContainer>
+            <SubMenuContainer>
+              <SubMenuText
+                isActive={location === "/strategic-function-workload"}
+                onClick={() =>
+                  navigate("/strategic-function-workload", { replace: true })
+                }
+              >
+                Strategic Function
+              </SubMenuText>
+            </SubMenuContainer>
+          </>
+        )}
 
       {userRole === "Dean" ||
       userRole === "Department Chairperson" ||
