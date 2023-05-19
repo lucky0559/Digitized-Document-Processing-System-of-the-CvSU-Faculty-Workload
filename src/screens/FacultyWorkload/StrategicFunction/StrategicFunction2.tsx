@@ -122,7 +122,6 @@ function StrategicFunction2({
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
-            uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation2}
             val={displayDesignationDepartment2}
@@ -135,7 +134,6 @@ function StrategicFunction2({
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
-            uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation3}
             val={displayDesignationDepartment3}
@@ -148,7 +146,6 @@ function StrategicFunction2({
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
-            uploadLabel="Upload approved department designation here:"
             onChangeTextInput={textInputDepartmentDesignation4}
             val={departmentLevelInputDesignation}
             onFileSelect={onFileCustomDepartmentLevelSelect}

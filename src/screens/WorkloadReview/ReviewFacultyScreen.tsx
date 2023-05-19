@@ -319,7 +319,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
             })}
           </WorkloadDetailContainer>
           <ComputationContainer>
-            <BoldText>
+            <BoldText style={{ marginBottom: 30 }}>
               TWL + RWL + EWL + SF = TOTAL EARNED CREDIT UNITS
             </BoldText>
             <BoldText>
@@ -353,6 +353,7 @@ const Container = styled.div`
   border-radius: 15px;
   margin: 10px auto;
   padding: 20px;
+  width: 80%;
 `;
 
 const UserInfoContainer = styled.div`

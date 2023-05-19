@@ -6,7 +6,7 @@ import UploadFileButton from "./UploadFileButton";
 type DropdownWithUploadProps = {
   inputLabel: string;
   options: string[];
-  uploadLabel: string;
+  uploadLabel?: string;
   onSelect: (value: string) => void;
   onFileSelect: (file?: File) => void;
   val?: string;
@@ -59,16 +59,21 @@ const Label = styled.label`
   width: 250px;
   display: block;
   overflow: hidden;
+  text-align: center;
 `;
 
 const InputContainer = styled.div`
   margin: 10px 20px 10px 10px;
   display: flex;
+  align-self: flex-end;
 `;
 
 const UploadContainer = styled.div`
   margin: 10px 20px 10px 10px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default DropdownWithUpload;

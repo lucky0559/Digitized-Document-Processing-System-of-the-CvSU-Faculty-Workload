@@ -93,7 +93,6 @@ function StrategicFunction1({
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
-            uploadLabel="Upload approved university designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
             onSelect={onUniversityLevelSelect2}
             val={displayDesignationUniversity2}
@@ -106,7 +105,6 @@ function StrategicFunction1({
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
-            uploadLabel="Upload approved university designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_UNIVERSITY_LEVEL}
             onSelect={onUniversityLevelSelect3}
             val={displayDesignationUniversity3}
@@ -119,7 +117,6 @@ function StrategicFunction1({
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
-            uploadLabel="Upload approved university designation here:"
             onChangeTextInput={textInputUniversityLevel4}
             val={universityLevelInputDesignation}
             onFileSelect={onFileCustomUniversityLevelSelect}
@@ -145,7 +142,6 @@ function StrategicFunction1({
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
-            uploadLabel="Upload approved college designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_COLLEGE_CAMPUS_LEVEL}
             onSelect={onCollegeCampusLevelSelect2}
             val={displayDesignationCollegeCampus2}
@@ -158,7 +154,6 @@ function StrategicFunction1({
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
-            uploadLabel="Upload approved college designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_COLLEGE_CAMPUS_LEVEL}
             onSelect={onCollegeCampusLevelSelect3}
             val={displayDesignationCollegeCampus3}
@@ -171,7 +166,6 @@ function StrategicFunction1({
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
-            uploadLabel="Upload approved college designation here:"
             onChangeTextInput={textInputCollegeCampusLevel4}
             val={collegeCampusLevelInputDesignation}
             onFileSelect={onFileCustomCollegeCampusLevelSelect}
