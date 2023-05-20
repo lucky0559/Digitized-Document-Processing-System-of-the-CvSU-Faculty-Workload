@@ -432,7 +432,8 @@ const GroupButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 30%;
+  width: 50%;
+  max-width: 280px;
 `;
 
 export default ReviewFacultyScreen;
