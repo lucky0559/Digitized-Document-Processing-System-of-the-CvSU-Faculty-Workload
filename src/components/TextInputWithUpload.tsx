@@ -57,6 +57,7 @@ const InputContainer = styled.div`
   display: flex;
   align-items: start;
   justify-content: flex-start;
+  width: 50%;
 `;
 
 const UploadContainer = styled.div`
@@ -66,6 +67,7 @@ const UploadContainer = styled.div`
 
 const Input = styled.input`
   margin-left: 42px;
+  width: 100%;
 `;
 
 export default TextInputWithUpload;
