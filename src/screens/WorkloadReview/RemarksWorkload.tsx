@@ -62,13 +62,15 @@ function RemarksWorkload({ user }: WorkloadProps) {
         }}
       >
         <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
-        <div style={{ marginRight: 50 }}>
-          <WorkloadHeaderText>Evaluated Workload(OVPAA)</WorkloadHeaderText>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <WorkloadHeaderText>Points</WorkloadHeaderText>
-            <WorkloadHeaderText>Remarks</WorkloadHeaderText>
+        {userRole === "OVPAA" && (
+          <div style={{ marginRight: 50 }}>
+            <WorkloadHeaderText>Evaluated Workload(OVPAA)</WorkloadHeaderText>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <WorkloadHeaderText>Points</WorkloadHeaderText>
+              <WorkloadHeaderText>Remarks</WorkloadHeaderText>
+            </div>
           </div>
-        </div>
+        )}
       </WorkloadHeaderContainer>
       {isDataLoading && !teachingWorkloads
         ? null
@@ -121,17 +123,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                             Attachment
                           </ThinText>
                         </a>
-                        <div
-                          style={{
-                            width: 277,
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints type="number" min={0} />
-                          <InputRemarks />
-                        </div>
+                        {userRole === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 277,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints type="number" min={0} />
+                            <InputRemarks />
+                          </div>
+                        )}
                       </div>
                     )}
                   </ColumnContainer>
@@ -226,17 +230,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                             Attachment
                           </ThinText>
                         </a>
-                        <div
-                          style={{
-                            width: 277,
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints type="number" min={0} />
-                          <InputRemarks />
-                        </div>
+                        {userRole === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 277,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints type="number" min={0} />
+                            <InputRemarks />
+                          </div>
+                        )}
                       </div>
                     )}
                     {workload.disseminatedResearchFilesPath &&
@@ -274,17 +280,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                 Attachment
                               </ThinText>
                             </a>
-                            <div
-                              style={{
-                                width: 277,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints type="number" min={0} />
-                              <InputRemarks />
-                            </div>
+                            {userRole === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 277,
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints type="number" min={0} />
+                                <InputRemarks />
+                              </div>
+                            )}
                           </div>
                         );
                       })}
@@ -321,17 +329,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                             Attachment
                           </ThinText>
                         </a>
-                        <div
-                          style={{
-                            width: 277,
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints type="number" min={0} />
-                          <InputRemarks />
-                        </div>
+                        {userRole === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 277,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints type="number" min={0} />
+                            <InputRemarks />
+                          </div>
+                        )}
                       </div>
                     )}
                   </ColumnContainer>
@@ -428,17 +438,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                             Attachment
                           </ThinText>
                         </a>
-                        <div
-                          style={{
-                            width: 277,
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints type="number" min={0} />
-                          <InputRemarks />
-                        </div>
+                        {userRole === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 277,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints type="number" min={0} />
+                            <InputRemarks />
+                          </div>
+                        )}
                       </div>
                     )}
                     {workload.certificateFilePath?.map(filePath => {
@@ -475,17 +487,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                               Attachment
                             </ThinText>
                           </a>
-                          <div
-                            style={{
-                              width: 277,
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginRight: 15
-                            }}
-                          >
-                            <InputPoints type="number" min={0} />
-                            <InputRemarks />
-                          </div>
+                          {userRole === "OVPAA" && (
+                            <div
+                              style={{
+                                width: 277,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginRight: 15
+                              }}
+                            >
+                              <InputPoints type="number" min={0} />
+                              <InputRemarks />
+                            </div>
+                          )}
                         </div>
                       );
                     })}
@@ -522,17 +536,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                             Attachment
                           </ThinText>
                         </a>
-                        <div
-                          style={{
-                            width: 277,
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints type="number" min={0} />
-                          <InputRemarks />
-                        </div>
+                        {userRole === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 277,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints type="number" min={0} />
+                            <InputRemarks />
+                          </div>
+                        )}
                       </div>
                     )}
                   </ColumnContainer>
@@ -661,17 +677,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                       Attachment
                                     </ThinText>
                                   </a>
-                                  <div
-                                    style={{
-                                      width: 277,
-                                      display: "flex",
-                                      justifyContent: "space-between",
-                                      marginRight: 15
-                                    }}
-                                  >
-                                    <InputPoints type="number" min={0} />
-                                    <InputRemarks />
-                                  </div>
+                                  {userRole === "OVPAA" && (
+                                    <div
+                                      style={{
+                                        width: 277,
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        marginRight: 15
+                                      }}
+                                    >
+                                      <InputPoints type="number" min={0} />
+                                      <InputRemarks />
+                                    </div>
+                                  )}
                                 </div>
                               );
                             }
@@ -721,17 +739,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                       Attachment
                                     </ThinText>
                                   </a>
-                                  <div
-                                    style={{
-                                      width: 277,
-                                      display: "flex",
-                                      justifyContent: "space-between",
-                                      marginRight: 15
-                                    }}
-                                  >
-                                    <InputPoints type="number" min={0} />
-                                    <InputRemarks />
-                                  </div>
+                                  {userRole === "OVPAA" && (
+                                    <div
+                                      style={{
+                                        width: 277,
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        marginRight: 15
+                                      }}
+                                    >
+                                      <InputPoints type="number" min={0} />
+                                      <InputRemarks />
+                                    </div>
+                                  )}
                                 </div>
                               );
                             }
@@ -781,17 +801,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                       Attachment
                                     </ThinText>
                                   </a>
-                                  <div
-                                    style={{
-                                      width: 277,
-                                      display: "flex",
-                                      justifyContent: "space-between",
-                                      marginRight: 15
-                                    }}
-                                  >
-                                    <InputPoints type="number" min={0} />
-                                    <InputRemarks />
-                                  </div>
+                                  {userRole === "OVPAA" && (
+                                    <div
+                                      style={{
+                                        width: 277,
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        marginRight: 15
+                                      }}
+                                    >
+                                      <InputPoints type="number" min={0} />
+                                      <InputRemarks />
+                                    </div>
+                                  )}
                                 </div>
                               );
                             }
@@ -841,17 +863,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                 Attachment
                               </ThinText>
                             </a>
-                            <div
-                              style={{
-                                width: 277,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints type="number" min={0} />
-                              <InputRemarks />
-                            </div>
+                            {userRole === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 277,
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints type="number" min={0} />
+                                <InputRemarks />
+                              </div>
+                            )}
                           </div>
                         )}
                         {workload.designationAsSportTrainorAcademicFilePath1 && (
@@ -889,17 +913,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                 Attachment
                               </ThinText>
                             </a>
-                            <div
-                              style={{
-                                width: 277,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints type="number" min={0} />
-                              <InputRemarks />
-                            </div>
+                            {userRole === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 277,
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints type="number" min={0} />
+                                <InputRemarks />
+                              </div>
+                            )}
                           </div>
                         )}
                       </ColumnContainer>
@@ -945,17 +971,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                 Attachment
                               </ThinText>
                             </a>
-                            <div
-                              style={{
-                                width: 277,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints type="number" min={0} />
-                              <InputRemarks />
-                            </div>
+                            {userRole === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 277,
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints type="number" min={0} />
+                                <InputRemarks />
+                              </div>
+                            )}
                           </div>
                         )}
                         {workload.memberAdhocFilePath1 && (
@@ -991,17 +1019,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                 Attachment
                               </ThinText>
                             </a>
-                            <div
-                              style={{
-                                width: 277,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints type="number" min={0} />
-                              <InputRemarks />
-                            </div>
+                            {userRole === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 277,
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints type="number" min={0} />
+                                <InputRemarks />
+                              </div>
+                            )}
                           </div>
                         )}
                       </ColumnContainer>
@@ -1046,17 +1076,19 @@ function RemarksWorkload({ user }: WorkloadProps) {
                                 Attachment
                               </ThinText>
                             </a>
-                            <div
-                              style={{
-                                width: 277,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints type="number" min={0} />
-                              <InputRemarks />
-                            </div>
+                            {userRole === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 277,
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints type="number" min={0} />
+                                <InputRemarks />
+                              </div>
+                            )}
                           </div>
                         )}
                       </ColumnContainer>
