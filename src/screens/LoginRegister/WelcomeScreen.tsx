@@ -20,9 +20,9 @@ const WelcomeScreen = ({ UseLogin, user }: WelcomeScreenProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userId?.length! > 0 && userRole === "System Administrator") {
+    if (user && user.role === "System Administrator") {
       navigate("/accounts", { replace: true });
-    } else if (userId?.length! > 0 && userRole !== "System Administrator") {
+    } else if (user && user.role !== "System Administrator") {
       navigate("/teaching-workload", { replace: true });
     }
   }, []);

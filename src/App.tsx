@@ -21,18 +21,18 @@ function App() {
   const [user, setUser] = useState<User>();
 
   const hasAccessInFacultyWorkloads =
-    userRole === "Department Chairperson" || userRole === "Faculty";
+    user?.role === "Department Chairperson" || user?.role === "Faculty";
 
   const hasAccessInWorkloadReview =
-    userRole === "Department Chairperson" ||
-    userRole === "Dean" ||
-    userRole === "OVPAA" ||
-    userRole === "Faculty";
+    user?.role === "Department Chairperson" ||
+    user?.role === "Dean" ||
+    user?.role === "OVPAA" ||
+    user?.role === "Faculty";
 
   const hasAccessInReports =
-    userRole === "Department Chairperson" ||
-    userRole === "Dean" ||
-    userRole === "OVPAA";
+    user?.role === "Department Chairperson" ||
+    user?.role === "Dean" ||
+    user?.role === "OVPAA";
 
   const userId = localStorage.getItem("userId");
 
@@ -40,8 +40,8 @@ function App() {
 
   const UseLogin = async (values: LoginDTO) => {
     await Login(values).then(res => {
-      localStorage.setItem("userId", res.data.id);
-      localStorage.setItem("role", res.data.role);
+      // localStorage.setItem("userId", res.data.id);
+      // localStorage.setItem("role", res.data.role);
       if (res.data.role === "System Administrator") {
         navigate("accounts", { replace: true });
       } else {
@@ -52,8 +52,8 @@ function App() {
   };
 
   const UseLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("role");
     setUser(undefined);
     navigate("/", { replace: true });
   };
@@ -65,13 +65,7 @@ function App() {
         <Route
           path="/teaching-workload"
           element={
-            <Protected
-              isSignedIn={
-                !!userId &&
-                !!(userId && userRole) &&
-                hasAccessInFacultyWorkloads
-              }
-            >
+            <Protected isSignedIn={!!user && hasAccessInFacultyWorkloads}>
               <TeachingWorkLoad UseLogout={UseLogout} />
             </Protected>
           }
@@ -79,12 +73,7 @@ function App() {
         <Route
           path="/research-workload"
           element={
-            <Protected
-              isSignedIn={
-                (!!user && !!(userId && userRole)) ||
-                hasAccessInFacultyWorkloads
-              }
-            >
+            <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
               <ResearchWorkload UseLogout={UseLogout} />
             </Protected>
           }
@@ -92,12 +81,7 @@ function App() {
         <Route
           path="/extension-workload"
           element={
-            <Protected
-              isSignedIn={
-                (!!user && !!(userId && userRole)) ||
-                hasAccessInFacultyWorkloads
-              }
-            >
+            <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
               <ExtensionWorkload UseLogout={UseLogout} />
             </Protected>
           }
@@ -105,12 +89,7 @@ function App() {
         <Route
           path="/strategic-function-workload"
           element={
-            <Protected
-              isSignedIn={
-                (!!user && !!(userId && userRole)) ||
-                hasAccessInFacultyWorkloads
-              }
-            >
+            <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
               <StrategicFunction UseLogout={UseLogout} />
             </Protected>
           }
@@ -124,9 +103,7 @@ function App() {
           path="/profile"
           element={
             <Protected
-              isSignedIn={
-                !!user || !!(userId && userRole !== "System Administrator")
-              }
+              isSignedIn={!!(user && user.role !== "System Administrator")}
             >
               <Profile UseLogout={UseLogout} />
             </Protected>
@@ -135,11 +112,7 @@ function App() {
         <Route
           path="/workload-review"
           element={
-            <Protected
-              isSignedIn={
-                (!!user && !!(userId && userRole)) || hasAccessInWorkloadReview
-              }
-            >
+            <Protected isSignedIn={!!user || hasAccessInWorkloadReview}>
               <WorkloadReviewScreen UseLogout={UseLogout} />
             </Protected>
           }
@@ -147,11 +120,7 @@ function App() {
         <Route
           path="/reports"
           element={
-            <Protected
-              isSignedIn={
-                (!!user && !!(userId && userRole)) || hasAccessInReports
-              }
-            >
+            <Protected isSignedIn={!!user || hasAccessInReports}>
               <ReportsScreen UseLogout={UseLogout} />
             </Protected>
           }
@@ -161,9 +130,7 @@ function App() {
           path="/accounts"
           element={
             <Protected
-              isSignedIn={
-                !!user || !!(userId && userRole === "System Administrator")
-              }
+              isSignedIn={!!(user && user.role === "System Administrator")}
             >
               <AccountsScreen UseLogout={UseLogout} />
             </Protected>
