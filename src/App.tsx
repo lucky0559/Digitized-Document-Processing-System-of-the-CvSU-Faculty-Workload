@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Login, LoginDTO } from "./lib/user.hooks";
 import AccountsScreen from "./screens/Admin/AccountsScreen";
@@ -14,6 +14,8 @@ import VerifyScreen from "./screens/Verify/VerifyScreen";
 import WorkloadReviewScreen from "./screens/WorkloadReview/WorkloadReviewScreen";
 import { User } from "./types/User";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
+
+export const UserContext = createContext<any>(null);
 
 function App() {
   const userRole = localStorage.getItem("role");
@@ -60,83 +62,85 @@ function App() {
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<WelcomeScreen UseLogin={UseLogin} />} />
-        <Route
-          path="/teaching-workload"
-          element={
-            <Protected isSignedIn={!!user && hasAccessInFacultyWorkloads}>
-              <TeachingWorkLoad UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route
-          path="/research-workload"
-          element={
-            <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
-              <ResearchWorkload UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route
-          path="/extension-workload"
-          element={
-            <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
-              <ExtensionWorkload UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route
-          path="/strategic-function-workload"
-          element={
-            <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
-              <StrategicFunction UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route path="verify/:token" element={<VerifyScreen />} />
-        <Route
-          path="reset-password/:resetPasswordCode"
-          element={<ResetPasswordScreen />}
-        />
-        <Route
-          path="/profile"
-          element={
-            <Protected
-              isSignedIn={!!(user && user.role !== "System Administrator")}
-            >
-              <Profile UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route
-          path="/workload-review"
-          element={
-            <Protected isSignedIn={!!user || hasAccessInWorkloadReview}>
-              <WorkloadReviewScreen UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route
-          path="/reports"
-          element={
-            <Protected isSignedIn={!!user || hasAccessInReports}>
-              <ReportsScreen UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-        <Route path="*" element={<UnauthorizedPage />} />
-        <Route
-          path="/accounts"
-          element={
-            <Protected
-              isSignedIn={!!(user && user.role === "System Administrator")}
-            >
-              <AccountsScreen UseLogout={UseLogout} />
-            </Protected>
-          }
-        />
-      </Routes>
+      <UserContext.Provider value={{ user: user }}>
+        <Routes>
+          <Route path="/" element={<WelcomeScreen UseLogin={UseLogin} />} />
+          <Route
+            path="/teaching-workload"
+            element={
+              <Protected isSignedIn={!!user && hasAccessInFacultyWorkloads}>
+                <TeachingWorkLoad UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route
+            path="/research-workload"
+            element={
+              <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
+                <ResearchWorkload UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route
+            path="/extension-workload"
+            element={
+              <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
+                <ExtensionWorkload UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route
+            path="/strategic-function-workload"
+            element={
+              <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
+                <StrategicFunction UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route path="verify/:token" element={<VerifyScreen />} />
+          <Route
+            path="reset-password/:resetPasswordCode"
+            element={<ResetPasswordScreen />}
+          />
+          <Route
+            path="/profile"
+            element={
+              <Protected
+                isSignedIn={!!(user && user.role !== "System Administrator")}
+              >
+                <Profile UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route
+            path="/workload-review"
+            element={
+              <Protected isSignedIn={!!user || hasAccessInWorkloadReview}>
+                <WorkloadReviewScreen UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <Protected isSignedIn={!!user || hasAccessInReports}>
+                <ReportsScreen UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route path="*" element={<UnauthorizedPage />} />
+          <Route
+            path="/accounts"
+            element={
+              <Protected
+                isSignedIn={!!(user && user.role === "System Administrator")}
+              >
+                <AccountsScreen UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+        </Routes>
+      </UserContext.Provider>
     </>
   );
 }

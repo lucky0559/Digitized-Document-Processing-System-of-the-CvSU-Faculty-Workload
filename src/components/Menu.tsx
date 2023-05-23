@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Colors from "../constants/Colors";
+import { UserContext } from "../App";
+import { User } from "../types/User";
 
 type MenuProps = {
   isFacultySubmenuOpen: boolean;
@@ -17,10 +19,11 @@ const Menu = ({
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
   const location = window.location.pathname;
+  const { user } = useContext(UserContext);
 
   return (
     <Container position={position}>
-      {userRole === "System Administrator" && (
+      {user.role === "System Administrator" && (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/accounts", { replace: true })}
@@ -30,9 +33,9 @@ const Menu = ({
           </NavButtonText>
         </NavButtonContainer>
       )}
-      {userRole !== "System Administrator" &&
-        userRole !== "OVPAA" &&
-        userRole !== "Dean" && (
+      {user.role !== "System Administrator" &&
+        user.role !== "OVPAA" &&
+        user.role !== "Dean" && (
           <>
             <NavButtonContainer onClick={facultySubMenuHandler}>
               <NavButtonText
@@ -90,10 +93,10 @@ const Menu = ({
           </>
         )}
 
-      {userRole === "Dean" ||
-      userRole === "Department Chairperson" ||
-      userRole === "OVPAA" ||
-      userRole === "Faculty" ? (
+      {user.role === "Dean" ||
+      user.role === "Department Chairperson" ||
+      user.role === "OVPAA" ||
+      user.role === "Faculty" ? (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/workload-review", { replace: true })}
@@ -104,10 +107,10 @@ const Menu = ({
         </NavButtonContainer>
       ) : null}
 
-      {userRole === "Dean" ||
-      userRole === "Department Chairperson" ||
-      userRole === "OVPAA" ||
-      userRole === "OVPAA" ? (
+      {user.role === "Dean" ||
+      user.role === "Department Chairperson" ||
+      user.role === "OVPAA" ||
+      user.role === "OVPAA" ? (
         <NavButtonContainer>
           <NavButtonText
             isActive={location === "/reports"}
