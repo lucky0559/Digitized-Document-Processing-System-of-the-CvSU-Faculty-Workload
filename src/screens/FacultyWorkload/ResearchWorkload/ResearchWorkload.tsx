@@ -38,14 +38,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const [designationStudyDisplay, setDesignationStudyDisplay] = useState<
     string | undefined
   >("");
-  const [disseminatedResearch, setDisseminatedResearch] = useState<
-    string | undefined
-  >("");
-  const [disseminatedResearchDisplay, setDisseminatedResearchDisplay] =
-    useState<string | undefined>("");
   const [rwlFile, setRwlFile] = useState<File>();
   const [rwlFile1, setRwlFile1] = useState<File>();
-  const [rwlFile2, setRwlFile2] = useState<File>();
   const [fundGenerated, setFundGenerated] = useState<string | undefined>("");
   const [fundGeneratedDisplay, setFundGeneratedDisplay] = useState<
     string | undefined
@@ -62,6 +56,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   const navigate = useNavigate();
+
+  const [isAddStudy, setIsAddStudy] = useState(false);
 
   const researchWorkLoadHandler = () => {
     if (fundingOfStudy) {
@@ -246,7 +242,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
   }, [fundGenerated]);
 
-  const researchWorkLoadHandler3 = () => {
+  const researchWorkLoadHandler3 = (isAddStudy: boolean) => {
+    setIsAddStudy(isAddStudy);
     setResearchWorkLoad({
       ...researchWorkLoad,
       disseminatedResearch: [
@@ -268,30 +265,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     researchWorkLoad!.rwlFilePath = undefined;
     onSubmit();
   };
-
-  const disseminatedResearchHandler = (value?: string) => {
-    setDisseminatedResearch(value);
-  };
-
-  const rwlFile2Handler = (value?: File) => {
-    setRwlFile2(value);
-  };
-
-  // useEffect(() => {
-  //   if (
-  //     disseminatedResearchDisplay !== researchWorkLoad?.disseminatedResearch
-  //   ) {
-  //     setResearchWorkLoad({
-  //       ...researchWorkLoad,
-  //       disseminatedResearch: disseminatedResearchDisplay
-  //     });
-  //   }
-  //   if (researchWorkLoad?.disseminatedResearch) {
-  //     setDisseminatedResearchDisplay(researchWorkLoad?.disseminatedResearch);
-  //   } else {
-  //     setDisseminatedResearchDisplay(disseminatedResearch);
-  //   }
-  // }, [disseminatedResearch]);
 
   const onSubmit = async () => {
     setIsSubmitting(true);
@@ -328,7 +301,12 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study3Points +
             study4Points;
           await SaveResearchWorkload(researchWorkLoad);
-          navigate("/extension-workload", { replace: true });
+          clearStates();
+          if (isAddStudy) {
+            navigate("/research-workload", { replace: true });
+          } else {
+            navigate("/extension-workload", { replace: true });
+          }
         } else {
           // for external funded
           let fundGeneratedPoints;
@@ -350,22 +328,46 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study3Points +
             study4Points;
           await SaveResearchWorkload(researchWorkLoad!);
-          navigate("/extension-workload", { replace: true });
+          clearStates();
+          if (isAddStudy) {
+            navigate("/research-workload", { replace: true });
+          } else {
+            navigate("/extension-workload", { replace: true });
+          }
         }
       }
-      clearStates();
+
       setIsSubmitting(false);
     })();
   }, [isSubmitting]);
 
   const clearStates = () => {
+    setResearchWorkLoad({});
+    setIsProfileOpen(false);
+    setIsSubmitting(false);
     setTitleOfStudy("");
     setFundingOfStudy("");
     setFundDisplay("");
     setTypeOfStudy("");
     setDesignationStudy("");
+    setDesignationStudyDisplay("");
     setRwlFile(undefined);
-    setResearchWorkLoad(undefined);
+    setRwlFile1(undefined);
+    setFundGenerated("");
+    setFundGeneratedDisplay("");
+    setIsFacultySubmenuOpen(false);
+    setSteps(1);
+    setPoints(0);
+    setStudy1(undefined);
+    setStudy2(undefined);
+    setStudy3(undefined);
+    setStudy4(undefined);
+    designationStudyPoints = 0;
+    setFundGeneratedPoints(0);
+    setStudy1Points(0);
+    setStudy2Points(0);
+    setStudy3Points(0);
+    setStudy4Points(0);
   };
 
   const [study1, setStudy1] = useState<Designation>();

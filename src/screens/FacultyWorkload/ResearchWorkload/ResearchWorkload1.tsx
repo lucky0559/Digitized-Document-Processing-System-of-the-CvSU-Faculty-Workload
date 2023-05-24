@@ -42,7 +42,7 @@ type ResearchWorkload1Props = {
   study3Points: number;
   study4Points: number;
   fundGeneratedPoints: number;
-  researchWorkLoadHandler3: () => void;
+  researchWorkLoadHandler3: (value: boolean) => void;
 };
 
 const ResearchWorkload1 = ({

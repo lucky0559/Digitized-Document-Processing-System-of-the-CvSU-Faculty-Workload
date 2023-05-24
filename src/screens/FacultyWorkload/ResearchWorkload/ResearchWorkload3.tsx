@@ -7,7 +7,7 @@ import FormButton from "../../../components/FormButton";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
 
 type ResearchWorkload3Props = {
-  researchWorkLoadHandler3: () => void;
+  researchWorkLoadHandler3: (value: boolean) => void;
   backHandler: () => void;
   isSubmitting: boolean;
   onSelectStudy1: (value: string) => void;
@@ -123,12 +123,18 @@ const ResearchWorkload3 = ({
           />
         </div>
       </SubContainer>
-      <AddStudyContainer>
-        <AddStudyText>
-          Add another disseminated research output in College or University
-          In-House Review/Conferences
-        </AddStudyText>
-      </AddStudyContainer>
+      {(study1?.length! > 0 ||
+        study1 !== undefined ||
+        study1FileName?.length! > 0 ||
+        study1FileName !== undefined) && (
+        <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
+          <AddStudyText>
+            Add another disseminated research output in College or University
+            In-House Review/Conferences
+          </AddStudyText>
+        </AddStudyContainer>
+      )}
+
       <TotalPointsContainer>
         <Label style={{ fontWeight: "bold" }}>
           Total Research Workload ={" "}
@@ -151,7 +157,7 @@ const ResearchWorkload3 = ({
         >
           <FormButton
             text="Save"
-            onClicked={researchWorkLoadHandler3}
+            onClicked={() => researchWorkLoadHandler3(false)}
             isSubmitting={isSubmitting}
             disabled={
               study1?.length! <= 0 ||

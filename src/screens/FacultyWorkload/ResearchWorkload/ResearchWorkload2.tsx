@@ -19,7 +19,7 @@ type ResearchWorkload2Props = {
   study3Points: number;
   study4Points: number;
   fundGeneratedPoints: number;
-  researchWorkLoadHandler3: () => void;
+  researchWorkLoadHandler3: (value: boolean) => void;
   isSubmitting: boolean;
   onSelectStudy1: (value: string) => void;
   study1?: string;
