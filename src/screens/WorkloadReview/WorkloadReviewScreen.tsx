@@ -143,7 +143,11 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
             {!isDataLoading ? (
               user?.role === "Faculty" ? (
                 <ReviewFacultyScreen userEmail={user?.email} />
-              ) : (
+              ) : !isDataLoading &&
+                (allTeachingWorkload ||
+                  allResearchWorkload ||
+                  allExtensionWorkload ||
+                  allStrategicWorkload) ? (
                 <Workload
                   teachingWorkload={allTeachingWorkload}
                   researchWorkload={allResearchWorkload}
@@ -151,6 +155,17 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
                   allStrategicWorkload={allStrategicWorkload}
                   isDataLoading={isDataLoading}
                 />
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: 30
+                  }}
+                >
+                  <LoadingSpinner color={Colors.primary} />
+                </div>
               )
             ) : (
               <div
