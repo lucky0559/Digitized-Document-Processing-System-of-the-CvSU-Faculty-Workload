@@ -10,6 +10,7 @@ import ScreenTitle from "../../../components/ScreenTitle";
 import StrategicFunction1 from "./StrategicFunction1";
 import StrategicFunction2 from "./StrategicFunction2";
 import { WorkloadType } from "../../../constants/Strings";
+import { useNavigate } from "react-router-dom";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -215,6 +216,8 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     useState<Designation>();
 
   const [numberOfStudents, setNumberOfStudents] = useState("");
+
+  const navigate = useNavigate();
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length >= 0 && value !== "") {
@@ -488,12 +491,51 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     })();
   }, [isSubmitting]);
 
+  const clearStates = () => {
+    setStrategicFunctionWorkload({});
+    setPoints(0);
+    setIsDesignationUniversity1Fullfill(false);
+    setIsDesignationUniversity2Fullfill(false);
+    setIsDesignationUniversity3Fullfill(false);
+    setIsDesignationUniversity4Fullfill(false);
+    setIsDesignationCollegeCampus1Fullfill(false);
+    setIsDesignationCollegeCampus2Fullfill(false);
+    setIsDesignationCollegeCampus3Fullfill(false);
+    setIsDesignationCollegeCampus4Fullfill(false);
+    setIsDesignationDepartment1Fullfill(false);
+    setIsDesignationDepartment2Fullfill(false);
+    setIsDesignationDepartment3Fullfill(false);
+    setIsDesignationDepartment4Fullfill(false);
+    setIsProfileOpen(false);
+    setIsSubmitting(false);
+    setIsFacultySubmenuOpen(false);
+    setSportsSocio({});
+    setSportsSocio1({});
+    setMemberUniversity({});
+    setMemberUniversity1({});
+    setAcademicAdviser({});
+    setDesignationUniversity1({});
+    setDesignationUniversity2({});
+    setDesignationUniversity3({});
+    setDesignationUniversity4({});
+    setCollegeCampusDesignation1({});
+    setCollegeCampusDesignation2({});
+    setCollegeCampusDesignation3({});
+    setCollegeCampusDesignation4({});
+    setDepartmentDesignation1({});
+    setDepartmentDesignation2({});
+    setDepartmentDesignation3({});
+    setDepartmentDesignation4({});
+  };
+
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
         try {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-          window.location.reload();
+          // window.location.reload();
+          clearStates();
+          navigate("/strategic-function-workload", { replace: true });
         } catch (e) {
           console.log(e);
         }

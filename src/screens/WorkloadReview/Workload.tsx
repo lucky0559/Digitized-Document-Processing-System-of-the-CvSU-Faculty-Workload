@@ -73,54 +73,54 @@ function Workload({
         researchWorkload?.length! > 0 ||
         extensionWorkload?.length! > 0 ||
         allStrategicWorkload?.length! > 0) &&
-        !isDataLoading &&
-        !isReviewing &&
-        users && (
-          <Table>
-            <TableCaption>
-              {user?.role === "Department Chairperson"
-                ? user.department
-                : user?.role === "OVPAA"
-                ? ""
-                : user?.campus}
-            </TableCaption>
-            <tbody>
-              <tr>
-                <ThStyle>List of Faculty</ThStyle>
-                <ThStyle>Academic Rank</ThStyle>
-                {/* <ThStyle>Workload Type</ThStyle>
+      !isDataLoading &&
+      !isReviewing &&
+      users ? (
+        <Table>
+          <TableCaption>
+            {user?.role === "Department Chairperson"
+              ? user.department
+              : user?.role === "OVPAA"
+              ? ""
+              : user?.campus}
+          </TableCaption>
+          <tbody>
+            <tr>
+              <ThStyle>List of Faculty</ThStyle>
+              <ThStyle>Academic Rank</ThStyle>
+              {/* <ThStyle>Workload Type</ThStyle>
             <ThStyle>Approved/Disapproved with Remarks</ThStyle> */}
-              </tr>
+            </tr>
 
-              {!isDataLoading &&
-                users &&
-                users?.map((item, index) => {
-                  // if (!item) {
-                  //   return null;
-                  // } else {
-                  return (
-                    item && (
-                      <tr key={index}>
-                        <TdStyle>
-                          <TdText>{item.firstName}</TdText>
-                        </TdStyle>
-                        <TdStyle>
-                          <TdText>{item.academicRank}</TdText>
-                        </TdStyle>
-                        <TdStyle>
-                          <Button
-                            onClick={() => {
-                              setAccountReviewing(item);
-                              setIsReviewing(true);
-                            }}
-                          >
-                            <ButtonText>Review</ButtonText>
-                          </Button>
-                        </TdStyle>
-                        <TdStyle>
-                          <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
-                        </TdStyle>
-                        {/* <TdStyle>
+            {!isDataLoading &&
+              users &&
+              users?.map((item, index) => {
+                // if (!item) {
+                //   return null;
+                // } else {
+                return (
+                  item && (
+                    <tr key={index}>
+                      <TdStyle>
+                        <TdText>{item.firstName}</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <TdText>{item.academicRank}</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <Button
+                          onClick={() => {
+                            setAccountReviewing(item);
+                            setIsReviewing(true);
+                          }}
+                        >
+                          <ButtonText>Review</ButtonText>
+                        </Button>
+                      </TdStyle>
+                      <TdStyle>
+                        <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
+                      </TdStyle>
+                      {/* <TdStyle>
                       <TdText key={index}>Teaching Workload</TdText>
                     </TdStyle>
                     <TdStyle>
@@ -130,14 +130,18 @@ function Workload({
                         workloadType="Teaching Workload"
                       />
                     </TdStyle> */}
-                      </tr>
-                    )
-                  );
-                  // }
-                })}
-            </tbody>
-          </Table>
-        )}
+                    </tr>
+                  )
+                );
+                // }
+              })}
+          </tbody>
+        </Table>
+      ) : (
+        <div>
+          <ButtonText>No data.</ButtonText>
+        </div>
+      )}
     </Container>
   );
 }

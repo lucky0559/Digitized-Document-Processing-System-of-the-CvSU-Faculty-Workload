@@ -122,14 +122,13 @@ const ResearchWorkload3 = ({
             fileName={study4FileName}
           />
         </div>
-
-        {/* <AddStudyContainer>
-          <AddStudyText>
-            Add another disseminated research output in College or University
-            In-House Review/Conferences
-          </AddStudyText>
-        </AddStudyContainer> */}
       </SubContainer>
+      <AddStudyContainer>
+        <AddStudyText>
+          Add another disseminated research output in College or University
+          In-House Review/Conferences
+        </AddStudyText>
+      </AddStudyContainer>
       <TotalPointsContainer>
         <Label style={{ fontWeight: "bold" }}>
           Total Research Workload ={" "}
@@ -205,20 +204,25 @@ const TotalPointsContainer = styled.div`
   padding-left: 40px;
 `;
 
-// const AddStudyContainer = styled.div`
-//   display: flex;
-//   align-self: flex-start;
-//   max-width: 400px;
-//   margin-top: 50px;
-// `;
+const AddStudyContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  max-width: 400px;
+  margin-top: 50px;
+`;
 
-// const AddStudyText = styled.text`
-//   font-family: HurmeGeometricSans3SemiBold;
-//   font-size: 17px;
-//   line-height: 18px;
-//   text-decoration: underline;
-//   cursor: pointer;
-// `;
+const AddStudyText = styled.text`
+  font-family: HurmeGeometricSans3SemiBold;
+  font-size: 17px;
+  line-height: 18px;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
 
 const Buttons = styled.div`
   display: flex;

@@ -50,7 +50,6 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   const [user, setUser] = useState<User>();
 
-  const userRole = localStorage.getItem("role");
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -58,7 +57,12 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
     (async () => {
       const userData = await GetUser(userId!);
       setUser(userData);
-      if (userRole === "Department Chairperson") {
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (user?.role === "Department Chairperson") {
         const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
         setAllTeachingWorkload(teachingWorkloads.data);
         const researchWorkLoads = await GetAllPendingResearchWorkloadDC();
@@ -67,7 +71,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         setAllExtensionWorkload(extensionWorkloads.data);
         const strategicWorkloads = await GetAllPendingStrategicWorkloadDC();
         setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (userRole === "Dean") {
+      } else if (user?.role === "Dean") {
         const teachingWorkloads = await GetAllPendingTeachingWorkloadDean();
         setAllTeachingWorkload(teachingWorkloads.data);
         const researchWorkLoads = await GetAllPendingResearchWorkloadDean();
@@ -76,7 +80,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         setAllExtensionWorkload(extensionWorkloads.data);
         const strategicWorkloads = await GetAllPendingStrategicWorkloadDean();
         setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (userRole === "OVPAA") {
+      } else if (user?.role === "OVPAA") {
         const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
         setAllTeachingWorkload(teachingWorkloads.data);
         const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
@@ -85,7 +89,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         setAllExtensionWorkload(extensionWorkloads.data);
         const strategicWorkloads = await GetAllPendingStrategicWorkloadOVPAA();
         setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (userRole === "Faculty") {
+      } else if (user?.role === "Faculty") {
         const teachingWorkloads = await GetTeachingWorkloadRemarksFaculty(
           userId!
         );
@@ -106,7 +110,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
       setIsDataLoading(false);
     })();
-  }, []);
+  }, [user]);
 
   return (
     <Container>
@@ -137,7 +141,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
           </ScreenTitleContainer>
           <WorkloadsContainer>
             {!isDataLoading ? (
-              userRole === "Faculty" ? (
+              user?.role === "Faculty" ? (
                 <ReviewFacultyScreen userEmail={user?.email} />
               ) : (
                 <Workload

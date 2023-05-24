@@ -42,10 +42,12 @@ function App() {
 
   const UseLogin = async (values: LoginDTO) => {
     await Login(values).then(res => {
-      // localStorage.setItem("userId", res.data.id);
+      localStorage.setItem("userId", res.data.id);
       // localStorage.setItem("role", res.data.role);
       if (res.data.role === "System Administrator") {
         navigate("accounts", { replace: true });
+      } else if (res.data.role === "Dean") {
+        navigate("/workload-review", { replace: true });
       } else {
         navigate("teaching-workload", { replace: true });
       }
@@ -54,7 +56,7 @@ function App() {
   };
 
   const UseLogout = () => {
-    // localStorage.removeItem("userId");
+    localStorage.removeItem("userId");
     // localStorage.removeItem("role");
     setUser(undefined);
     navigate("/", { replace: true });
@@ -68,7 +70,7 @@ function App() {
           <Route
             path="/teaching-workload"
             element={
-              <Protected isSignedIn={!!user && hasAccessInFacultyWorkloads}>
+              <Protected isSignedIn={!!user || hasAccessInFacultyWorkloads}>
                 <TeachingWorkLoad UseLogout={UseLogout} />
               </Protected>
             }

@@ -22,7 +22,15 @@ const WelcomeScreen = ({ UseLogin, user }: WelcomeScreenProps) => {
   useEffect(() => {
     if (user && user.role === "System Administrator") {
       navigate("/accounts", { replace: true });
-    } else if (user && user.role !== "System Administrator") {
+    } else if (user && user.role === "Dean") {
+      console.log(user.role);
+      navigate("/workload-review", { replace: true });
+    } else if (
+      user &&
+      user.role !== "System Administrator" &&
+      user.role !== "Dean"
+    ) {
+      console.log(user.role, "fake");
       navigate("/teaching-workload", { replace: true });
     }
   }, []);
