@@ -123,18 +123,17 @@ const ResearchWorkload3 = ({
           />
         </div>
       </SubContainer>
-      {(study1?.length! > 0 ||
+      {/* {(study1?.length! > 0 ||
         study1 !== undefined ||
         study1FileName?.length! > 0 ||
         study1FileName !== undefined) && (
         <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
-          <AddStudyText>
-            Add another disseminated research output in College or University
-            In-House Review/Conferences
-          </AddStudyText>
+          <AddStudyText>Add another study</AddStudyText>
         </AddStudyContainer>
-      )}
-
+      )} */}
+      <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
+        <AddStudyText>Add another study</AddStudyText>
+      </AddStudyContainer>
       <TotalPointsContainer>
         <Label style={{ fontWeight: "bold" }}>
           Total Research Workload ={" "}
@@ -215,6 +214,7 @@ const AddStudyContainer = styled.div`
   align-self: flex-end;
   max-width: 400px;
   margin-top: 50px;
+  margin-right: 30px;
 `;
 
 const AddStudyText = styled.text`
