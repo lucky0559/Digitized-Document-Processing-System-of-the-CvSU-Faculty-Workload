@@ -94,7 +94,6 @@ const ResearchWorkload3 = ({
           />
           <DropdownWithUpload
             inputLabel="Study 2"
-            uploadLabel="Upload Certificate of Presentation here:"
             options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
             onSelect={onSelectStudy2}
             val={study2}
@@ -103,7 +102,6 @@ const ResearchWorkload3 = ({
           />
           <DropdownWithUpload
             inputLabel="Study 3"
-            uploadLabel="Upload Certificate of Presentation here:"
             options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
             onSelect={onSelectStudy3}
             val={study3}
@@ -112,7 +110,6 @@ const ResearchWorkload3 = ({
           />
           <DropdownWithUpload
             inputLabel="Study 4"
-            uploadLabel="Upload Certificate of Presentation here:"
             options={DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT}
             onSelect={onSelectStudy4}
             val={study4}
