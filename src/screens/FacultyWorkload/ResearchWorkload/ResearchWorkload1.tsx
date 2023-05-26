@@ -43,6 +43,7 @@ type ResearchWorkload1Props = {
   study4Points: number;
   fundGeneratedPoints: number;
   researchWorkLoadHandler3: (value: boolean) => void;
+  studyPoints: number;
 };
 
 const ResearchWorkload1 = ({
@@ -77,7 +78,8 @@ const ResearchWorkload1 = ({
   study3Points,
   study4Points,
   fundGeneratedPoints,
-  researchWorkLoadHandler3
+  researchWorkLoadHandler3,
+  studyPoints
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -154,9 +156,11 @@ const ResearchWorkload1 = ({
             </UploadFileContainer>
           </UploadContainer>
 
-          {/* <AddStudyContainer>
-          <AddStudyText>Add Another Study</AddStudyText>
-        </AddStudyContainer> */}
+          <TotalPointsContainer>
+            <Label style={{ fontWeight: "bold" }}>
+              Study Points = {studyPoints.toString()}
+            </Label>
+          </TotalPointsContainer>
         </SubContainer>
       </Container>
       <ResearchWorkload3
@@ -272,6 +276,12 @@ const ButtonContainer = styled.div`
   align-items: center;
   width: 100%;
   padding: 20px;
+`;
+
+const TotalPointsContainer = styled.div`
+  margin-top: 50px;
+  width: 100%;
+  padding-left: 40px;
 `;
 
 // const AddStudyContainer = styled.div`

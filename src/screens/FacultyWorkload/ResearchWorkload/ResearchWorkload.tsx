@@ -59,6 +59,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const [isAddStudy, setIsAddStudy] = useState(false);
 
+  const [studyPoints, setStudyPoints] = useState(0);
+
   const researchWorkLoadHandler = () => {
     if (fundingOfStudy) {
       if (fundingOfStudy?.length > 0) {
@@ -453,6 +455,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       rwlFile
     ) {
       designationStudyPoints = 9;
+      setStudyPoints(9);
       return setPoints(designationStudyPoints);
     } else if (
       designationStudy === "Project Leader/Co-Project Leader" &&
@@ -460,6 +463,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       rwlFile
     ) {
       designationStudyPoints = 6;
+      setStudyPoints(6);
       return setPoints(designationStudyPoints);
     } else if (
       designationStudy === "Study Leader/Co-Study Leader" &&
@@ -467,6 +471,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       rwlFile
     ) {
       designationStudyPoints = 3;
+      setStudyPoints(3);
       return setPoints(designationStudyPoints);
     }
   }, [designationStudy, rwlFile, fundGenerated]);
@@ -606,6 +611,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study4Points={study4Points}
             fundGeneratedPoints={fundGeneratedPoints}
             researchWorkLoadHandler3={researchWorkLoadHandler3}
+            studyPoints={studyPoints}
           />
         )}
         {steps === 3 && (
