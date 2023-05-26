@@ -499,15 +499,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       <InputsContainer>
                         <Dropdown
                           option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                          label="Resource Person in an Extension Activity"
                           onSelect={resourcePersonHandler1}
                           val={resourcePerson1}
                         />
                       </InputsContainer>
                       <UploadContainer>
-                        <UploadTextDescription>
-                          Upload certificate of presentation here:
-                        </UploadTextDescription>
                         <UploadFileContainer>
                           <UploadFileButton
                             fileHandler={setCertificateFileHandler1}
@@ -520,15 +516,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       <InputsContainer>
                         <Dropdown
                           option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                          label="Resource Person in an Extension Activity"
                           onSelect={resourcePersonHandler2}
                           val={resourcePerson2}
                         />
                       </InputsContainer>
                       <UploadContainer>
-                        <UploadTextDescription>
-                          Upload certificate of presentation here:
-                        </UploadTextDescription>
                         <UploadFileContainer>
                           <UploadFileButton
                             fileHandler={setCertificateFileHandler2}
@@ -640,11 +632,11 @@ const InputsContainer = styled.div`
 
 const UploadContainer = styled.div`
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 5px;
 `;
 
 const UploadTextDescription = styled.label`
