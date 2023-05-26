@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Confirm } from "semantic-ui-react";
 import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
@@ -55,6 +56,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const [resourcePersonPoints, setResourcePersonPoints] = useState(0);
   const [resourcePersonPoints1, setResourcePersonPoints1] = useState(0);
   const [resourcePersonPoints2, setResourcePersonPoints2] = useState(0);
+
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const extensionWorkloadHandler = () => {
     setExtensionWorkload({
@@ -357,6 +360,13 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   return (
     <MainContainer>
+      <Confirm
+        open={isConfirming}
+        onCancel={() => setIsConfirming(false)}
+        onConfirm={extensionWorkloadHandler}
+        content="Are you sure?"
+        size="large"
+      />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <div style={{ display: "flex", flexDirection: "row" }}>
@@ -552,7 +562,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               </div>
               <FormButton
                 text="Save"
-                onClicked={extensionWorkloadHandler}
+                onClicked={() => setIsConfirming(true)}
                 isSubmitting={isSubmitting}
                 disabled={
                   !designationExtensionActivity &&

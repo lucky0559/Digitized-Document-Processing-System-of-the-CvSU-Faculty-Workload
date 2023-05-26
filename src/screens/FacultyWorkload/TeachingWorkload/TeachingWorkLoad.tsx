@@ -12,6 +12,7 @@ import Colors from "../../../constants/Colors";
 import { WorkloadType } from "../../../constants/Strings";
 import { SaveTeachingWorkload } from "../../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../../types/TeachingWorkload";
+import { Confirm } from "semantic-ui-react";
 
 type TeachingWorkLoadProps = {
   UseLogout: () => void;
@@ -37,6 +38,8 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
   const [points, setPoints] = useState(0);
 
   const navigate = useNavigate();
+
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const onSubmit = async () => {
     setTeachingWorkLoad({
@@ -107,6 +110,13 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   return (
     <MainContainer>
+      <Confirm
+        open={isConfirming}
+        onCancel={() => setIsConfirming(false)}
+        onConfirm={onSubmit}
+        content="Are you sure?"
+        size="large"
+      />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
       <Menu
         isFacultySubmenuOpen={isFacultySubmenuOpen}
@@ -173,7 +183,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             </Label>
             <FormButton
               text="Save"
-              onClicked={onSubmit}
+              onClicked={() => setIsConfirming(true)}
               isSubmitting={isSubmitting}
               disabled={
                 numberOfPreparations.length <= 0 ||

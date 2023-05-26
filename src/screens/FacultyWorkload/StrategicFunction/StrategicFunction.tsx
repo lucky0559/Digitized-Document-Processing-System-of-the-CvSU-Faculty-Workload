@@ -11,6 +11,8 @@ import StrategicFunction1 from "./StrategicFunction1";
 import StrategicFunction2 from "./StrategicFunction2";
 import { WorkloadType } from "../../../constants/Strings";
 import { useNavigate } from "react-router-dom";
+import { Confirm } from "semantic-ui-react";
+import Footer from "../../../components/Footer";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -109,6 +111,8 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const [memberUniversity1, setMemberUniversity1] =
     useState<DesignationWithPoints>();
   const [academicAdviser, setAcademicAdviser] = useState<AcademicAdviserType>();
+
+  const [isConfirming, setIsConfirming] = useState(false);
 
   // UNIVERSITY FILE SELECT
   const approvedUniversityDesignationFileHandler1 = (value?: File) => {
@@ -709,6 +713,13 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
 
   return (
     <MainContainer>
+      <Confirm
+        open={isConfirming}
+        onCancel={() => setIsConfirming(false)}
+        onConfirm={onNextSubmit}
+        content="Are you sure?"
+        size="large"
+      />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
       <Content>
         <Menu
@@ -1201,7 +1212,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                   </div>
                   <FormButton
                     text="Save"
-                    onClicked={onNextSubmit}
+                    onClicked={() => setIsConfirming(true)}
                     isSubmitting={isSubmitting}
                   ></FormButton>
                 </ButtonContainer>
@@ -1284,6 +1295,13 @@ const WorkloadText = styled.text`
   font-weight: 600;
   line-height: 20px;
   font-family: HurmeGeometricSans3;
+`;
+
+const FooterContainer = styled.div`
+  margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1;
 `;
 
 export default StrategicFunction;

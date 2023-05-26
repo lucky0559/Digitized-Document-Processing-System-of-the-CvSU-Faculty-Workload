@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { Confirm } from "semantic-ui-react";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import FormButton from "../../../components/FormButton";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
@@ -75,8 +76,17 @@ const ResearchWorkload3 = ({
     onStudy4FileSelect(value);
   };
 
+  const [isConfirming, setIsConfirming] = useState(false);
+
   return (
     <Container>
+      <Confirm
+        open={isConfirming}
+        onCancel={() => setIsConfirming(false)}
+        onConfirm={() => researchWorkLoadHandler3(false)}
+        content="Are you sure?"
+        size="large"
+      />
       <SubContainer>
         <text>
           Disseminated research output in College or University In-House
@@ -148,7 +158,7 @@ const ResearchWorkload3 = ({
         >
           <FormButton
             text="Save"
-            onClicked={() => researchWorkLoadHandler3(false)}
+            onClicked={() => setIsConfirming(true)}
             isSubmitting={isSubmitting}
             disabled={
               study1?.length! <= 0 ||
