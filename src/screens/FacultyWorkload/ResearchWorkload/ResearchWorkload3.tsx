@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Dropdown from "../../../components/Dropdown";
-import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
-import UploadFileButton from "../../../components/UploadFileButton";
+import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import FormButton from "../../../components/FormButton";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
 
@@ -232,10 +230,6 @@ const Buttons = styled.div`
   flex-direction: row;
   width: 100%;
   margin-top: 30px;
-`;
-
-const UploadFileContainer = styled.div`
-  max-width: 100px;
 `;
 
 export default ResearchWorkload3;

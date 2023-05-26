@@ -5,8 +5,6 @@ import Colors from "../../../constants/Colors";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import { VscCircleLargeOutline, VscCircleLargeFilled } from "react-icons/vsc";
 import UploadFileButton from "../../../components/UploadFileButton";
-import FormButton from "../../../components/FormButton";
-import DropdownWithUpload from "../../../components/DropdownWithUpload";
 import ResearchWorkload3 from "./ResearchWorkload3";
 
 type ResearchWorkload1Props = {
@@ -47,7 +45,6 @@ type ResearchWorkload1Props = {
 };
 
 const ResearchWorkload1 = ({
-  researchWorkLoadHandler1,
   typeOfStudyHandler,
   designationStudyHandler,
   backHandler,
@@ -87,22 +84,6 @@ const ResearchWorkload1 = ({
 
   const setDesignationStudy = (designationStudyValue?: string) => {
     designationStudyHandler(designationStudyValue);
-  };
-
-  const onStudy1FileSelectHandler = (value?: File) => {
-    onStudy1FileSelect(value);
-  };
-
-  const onStudy2FileSelectHandler = (value?: File) => {
-    onStudy2FileSelect(value);
-  };
-
-  const onStudy3FileSelectHandler = (value?: File) => {
-    onStudy3FileSelect(value);
-  };
-
-  const onStudy4FileSelectHandler = (value?: File) => {
-    onStudy4FileSelect(value);
   };
 
   return (
@@ -270,39 +251,10 @@ const UploadTextDescription = styled.label`
   font-family: HurmeGeometricSans3;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 20px;
-`;
-
 const TotalPointsContainer = styled.div`
   margin-top: 50px;
   width: 100%;
   padding-left: 40px;
-`;
-
-// const AddStudyContainer = styled.div`
-//   display: flex;
-//   align-self: flex-start;
-//   margin-top: 50px;
-// `;
-
-// const AddStudyText = styled.text`
-//   font-family: HurmeGeometricSans3SemiBold;
-//   font-size: 17px;
-//   line-height: 18px;
-//   text-decoration: underline;
-//   cursor: pointer;
-// `;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  margin-top: 30px;
 `;
 
 const UploadFileContainer = styled.div`

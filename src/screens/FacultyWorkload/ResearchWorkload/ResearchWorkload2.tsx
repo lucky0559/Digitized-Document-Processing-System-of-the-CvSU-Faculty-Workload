@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
 import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
-import FormButton from "../../../components/FormButton";
 import ResearchWorkload3 from "./ResearchWorkload3";
 
 type ResearchWorkload2Props = {
@@ -106,6 +105,11 @@ const ResearchWorkload2 = ({
               />
             </UploadFileContainer>
           </UploadContainer>
+          <TotalPointsContainer>
+            <Label style={{ fontWeight: "bold" }}>
+              Study Points = {fundGeneratedPoints.toString()}
+            </Label>
+          </TotalPointsContainer>
         </SubContainer>
       </Container>
       <ResearchWorkload3
@@ -195,13 +199,6 @@ const UploadTextDescription = styled.label`
   padding: 20px;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px 20px 0px 0px;
-`;
-
 const Label = styled.label`
   font-weight: 400;
   font-size: 17px;
@@ -209,30 +206,14 @@ const Label = styled.label`
   font-family: HurmeGeometricSans3;
 `;
 
-// const AddStudyContainer = styled.div`
-//   display: flex;
-//   align-self: flex-start;
-//   margin-top: 50px;
-// `;
-
-// const AddStudyText = styled.text`
-//   font-family: HurmeGeometricSans3SemiBold;
-//   font-size: 17px;
-//   line-height: 18px;
-//   text-decoration: underline;
-//   cursor: pointer;
-// `;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 40px;
-`;
-
 const UploadFileContainer = styled.div`
   max-width: 100px;
+`;
+
+const TotalPointsContainer = styled.div`
+  margin-top: 50px;
+  width: 100%;
+  padding-left: 40px;
 `;
 
 export default ResearchWorkload2;
