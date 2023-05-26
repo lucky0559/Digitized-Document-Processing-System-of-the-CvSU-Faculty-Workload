@@ -29,7 +29,11 @@ const UploadFileButton = ({
           </ButtonText>
         </Container>
       ) : (
-        <FileName> {workloadFileName || fileName} </FileName>
+        <FileName>
+          {" "}
+          {workloadFileName?.substring(0, 7) + "..." ||
+            fileName.substring(0, 7) + "..."}{" "}
+        </FileName>
       )}
     </>
   );
@@ -71,7 +75,6 @@ const FileName = styled.text`
   font-size: 15px;
   line-height: 15px;
   margin-left: 10px;
-  overflow-wrap: break-word;
 `;
 
 export default UploadFileButton;
