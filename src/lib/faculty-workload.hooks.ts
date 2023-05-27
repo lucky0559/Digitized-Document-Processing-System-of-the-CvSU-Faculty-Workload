@@ -228,6 +228,7 @@ export const SaveStrategicFunctionWorkload = async (
     strategicFunctionWorkload?.designationDepartmentLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationAsSportTrainorAcademic ||
     strategicFunctionWorkload?.designationAsSportTrainorAcademic1 ||
+    strategicFunctionWorkload?.designationAsSportTrainorAcademic2 ||
     strategicFunctionWorkload?.designationAsMemberOfAdhoc ||
     strategicFunctionWorkload?.designationAsMemberOfAdhoc1 ||
     strategicFunctionWorkload?.academicAdvisees
@@ -247,6 +248,7 @@ export const SaveStrategicFunctionWorkload = async (
 
     let sportsTrainorAcademicFile;
     let sportsTrainorAcademicFile1;
+    let sportsTrainorAcademicFile2;
 
     let memberAdhocFile;
     let memberAdhocFile1;
@@ -457,7 +459,25 @@ export const SaveStrategicFunctionWorkload = async (
           sportsTrainorAcademicFile1?.location;
         sportsTrainorPoints =
           sportsTrainorPoints +
-          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints!;
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints1!;
+      }
+
+      // SPORTS TRAINOR ACADEMIC2
+      if (
+        strategicFunctionWorkload?.designationAsSportTrainorAcademic2?.length! >
+          0 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicFile2 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints2 &&
+        strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints2 > 0
+      ) {
+        sportsTrainorAcademicFile2 = await strategicSportsTrainorS3.uploadFile(
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile2!
+        );
+        strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath2 =
+          sportsTrainorAcademicFile2?.location;
+        sportsTrainorPoints =
+          sportsTrainorPoints +
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicPoints2!;
       }
 
       // MEMBER OF ADHOC

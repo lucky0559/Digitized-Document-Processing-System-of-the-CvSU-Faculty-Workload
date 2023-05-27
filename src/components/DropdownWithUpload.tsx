@@ -4,7 +4,7 @@ import Dropdown from "./Dropdown";
 import UploadFileButton from "./UploadFileButton";
 
 type DropdownWithUploadProps = {
-  inputLabel: string;
+  inputLabel?: string;
   options: string[];
   uploadLabel?: string;
   onSelect: (value: string) => void;
@@ -50,6 +50,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   padding-top: 30px;
+  align-items: center;
 `;
 
 const Label = styled.label`

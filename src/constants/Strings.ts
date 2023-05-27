@@ -240,6 +240,11 @@ export const DROPDOWN_LISTS = {
     "Department Coordinator",
     "Department MISO",
     "IMDU Chair/Member"
+  ],
+  DESIGNATION_SPORTS_TRAINOR: [
+    "-----",
+    "University  Level",
+    "College/Campus Level"
   ]
 };
 

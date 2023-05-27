@@ -21,6 +21,10 @@ export type StrategicFunctionType = {
   designationAsSportTrainorAcademicFile1?: File;
   designationAsSportTrainorAcademicPoints1?: number;
   designationAsSportTrainorAcademicFilePath1?: string;
+  designationAsSportTrainorAcademic2?: string;
+  designationAsSportTrainorAcademicFile2?: File;
+  designationAsSportTrainorAcademicPoints2?: number;
+  designationAsSportTrainorAcademicFilePath2?: string;
   designationAsMemberOfAdhoc?: string;
   designationAsMemberOfAdhocFile?: File;
   designationAsMemberOfAdhocPoints?: number;
