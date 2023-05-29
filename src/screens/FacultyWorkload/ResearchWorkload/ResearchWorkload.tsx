@@ -71,13 +71,13 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         });
       }
     }
-    if (fundingOfStudy === "CvSU Research Grant") {
+    if (fundingOfStudy === "CvSU Funded") {
       setSteps(2);
     } else if (fundingOfStudy === "Externally Funded") {
       setSteps(3);
     } else if (fundDisplay === "Externally Funded") {
       setSteps(3);
-    } else if (fundDisplay === "CvSU Research Grant") {
+    } else if (fundDisplay === "CvSU Funded") {
       setSteps(2);
     }
   };
@@ -142,20 +142,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
 
     if (steps === 4) {
-      // if (disseminatedResearch) {
-      //   setResearchWorkLoad({
-      //     ...researchWorkLoad,
-      //     disseminatedResearch,
-      //     rwlFile2
-      //   });
-      // } else {
-      //   setResearchWorkLoad({
-      //     disseminatedResearch,
-      //     rwlFile2,
-      //     ...researchWorkLoad
-      //   });
-      // }
-
       setSteps(steps - 1);
     }
   };
@@ -755,7 +741,6 @@ const Label = styled.label`
 `;
 
 const TextInput = styled.input`
-  width: 200px;
   background-color: ${Colors.textFieldBackground};
   border-width: 1px;
   font-family: HurmeGeometricSans3;
