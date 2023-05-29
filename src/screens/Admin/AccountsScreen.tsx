@@ -58,15 +58,18 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
       {
         name: "Name",
         selector: (row: User) =>
-          row.firstName.toUpperCase() + " " + row.surname.toUpperCase()
+          row.firstName.toUpperCase() + " " + row.surname.toUpperCase(),
+        sortable: true
       },
       {
         name: "Campus",
-        selector: (row: User) => row.campus.toUpperCase()
+        selector: (row: User) => row.campus.toUpperCase(),
+        sortable: true
       },
       {
         name: "Role",
-        selector: (row: User) => row.role?.toUpperCase()!
+        selector: (row: User) => row.role?.toUpperCase()!,
+        sortable: true
       },
       {
         cell: (user: User) => (
