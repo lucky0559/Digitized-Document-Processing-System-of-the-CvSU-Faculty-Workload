@@ -514,6 +514,28 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
   }, [study1, study2, study3, study4]);
 
+  useEffect(() => {
+    setResearchWorkLoad({
+      ...researchWorkLoad,
+      typeOfStudy: undefined,
+      designationStudy: undefined,
+      fundGenerated: undefined,
+      disseminatedResearch: undefined,
+      disseminatedResearchFiles: undefined,
+      rwlFile: undefined,
+      rwlFilePath: undefined,
+      rwlFile1: undefined,
+      rwlFilePath1: undefined,
+      disseminatedResearchFilesPath: undefined,
+      rwlPoints: undefined,
+      remarks: undefined,
+      status: undefined
+    });
+    setPoints(0);
+    setFundGeneratedPoints(0);
+    console.log("hey");
+  }, [researchWorkLoad?.fundingOfStudy]);
+
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />

@@ -118,10 +118,7 @@ const ResearchWorkload3 = ({
           />
         </div>
       </SubContainer>
-      {(study1?.length! > 0 ||
-        study1 !== undefined ||
-        study1FileName?.length! > 0 ||
-        study1FileName !== undefined) && (
+      {(points !== 0 || fundGeneratedPoints !== 0) && (
         <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
           <AddStudyText>Add another study</AddStudyText>
         </AddStudyContainer>
@@ -150,12 +147,7 @@ const ResearchWorkload3 = ({
             text="Save"
             onClicked={() => researchWorkLoadHandler3(false)}
             isSubmitting={isSubmitting}
-            disabled={
-              study1?.length! <= 0 ||
-              study1 === undefined ||
-              study1FileName?.length! <= 0 ||
-              study1FileName === undefined
-            }
+            disabled={points === 0 && fundGeneratedPoints === 0}
           ></FormButton>
         </ButtonContainer>
       </Buttons>
