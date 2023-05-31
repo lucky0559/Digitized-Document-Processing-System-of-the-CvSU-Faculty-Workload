@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Colors from "../constants/Colors";
@@ -19,7 +19,13 @@ const Menu = ({
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
   const location = window.location.pathname;
-  const { user } = useContext(UserContext);
+  const {
+    user,
+    hasPendingTeachingWorkload,
+    hasPendingExtensionWorkload,
+    hasPendingResearchWorkload,
+    hasPendingStrategicWorkload
+  } = useContext(UserContext);
 
   return (
     <Container position={position}>
@@ -50,42 +56,57 @@ const Menu = ({
               </NavButtonText>
             </NavButtonContainer>
 
-            <SubMenuContainer>
+            <SubMenuContainer disabled={hasPendingTeachingWorkload}>
               <SubMenuText
                 isActive={location === "/teaching-workload"}
-                onClick={() =>
-                  navigate("/teaching-workload", { replace: true })
+                onClick={
+                  hasPendingTeachingWorkload
+                    ? () => {}
+                    : () => navigate("/teaching-workload", { replace: true })
                 }
+                disabled={hasPendingTeachingWorkload}
               >
                 Teaching Workload
               </SubMenuText>
             </SubMenuContainer>
-            <SubMenuContainer>
+            <SubMenuContainer disabled={hasPendingResearchWorkload}>
               <SubMenuText
                 isActive={location === "/research-workload"}
-                onClick={() =>
-                  navigate("/research-workload", { replace: true })
+                onClick={
+                  hasPendingResearchWorkload
+                    ? () => {}
+                    : () => navigate("/research-workload", { replace: true })
                 }
+                disabled={hasPendingResearchWorkload}
               >
                 Research Workload
               </SubMenuText>
             </SubMenuContainer>
-            <SubMenuContainer>
+            <SubMenuContainer disabled={hasPendingExtensionWorkload}>
               <SubMenuText
                 isActive={location === "/extension-workload"}
-                onClick={() =>
-                  navigate("/extension-workload", { replace: true })
+                onClick={
+                  hasPendingExtensionWorkload
+                    ? () => {}
+                    : () => navigate("/extension-workload", { replace: true })
                 }
+                disabled={hasPendingExtensionWorkload}
               >
                 Extension Workload
               </SubMenuText>
             </SubMenuContainer>
-            <SubMenuContainer>
+            <SubMenuContainer disabled={hasPendingStrategicWorkload}>
               <SubMenuText
                 isActive={location === "/strategic-function-workload"}
-                onClick={() =>
-                  navigate("/strategic-function-workload", { replace: true })
+                onClick={
+                  hasPendingStrategicWorkload
+                    ? () => {}
+                    : () =>
+                        navigate("/strategic-function-workload", {
+                          replace: true
+                        })
                 }
+                disabled={hasPendingStrategicWorkload}
               >
                 Strategic Function
               </SubMenuText>
@@ -172,26 +193,28 @@ const NavButtonText = styled.text<{ isActive: boolean }>`
 //   align-self: flex-end;
 // `;
 
-const SubMenuContainer = styled.div`
+const SubMenuContainer = styled.div<{ disabled?: boolean }>`
   border-bottom: 1px solid ${Colors.primary};
   height: 50px;
   display: flex;
   justify-content: start;
   align-items: center;
-  cursor: pointer;
+  cursor: ${p => (p.disabled ? "auto" : "pointer")};
+  opacity: ${p => (p.disabled ? 1 : 0.5)}
   transition: opacity 0.2s ease-in-out;
   &:hover {
-    opacity: 0.6;
+    opacity: ${p => (p.disabled ? 1 : 0.5)}
   }
   padding: 0 50px;
 `;
 
-const SubMenuText = styled.text<{ isActive: boolean }>`
+const SubMenuText = styled.text<{ isActive: boolean; disabled?: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
   color: ${p => (p.isActive ? Colors.active : Colors.white)};
+  opacity: ${p => (p.disabled ? 0.5 : 1)};
 `;
 
 export default Menu;
