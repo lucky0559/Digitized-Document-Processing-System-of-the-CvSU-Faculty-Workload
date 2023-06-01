@@ -69,7 +69,6 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
         setAllTeachingWorkload(teachingWorkloads.data);
         const researchWorkLoads = await GetAllPendingResearchWorkloadDC();
-        console.log(researchWorkLoads.data);
         setAllResearchWorkload(researchWorkLoads.data);
         const extensionWorkloads = await GetAllPendingExtensionWorkloadDC();
         setAllExtensionWorkload(extensionWorkloads.data);
@@ -114,7 +113,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
       setIsDataLoading(false);
     })();
-  }, [user]);
+  }, [user?.role, user?.id]);
 
   return (
     <Container>

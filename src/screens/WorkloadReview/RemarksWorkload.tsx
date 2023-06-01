@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import CheckboxWorkload from "../../components/CheckboxWorkload";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -13,6 +13,7 @@ import { RoleType } from "../../constants/Strings";
 import { ResearchWorkLoadType } from "../../types/ResearchWorkLoad";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
 import { StrategicFunctionType } from "../../types/StrategicFunction";
+import { UserContext } from "../../App";
 
 type WorkloadProps = {
   user: User;
@@ -27,13 +28,13 @@ function RemarksWorkload({ user }: WorkloadProps) {
   const [strategicFunctionWorkloads, setStrategicFunctionWorkloads] =
     useState<StrategicFunctionType[]>();
 
-  const userRole = localStorage.getItem("role");
-
   const [isDataLoading, setIsDataLoading] = useState(true);
+
+  const { user: userContext } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
-      if (userRole !== null) {
+      if (userContext.role !== null) {
         const {
           teachingWorkloads,
           researchWorkloads,
@@ -41,7 +42,7 @@ function RemarksWorkload({ user }: WorkloadProps) {
           strategicFunctionWorkloads
         } = await getAllPendingWorkloadByIdAndCurrentProcessRole(
           user.id!,
-          userRole
+          userContext.role
         );
         setTeachingWorkloads(teachingWorkloads);
         setResearchWorkloads(researchWorkloads);
@@ -50,10 +51,22 @@ function RemarksWorkload({ user }: WorkloadProps) {
         setIsDataLoading(false);
       }
     })();
-  }, []);
+  }, [user.id, userContext.role]);
 
   return (
     <Container>
+      {isDataLoading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      )}
       <WorkloadHeaderContainer
         style={{
           display: "flex",
@@ -61,8 +74,7 @@ function RemarksWorkload({ user }: WorkloadProps) {
           justifyContent: "space-between"
         }}
       >
-        <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
-        {userRole === "OVPAA" && (
+        {userContext.role === "OVPAA" && (
           <div style={{ marginRight: 50 }}>
             <WorkloadHeaderText>Evaluated Workload(OVPAA)</WorkloadHeaderText>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -72,388 +84,204 @@ function RemarksWorkload({ user }: WorkloadProps) {
           </div>
         )}
       </WorkloadHeaderContainer>
-      {isDataLoading && !teachingWorkloads
-        ? null
-        : teachingWorkloads?.map(workload => {
-            return (
-              <>
-                <ColumnParentContainer>
-                  <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                    <ThinText>Number of Preparation:</ThinText>
-                    <ThinText>Number of Contact Hours:</ThinText>
-                    <ThinText>Number of Students:</ThinText>
-                    {workload.twlFilePath && (
-                      <ThinText>Class Schedule Attachment:</ThinText>
-                    )}
-                  </ColumnContainer>
-                  <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                    <BoldText>{workload.numberOfPreparations}</BoldText>
-                    <BoldText>{workload.contactHours}</BoldText>
-                    <BoldText>{workload.totalNoOfStudents}</BoldText>
-                    {workload.twlFilePath && (
-                      <div
+      {isDataLoading && !teachingWorkloads ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      ) : (
+        teachingWorkloads?.map(workload => {
+          return (
+            <>
+              <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
+              <ColumnParentContainer>
+                <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                  <ThinText>Number of Preparation:</ThinText>
+                  <ThinText>Number of Contact Hours:</ThinText>
+                  <ThinText>Number of Students:</ThinText>
+                  {workload.twlFilePath && (
+                    <ThinText>Class Schedule Attachment:</ThinText>
+                  )}
+                </ColumnContainer>
+                <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                  <BoldText>{workload.numberOfPreparations}</BoldText>
+                  <BoldText>{workload.contactHours}</BoldText>
+                  <BoldText>{workload.totalNoOfStudents}</BoldText>
+                  {workload.twlFilePath && (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <a
+                        href={workload.twlFilePath}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
+                          textDecoration: "none",
+                          alignItems: "flex-start",
+                          display: "flex"
                         }}
                       >
-                        <a
-                          href={workload.twlFilePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <ThinText
                           style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
+                            color: "white",
+                            fontSize: 12,
+                            backgroundColor: Colors.buttonPrimary,
+                            paddingLeft: 5,
+                            paddingRight: 5,
+                            cursor: "pointer"
+                          }}
+                          onClick={() => {}}
+                        >
+                          Attachment
+                        </ThinText>
+                      </a>
+                      {userContext.role === "OVPAA" && (
+                        <div
+                          style={{
+                            width: 277,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginRight: 15
                           }}
                         >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {userRole === "OVPAA" && (
-                          <div
-                            style={{
-                              width: 277,
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginRight: 15
-                            }}
-                          >
-                            <InputPoints type="number" min={0} />
-                            <InputRemarks />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </ColumnContainer>
-                </ColumnParentContainer>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 25
-                  }}
-                >
-                  <ColumnContainer style={{ paddingLeft: 90 }}>
-                    <BoldText>TOTAL:</BoldText>
-                  </ColumnContainer>
-                  <ColumnContainer>
-                    <BoldText>
-                      {Number(workload.totalTeachingWorkload).toFixed(2)}
-                    </BoldText>
-                  </ColumnContainer>
-                </div>
-              </>
-            );
-          })}
-      <WorkloadHeaderContainer>
-        <WorkloadHeaderText>Research Workload</WorkloadHeaderText>
-      </WorkloadHeaderContainer>
-      {isDataLoading && !researchWorkloads
-        ? null
-        : researchWorkloads?.map(workload => {
-            return (
-              <>
-                <ColumnParentContainer>
-                  <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                    <ThinText>Title of the Study:</ThinText>
-                    <ThinText>Funding of the Study:</ThinText>
-                    <ThinText>Designation in the Study:</ThinText>
-                    <ThinText>Status of the Study:</ThinText>
-                    {workload.rwlFilePath && (
-                      <ThinText style={{ maxWidth: 350 }}>
-                        Proposal(for Approved Proposal) or Progress Report(for
-                        On-Going Study) Attachment:
-                      </ThinText>
-                    )}
-                    {workload.disseminatedResearchFilesPath && (
-                      <ThinText>Certificate of Presentation:</ThinText>
-                    )}
-                    {workload.rwlFilePath1 && (
-                      <ThinText style={{ maxWidth: 350 }}>
-                        Proposal(for Approved Externally Funded Proposal) or
-                        Progress Report(for On-Going Externally Funded Study)
-                        Attachment:
-                      </ThinText>
-                    )}
-                  </ColumnContainer>
-                  <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                    <BoldText>{workload.titleOfStudy}</BoldText>
-                    <BoldText>{workload.fundingOfStudy}</BoldText>
-                    <BoldText>{workload.designationStudy}</BoldText>
-                    <BoldText style={{ textTransform: "capitalize" }}>
-                      {workload.status}
-                    </BoldText>
-                    {workload.rwlFilePath && (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <a
-                          href={workload.rwlFilePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
-                          }}
-                        >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {userRole === "OVPAA" && (
-                          <div
-                            style={{
-                              width: 277,
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginRight: 15
-                            }}
-                          >
-                            <InputPoints type="number" min={0} />
-                            <InputRemarks />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {workload.disseminatedResearchFilesPath &&
-                      workload.disseminatedResearchFilesPath.map(attachment => {
-                        return (
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              width: "100%",
-                              justifyContent: "space-between"
-                            }}
-                          >
-                            <a
-                              href={attachment}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{
-                                textDecoration: "none",
-                                alignItems: "flex-start",
-                                display: "flex"
-                              }}
-                            >
-                              <ThinText
-                                style={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  backgroundColor: Colors.buttonPrimary,
-                                  paddingLeft: 5,
-                                  paddingRight: 5,
-                                  cursor: "pointer"
-                                }}
-                                onClick={() => {}}
-                              >
-                                Attachment
-                              </ThinText>
-                            </a>
-                            {userRole === "OVPAA" && (
-                              <div
-                                style={{
-                                  width: 277,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginRight: 15
-                                }}
-                              >
-                                <InputPoints type="number" min={0} />
-                                <InputRemarks />
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    {workload.rwlFilePath1 && (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <a
-                          href={workload.rwlFilePath1}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
-                          }}
-                        >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {userRole === "OVPAA" && (
-                          <div
-                            style={{
-                              width: 277,
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginRight: 15
-                            }}
-                          >
-                            <InputPoints type="number" min={0} />
-                            <InputRemarks />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </ColumnContainer>
-                </ColumnParentContainer>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 25
-                  }}
-                >
-                  <ColumnContainer style={{ paddingLeft: 90 }}>
-                    <BoldText>TOTAL:</BoldText>
-                  </ColumnContainer>
-                  <ColumnContainer>
-                    <BoldText>{workload.rwlPoints}</BoldText>
-                  </ColumnContainer>
-                </div>
-              </>
-            );
-          })}
-      <WorkloadHeaderContainer>
-        <WorkloadHeaderText>Extension Workload</WorkloadHeaderText>
-      </WorkloadHeaderContainer>
-      {isDataLoading && !extensionWorkloads
-        ? null
-        : extensionWorkloads?.map(workload => {
-            return (
-              <>
-                <ColumnParentContainer>
-                  <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                    <ThinText>Designation in Extension Activity:</ThinText>
-                    <ThinText>
-                      Number of Hours rendered in Extension Activity:
+                          <InputPoints type="number" min={0} />
+                          <InputRemarks />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </ColumnContainer>
+              </ColumnParentContainer>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: 25
+                }}
+              >
+                <ColumnContainer style={{ paddingLeft: 90 }}>
+                  <BoldText>TOTAL:</BoldText>
+                </ColumnContainer>
+                <ColumnContainer>
+                  <BoldText>
+                    {Number(workload.totalTeachingWorkload).toFixed(2)}
+                  </BoldText>
+                </ColumnContainer>
+              </div>
+            </>
+          );
+        })
+      )}
+
+      {isDataLoading && !researchWorkloads ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      ) : (
+        researchWorkloads?.map(workload => {
+          return (
+            <>
+              <WorkloadHeaderContainer>
+                <WorkloadHeaderText>Research Workload</WorkloadHeaderText>
+              </WorkloadHeaderContainer>
+              <ColumnParentContainer>
+                <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                  <ThinText>Title of the Study:</ThinText>
+                  <ThinText>Funding of the Study:</ThinText>
+                  <ThinText>Designation in the Study:</ThinText>
+                  <ThinText>Status of the Study:</ThinText>
+                  {workload.rwlFilePath && (
+                    <ThinText style={{ maxWidth: 350 }}>
+                      Proposal(for Approved Proposal) or Progress Report(for
+                      On-Going Study) Attachment:
                     </ThinText>
-                    <ThinText>
-                      Resource Person in an Extension Activity:
+                  )}
+                  {workload.disseminatedResearchFilesPath && (
+                    <ThinText>Certificate of Presentation:</ThinText>
+                  )}
+                  {workload.rwlFilePath1 && (
+                    <ThinText style={{ maxWidth: 350 }}>
+                      Proposal(for Approved Externally Funded Proposal) or
+                      Progress Report(for On-Going Externally Funded Study)
+                      Attachment:
                     </ThinText>
-                    <ThinText>
-                      Resource Person in an Extension Activity:
-                    </ThinText>
-                    {workload.extensionActivityFilePath && (
-                      <ThinText style={{ maxWidth: 350 }}>
-                        Extension Activity Accomplishment Report Attachment:
-                      </ThinText>
-                    )}
-                    {workload.certificateFilePath && (
-                      <ThinText>
-                        Certificate of Presentation Attachment
-                      </ThinText>
-                    )}
-                    {workload.summaryOfHoursFilePath && (
-                      <ThinText style={{ maxWidth: 350 }}>
-                        Summary of hours rendered in extension activities
-                        Attachment:
-                      </ThinText>
-                    )}
-                  </ColumnContainer>
-                  <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                    <BoldText>{workload.designationExtensionActivity}</BoldText>
-                    <BoldText>{workload.totalNumberHours}</BoldText>
-                    <BoldText>{workload.resourcePerson}</BoldText>
-                    <BoldText>{workload.resourcePerson}</BoldText>
-                    {workload.extensionActivityFilePath && (
-                      <div
+                  )}
+                </ColumnContainer>
+                <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                  <BoldText>{workload.titleOfStudy}</BoldText>
+                  <BoldText>{workload.fundingOfStudy}</BoldText>
+                  <BoldText>{workload.designationStudy}</BoldText>
+                  <BoldText style={{ textTransform: "capitalize" }}>
+                    {workload.status}
+                  </BoldText>
+                  {workload.rwlFilePath && (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <a
+                        href={workload.rwlFilePath}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
+                          textDecoration: "none",
+                          alignItems: "flex-start",
+                          display: "flex"
                         }}
                       >
-                        <a
-                          href={workload.extensionActivityFilePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <ThinText
                           style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
+                            color: "white",
+                            fontSize: 12,
+                            backgroundColor: Colors.buttonPrimary,
+                            paddingLeft: 5,
+                            paddingRight: 5,
+                            cursor: "pointer"
+                          }}
+                          onClick={() => {}}
+                        >
+                          Attachment
+                        </ThinText>
+                      </a>
+                      {userContext.role === "OVPAA" && (
+                        <div
+                          style={{
+                            width: 277,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginRight: 15
                           }}
                         >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {userRole === "OVPAA" && (
-                          <div
-                            style={{
-                              width: 277,
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginRight: 15
-                            }}
-                          >
-                            <InputPoints type="number" min={0} />
-                            <InputRemarks />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {workload.certificateFilePath?.map(filePath => {
+                          <InputPoints type="number" min={0} />
+                          <InputRemarks />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {workload.disseminatedResearchFilesPath &&
+                    workload.disseminatedResearchFilesPath.map(attachment => {
                       return (
                         <div
                           style={{
@@ -464,7 +292,7 @@ function RemarksWorkload({ user }: WorkloadProps) {
                           }}
                         >
                           <a
-                            href={filePath}
+                            href={attachment}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -487,7 +315,7 @@ function RemarksWorkload({ user }: WorkloadProps) {
                               Attachment
                             </ThinText>
                           </a>
-                          {userRole === "OVPAA" && (
+                          {userContext.role === "OVPAA" && (
                             <div
                               style={{
                                 width: 277,
@@ -503,7 +331,171 @@ function RemarksWorkload({ user }: WorkloadProps) {
                         </div>
                       );
                     })}
-                    {workload.summaryOfHoursFilePath && (
+                  {workload.rwlFilePath1 && (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <a
+                        href={workload.rwlFilePath1}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: "none",
+                          alignItems: "flex-start",
+                          display: "flex"
+                        }}
+                      >
+                        <ThinText
+                          style={{
+                            color: "white",
+                            fontSize: 12,
+                            backgroundColor: Colors.buttonPrimary,
+                            paddingLeft: 5,
+                            paddingRight: 5,
+                            cursor: "pointer"
+                          }}
+                          onClick={() => {}}
+                        >
+                          Attachment
+                        </ThinText>
+                      </a>
+                      {userContext.role === "OVPAA" && (
+                        <div
+                          style={{
+                            width: 277,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginRight: 15
+                          }}
+                        >
+                          <InputPoints type="number" min={0} />
+                          <InputRemarks />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </ColumnContainer>
+              </ColumnParentContainer>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: 25
+                }}
+              >
+                <ColumnContainer style={{ paddingLeft: 90 }}>
+                  <BoldText>TOTAL:</BoldText>
+                </ColumnContainer>
+                <ColumnContainer>
+                  <BoldText>{workload.rwlPoints}</BoldText>
+                </ColumnContainer>
+              </div>
+            </>
+          );
+        })
+      )}
+
+      {isDataLoading && !extensionWorkloads ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      ) : (
+        extensionWorkloads?.map(workload => {
+          return (
+            <>
+              <WorkloadHeaderContainer>
+                <WorkloadHeaderText>Extension Workload</WorkloadHeaderText>
+              </WorkloadHeaderContainer>
+              <ColumnParentContainer>
+                <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                  <ThinText>Designation in Extension Activity:</ThinText>
+                  <ThinText>
+                    Number of Hours rendered in Extension Activity:
+                  </ThinText>
+                  <ThinText>Resource Person in an Extension Activity:</ThinText>
+                  <ThinText>Resource Person in an Extension Activity:</ThinText>
+                  {workload.extensionActivityFilePath && (
+                    <ThinText style={{ maxWidth: 350 }}>
+                      Extension Activity Accomplishment Report Attachment:
+                    </ThinText>
+                  )}
+                  {workload.certificateFilePath && (
+                    <ThinText>Certificate of Presentation Attachment</ThinText>
+                  )}
+                  {workload.summaryOfHoursFilePath && (
+                    <ThinText style={{ maxWidth: 350 }}>
+                      Summary of hours rendered in extension activities
+                      Attachment:
+                    </ThinText>
+                  )}
+                </ColumnContainer>
+                <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                  <BoldText>{workload.designationExtensionActivity}</BoldText>
+                  <BoldText>{workload.totalNumberHours}</BoldText>
+                  <BoldText>{workload.resourcePerson}</BoldText>
+                  <BoldText>{workload.resourcePerson}</BoldText>
+                  {workload.extensionActivityFilePath && (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <a
+                        href={workload.extensionActivityFilePath}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: "none",
+                          alignItems: "flex-start",
+                          display: "flex"
+                        }}
+                      >
+                        <ThinText
+                          style={{
+                            color: "white",
+                            fontSize: 12,
+                            backgroundColor: Colors.buttonPrimary,
+                            paddingLeft: 5,
+                            paddingRight: 5,
+                            cursor: "pointer"
+                          }}
+                          onClick={() => {}}
+                        >
+                          Attachment
+                        </ThinText>
+                      </a>
+                      {userContext.role === "OVPAA" && (
+                        <div
+                          style={{
+                            width: 277,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginRight: 15
+                          }}
+                        >
+                          <InputPoints type="number" min={0} />
+                          <InputRemarks />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {workload.certificateFilePath?.map(filePath => {
+                    return (
                       <div
                         style={{
                           display: "flex",
@@ -513,7 +505,7 @@ function RemarksWorkload({ user }: WorkloadProps) {
                         }}
                       >
                         <a
-                          href={workload.summaryOfHoursFilePath}
+                          href={filePath}
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
@@ -536,7 +528,7 @@ function RemarksWorkload({ user }: WorkloadProps) {
                             Attachment
                           </ThinText>
                         </a>
-                        {userRole === "OVPAA" && (
+                        {userContext.role === "OVPAA" && (
                           <div
                             style={{
                               width: 277,
@@ -550,567 +542,627 @@ function RemarksWorkload({ user }: WorkloadProps) {
                           </div>
                         )}
                       </div>
-                    )}
-                  </ColumnContainer>
-                </ColumnParentContainer>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 25
-                  }}
-                >
-                  <ColumnContainer style={{ paddingLeft: 90 }}>
-                    <BoldText>TOTAL:</BoldText>
-                  </ColumnContainer>
-                  <ColumnContainer>
-                    <BoldText>{Number(workload.ewlPoints).toFixed(2)}</BoldText>
-                  </ColumnContainer>
-                </div>
-              </>
-            );
-          })}
-      <WorkloadHeaderContainer>
-        <WorkloadHeaderText>Strategic Function</WorkloadHeaderText>
-      </WorkloadHeaderContainer>
-      {isDataLoading && !strategicFunctionWorkloads
-        ? null
-        : strategicFunctionWorkloads?.map(workload => {
-            return (
-              <>
-                <ColumnParentContainer>
-                  <ParentLevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>University Level:</ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.designationUniversityLevel?.map(
-                          designationUniversityLevel => {
-                            return (
-                              <BoldText>{designationUniversityLevel}</BoldText>
-                            );
-                          }
-                        )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>College Level:</ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.designationCollegeCampusLevel?.map(
-                          designationCollegeCampusLevel => {
-                            return (
-                              <BoldText>
-                                {designationCollegeCampusLevel}
-                              </BoldText>
-                            );
-                          }
-                        )}
-                      </ColumnContainer>
-                    </LevelContainer>
+                    );
+                  })}
+                  {workload.summaryOfHoursFilePath && (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <a
+                        href={workload.summaryOfHoursFilePath}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: "none",
+                          alignItems: "flex-start",
+                          display: "flex"
+                        }}
+                      >
+                        <ThinText
+                          style={{
+                            color: "white",
+                            fontSize: 12,
+                            backgroundColor: Colors.buttonPrimary,
+                            paddingLeft: 5,
+                            paddingRight: 5,
+                            cursor: "pointer"
+                          }}
+                          onClick={() => {}}
+                        >
+                          Attachment
+                        </ThinText>
+                      </a>
+                      {userContext.role === "OVPAA" && (
+                        <div
+                          style={{
+                            width: 277,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginRight: 15
+                          }}
+                        >
+                          <InputPoints type="number" min={0} />
+                          <InputRemarks />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </ColumnContainer>
+              </ColumnParentContainer>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: 25
+                }}
+              >
+                <ColumnContainer style={{ paddingLeft: 90 }}>
+                  <BoldText>TOTAL:</BoldText>
+                </ColumnContainer>
+                <ColumnContainer>
+                  <BoldText>{Number(workload.ewlPoints).toFixed(2)}</BoldText>
+                </ColumnContainer>
+              </div>
+            </>
+          );
+        })
+      )}
 
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>Department Level:</ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.designationDepartmentLevel?.map(
-                          designationDepartmentLevel => {
+      {isDataLoading && !strategicFunctionWorkloads ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      ) : (
+        strategicFunctionWorkloads?.map(workload => {
+          return (
+            <>
+              <WorkloadHeaderContainer>
+                <WorkloadHeaderText>Strategic Function</WorkloadHeaderText>
+              </WorkloadHeaderContainer>
+              <ColumnParentContainer>
+                <ParentLevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>University Level:</ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.designationUniversityLevel?.map(
+                        designationUniversityLevel => {
+                          return (
+                            <BoldText>{designationUniversityLevel}</BoldText>
+                          );
+                        }
+                      )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>College Level:</ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.designationCollegeCampusLevel?.map(
+                        designationCollegeCampusLevel => {
+                          return (
+                            <BoldText>{designationCollegeCampusLevel}</BoldText>
+                          );
+                        }
+                      )}
+                    </ColumnContainer>
+                  </LevelContainer>
+
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>Department Level:</ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.designationDepartmentLevel?.map(
+                        designationDepartmentLevel => {
+                          return (
+                            <BoldText>{designationDepartmentLevel}</BoldText>
+                          );
+                        }
+                      )}
+                    </ColumnContainer>
+                  </LevelContainer>
+
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>Designation as Academic Adviser:</ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      <BoldText>{workload.academicAdvisees}</BoldText>
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>
+                        Designation at the University Level Attachment/s:
+                      </ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.approvedUniversityDesignationFilePath &&
+                        workload.approvedUniversityDesignationFilePath.map(
+                          path => {
                             return (
-                              <BoldText>{designationDepartmentLevel}</BoldText>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  width: "100%",
+                                  justifyContent: "space-between"
+                                }}
+                              >
+                                <a
+                                  href={path}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    textDecoration: "none",
+                                    alignItems: "flex-start",
+                                    display: "flex"
+                                  }}
+                                >
+                                  <ThinText
+                                    style={{
+                                      color: "white",
+                                      fontSize: 12,
+                                      backgroundColor: Colors.buttonPrimary,
+                                      paddingLeft: 5,
+                                      paddingRight: 5,
+                                      cursor: "pointer"
+                                    }}
+                                    onClick={() => {}}
+                                  >
+                                    Attachment
+                                  </ThinText>
+                                </a>
+                                {userContext.role === "OVPAA" && (
+                                  <div
+                                    style={{
+                                      width: 277,
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      marginRight: 15
+                                    }}
+                                  >
+                                    <InputPoints type="number" min={0} />
+                                    <InputRemarks />
+                                  </div>
+                                )}
+                              </div>
                             );
                           }
                         )}
-                      </ColumnContainer>
-                    </LevelContainer>
-
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>Designation as Academic Adviser:</ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        <BoldText>{workload.academicAdvisees}</BoldText>
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>
-                          Designation at the University Level Attachment/s:
-                        </ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.approvedUniversityDesignationFilePath &&
-                          workload.approvedUniversityDesignationFilePath.map(
-                            path => {
-                              return (
-                                <div
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>
+                        Designation at the College/Campus Level Attachment/s:
+                      </ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.approvedCollegeCampusDesignationFilePath &&
+                        workload.approvedCollegeCampusDesignationFilePath.map(
+                          path => {
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  width: "100%",
+                                  justifyContent: "space-between"
+                                }}
+                              >
+                                <a
+                                  href={path}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                   style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    justifyContent: "space-between"
+                                    textDecoration: "none",
+                                    alignItems: "flex-start",
+                                    display: "flex"
                                   }}
                                 >
-                                  <a
-                                    href={path}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                  <ThinText
                                     style={{
-                                      textDecoration: "none",
-                                      alignItems: "flex-start",
-                                      display: "flex"
+                                      color: "white",
+                                      fontSize: 12,
+                                      backgroundColor: Colors.buttonPrimary,
+                                      paddingLeft: 5,
+                                      paddingRight: 5,
+                                      cursor: "pointer"
+                                    }}
+                                    onClick={() => {}}
+                                  >
+                                    Attachment
+                                  </ThinText>
+                                </a>
+                                {userContext.role === "OVPAA" && (
+                                  <div
+                                    style={{
+                                      width: 277,
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      marginRight: 15
                                     }}
                                   >
-                                    <ThinText
-                                      style={{
-                                        color: "white",
-                                        fontSize: 12,
-                                        backgroundColor: Colors.buttonPrimary,
-                                        paddingLeft: 5,
-                                        paddingRight: 5,
-                                        cursor: "pointer"
-                                      }}
-                                      onClick={() => {}}
-                                    >
-                                      Attachment
-                                    </ThinText>
-                                  </a>
-                                  {userRole === "OVPAA" && (
-                                    <div
-                                      style={{
-                                        width: 277,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        marginRight: 15
-                                      }}
-                                    >
-                                      <InputPoints type="number" min={0} />
-                                      <InputRemarks />
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            }
-                          )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>
-                          Designation at the College/Campus Level Attachment/s:
-                        </ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.approvedCollegeCampusDesignationFilePath &&
-                          workload.approvedCollegeCampusDesignationFilePath.map(
-                            path => {
-                              return (
-                                <div
+                                    <InputPoints type="number" min={0} />
+                                    <InputRemarks />
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>
+                        Designation at the Department Level Attachment/s:
+                      </ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.approvedDepartmentDesignationFilePath &&
+                        workload.approvedDepartmentDesignationFilePath.map(
+                          path => {
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  width: "100%",
+                                  justifyContent: "space-between"
+                                }}
+                              >
+                                <a
+                                  href={path}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                   style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    justifyContent: "space-between"
+                                    textDecoration: "none",
+                                    alignItems: "flex-start",
+                                    display: "flex"
                                   }}
                                 >
-                                  <a
-                                    href={path}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                  <ThinText
                                     style={{
-                                      textDecoration: "none",
-                                      alignItems: "flex-start",
-                                      display: "flex"
+                                      color: "white",
+                                      fontSize: 12,
+                                      backgroundColor: Colors.buttonPrimary,
+                                      paddingLeft: 5,
+                                      paddingRight: 5,
+                                      cursor: "pointer"
+                                    }}
+                                    onClick={() => {}}
+                                  >
+                                    Attachment
+                                  </ThinText>
+                                </a>
+                                {userContext.role === "OVPAA" && (
+                                  <div
+                                    style={{
+                                      width: 277,
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      marginRight: 15
                                     }}
                                   >
-                                    <ThinText
-                                      style={{
-                                        color: "white",
-                                        fontSize: 12,
-                                        backgroundColor: Colors.buttonPrimary,
-                                        paddingLeft: 5,
-                                        paddingRight: 5,
-                                        cursor: "pointer"
-                                      }}
-                                      onClick={() => {}}
-                                    >
-                                      Attachment
-                                    </ThinText>
-                                  </a>
-                                  {userRole === "OVPAA" && (
-                                    <div
-                                      style={{
-                                        width: 277,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        marginRight: 15
-                                      }}
-                                    >
-                                      <InputPoints type="number" min={0} />
-                                      <InputRemarks />
-                                    </div>
-                                  )}
-                                </div>
-                              );
+                                    <InputPoints type="number" min={0} />
+                                    <InputRemarks />
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>
+                        Designation as Sports/Socio-Cultural Coach or Trainor
+                        and Academic Organization Adviser Attachment/s:
+                      </ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.designationAsSportTrainorAcademicFilePath && (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <a
+                            href={
+                              workload.designationAsSportTrainorAcademicFilePath
                             }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              textDecoration: "none",
+                              alignItems: "flex-start",
+                              display: "flex"
+                            }}
+                          >
+                            <ThinText
+                              style={{
+                                color: "white",
+                                fontSize: 12,
+                                backgroundColor: Colors.buttonPrimary,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                cursor: "pointer"
+                              }}
+                              onClick={() => {}}
+                            >
+                              Attachment
+                            </ThinText>
+                          </a>
+                          {userContext.role === "OVPAA" && (
+                            <div
+                              style={{
+                                width: 277,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginRight: 15
+                              }}
+                            >
+                              <InputPoints type="number" min={0} />
+                              <InputRemarks />
+                            </div>
                           )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>
-                          Designation at the Department Level Attachment/s:
-                        </ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.approvedDepartmentDesignationFilePath &&
-                          workload.approvedDepartmentDesignationFilePath.map(
-                            path => {
-                              return (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    width: "100%",
-                                    justifyContent: "space-between"
-                                  }}
-                                >
-                                  <a
-                                    href={path}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      textDecoration: "none",
-                                      alignItems: "flex-start",
-                                      display: "flex"
-                                    }}
-                                  >
-                                    <ThinText
-                                      style={{
-                                        color: "white",
-                                        fontSize: 12,
-                                        backgroundColor: Colors.buttonPrimary,
-                                        paddingLeft: 5,
-                                        paddingRight: 5,
-                                        cursor: "pointer"
-                                      }}
-                                      onClick={() => {}}
-                                    >
-                                      Attachment
-                                    </ThinText>
-                                  </a>
-                                  {userRole === "OVPAA" && (
-                                    <div
-                                      style={{
-                                        width: 277,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        marginRight: 15
-                                      }}
-                                    >
-                                      <InputPoints type="number" min={0} />
-                                      <InputRemarks />
-                                    </div>
-                                  )}
-                                </div>
-                              );
+                        </div>
+                      )}
+                      {workload.designationAsSportTrainorAcademicFilePath1 && (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <a
+                            href={
+                              workload.designationAsSportTrainorAcademicFilePath1
                             }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              textDecoration: "none",
+                              alignItems: "flex-start",
+                              display: "flex"
+                            }}
+                          >
+                            <ThinText
+                              style={{
+                                color: "white",
+                                fontSize: 12,
+                                backgroundColor: Colors.buttonPrimary,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                cursor: "pointer"
+                              }}
+                              onClick={() => {}}
+                            >
+                              Attachment
+                            </ThinText>
+                          </a>
+                          {userContext.role === "OVPAA" && (
+                            <div
+                              style={{
+                                width: 277,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginRight: 15
+                              }}
+                            >
+                              <InputPoints type="number" min={0} />
+                              <InputRemarks />
+                            </div>
                           )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>
-                          Designation as Sports/Socio-Cultural Coach or Trainor
-                          and Academic Organization Adviser Attachment/s:
-                        </ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.designationAsSportTrainorAcademicFilePath && (
-                          <div
+                        </div>
+                      )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>
+                        Designation as Member of University-Wide AdHoc Committee
+                        Attachment/s:
+                      </ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.designationAsMemberOfAdhoc && (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <a
+                            href={workload.designationAsMemberOfAdhoc}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              width: "100%",
-                              justifyContent: "space-between"
+                              textDecoration: "none",
+                              alignItems: "flex-start",
+                              display: "flex"
                             }}
                           >
-                            <a
-                              href={
-                                workload.designationAsSportTrainorAcademicFilePath
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <ThinText
                               style={{
-                                textDecoration: "none",
-                                alignItems: "flex-start",
-                                display: "flex"
+                                color: "white",
+                                fontSize: 12,
+                                backgroundColor: Colors.buttonPrimary,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                cursor: "pointer"
+                              }}
+                              onClick={() => {}}
+                            >
+                              Attachment
+                            </ThinText>
+                          </a>
+                          {userContext.role === "OVPAA" && (
+                            <div
+                              style={{
+                                width: 277,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginRight: 15
                               }}
                             >
-                              <ThinText
-                                style={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  backgroundColor: Colors.buttonPrimary,
-                                  paddingLeft: 5,
-                                  paddingRight: 5,
-                                  cursor: "pointer"
-                                }}
-                                onClick={() => {}}
-                              >
-                                Attachment
-                              </ThinText>
-                            </a>
-                            {userRole === "OVPAA" && (
-                              <div
-                                style={{
-                                  width: 277,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginRight: 15
-                                }}
-                              >
-                                <InputPoints type="number" min={0} />
-                                <InputRemarks />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                        {workload.designationAsSportTrainorAcademicFilePath1 && (
-                          <div
+                              <InputPoints type="number" min={0} />
+                              <InputRemarks />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {workload.memberAdhocFilePath1 && (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <a
+                            href={workload.memberAdhocFilePath1}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              width: "100%",
-                              justifyContent: "space-between"
+                              textDecoration: "none",
+                              alignItems: "flex-start",
+                              display: "flex"
                             }}
                           >
-                            <a
-                              href={
-                                workload.designationAsSportTrainorAcademicFilePath1
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <ThinText
                               style={{
-                                textDecoration: "none",
-                                alignItems: "flex-start",
-                                display: "flex"
+                                color: "white",
+                                fontSize: 12,
+                                backgroundColor: Colors.buttonPrimary,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                cursor: "pointer"
+                              }}
+                              onClick={() => {}}
+                            >
+                              Attachment
+                            </ThinText>
+                          </a>
+                          {userContext.role === "OVPAA" && (
+                            <div
+                              style={{
+                                width: 277,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginRight: 15
                               }}
                             >
-                              <ThinText
-                                style={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  backgroundColor: Colors.buttonPrimary,
-                                  paddingLeft: 5,
-                                  paddingRight: 5,
-                                  cursor: "pointer"
-                                }}
-                                onClick={() => {}}
-                              >
-                                Attachment
-                              </ThinText>
-                            </a>
-                            {userRole === "OVPAA" && (
-                              <div
-                                style={{
-                                  width: 277,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginRight: 15
-                                }}
-                              >
-                                <InputPoints type="number" min={0} />
-                                <InputRemarks />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>
-                          Designation as Member of University-Wide AdHoc
-                          Committee Attachment/s:
-                        </ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.designationAsMemberOfAdhoc && (
-                          <div
+                              <InputPoints type="number" min={0} />
+                              <InputRemarks />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>
+                        Designation as Academic Adviser Attachment/s:
+                      </ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.academicAdviseesFilePath && (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <a
+                            href={workload.academicAdviseesFilePath}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              width: "100%",
-                              justifyContent: "space-between"
+                              textDecoration: "none",
+                              alignItems: "flex-start",
+                              display: "flex"
                             }}
                           >
-                            <a
-                              href={workload.designationAsMemberOfAdhoc}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <ThinText
                               style={{
-                                textDecoration: "none",
-                                alignItems: "flex-start",
-                                display: "flex"
+                                color: "white",
+                                fontSize: 12,
+                                backgroundColor: Colors.buttonPrimary,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                cursor: "pointer"
+                              }}
+                              onClick={() => {}}
+                            >
+                              Attachment
+                            </ThinText>
+                          </a>
+                          {userContext.role === "OVPAA" && (
+                            <div
+                              style={{
+                                width: 277,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginRight: 15
                               }}
                             >
-                              <ThinText
-                                style={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  backgroundColor: Colors.buttonPrimary,
-                                  paddingLeft: 5,
-                                  paddingRight: 5,
-                                  cursor: "pointer"
-                                }}
-                                onClick={() => {}}
-                              >
-                                Attachment
-                              </ThinText>
-                            </a>
-                            {userRole === "OVPAA" && (
-                              <div
-                                style={{
-                                  width: 277,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginRight: 15
-                                }}
-                              >
-                                <InputPoints type="number" min={0} />
-                                <InputRemarks />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                        {workload.memberAdhocFilePath1 && (
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              width: "100%",
-                              justifyContent: "space-between"
-                            }}
-                          >
-                            <a
-                              href={workload.memberAdhocFilePath1}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{
-                                textDecoration: "none",
-                                alignItems: "flex-start",
-                                display: "flex"
-                              }}
-                            >
-                              <ThinText
-                                style={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  backgroundColor: Colors.buttonPrimary,
-                                  paddingLeft: 5,
-                                  paddingRight: 5,
-                                  cursor: "pointer"
-                                }}
-                                onClick={() => {}}
-                              >
-                                Attachment
-                              </ThinText>
-                            </a>
-                            {userRole === "OVPAA" && (
-                              <div
-                                style={{
-                                  width: 277,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginRight: 15
-                                }}
-                              >
-                                <InputPoints type="number" min={0} />
-                                <InputRemarks />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                    <LevelContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                        <ThinText>
-                          Designation as Academic Adviser Attachment/s:
-                        </ThinText>
-                      </ColumnContainer>
-                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.academicAdviseesFilePath && (
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              width: "100%",
-                              justifyContent: "space-between"
-                            }}
-                          >
-                            <a
-                              href={workload.academicAdviseesFilePath}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{
-                                textDecoration: "none",
-                                alignItems: "flex-start",
-                                display: "flex"
-                              }}
-                            >
-                              <ThinText
-                                style={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  backgroundColor: Colors.buttonPrimary,
-                                  paddingLeft: 5,
-                                  paddingRight: 5,
-                                  cursor: "pointer"
-                                }}
-                                onClick={() => {}}
-                              >
-                                Attachment
-                              </ThinText>
-                            </a>
-                            {userRole === "OVPAA" && (
-                              <div
-                                style={{
-                                  width: 277,
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginRight: 15
-                                }}
-                              >
-                                <InputPoints type="number" min={0} />
-                                <InputRemarks />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </ColumnContainer>
-                    </LevelContainer>
-                  </ParentLevelContainer>
-                </ColumnParentContainer>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row"
-                  }}
-                >
-                  <ColumnContainer style={{ paddingLeft: 90 }}>
-                    <BoldText>TOTAL:</BoldText>
-                  </ColumnContainer>
-                  <ColumnContainer>
-                    <BoldText>{workload.sfwPoints}</BoldText>
-                  </ColumnContainer>
-                </div>
-              </>
-            );
-          })}
+                              <InputPoints type="number" min={0} />
+                              <InputRemarks />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                </ParentLevelContainer>
+              </ColumnParentContainer>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}
+              >
+                <ColumnContainer style={{ paddingLeft: 90 }}>
+                  <BoldText>TOTAL:</BoldText>
+                </ColumnContainer>
+                <ColumnContainer>
+                  <BoldText>{workload.sfwPoints}</BoldText>
+                </ColumnContainer>
+              </div>
+            </>
+          );
+        })
+      )}
     </Container>
   );
 }
