@@ -786,7 +786,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
         onConfirm={onNextSubmit}
-        content="Are you sure?"
+        content="Confirm submission?"
         size="large"
       />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -1311,7 +1311,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                     </Label>
                   </div>
                   <FormButton
-                    text="Save"
+                    text="Submit"
                     onClicked={() => setIsConfirming(true)}
                     isSubmitting={isSubmitting}
                   ></FormButton>

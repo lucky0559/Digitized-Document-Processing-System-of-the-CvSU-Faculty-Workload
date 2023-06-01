@@ -364,7 +364,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
         onConfirm={extensionWorkloadHandler}
-        content="Are you sure?"
+        content="Confirm submission?"
         size="large"
       />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -561,7 +561,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                 </Label>
               </div>
               <FormButton
-                text="Save"
+                text="Submit"
                 onClicked={() => setIsConfirming(true)}
                 isSubmitting={isSubmitting}
                 disabled={

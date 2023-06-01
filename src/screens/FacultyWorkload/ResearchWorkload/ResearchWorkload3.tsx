@@ -84,7 +84,7 @@ const ResearchWorkload3 = ({
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
         onConfirm={() => researchWorkLoadHandler3(false)}
-        content="Are you sure?"
+        content="Confirm submission?"
         size="large"
       />
       <SubContainer>
@@ -154,7 +154,7 @@ const ResearchWorkload3 = ({
           style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
         >
           <FormButton
-            text="Save"
+            text="Submit"
             onClicked={() => setIsConfirming(true)}
             isSubmitting={isSubmitting}
             disabled={points === 0 && fundGeneratedPoints === 0}

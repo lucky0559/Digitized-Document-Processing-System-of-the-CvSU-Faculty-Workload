@@ -114,7 +114,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
         onConfirm={onSubmit}
-        content="Are you sure?"
+        content="Confirm submission?"
         size="large"
       />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -182,7 +182,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
               Total Teaching Workload = {points.toFixed(2).toString()}
             </Label>
             <FormButton
-              text="Save"
+              text="Submit"
               onClicked={() => setIsConfirming(true)}
               isSubmitting={isSubmitting}
               disabled={
