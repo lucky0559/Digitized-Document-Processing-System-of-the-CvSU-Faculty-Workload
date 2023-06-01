@@ -71,13 +71,13 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         });
       }
     }
-    if (fundingOfStudy === "CvSU Research Grant") {
+    if (fundingOfStudy === "CvSU Funded") {
       setSteps(2);
     } else if (fundingOfStudy === "Externally Funded") {
       setSteps(3);
     } else if (fundDisplay === "Externally Funded") {
       setSteps(3);
-    } else if (fundDisplay === "CvSU Research Grant") {
+    } else if (fundDisplay === "CvSU Funded") {
       setSteps(2);
     }
   };
@@ -142,20 +142,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
 
     if (steps === 4) {
-      // if (disseminatedResearch) {
-      //   setResearchWorkLoad({
-      //     ...researchWorkLoad,
-      //     disseminatedResearch,
-      //     rwlFile2
-      //   });
-      // } else {
-      //   setResearchWorkLoad({
-      //     disseminatedResearch,
-      //     rwlFile2,
-      //     ...researchWorkLoad
-      //   });
-      // }
-
       setSteps(steps - 1);
     }
   };
@@ -528,6 +514,28 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
   }, [study1, study2, study3, study4]);
 
+  useEffect(() => {
+    setResearchWorkLoad({
+      ...researchWorkLoad,
+      typeOfStudy: undefined,
+      designationStudy: undefined,
+      fundGenerated: undefined,
+      disseminatedResearch: undefined,
+      disseminatedResearchFiles: undefined,
+      rwlFile: undefined,
+      rwlFilePath: undefined,
+      rwlFile1: undefined,
+      rwlFilePath1: undefined,
+      disseminatedResearchFilesPath: undefined,
+      rwlPoints: undefined,
+      remarks: undefined,
+      status: undefined
+    });
+    setPoints(0);
+    setFundGeneratedPoints(0);
+    console.log("hey");
+  }, [researchWorkLoad?.fundingOfStudy]);
+
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -755,7 +763,6 @@ const Label = styled.label`
 `;
 
 const TextInput = styled.input`
-  width: 200px;
   background-color: ${Colors.textFieldBackground};
   border-width: 1px;
   font-family: HurmeGeometricSans3;

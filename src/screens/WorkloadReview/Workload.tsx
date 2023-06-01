@@ -10,6 +10,7 @@ import WorkloadReviewScreen from "./WorkloadReviewScreen";
 import _ from "lodash";
 import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
 import RemarksWorkload from "./RemarksWorkload";
+import FormButton from "../../components/FormButton";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -47,7 +48,13 @@ function Workload({
       const reduceData = _.uniqBy(mergeData, "email");
       setUsers(reduceData);
     })();
-  }, []);
+  }, [
+    teachingWorkload,
+    researchWorkload,
+    extensionWorkload,
+    allStrategicWorkload,
+    userId
+  ]);
 
   const onCloseReviewScreen = () => {
     setIsReviewing(false);
@@ -55,7 +62,14 @@ function Workload({
 
   return (
     <Container>
-      {isReviewing && <RemarksWorkload user={accountReviewing!} />}
+      {isReviewing && (
+        <>
+          <RemarksWorkload user={accountReviewing!} />
+          <div style={{ margin: 15 }}>
+            <FormButton text="Back" onClicked={onCloseReviewScreen} />
+          </div>
+        </>
+      )}
       {isDataLoading && !isReviewing && (
         <div
           style={{

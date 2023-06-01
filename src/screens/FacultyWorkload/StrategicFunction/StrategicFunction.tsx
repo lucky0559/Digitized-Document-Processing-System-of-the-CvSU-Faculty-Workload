@@ -9,7 +9,7 @@ import ProfileTab from "../../../components/ProfileTab";
 import ScreenTitle from "../../../components/ScreenTitle";
 import StrategicFunction1 from "./StrategicFunction1";
 import StrategicFunction2 from "./StrategicFunction2";
-import { WorkloadType } from "../../../constants/Strings";
+import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import { useNavigate } from "react-router-dom";
 import { Confirm } from "semantic-ui-react";
 import Footer from "../../../components/Footer";
@@ -106,6 +106,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
 
   const [sportsSocio, setSportsSocio] = useState<DesignationWithPoints>();
   const [sportsSocio1, setSportsSocio1] = useState<DesignationWithPoints>();
+  const [sportsSocio2, setSportsSocio2] = useState<DesignationWithPoints>();
   const [memberUniversity, setMemberUniversity] =
     useState<DesignationWithPoints>();
   const [memberUniversity1, setMemberUniversity1] =
@@ -339,6 +340,13 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     });
   };
 
+  const textInputTitleSportsSocio2 = (value: string) => {
+    setSportsSocio2({
+      ...sportsSocio2,
+      title: value
+    });
+  };
+
   const textInputPointsSportsSocio = (value: string) => {
     setSportsSocio({
       ...sportsSocio,
@@ -366,6 +374,58 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
       file: value
     });
   };
+
+  const fileHandlerSportsSocio2 = (value?: File) => {
+    setSportsSocio2({
+      ...sportsSocio2,
+      file: value
+    });
+  };
+
+  useEffect(() => {
+    if (sportsSocio?.title && sportsSocio.file) {
+      let designationPoints;
+      if (sportsSocio.title === DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]) {
+        designationPoints = "5";
+      } else {
+        designationPoints = "3";
+      }
+      setSportsSocio({
+        ...sportsSocio,
+        points: designationPoints
+      });
+    }
+  }, [sportsSocio]);
+
+  useEffect(() => {
+    if (sportsSocio1?.title && sportsSocio1.file) {
+      let designationPoints;
+      if (sportsSocio1.title === DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]) {
+        designationPoints = "5";
+      } else {
+        designationPoints = "3";
+      }
+      setSportsSocio1({
+        ...sportsSocio1,
+        points: designationPoints
+      });
+    }
+  }, [sportsSocio1]);
+
+  useEffect(() => {
+    if (sportsSocio2?.title && sportsSocio2.file) {
+      let designationPoints;
+      if (sportsSocio2.title === DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]) {
+        designationPoints = "5";
+      } else {
+        designationPoints = "3";
+      }
+      setSportsSocio2({
+        ...sportsSocio2,
+        points: designationPoints
+      });
+    }
+  }, [sportsSocio2]);
 
   const textInputTitleMemberUniversity = (value: string) => {
     setMemberUniversity({
@@ -474,11 +534,16 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           ],
           designationAsSportTrainorAcademic: sportsSocio?.title,
           designationAsSportTrainorAcademic1: sportsSocio1?.title,
+          designationAsSportTrainorAcademic2: sportsSocio2?.title,
           designationAsSportTrainorAcademicFile: sportsSocio?.file,
           designationAsSportTrainorAcademicFile1: sportsSocio1?.file,
+          designationAsSportTrainorAcademicFile2: sportsSocio2?.file,
           designationAsSportTrainorAcademicPoints: Number(sportsSocio?.points),
           designationAsSportTrainorAcademicPoints1: Number(
             sportsSocio1?.points
+          ),
+          designationAsSportTrainorAcademicPoints2: Number(
+            sportsSocio2?.points
           ),
           designationAsMemberOfAdhoc: memberUniversity?.title,
           designationAsMemberOfAdhoc1: memberUniversity1?.title,
@@ -515,6 +580,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     setIsFacultySubmenuOpen(false);
     setSportsSocio({});
     setSportsSocio1({});
+    setSportsSocio2({});
     setMemberUniversity({});
     setMemberUniversity1({});
     setAcademicAdviser({});
@@ -698,6 +764,9 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const hasSportsSocio1 =
     sportsSocio1?.points && sportsSocio1?.file && sportsSocio1?.title;
 
+  const hasSportsSocio2 =
+    sportsSocio2?.points && sportsSocio2?.file && sportsSocio2?.title;
+
   const hasMemberUniversity =
     memberUniversity?.points &&
     memberUniversity?.file &&
@@ -852,6 +921,13 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                 sportsSocioPoints1={sportsSocio1?.points}
                 fileHandlerSportsSocio1={fileHandlerSportsSocio1}
                 fileNameSportsSocio1={sportsSocio1?.file?.name}
+                onTextInputSportsSocioDesignationTitle2={
+                  textInputTitleSportsSocio2
+                }
+                sportsSocioTitle2={sportsSocio2?.title}
+                sportsSocioPoints2={sportsSocio2?.points}
+                fileHandlerSportsSocio2={fileHandlerSportsSocio2}
+                fileNameSportsSocio2={sportsSocio2?.file?.name}
                 onTextInputMemberUniversityWideDesignationTitle={
                   textInputTitleMemberUniversity
                 }
@@ -888,6 +964,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                     <Label style={{ fontWeight: "bold" }}>
                       {hasSportsSocio &&
                         hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
                         !hasMemberUniversity &&
                         !hasMemberUniversity1 &&
                         !hasAcademicAdviser &&
@@ -895,6 +972,29 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           points +
                           Number(sportsSocio?.points) +
                           Number(sportsSocio1?.points)
+                        }`}
+                      {hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio2?.points)
+                        }`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points)
                         }`}
                       {hasSportsSocio &&
                         hasSportsSocio1 &&

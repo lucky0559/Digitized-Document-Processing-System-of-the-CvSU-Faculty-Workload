@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
@@ -30,6 +30,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ReviewFacultyScreen from "./ReviewFacultyScreen";
 import { GetUser } from "../../lib/user.hooks";
+import { UserContext } from "../../App";
 
 type WorkloadReviewScreenProps = {
   UseLogout: () => void;
@@ -48,17 +49,19 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
 
-  const [user, setUser] = useState<User>();
+  // const [user, setUser] = useState<User>();
 
-  const userId = localStorage.getItem("userId");
+  // const userId = localStorage.getItem("userId");
 
-  useEffect(() => {
-    setIsDataLoading(true);
-    (async () => {
-      const userData = await GetUser(userId!);
-      setUser(userData);
-    })();
-  }, []);
+  const { user } = useContext(UserContext);
+
+  // useEffect(() => {
+  //   setIsDataLoading(true);
+  //   (async () => {
+  //     const userData = await GetUser(userContext?.id);
+  //     setUser(userData);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -91,26 +94,26 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         setAllStrategicWorkload(strategicWorkloads.data);
       } else if (user?.role === "Faculty") {
         const teachingWorkloads = await GetTeachingWorkloadRemarksFaculty(
-          userId!
+          user.id
         );
         setAllTeachingWorkload(teachingWorkloads.data);
         const researchWorkLoads = await GetResearchWorkloadRemarksFaculty(
-          userId!
+          user.id
         );
         setAllResearchWorkload(researchWorkLoads.data);
         const extensionWorkloads = await GetExtensionWorkloadRemarksFaculty(
-          userId!
+          user.id
         );
         setAllExtensionWorkload(extensionWorkloads.data);
         const strategicWorkloads = await GetStrategicWorkloadRemarksFaculty(
-          userId!
+          user.id
         );
         setAllStrategicWorkload(strategicWorkloads.data);
       }
 
       setIsDataLoading(false);
     })();
-  }, [user]);
+  }, [user?.role, user?.id]);
 
   return (
     <Container>

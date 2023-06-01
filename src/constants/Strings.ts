@@ -174,7 +174,7 @@ export const DROPDOWN_LISTS = {
     "Professor V",
     "Professor VI"
   ],
-  FUNDING_OF_STUDY: ["-----", "CvSU Research Grant", "Externally Funded"],
+  FUNDING_OF_STUDY: ["-----", "CvSU Funded", "Externally Funded"],
   DESIGNATION_IN_THE_STUDY: [
     "-----",
     "Program Leader/Co-Program Leader",
@@ -240,6 +240,11 @@ export const DROPDOWN_LISTS = {
     "Department Coordinator",
     "Department MISO",
     "IMDU Chair/Member"
+  ],
+  DESIGNATION_SPORTS_TRAINOR: [
+    "-----",
+    "University  Level",
+    "College/Campus Level"
   ]
 };
 
