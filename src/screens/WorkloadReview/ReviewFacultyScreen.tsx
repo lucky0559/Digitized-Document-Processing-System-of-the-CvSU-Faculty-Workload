@@ -7,11 +7,9 @@ import { StrategicFunctionType } from "../../types/StrategicFunction";
 import styled from "styled-components";
 import { GetUser } from "../../lib/user.hooks";
 import { User } from "../../types/User";
-import Button from "../../components/Button";
 import Colors from "../../constants/Colors";
 import FormButton from "../../components/FormButton";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import ReactToPrint from "react-to-print";
 
 type ReviewFacultyScreenProps = {
   userEmail?: string;
