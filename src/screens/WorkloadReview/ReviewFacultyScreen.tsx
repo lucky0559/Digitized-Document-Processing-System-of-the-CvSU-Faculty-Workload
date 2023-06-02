@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../types/TeachingWorkload";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
@@ -31,8 +31,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
   const userId = localStorage.getItem("userId");
 
   const [user, setUser] = useState<User>();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -351,10 +349,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
           </div>
           <ButtonContainer>
             <FormButton text="Print" onClicked={onPrint} />
-            <GroupButtonContainer>
-              <FormButton text="Back" onClicked={() => {}} />
-              <FormButton text="Submit" />
-            </GroupButtonContainer>
           </ButtonContainer>
         </Container>
       )}
@@ -451,14 +445,6 @@ const ButtonContainer = styled.div`
   @media print {
     display: none;
   }
-`;
-
-const GroupButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 50%;
-  max-width: 280px;
 `;
 
 export default ReviewFacultyScreen;
