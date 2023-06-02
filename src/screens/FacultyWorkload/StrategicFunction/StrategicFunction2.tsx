@@ -165,10 +165,10 @@ function StrategicFunction2({
       </DepartmentLevelContainer>
       <DepartmentLevelContainer>
         <div>
-          <LevelLabel style={{ textAlign: "center" }}>
+          <SportsSocioTitleText style={{ textAlign: "center" }}>
             Designation as Sports/Socio-Cultural Coach or Trainor and Academic
             Organization Adviser
-          </LevelLabel>
+          </SportsSocioTitleText>
         </div>
         <div>
           <DropdownUploadContainer>
@@ -299,6 +299,13 @@ const DropdownUploadContainer = styled.div`
 const PointsText = styled.span`
   font-weight: 400;
   font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const SportsSocioTitleText = styled.span`
+  font-weight: 400;
+  font-size: 20px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
 `;
