@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../types/TeachingWorkload";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
@@ -11,6 +11,7 @@ import Button from "../../components/Button";
 import Colors from "../../constants/Colors";
 import FormButton from "../../components/FormButton";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import ReactToPrint from "react-to-print";
 
 type ReviewFacultyScreenProps = {
   userEmail?: string;
@@ -55,6 +56,14 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
   let totalRwlPoints = 0;
   let totalSfPoints = 0;
 
+  const onPrint = () => {
+    let printContents = document.getElementById("printable")?.innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents!;
+    window.print();
+    document.body.innerHTML = originalContents;
+  };
+
   return (
     <>
       {!allTeachingWorkloads &&
@@ -73,266 +82,274 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
         </div>
       ) : (
         <Container>
-          <HeaderText>{user?.firstName + " " + user?.surname}</HeaderText>
-          <UserInfoContainer>
-            <ColumnContainer>
-              <ThinText>College:</ThinText>
-              <ThinText>Department:</ThinText>
-              <ThinText>Academic Rank:</ThinText>
-            </ColumnContainer>
-            <ColumnContainer>
-              <BoldText>{user?.campus}</BoldText>
-              <BoldText>{user?.department}</BoldText>
-              <BoldText>{user?.academicRank}</BoldText>
-            </ColumnContainer>
-          </UserInfoContainer>
+          <div id="printable">
+            <HeaderText>{user?.firstName + " " + user?.surname}</HeaderText>
+            <UserInfoContainer>
+              <ColumnContainer>
+                <ThinText>College:</ThinText>
+                <ThinText>Department:</ThinText>
+                <ThinText>Academic Rank:</ThinText>
+              </ColumnContainer>
+              <ColumnContainer>
+                <BoldText>{user?.campus}</BoldText>
+                <BoldText>{user?.department}</BoldText>
+                <BoldText>{user?.academicRank}</BoldText>
+              </ColumnContainer>
+            </UserInfoContainer>
 
-          {/* TEACHING WORKLOAD */}
-          <WorkloadDetailContainer>
-            <BoldText>Teaching Work Load (TWL)</BoldText>
-            {allTeachingWorkloads?.map(workload => {
-              totalTwlPoints = Number(
-                (+workload.totalTeachingWorkload! + +totalTwlPoints).toFixed(2)
-              );
+            {/* TEACHING WORKLOAD */}
+            <WorkloadDetailContainer>
+              {allTeachingWorkloads?.map(workload => {
+                totalTwlPoints = Number(
+                  (+workload.totalTeachingWorkload! + +totalTwlPoints).toFixed(
+                    2
+                  )
+                );
 
-              return (
-                <>
-                  <ColumnParentContainer>
-                    <ColumnContainer>
-                      <ThinText>Number of Preparation:</ThinText>
-                      <ThinText>Number of Contact Hours:</ThinText>
-                      <ThinText>Number of Students:</ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>{workload.numberOfPreparations}</BoldText>
-                      <BoldText>{workload.contactHours}</BoldText>
-                      <BoldText>{workload.totalNoOfStudents}</BoldText>
-                    </ColumnContainer>
-                  </ColumnParentContainer>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginBottom: 25
-                    }}
-                  >
-                    <ColumnContainer style={{ paddingLeft: 90 }}>
-                      <BoldText>TOTAL:</BoldText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>
-                        {Number(workload.totalTeachingWorkload).toFixed(2)}
-                      </BoldText>
-                    </ColumnContainer>
+                return (
+                  <>
+                    <BoldText>Teaching Work Load (TWL)</BoldText>
+                    <ColumnParentContainer>
+                      <ColumnContainer>
+                        <ThinText>Number of Preparation:</ThinText>
+                        <ThinText>Number of Contact Hours:</ThinText>
+                        <ThinText>Number of Students:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>{workload.numberOfPreparations}</BoldText>
+                        <BoldText>{workload.contactHours}</BoldText>
+                        <BoldText>{workload.totalNoOfStudents}</BoldText>
+                      </ColumnContainer>
+                    </ColumnParentContainer>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 25
+                      }}
+                    >
+                      <ColumnContainer style={{ paddingLeft: 90 }}>
+                        <BoldText>TOTAL:</BoldText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>
+                          {Number(workload.totalTeachingWorkload).toFixed(2)}
+                        </BoldText>
+                      </ColumnContainer>
+                    </div>
+                  </>
+                );
+              })}
+            </WorkloadDetailContainer>
+
+            {/* RESEARCH WORKLOAD */}
+            <WorkloadDetailContainer>
+              {allResearchWorkloads?.map(workload => {
+                totalRwlPoints = Number(
+                  (+totalRwlPoints + +workload.rwlPoints!).toFixed(2)
+                );
+                return (
+                  <>
+                    <BoldText>Research Work Load (RWL)</BoldText>
+                    <ColumnParentContainer>
+                      <ColumnContainer>
+                        <ThinText>Title of the Study:</ThinText>
+                        <ThinText>Funding of the Study:</ThinText>
+                        <ThinText>Designation in the Study:</ThinText>
+                        <ThinText>Status of the Study:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>{workload.titleOfStudy}</BoldText>
+                        <BoldText>{workload.fundingOfStudy}</BoldText>
+                        <BoldText>{workload.designationStudy}</BoldText>
+                        <BoldText style={{ textTransform: "capitalize" }}>
+                          {workload.status}
+                        </BoldText>
+                      </ColumnContainer>
+                    </ColumnParentContainer>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 25
+                      }}
+                    >
+                      <ColumnContainer style={{ paddingLeft: 90 }}>
+                        <BoldText>TOTAL:</BoldText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>{workload.rwlPoints}</BoldText>
+                      </ColumnContainer>
+                    </div>
+                  </>
+                );
+              })}
+            </WorkloadDetailContainer>
+
+            {/* EXTENSION WORKLOAD */}
+            <WorkloadDetailContainer>
+              {allExtensionWorkloads?.map(workload => {
+                totalEwlPoints = Number(
+                  (+totalEwlPoints + +workload.ewlPoints!).toFixed(2)
+                );
+                return (
+                  <>
+                    <BoldText>Extension Work Load (EWL)</BoldText>
+                    <ColumnParentContainer>
+                      <ColumnContainer>
+                        <ThinText>Designation in Extension Activity:</ThinText>
+                        <ThinText>
+                          Number of Hours rendered in Extension Activity:
+                        </ThinText>
+                        <ThinText>
+                          Resource Person in an Extension Activity:
+                        </ThinText>
+                        <ThinText>
+                          Resource Person in an Extension Activity:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>
+                          {workload.designationExtensionActivity}
+                        </BoldText>
+                        <BoldText>{workload.totalNumberHours}</BoldText>
+                        <BoldText>{workload.resourcePerson}</BoldText>
+                        <BoldText>{workload.resourcePerson}</BoldText>
+                      </ColumnContainer>
+                    </ColumnParentContainer>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 25
+                      }}
+                    >
+                      <ColumnContainer style={{ paddingLeft: 90 }}>
+                        <BoldText>TOTAL:</BoldText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>
+                          {Number(workload.ewlPoints).toFixed(2)}
+                        </BoldText>
+                      </ColumnContainer>
+                    </div>
+                  </>
+                );
+              })}
+            </WorkloadDetailContainer>
+
+            {/* STRATEGIC FUNCTION WORKLOAD */}
+            <WorkloadDetailContainer>
+              {allStrategicFunctionWorkloads?.map((workload, index) => {
+                totalSfPoints = Number(
+                  (+totalSfPoints + +workload.sfwPoints!).toFixed(2)
+                );
+                return (
+                  <div key={index}>
+                    <BoldText>Strategic Function Work Load (SF)</BoldText>
+                    <ColumnParentContainer>
+                      <ParentLevelContainer>
+                        <LevelContainer>
+                          <ColumnContainer>
+                            <ThinText>University Level:</ThinText>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            {workload.designationUniversityLevel?.map(
+                              designationUniversityLevel => {
+                                return (
+                                  <BoldText>
+                                    {designationUniversityLevel}
+                                  </BoldText>
+                                );
+                              }
+                            )}
+                          </ColumnContainer>
+                        </LevelContainer>
+                        <LevelContainer>
+                          <ColumnContainer>
+                            <ThinText>College Level:</ThinText>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            {workload.designationCollegeCampusLevel?.map(
+                              designationCollegeCampusLevel => {
+                                return (
+                                  <BoldText>
+                                    {designationCollegeCampusLevel}
+                                  </BoldText>
+                                );
+                              }
+                            )}
+                          </ColumnContainer>
+                        </LevelContainer>
+
+                        <LevelContainer>
+                          <ColumnContainer>
+                            <ThinText>Department Level:</ThinText>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            {workload.designationDepartmentLevel?.map(
+                              designationDepartmentLevel => {
+                                return (
+                                  <BoldText>
+                                    {designationDepartmentLevel}
+                                  </BoldText>
+                                );
+                              }
+                            )}
+                          </ColumnContainer>
+                        </LevelContainer>
+
+                        <LevelContainer>
+                          <ColumnContainer>
+                            <ThinText>
+                              Designation as Academic Adviser:
+                            </ThinText>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            <BoldText>{workload.academicAdvisees}</BoldText>
+                          </ColumnContainer>
+                        </LevelContainer>
+                      </ParentLevelContainer>
+                    </ColumnParentContainer>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <ColumnContainer style={{ paddingLeft: 90 }}>
+                        <BoldText>TOTAL:</BoldText>
+                      </ColumnContainer>
+                      <ColumnContainer>
+                        <BoldText>{workload.sfwPoints}</BoldText>
+                      </ColumnContainer>
+                    </div>
                   </div>
-                </>
-              );
-            })}
-          </WorkloadDetailContainer>
-
-          {/* RESEARCH WORKLOAD */}
-          <WorkloadDetailContainer>
-            <BoldText>Research Work Load (RWL)</BoldText>
-            {allResearchWorkloads?.map(workload => {
-              totalRwlPoints = Number(
-                (+totalRwlPoints + +workload.rwlPoints!).toFixed(2)
-              );
-              return (
-                <>
-                  <ColumnParentContainer>
-                    <ColumnContainer>
-                      <ThinText>Title of the Study:</ThinText>
-                      <ThinText>Funding of the Study:</ThinText>
-                      <ThinText>Designation in the Study:</ThinText>
-                      <ThinText>Status of the Study:</ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>{workload.titleOfStudy}</BoldText>
-                      <BoldText>{workload.fundingOfStudy}</BoldText>
-                      <BoldText>{workload.designationStudy}</BoldText>
-                      <BoldText style={{ textTransform: "capitalize" }}>
-                        {workload.status}
-                      </BoldText>
-                    </ColumnContainer>
-                  </ColumnParentContainer>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginBottom: 25
-                    }}
-                  >
-                    <ColumnContainer style={{ paddingLeft: 90 }}>
-                      <BoldText>TOTAL:</BoldText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>{workload.rwlPoints}</BoldText>
-                    </ColumnContainer>
-                  </div>
-                </>
-              );
-            })}
-          </WorkloadDetailContainer>
-
-          {/* EXTENSION WORKLOAD */}
-          <WorkloadDetailContainer>
-            <BoldText>Extension Work Load (EWL)</BoldText>
-            {allExtensionWorkloads?.map(workload => {
-              totalEwlPoints = Number(
-                (+totalEwlPoints + +workload.ewlPoints!).toFixed(2)
-              );
-              return (
-                <>
-                  <ColumnParentContainer>
-                    <ColumnContainer>
-                      <ThinText>Designation in Extension Activity:</ThinText>
-                      <ThinText>
-                        Number of Hours rendered in Extension Activity:
-                      </ThinText>
-                      <ThinText>
-                        Resource Person in an Extension Activity:
-                      </ThinText>
-                      <ThinText>
-                        Resource Person in an Extension Activity:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>
-                        {workload.designationExtensionActivity}
-                      </BoldText>
-                      <BoldText>{workload.totalNumberHours}</BoldText>
-                      <BoldText>{workload.resourcePerson}</BoldText>
-                      <BoldText>{workload.resourcePerson}</BoldText>
-                    </ColumnContainer>
-                  </ColumnParentContainer>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginBottom: 25
-                    }}
-                  >
-                    <ColumnContainer style={{ paddingLeft: 90 }}>
-                      <BoldText>TOTAL:</BoldText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>
-                        {Number(workload.ewlPoints).toFixed(2)}
-                      </BoldText>
-                    </ColumnContainer>
-                  </div>
-                </>
-              );
-            })}
-          </WorkloadDetailContainer>
-
-          {/* STRATEGIC FUNCTION WORKLOAD */}
-          <WorkloadDetailContainer>
-            <BoldText>Strategic Function Work Load (SF)</BoldText>
-            {allStrategicFunctionWorkloads?.map(workload => {
-              totalSfPoints = Number(
-                (+totalSfPoints + +workload.sfwPoints!).toFixed(2)
-              );
-              return (
-                <>
-                  <ColumnParentContainer>
-                    <ParentLevelContainer>
-                      <LevelContainer>
-                        <ColumnContainer>
-                          <ThinText>University Level:</ThinText>
-                        </ColumnContainer>
-                        <ColumnContainer>
-                          {workload.designationUniversityLevel?.map(
-                            designationUniversityLevel => {
-                              return (
-                                <BoldText>
-                                  {designationUniversityLevel}
-                                </BoldText>
-                              );
-                            }
-                          )}
-                        </ColumnContainer>
-                      </LevelContainer>
-                      <LevelContainer>
-                        <ColumnContainer>
-                          <ThinText>College Level:</ThinText>
-                        </ColumnContainer>
-                        <ColumnContainer>
-                          {workload.designationCollegeCampusLevel?.map(
-                            designationCollegeCampusLevel => {
-                              return (
-                                <BoldText>
-                                  {designationCollegeCampusLevel}
-                                </BoldText>
-                              );
-                            }
-                          )}
-                        </ColumnContainer>
-                      </LevelContainer>
-
-                      <LevelContainer>
-                        <ColumnContainer>
-                          <ThinText>Department Level:</ThinText>
-                        </ColumnContainer>
-                        <ColumnContainer>
-                          {workload.designationDepartmentLevel?.map(
-                            designationDepartmentLevel => {
-                              return (
-                                <BoldText>
-                                  {designationDepartmentLevel}
-                                </BoldText>
-                              );
-                            }
-                          )}
-                        </ColumnContainer>
-                      </LevelContainer>
-
-                      <LevelContainer>
-                        <ColumnContainer>
-                          <ThinText>Designation as Academic Adviser:</ThinText>
-                        </ColumnContainer>
-                        <ColumnContainer>
-                          <BoldText>{workload.academicAdvisees}</BoldText>
-                        </ColumnContainer>
-                      </LevelContainer>
-                    </ParentLevelContainer>
-                  </ColumnParentContainer>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}
-                  >
-                    <ColumnContainer style={{ paddingLeft: 90 }}>
-                      <BoldText>TOTAL:</BoldText>
-                    </ColumnContainer>
-                    <ColumnContainer>
-                      <BoldText>{workload.sfwPoints}</BoldText>
-                    </ColumnContainer>
-                  </div>
-                </>
-              );
-            })}
-          </WorkloadDetailContainer>
-          <ComputationContainer>
-            <BoldText style={{ marginBottom: 30 }}>
-              TWL + RWL + EWL + SF = TOTAL EARNED CREDIT UNITS
-            </BoldText>
-            <BoldText>
-              {totalTwlPoints} + {totalRwlPoints} + {totalEwlPoints} +{" "}
-              {totalSfPoints} ={" "}
-              {+totalTwlPoints +
-                +totalRwlPoints +
-                +totalEwlPoints +
-                +totalSfPoints}
-            </BoldText>
-          </ComputationContainer>
+                );
+              })}
+            </WorkloadDetailContainer>
+            <ComputationContainer>
+              <BoldText style={{ marginBottom: 30 }}>
+                TWL + RWL + EWL + SF = TOTAL EARNED CREDIT UNITS
+              </BoldText>
+              <BoldText>
+                {totalTwlPoints} + {totalRwlPoints} + {totalEwlPoints} +{" "}
+                {totalSfPoints} ={" "}
+                {(
+                  +totalTwlPoints +
+                  +totalRwlPoints +
+                  +totalEwlPoints +
+                  +totalSfPoints
+                ).toFixed(2)}
+              </BoldText>
+            </ComputationContainer>
+          </div>
           <ButtonContainer>
-            <FormButton text="Print" />
+            <FormButton text="Print" onClicked={onPrint} />
             <GroupButtonContainer>
               <FormButton text="Back" onClicked={() => {}} />
               <FormButton text="Submit" />
