@@ -10,6 +10,7 @@ import { User } from "../../types/User";
 import Colors from "../../constants/Colors";
 import FormButton from "../../components/FormButton";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 type ReviewFacultyScreenProps = {
   userEmail?: string;
@@ -30,6 +31,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
   const userId = localStorage.getItem("userId");
 
   const [user, setUser] = useState<User>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -55,11 +58,11 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
   let totalSfPoints = 0;
 
   const onPrint = () => {
-    let printContents = document.getElementById("printable")?.innerHTML;
-    let originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents!;
+    // let printContents = document.getElementById("printable")?.innerHTML;
+    // let originalContents = document.body.innerHTML;
+    // document.body.innerHTML = printContents!;
     window.print();
-    document.body.innerHTML = originalContents;
+    // document.body.innerHTML = originalContents;
   };
 
   return (
@@ -369,6 +372,10 @@ const Container = styled.div`
   margin: 10px auto;
   padding: 20px;
   width: 80%;
+  @media print {
+    width: 100%;
+    margin-right: 200px;
+  }
 `;
 
 const UserInfoContainer = styled.div`
@@ -441,6 +448,9 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 40px;
+  @media print {
+    display: none;
+  }
 `;
 
 const GroupButtonContainer = styled.div`

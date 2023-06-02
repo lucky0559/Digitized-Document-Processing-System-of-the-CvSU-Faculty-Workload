@@ -161,6 +161,9 @@ const Container = styled.div<{ position: string | undefined }>`
   position: ${p => (p.position ? "relative" : "fixed")};
   top: 54px;
   height: 100%;
+  @media print {
+    display: none;
+  }
 `;
 
 const NavButtonContainer = styled.div`

@@ -219,10 +219,16 @@ const WorkloadsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media print {
+    width: 130%;
+  }
 `;
 
 const ScreenTitleContainer = styled.div`
   align-self: start;
+  @media print {
+    display: none;
+  }
 `;
 
 export default WorkloadReviewScreen;
