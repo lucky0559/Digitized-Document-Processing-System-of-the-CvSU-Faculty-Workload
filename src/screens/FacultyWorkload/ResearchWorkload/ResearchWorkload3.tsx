@@ -87,6 +87,11 @@ const ResearchWorkload3 = ({
         content="Confirm submission?"
         size="large"
       />
+      {(points !== 0 || fundGeneratedPoints !== 0) && (
+        <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
+          <AddStudyText>Add another study</AddStudyText>
+        </AddStudyContainer>
+      )}
       <SubContainer>
         <text>
           Disseminated research output in College or University In-House
@@ -128,11 +133,7 @@ const ResearchWorkload3 = ({
           />
         </div>
       </SubContainer>
-      {(points !== 0 || fundGeneratedPoints !== 0) && (
-        <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
-          <AddStudyText>Add another study</AddStudyText>
-        </AddStudyContainer>
-      )}
+
       <TotalPointsContainer>
         <Label style={{ fontWeight: "bold" }}>
           Total Research Workload ={" "}
@@ -207,7 +208,7 @@ const AddStudyContainer = styled.div`
   display: flex;
   align-self: flex-end;
   max-width: 400px;
-  margin-top: 50px;
+  margin-bottom: 50px;
   margin-right: 30px;
 `;
 
