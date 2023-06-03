@@ -67,7 +67,7 @@ export default function LoginScreen({
     try {
       await SendResetPasswordLink(email);
       setEmail("");
-      setSuccessResetSendMessage("Reset Link Successfully sent to your email.");
+      setSuccessResetSendMessage("A reset link was sent to your email.");
     } catch (e) {
       setErrorMessage("Email not registered.");
       console.log(e);
