@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import CheckboxWorkload from "../../components/CheckboxWorkload";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import { User } from "../../types/User";
 import { TeachingWorkLoadType } from "../../types/TeachingWorkload";
-import {
-  GetAllUserPendingWorkloads,
-  getAllPendingWorkloadByIdAndCurrentProcessRole
-} from "../../lib/faculty-workload.hooks";
-import { RoleType } from "../../constants/Strings";
+import { getAllPendingWorkloadByIdAndCurrentProcessRole } from "../../lib/faculty-workload.hooks";
 import { ResearchWorkLoadType } from "../../types/ResearchWorkLoad";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
 import { StrategicFunctionType } from "../../types/StrategicFunction";
@@ -1216,12 +1211,6 @@ const ColumnContainer = styled.div`
   flex-direction: column;
   display: flex;
   padding: 10px;
-`;
-
-const ButtonViewAttachment = styled.div`
-  background-color: ${Colors.buttonPrimary};
-  padding: 0;
-  margin: 0;
 `;
 
 const LevelContainer = styled.div`

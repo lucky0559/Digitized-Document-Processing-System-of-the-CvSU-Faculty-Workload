@@ -24,12 +24,10 @@ import {
   GetTeachingWorkloadRemarksFaculty
 } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
-import RemarksWorkload from "./RemarksWorkload";
 import Workload from "./Workload";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ReviewFacultyScreen from "./ReviewFacultyScreen";
-import { GetUser } from "../../lib/user.hooks";
 import { UserContext } from "../../App";
 
 type WorkloadReviewScreenProps = {
@@ -37,7 +35,6 @@ type WorkloadReviewScreenProps = {
 };
 
 const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const [allTeachingWorkload, setAllTeachingWorkload] = useState<User[]>();
@@ -47,73 +44,65 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
 
-  const [isDataLoading, setIsDataLoading] = useState(false);
-
-  // const [user, setUser] = useState<User>();
-
-  // const userId = localStorage.getItem("userId");
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   const { user } = useContext(UserContext);
 
-  // useEffect(() => {
-  //   setIsDataLoading(true);
-  //   (async () => {
-  //     const userData = await GetUser(userContext?.id);
-  //     setUser(userData);
-  //   })();
-  // }, []);
-
   useEffect(() => {
-    (async () => {
-      if (user?.role === "Department Chairperson") {
-        const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
-        setAllTeachingWorkload(teachingWorkloads.data);
-        const researchWorkLoads = await GetAllPendingResearchWorkloadDC();
-        setAllResearchWorkload(researchWorkLoads.data);
-        const extensionWorkloads = await GetAllPendingExtensionWorkloadDC();
-        setAllExtensionWorkload(extensionWorkloads.data);
-        const strategicWorkloads = await GetAllPendingStrategicWorkloadDC();
-        setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (user?.role === "Dean") {
-        const teachingWorkloads = await GetAllPendingTeachingWorkloadDean();
-        setAllTeachingWorkload(teachingWorkloads.data);
-        const researchWorkLoads = await GetAllPendingResearchWorkloadDean();
-        setAllResearchWorkload(researchWorkLoads.data);
-        const extensionWorkloads = await GetAllPendingExtensionWorkloadDean();
-        setAllExtensionWorkload(extensionWorkloads.data);
-        const strategicWorkloads = await GetAllPendingStrategicWorkloadDean();
-        setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (user?.role === "OVPAA") {
-        const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
-        setAllTeachingWorkload(teachingWorkloads.data);
-        const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
-        setAllResearchWorkload(researchWorkLoads.data);
-        const extensionWorkloads = await GetAllPendingExtensionWorkloadOVPAA();
-        setAllExtensionWorkload(extensionWorkloads.data);
-        const strategicWorkloads = await GetAllPendingStrategicWorkloadOVPAA();
-        setAllStrategicWorkload(strategicWorkloads.data);
-      } else if (user?.role === "Faculty") {
-        const teachingWorkloads = await GetTeachingWorkloadRemarksFaculty(
-          user.id
-        );
-        setAllTeachingWorkload(teachingWorkloads.data);
-        const researchWorkLoads = await GetResearchWorkloadRemarksFaculty(
-          user.id
-        );
-        setAllResearchWorkload(researchWorkLoads.data);
-        const extensionWorkloads = await GetExtensionWorkloadRemarksFaculty(
-          user.id
-        );
-        setAllExtensionWorkload(extensionWorkloads.data);
-        const strategicWorkloads = await GetStrategicWorkloadRemarksFaculty(
-          user.id
-        );
-        setAllStrategicWorkload(strategicWorkloads.data);
-      }
+    if (isDataLoading) {
+      (async () => {
+        if (user.role === "Department Chairperson") {
+          const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
+          setAllTeachingWorkload(teachingWorkloads.data);
+          const researchWorkLoads = await GetAllPendingResearchWorkloadDC();
+          setAllResearchWorkload(researchWorkLoads.data);
+          const extensionWorkloads = await GetAllPendingExtensionWorkloadDC();
+          setAllExtensionWorkload(extensionWorkloads.data);
+          const strategicWorkloads = await GetAllPendingStrategicWorkloadDC();
+          setAllStrategicWorkload(strategicWorkloads.data);
+        } else if (user.role === "Dean") {
+          const teachingWorkloads = await GetAllPendingTeachingWorkloadDean();
+          setAllTeachingWorkload(teachingWorkloads.data);
+          const researchWorkLoads = await GetAllPendingResearchWorkloadDean();
+          setAllResearchWorkload(researchWorkLoads.data);
+          const extensionWorkloads = await GetAllPendingExtensionWorkloadDean();
+          setAllExtensionWorkload(extensionWorkloads.data);
+          const strategicWorkloads = await GetAllPendingStrategicWorkloadDean();
+          setAllStrategicWorkload(strategicWorkloads.data);
+        } else if (user.role === "OVPAA") {
+          const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
+          setAllTeachingWorkload(teachingWorkloads.data);
+          const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
+          setAllResearchWorkload(researchWorkLoads.data);
+          const extensionWorkloads =
+            await GetAllPendingExtensionWorkloadOVPAA();
+          setAllExtensionWorkload(extensionWorkloads.data);
+          const strategicWorkloads =
+            await GetAllPendingStrategicWorkloadOVPAA();
+          setAllStrategicWorkload(strategicWorkloads.data);
+        } else if (user?.role === "Faculty") {
+          const teachingWorkloads = await GetTeachingWorkloadRemarksFaculty(
+            user.id
+          );
+          setAllTeachingWorkload(teachingWorkloads.data);
+          const researchWorkLoads = await GetResearchWorkloadRemarksFaculty(
+            user.id
+          );
+          setAllResearchWorkload(researchWorkLoads.data);
+          const extensionWorkloads = await GetExtensionWorkloadRemarksFaculty(
+            user.id
+          );
+          setAllExtensionWorkload(extensionWorkloads.data);
+          const strategicWorkloads = await GetStrategicWorkloadRemarksFaculty(
+            user.id
+          );
+          setAllStrategicWorkload(strategicWorkloads.data);
+        }
 
-      setIsDataLoading(false);
-    })();
-  }, [user?.role, user?.id]);
+        setIsDataLoading(false);
+      })();
+    }
+  }, [user?.role, user?.id, isDataLoading]);
 
   return (
     <Container>
@@ -122,14 +111,6 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       </div>
       <div style={{ flexDirection: "row", marginTop: 54, display: "flex" }}>
-        {/* <div style={{ backgroundColor: "red" }}>
-          <Menu
-            isFacultySubmenuOpen={isFacultySubmenuOpen}
-            facultySubMenuHandler={() =>
-              setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-            }
-          />
-        </div> */}
         <div style={{ width: 248 }}>
           <Menu
             isFacultySubmenuOpen={isFacultySubmenuOpen}
@@ -157,6 +138,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
                   extensionWorkload={allExtensionWorkload}
                   allStrategicWorkload={allStrategicWorkload}
                   isDataLoading={isDataLoading}
+                  setIsDataLoading={setIsDataLoading}
                 />
               ) : (
                 <div

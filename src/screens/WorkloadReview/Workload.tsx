@@ -4,11 +4,14 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import { User } from "../../types/User";
 import { GetUser } from "../../lib/user.hooks";
-import { useNavigate } from "react-router-dom";
-import ReviewFacultyScreen from "./ReviewFacultyScreen";
-import WorkloadReviewScreen from "./WorkloadReviewScreen";
 import _ from "lodash";
-import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
+import {
+  ApproveExtensionWorkload,
+  ApproveResearchWorkload,
+  ApproveStrategicFunctionWorkload,
+  ApproveTeachingWorkload,
+  getAllPendingWorkloadByIdAndCurrentProcessRole
+} from "../../lib/faculty-workload.hooks";
 import RemarksWorkload from "./RemarksWorkload";
 import FormButton from "../../components/FormButton";
 
@@ -18,13 +21,15 @@ type WorkloadProps = {
   extensionWorkload?: User[];
   allStrategicWorkload?: User[];
   isDataLoading: boolean;
+  setIsDataLoading: (value: boolean) => void;
 };
 function Workload({
   teachingWorkload,
   researchWorkload,
   extensionWorkload,
   allStrategicWorkload,
-  isDataLoading
+  isDataLoading,
+  setIsDataLoading
 }: WorkloadProps) {
   const userId = localStorage.getItem("userId");
 
@@ -36,37 +41,102 @@ function Workload({
 
   const [accountReviewing, setAccountReviewing] = useState<User>();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [reviewingId, setReviewingId] = useState("");
+
   useEffect(() => {
-    (async () => {
-      setUser(await GetUser(userId!));
-      const data1 = Array.prototype.concat(teachingWorkload, researchWorkload);
-      const data2 = Array.prototype.concat(
-        extensionWorkload,
-        allStrategicWorkload
-      );
-      const mergeData = Array.prototype.concat(data1, data2);
-      const reduceData = _.uniqBy(mergeData, "email");
-      setUsers(reduceData);
-    })();
+    if (!isReviewing) {
+      (async () => {
+        setUser(await GetUser(userId!));
+        const data1 = Array.prototype.concat(
+          teachingWorkload,
+          researchWorkload
+        );
+        const data2 = Array.prototype.concat(
+          extensionWorkload,
+          allStrategicWorkload
+        );
+        const mergeData = Array.prototype.concat(data1, data2);
+        const reduceData = _.uniqBy(mergeData, "email");
+        setUsers(reduceData);
+      })();
+    }
   }, [
     teachingWorkload,
     researchWorkload,
     extensionWorkload,
     allStrategicWorkload,
-    userId
+    userId,
+    isReviewing
   ]);
 
   const onCloseReviewScreen = () => {
     setIsReviewing(false);
   };
 
+  const onApprove = async () => {
+    if (user?.role !== null && reviewingId) {
+      setIsSubmitting(true);
+      const {
+        teachingWorkloads,
+        researchWorkloads,
+        extensionWorkloads,
+        strategicFunctionWorkloads
+      } = await getAllPendingWorkloadByIdAndCurrentProcessRole(
+        reviewingId,
+        user?.role!
+      );
+      if (teachingWorkloads) {
+        for (let i = 0; teachingWorkloads.length > i; i++) {
+          await ApproveTeachingWorkload(teachingWorkloads[i].id);
+        }
+      }
+      if (researchWorkloads) {
+        for (let i = 0; researchWorkloads.length > i; i++) {
+          await ApproveResearchWorkload(researchWorkloads[i].id);
+        }
+      }
+      if (extensionWorkloads) {
+        for (let i = 0; extensionWorkloads.length > i; i++) {
+          await ApproveExtensionWorkload(extensionWorkloads[i].id);
+        }
+      }
+      if (strategicFunctionWorkloads) {
+        for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
+          await ApproveStrategicFunctionWorkload(
+            strategicFunctionWorkloads[i].id
+          );
+        }
+      }
+      setReviewingId("");
+      setIsDataLoading(true);
+      setIsSubmitting(false);
+      setIsReviewing(false);
+    }
+  };
+
+  const onDisapprove = async () => {};
+
   return (
     <Container>
       {isReviewing && (
         <>
           <RemarksWorkload user={accountReviewing!} />
-          <div style={{ margin: 15 }}>
+          <div style={{ margin: 15, display: "flex" }}>
             <FormButton text="Back" onClicked={onCloseReviewScreen} />
+            <div style={{ marginLeft: 20 }}>
+              <FormButton
+                text="Disapprove"
+                onClicked={onDisapprove}
+                isSubmitting={isSubmitting}
+              />
+              <FormButton
+                text="Approve"
+                onClicked={onApprove}
+                isSubmitting={isSubmitting}
+              />
+            </div>
           </div>
         </>
       )}
@@ -102,16 +172,11 @@ function Workload({
               <tr>
                 <ThStyle>List of Faculty</ThStyle>
                 <ThStyle>Academic Rank</ThStyle>
-                {/* <ThStyle>Workload Type</ThStyle>
-            <ThStyle>Approved/Disapproved with Remarks</ThStyle> */}
               </tr>
 
               {!isDataLoading &&
                 users &&
                 users?.map((item, index) => {
-                  // if (!item) {
-                  //   return null;
-                  // } else {
                   return (
                     item && (
                       <tr key={index}>
@@ -125,6 +190,7 @@ function Workload({
                           <Button
                             onClick={() => {
                               setAccountReviewing(item);
+                              setReviewingId(item.id!);
                               setIsReviewing(true);
                             }}
                           >
@@ -134,16 +200,6 @@ function Workload({
                         <TdStyle>
                           <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
                         </TdStyle>
-                        {/* <TdStyle>
-                      <TdText key={index}>Teaching Workload</TdText>
-                    </TdStyle>
-                    <TdStyle>
-                      <CheckboxWorkload
-                        twlFilePath={item.twlFilePath}
-                        workloadId={item.workloadId}
-                        workloadType="Teaching Workload"
-                      />
-                    </TdStyle> */}
                       </tr>
                     )
                   );
@@ -184,7 +240,7 @@ const TdText = styled.text`
 
 const TdStyle = styled.td`
   text-align: center;
-  padding-bottom: 100px;
+  padding-bottom: 20px;
 `;
 
 const ThStyle = styled.th`
