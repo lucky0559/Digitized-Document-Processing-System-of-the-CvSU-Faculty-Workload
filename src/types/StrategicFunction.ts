@@ -35,6 +35,11 @@ export type StrategicFunctionType = {
   designationAsMemberOfAdhocPoints1?: number;
   designationAsMemberOfAdhocFilePath1?: string;
   memberAdhocFilePath1?: string;
+  designationAsMemberOfAdhoc2?: string;
+  designationAsMemberOfAdhocFile2?: File;
+  designationAsMemberOfAdhocPoints2?: number;
+  designationAsMemberOfAdhocFilePath2?: string;
+  memberAdhocFilePath2?: string;
   academicAdvisees?: string;
   academicAdviseesFile?: File;
   academicAdviseesPoints?: number;

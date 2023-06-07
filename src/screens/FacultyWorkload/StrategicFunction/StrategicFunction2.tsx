@@ -41,11 +41,16 @@ type StrategicFunction2Props = {
   fileHandlerMemberUniversity: (value?: File) => void;
   fileNameMemberUniversity?: string;
   onTextInputMemberUniversityWideDesignationTitle1: (value: string) => void;
+  onTextInputMemberUniversityWideDesignationTitle2: (value: string) => void;
   onTextInputMemberUniversityWideDesignationPoints1: (value: string) => void;
   memberUniversityTitle1?: string;
+  memberUniversityTitle2?: string;
   memberUniversityPoints1?: string;
+  memberUniversityPoints2?: string;
   fileHandlerMemberUniversity1: (value?: File) => void;
+  fileHandlerMemberUniversity2: (value?: File) => void;
   fileNameMemberUniversity1?: string;
+  fileNameMemberUniversity2?: string;
   onTextInputAcademicAdviserDesignationTitle: (value: string) => void;
   onTextInputAcademicAdviserDesignationPoints?: (value: string) => void;
   academicAdviserTitle?: string;
@@ -57,6 +62,9 @@ type StrategicFunction2Props = {
   sportsSocioPoints2?: string;
   fileHandlerSportsSocio2: (value?: File) => void;
   fileNameSportsSocio2?: string;
+  universityWidePoints?: string;
+  universityWidePoints1?: string;
+  universityWidePoints2?: string;
 };
 
 function StrategicFunction2({
@@ -110,7 +118,15 @@ function StrategicFunction2({
   academicAdviserTitle,
   academicAdviserPoints,
   fileHandlerAcademicAdviser,
-  fileNameAcademicAdviser
+  fileNameAcademicAdviser,
+  universityWidePoints,
+  universityWidePoints1,
+  universityWidePoints2,
+  onTextInputMemberUniversityWideDesignationTitle2,
+  memberUniversityTitle2,
+  memberUniversityPoints2,
+  fileHandlerMemberUniversity2,
+  fileNameMemberUniversity2
 }: StrategicFunction2Props) {
   return (
     <>
@@ -222,14 +238,15 @@ function StrategicFunction2({
               </PointsText>
             </PointsContainer>
           </DropdownUploadContainer>
+          <div style={{ marginTop: 40 }}>
+            <SportsSocioTitleText style={{ textAlign: "center" }}>
+              Designation as Member of University-Wide AdHoc Committee
+            </SportsSocioTitleText>
+          </div>
           <TextInputWithTitlePointUpload
-            inputLabel="Designation as Member of University-Wide AdHoc Committee"
-            uploadLabel="Upload approved designation here:"
+            universityWidePoints={universityWidePoints}
             onChangeTextInputTitle={
               onTextInputMemberUniversityWideDesignationTitle
-            }
-            onChangeTextInputPoints={
-              onTextInputMemberUniversityWideDesignationPoints
             }
             titleVal={memberUniversityTitle}
             pointsVal={memberUniversityPoints}
@@ -237,13 +254,9 @@ function StrategicFunction2({
             fileName={fileNameMemberUniversity}
           />
           <TextInputWithTitlePointUpload
-            inputLabel="Designation as Member of University-Wide AdHoc Committee"
-            uploadLabel="Upload approved designation here:"
+            universityWidePoints={universityWidePoints1}
             onChangeTextInputTitle={
               onTextInputMemberUniversityWideDesignationTitle1
-            }
-            onChangeTextInputPoints={
-              onTextInputMemberUniversityWideDesignationPoints1
             }
             titleVal={memberUniversityTitle1}
             pointsVal={memberUniversityPoints1}
@@ -251,10 +264,19 @@ function StrategicFunction2({
             fileName={fileNameMemberUniversity1}
           />
           <TextInputWithTitlePointUpload
+            universityWidePoints={universityWidePoints2}
+            onChangeTextInputTitle={
+              onTextInputMemberUniversityWideDesignationTitle2
+            }
+            titleVal={memberUniversityTitle2}
+            pointsVal={memberUniversityPoints2}
+            fileHandler={fileHandlerMemberUniversity2}
+            fileName={fileNameMemberUniversity2}
+          />
+          <TextInputWithTitlePointUpload
             inputLabel="Designation as Academic Adviser"
             uploadLabel="Upload list of advisees here:"
             onChangeTextInputTitle={onTextInputAcademicAdviserDesignationTitle}
-            onChangeTextInputPoints={() => {}}
             titleVal={academicAdviserTitle}
             pointsVal={academicAdviserPoints}
             fileHandler={fileHandlerAcademicAdviser}

@@ -4,10 +4,9 @@ import { DesignationWithTitleAndPoints } from "../screens/FacultyWorkload/Strate
 import UploadFileButton from "./UploadFileButton";
 
 type TextInputWithTitlePointUploadProps = {
-  inputLabel: string;
-  uploadLabel: string;
+  inputLabel?: string;
+  uploadLabel?: string;
   onChangeTextInputTitle: (value: string) => void;
-  onChangeTextInputPoints: (value: string) => void;
   titleVal?: string;
   pointsVal?: string;
   fileHandler: (value?: File) => void;
@@ -16,6 +15,7 @@ type TextInputWithTitlePointUploadProps = {
   textField?: boolean;
   customize?: boolean;
   customLabel?: string;
+  universityWidePoints?: string;
 };
 
 function TextInputWithTitlePointUpload({
@@ -24,16 +24,16 @@ function TextInputWithTitlePointUpload({
   titleVal,
   pointsVal,
   onChangeTextInputTitle,
-  onChangeTextInputPoints,
   fileHandler,
   fileName,
   pointsLabel,
   textField,
   customize,
-  customLabel
+  customLabel,
+  universityWidePoints
 }: TextInputWithTitlePointUploadProps) {
   return (
-    <Container>
+    <Container textField={textField}>
       <InputContainer>
         <Label>{inputLabel}</Label>
         <div style={{ flexDirection: "column" }}>
@@ -54,26 +54,20 @@ function TextInputWithTitlePointUpload({
                 onChange={e => onChangeTextInputTitle(e.target.value)}
                 value={titleVal}
                 type="text"
+                style={{ border: "1px solid black" }}
               />
             </>
           )}
         </div>
         <div style={{ flexDirection: "column" }}>
           <Label style={{ marginLeft: 42 }}>
-            {pointsLabel ? pointsLabel : "Points"}
+            {pointsLabel ? pointsLabel : ""}
           </Label>
-          {textField ? (
+          {textField && (
             <Input
               style={{ textAlign: "center" }}
               value={!pointsVal ? 0 : (Number(pointsVal) * 0.023).toFixed(2)}
               disabled={true}
-            />
-          ) : (
-            <Input
-              onChange={e => onChangeTextInputPoints(e.target.value)}
-              value={pointsVal}
-              type="number"
-              min={0}
             />
           )}
         </div>
@@ -85,15 +79,25 @@ function TextInputWithTitlePointUpload({
           workloadFileName={fileName}
         />
       </UploadContainer>
+      {!textField && (
+        <PointsContainer>
+          <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+            Points:{" "}
+          </PointsText>
+          <PointsText>
+            {universityWidePoints ? universityWidePoints : "0"}
+          </PointsText>
+        </PointsContainer>
+      )}
     </Container>
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ textField?: boolean }>`
   display: flex;
-  width: 100%;
   align-items: center;
   padding-top: 30px;
+  padding-left: ${p => (p.textField ? 0 : "15%")};
 `;
 
 const Label = styled.label`
@@ -119,6 +123,22 @@ const UploadContainer = styled.div`
 
 const Input = styled.input`
   margin-left: 42px;
+`;
+
+const PointsContainer = styled.div`
+  display: flex;
+  width: 30%;
+  padding-top: 30px;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-left: 60px;
+`;
+
+const PointsText = styled.span`
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
 `;
 
 export default TextInputWithTitlePointUpload;
