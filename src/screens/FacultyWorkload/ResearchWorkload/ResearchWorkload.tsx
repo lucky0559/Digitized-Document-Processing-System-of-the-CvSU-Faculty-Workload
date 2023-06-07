@@ -717,6 +717,7 @@ const Container = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
+  width: 60%;
 `;
 const SubContainer = styled.div`
   border: 2px solid black;
