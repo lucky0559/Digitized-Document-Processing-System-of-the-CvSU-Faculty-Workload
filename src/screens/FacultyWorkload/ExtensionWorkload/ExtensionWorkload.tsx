@@ -411,7 +411,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                     width: "100%",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    display: "flex"
+                    display: "flex",
+                    marginTop: 50
                   }}
                 >
                   <div
@@ -439,7 +440,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                             alignSelf: "end",
                             alignItems: "flex-start",
                             justifyContent: "flex-start",
-                            flexDirection: "row"
+                            flexDirection: "row",
+                            marginTop: 80
                           }}
                         >
                           <Label>
@@ -469,7 +471,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                             />
                           </UploadFileContainer>
                         </UploadContainer>
-                        <UploadContainer>
+                        <UploadContainer style={{ marginTop: 30 }}>
                           <UploadTextDescription>
                             Upload Summary of hours rendered in extension
                             activities:
