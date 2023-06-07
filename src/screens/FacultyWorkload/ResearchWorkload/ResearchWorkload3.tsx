@@ -93,10 +93,10 @@ const ResearchWorkload3 = ({
         </AddStudyContainer>
       )}
       <SubContainer>
-        <text>
+        <span style={{ fontSize: 19 }}>
           Disseminated research output in College or University In-House
           Review/Conferences
-        </text>
+        </span>
         <div>
           <DropdownWithUpload
             inputLabel="Study 1"
