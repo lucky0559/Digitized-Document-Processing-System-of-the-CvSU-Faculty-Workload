@@ -218,8 +218,10 @@ function Workload({
             </TableCaption>
             <tbody>
               <tr>
-                <ThStyle>List of Faculty</ThStyle>
+                <ThStyle>Name of Faculty</ThStyle>
                 <ThStyle>Academic Rank</ThStyle>
+                <ThStyle>Status</ThStyle>
+                <ThStyle></ThStyle>
               </tr>
 
               {!isDataLoading &&
@@ -235,6 +237,9 @@ function Workload({
                           <TdText>{item.academicRank}</TdText>
                         </TdStyle>
                         <TdStyle>
+                          <TdText>In-Progress</TdText>
+                        </TdStyle>
+                        <TdStyle>
                           <Button
                             onClick={() => {
                               setAccountReviewing(item);
@@ -244,9 +249,6 @@ function Workload({
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </TdStyle>
-                        <TdStyle>
-                          <TdText style={{ marginLeft: 30 }}>Reviewed</TdText>
                         </TdStyle>
                       </tr>
                     )
