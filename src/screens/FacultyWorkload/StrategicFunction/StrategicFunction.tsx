@@ -1025,6 +1025,106 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                   <div>
                     <Label style={{ fontWeight: "bold" }}>
                       {hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {!hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
                         hasSportsSocio1 &&
                         !hasSportsSocio2 &&
                         !hasMemberUniversity &&
