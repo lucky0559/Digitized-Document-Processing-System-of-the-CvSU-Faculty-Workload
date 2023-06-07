@@ -652,7 +652,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
           // window.location.reload();
           clearStates();
-          navigate("/strategic-function-workload", { replace: true });
+          navigate("/workload-review", { replace: true });
         } catch (e) {
           console.log(e);
         }
