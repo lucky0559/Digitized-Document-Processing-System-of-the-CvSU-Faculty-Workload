@@ -353,6 +353,26 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   };
 
   useEffect(() => {
+    if (leader) {
+      if (extensionActivityFile) {
+        setDesignationActivityPoints(designationActivityPoints + 3);
+      }
+    } else if (coordinator) {
+      if (extensionActivityFile) {
+        setDesignationActivityPoints(designationActivityPoints + 2.5);
+      }
+    } else if (facilitator) {
+      if (extensionActivityFile) {
+        setDesignationActivityPoints(designationActivityPoints + 2);
+      }
+    } else if (assistants) {
+      if (extensionActivityFile) {
+        setDesignationActivityPoints(designationActivityPoints + 1);
+      }
+    }
+  }, [extensionActivityFile]);
+
+  useEffect(() => {
     setDesignationExtensionActivity(
       [leader, coordinator, facilitator, assistants].filter(Boolean)
     );
