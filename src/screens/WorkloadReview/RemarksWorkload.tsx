@@ -12,8 +12,9 @@ import { UserContext } from "../../App";
 
 type WorkloadProps = {
   user: User;
+  setRemarks: (value: string) => void;
 };
-function RemarksWorkload({ user }: WorkloadProps) {
+function RemarksWorkload({ user, setRemarks }: WorkloadProps) {
   const [teachingWorkloads, setTeachingWorkloads] =
     useState<TeachingWorkLoadType[]>();
   const [researchWorkloads, setResearchWorkloads] =
@@ -1158,6 +1159,15 @@ function RemarksWorkload({ user }: WorkloadProps) {
           );
         })
       )}
+      {(teachingWorkloads ||
+        researchWorkloads ||
+        extensionWorkloads ||
+        strategicFunctionWorkloads) && (
+        <div style={{ display: "flex", marginLeft: 20 }}>
+          <BoldText>Remarks: </BoldText>
+          <Remarks onChange={e => setRemarks(e.target.value)} />
+        </div>
+      )}
     </Container>
   );
 }
@@ -1229,6 +1239,10 @@ const InputPoints = styled.input`
 const InputRemarks = styled.input`
   width: 150px,
   margin-left: 50px
+`;
+
+const Remarks = styled.textarea`
+  margin-left: 5px;
 `;
 
 export default RemarksWorkload;

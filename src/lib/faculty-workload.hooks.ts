@@ -793,6 +793,18 @@ export const ApproveStrategicFunctionWorkload = async (workloadId?: string) => {
   return { data };
 };
 
+export const SendRemarks = async (
+  currentProcessRole?: string,
+  userId?: string,
+  remarks?: string
+) => {
+  const { data } = await axios.post(
+    `user/${currentProcessRole}/${userId}/${remarks}/send-remarks`
+  );
+
+  return { data };
+};
+
 export const ExtensionRemarksWorkload = async (
   workloadId?: string,
   remarks?: string

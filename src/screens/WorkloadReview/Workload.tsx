@@ -10,6 +10,7 @@ import {
   ApproveResearchWorkload,
   ApproveStrategicFunctionWorkload,
   ApproveTeachingWorkload,
+  SendRemarks,
   getAllPendingWorkloadByIdAndCurrentProcessRole
 } from "../../lib/faculty-workload.hooks";
 import RemarksWorkload from "./RemarksWorkload";
@@ -45,6 +46,8 @@ function Workload({
 
   const [reviewingId, setReviewingId] = useState("");
 
+  const [remarks, setRemarks] = useState("");
+
   useEffect(() => {
     if (!isReviewing) {
       (async () => {
@@ -78,6 +81,7 @@ function Workload({
   const onApprove = async () => {
     if (user?.role !== null && reviewingId) {
       setIsSubmitting(true);
+      let isEmailSent = false;
       const {
         teachingWorkloads,
         researchWorkloads,
@@ -88,21 +92,59 @@ function Workload({
         user?.role!
       );
       if (teachingWorkloads) {
+        if (
+          !isEmailSent &&
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        } else if (user?.role === "OVPAA") {
+          console.log("ovpaa remarks");
+        }
         for (let i = 0; teachingWorkloads.length > i; i++) {
           await ApproveTeachingWorkload(teachingWorkloads[i].id);
         }
       }
       if (researchWorkloads) {
+        if (
+          !isEmailSent &&
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        }
         for (let i = 0; researchWorkloads.length > i; i++) {
           await ApproveResearchWorkload(researchWorkloads[i].id);
         }
       }
       if (extensionWorkloads) {
+        if (
+          !isEmailSent &&
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        }
         for (let i = 0; extensionWorkloads.length > i; i++) {
           await ApproveExtensionWorkload(extensionWorkloads[i].id);
         }
       }
       if (strategicFunctionWorkloads) {
+        if (
+          !isEmailSent &&
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        }
         for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
           await ApproveStrategicFunctionWorkload(
             strategicFunctionWorkloads[i].id
@@ -122,15 +164,21 @@ function Workload({
     <Container>
       {isReviewing && (
         <>
-          <RemarksWorkload user={accountReviewing!} />
-          <div style={{ margin: 15, display: "flex" }}>
+          <RemarksWorkload user={accountReviewing!} setRemarks={setRemarks} />
+          <div
+            style={{
+              margin: 15,
+              display: "flex",
+              justifyContent: "space-between"
+            }}
+          >
             <FormButton text="Back" onClicked={onCloseReviewScreen} />
-            <div style={{ marginLeft: 20 }}>
-              <FormButton
+            <div style={{ marginRight: 100 }}>
+              {/* <FormButton
                 text="Disapprove"
                 onClicked={onDisapprove}
                 isSubmitting={isSubmitting}
-              />
+              /> */}
               <FormButton
                 text="Approve"
                 onClicked={onApprove}

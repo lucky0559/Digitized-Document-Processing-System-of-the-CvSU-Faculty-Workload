@@ -49,6 +49,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
       twlFile
     });
     setIsSubmitting(true);
+    setIsConfirming(false);
   };
 
   useEffect(() => {
@@ -63,6 +64,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           const totalNoOfStudents =
             parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
           teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
+          console.log(teachingWorkLoad);
           await SaveTeachingWorkload(teachingWorkLoad);
           setIsSubmitting(false);
           clearStates();
