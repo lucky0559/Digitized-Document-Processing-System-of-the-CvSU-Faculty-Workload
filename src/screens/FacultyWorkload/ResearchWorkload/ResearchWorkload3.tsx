@@ -33,6 +33,7 @@ type ResearchWorkload3Props = {
   study3Points: number;
   study4Points: number;
   fundGeneratedPoints: number;
+  isDisseminatedOnly?: boolean;
 };
 
 const ResearchWorkload3 = ({
@@ -62,7 +63,8 @@ const ResearchWorkload3 = ({
   study4Points,
   fundGeneratedPoints,
   researchWorkLoadHandler2,
-  researchWorkLoadHandler1
+  researchWorkLoadHandler1,
+  isDisseminatedOnly
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -168,7 +170,12 @@ const ResearchWorkload3 = ({
             text="Submit"
             onClicked={() => setIsConfirming(true)}
             isSubmitting={isSubmitting}
-            disabled={points === 0 && fundGeneratedPoints === 0}
+            disabled={
+              isDisseminatedOnly
+                ? study1Points + study2Points + study3Points + study4Points ===
+                  0
+                : points === 0 && fundGeneratedPoints === 0
+            }
           ></FormButton>
         </ButtonContainer>
       </Buttons>

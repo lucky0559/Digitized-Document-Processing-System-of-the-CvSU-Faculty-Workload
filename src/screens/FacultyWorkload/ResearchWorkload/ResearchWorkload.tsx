@@ -19,6 +19,7 @@ import { Designation } from "../StrategicFunction/StrategicFunction";
 import ResearchWorkload1 from "./ResearchWorkload1";
 import ResearchWorkload2 from "./ResearchWorkload2";
 import { UserContext } from "../../../App";
+import ResearchWorkload3 from "./ResearchWorkload3";
 
 type ResearchWorkLoadProps = {
   UseLogout: () => void;
@@ -147,7 +148,16 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
 
     if (steps === 4) {
-      setSteps(steps - 1);
+      setResearchWorkLoad(undefined);
+      setStudy1(undefined);
+      setStudy2(undefined);
+      setStudy3(undefined);
+      setStudy4(undefined);
+      setStudy1Points(0);
+      setStudy2Points(0);
+      setStudy3Points(0);
+      setStudy4Points(0);
+      setSteps(1);
     }
   };
 
@@ -690,6 +700,50 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study4FileName={study4?.file?.name}
           />
         )}
+        {steps === 4 && (
+          <ResearchWorkload3
+            researchWorkLoadHandler3={researchWorkLoadHandler3}
+            researchWorkLoadHandler2={researchWorkLoadHandler2}
+            backHandler={backHandler}
+            isSubmitting={isSubmitting}
+            onSelectStudy1={onSelectStudy1}
+            study1={study1?.title}
+            onStudy1FileSelect={onStudy1FileSelect}
+            study1FileName={study1?.file?.name}
+            onSelectStudy2={onSelectStudy2}
+            study2={study2?.title}
+            onStudy2FileSelect={onStudy2FileSelect}
+            study2FileName={study2?.file?.name}
+            onSelectStudy3={onSelectStudy3}
+            study3={study3?.title}
+            onStudy3FileSelect={onStudy3FileSelect}
+            study3FileName={study3?.file?.name}
+            onSelectStudy4={onSelectStudy4}
+            study4={study4?.title}
+            onStudy4FileSelect={onStudy4FileSelect}
+            study4FileName={study4?.file?.name}
+            points={points}
+            study1Points={study1Points}
+            study2Points={study2Points}
+            study3Points={study3Points}
+            study4Points={study4Points}
+            fundGeneratedPoints={fundGeneratedPoints}
+            isDisseminatedOnly={true}
+          />
+        )}
+        {steps === 1 && (
+          <DisseminatedButtonContainer>
+            <DisseminatedTextLink
+              onClick={() => {
+                setResearchWorkLoad(undefined);
+                setSteps(4);
+              }}
+            >
+              Disseminated research output in College or University In-House
+              Review/Conferences
+            </DisseminatedTextLink>
+          </DisseminatedButtonContainer>
+        )}
       </BodyContainer>
       <FooterContainer>
         <Footer />
@@ -786,6 +840,25 @@ const FooterContainer = styled.div`
   align-self: flex-end;
   width: 100%;
   z-index: 1;
+`;
+
+const DisseminatedButtonContainer = styled.div`
+  max-width: 300px;
+  display: flex;
+  align-self: end;
+  margin-bottom: 30px;
+`;
+
+const DisseminatedTextLink = styled.span`
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 20px;
+  font-family: HurmeGeometricSans3;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 export default ResearchWorkload;
