@@ -77,7 +77,7 @@ export const SaveResearchWorkload = async (
     }
   }
 
-  if (researchWorkload.rwlFile1 && researchWorkload.disseminatedResearchFiles) {
+  if (researchWorkload.rwlFile1) {
     try {
       const file1 = await rwl1AwsConfigS3.uploadFile(researchWorkload.rwlFile1);
 

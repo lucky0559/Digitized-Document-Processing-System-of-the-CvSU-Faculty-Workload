@@ -76,7 +76,8 @@ const ResearchWorkload1 = ({
   study4Points,
   fundGeneratedPoints,
   researchWorkLoadHandler3,
-  studyPoints
+  studyPoints,
+  researchWorkLoadHandler1
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -146,6 +147,7 @@ const ResearchWorkload1 = ({
       </Container>
       <ResearchWorkload3
         researchWorkLoadHandler3={researchWorkLoadHandler3}
+        researchWorkLoadHandler1={researchWorkLoadHandler1}
         backHandler={backHandler}
         isSubmitting={isSubmitting}
         onSelectStudy1={onSelectStudy1}

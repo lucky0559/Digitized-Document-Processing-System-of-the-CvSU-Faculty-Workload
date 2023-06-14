@@ -7,6 +7,8 @@ import DropdownWithUpload from "../../../components/DropdownWithUpload";
 
 type ResearchWorkload3Props = {
   researchWorkLoadHandler3: (value: boolean) => void;
+  researchWorkLoadHandler2?: () => void;
+  researchWorkLoadHandler1?: () => void;
   backHandler: () => void;
   isSubmitting: boolean;
   onSelectStudy1: (value: string) => void;
@@ -58,7 +60,9 @@ const ResearchWorkload3 = ({
   study2Points,
   study3Points,
   study4Points,
-  fundGeneratedPoints
+  fundGeneratedPoints,
+  researchWorkLoadHandler2,
+  researchWorkLoadHandler1
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -83,7 +87,13 @@ const ResearchWorkload3 = ({
       <Confirm
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
-        onConfirm={() => researchWorkLoadHandler3(false)}
+        onConfirm={() => {
+          researchWorkLoadHandler2 && researchWorkLoadHandler2();
+          researchWorkLoadHandler1 && researchWorkLoadHandler1();
+          setIsConfirming(false);
+
+          researchWorkLoadHandler3(false);
+        }}
         content="Confirm submission?"
         size="large"
       />

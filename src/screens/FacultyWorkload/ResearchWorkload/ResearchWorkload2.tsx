@@ -114,6 +114,7 @@ const ResearchWorkload2 = ({
       </Container>
       <ResearchWorkload3
         researchWorkLoadHandler3={researchWorkLoadHandler3}
+        researchWorkLoadHandler2={researchWorkLoadHandler2}
         backHandler={backHandler}
         isSubmitting={isSubmitting}
         onSelectStudy1={onSelectStudy1}
