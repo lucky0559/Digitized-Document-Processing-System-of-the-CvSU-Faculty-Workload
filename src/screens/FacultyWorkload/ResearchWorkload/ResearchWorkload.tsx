@@ -65,7 +65,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const [studyPoints, setStudyPoints] = useState(0);
 
-  const { user } = useContext(UserContext);
+  const { user, actions } = useContext(UserContext);
 
   const researchWorkLoadHandler = () => {
     if (fundingOfStudy) {
@@ -326,6 +326,21 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             user.email
           );
 
+          const {
+            teachingWorkloads,
+            extensionWorkloads: extensionWorkloadsPending,
+            researchWorkloads,
+            strategicFunctionWorkloads
+          } = await GetAllUserPendingWorkloads(user.email);
+          actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+          actions.setHasPendingExtensionWorkload(
+            extensionWorkloadsPending.length > 0
+          );
+          actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          actions.setHasPendingStrategicWorkload(
+            strategicFunctionWorkloads.length > 0
+          );
+          console.log("hey menu");
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
@@ -358,7 +373,21 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           const { extensionWorkloads } = await GetAllUserPendingWorkloads(
             user.email
           );
-
+          const {
+            teachingWorkloads,
+            extensionWorkloads: extensionWorkloadsPending,
+            researchWorkloads,
+            strategicFunctionWorkloads
+          } = await GetAllUserPendingWorkloads(user.email);
+          actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+          actions.setHasPendingExtensionWorkload(
+            extensionWorkloadsPending.length > 0
+          );
+          actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          actions.setHasPendingStrategicWorkload(
+            strategicFunctionWorkloads.length > 0
+          );
+          console.log("hey menu");
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
@@ -579,6 +608,23 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     setPoints(0);
     setFundGeneratedPoints(0);
   }, [researchWorkLoad?.fundingOfStudy]);
+
+  useEffect(() => {
+    (async () => {
+      const {
+        teachingWorkloads,
+        extensionWorkloads,
+        researchWorkloads,
+        strategicFunctionWorkloads
+      } = await GetAllUserPendingWorkloads(user.email);
+      actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingStrategicWorkload(
+        strategicFunctionWorkloads.length > 0
+      );
+    })();
+  }, []);
 
   return (
     <MainContainer>

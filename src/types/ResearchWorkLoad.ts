@@ -1,4 +1,7 @@
+import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
+
 export type ResearchWorkLoadType = {
+  id?: string;
   titleOfStudy?: string;
   fundingOfStudy?: string;
   typeOfStudy?: string;
@@ -12,6 +15,6 @@ export type ResearchWorkLoadType = {
   rwlFilePath1?: string;
   disseminatedResearchFilesPath?: string[];
   rwlPoints?: number;
-  remarks?: string;
+  remarks?: PointsAndRemarks[];
   status?: string;
 };

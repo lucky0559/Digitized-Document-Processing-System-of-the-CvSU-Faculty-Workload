@@ -10,10 +10,11 @@ import {
   ApproveResearchWorkload,
   ApproveStrategicFunctionWorkload,
   ApproveTeachingWorkload,
+  OVPAAApproveTeachingWorkload,
   SendRemarks,
   getAllPendingWorkloadByIdAndCurrentProcessRole
 } from "../../lib/faculty-workload.hooks";
-import RemarksWorkload from "./RemarksWorkload";
+import RemarksWorkload, { PointsAndRemarks } from "./RemarksWorkload";
 import FormButton from "../../components/FormButton";
 
 type WorkloadProps = {
@@ -47,6 +48,11 @@ function Workload({
   const [reviewingId, setReviewingId] = useState("");
 
   const [remarks, setRemarks] = useState("");
+
+  const [twlPointsRemarks, setTwlPointsRemarks] = useState<PointsAndRemarks>();
+  const [rwlPointsRemarks, setRwlPointsRemarks] = useState<PointsAndRemarks[]>();
+  const [ewlPointsRemarks, setEwlPointsRemarks] = useState<PointsAndRemarks[]>();
+  const [sfPointsRemarks, setSfPointsRemarks] = useState<PointsAndRemarks[]>();
 
   useEffect(() => {
     if (!isReviewing) {
@@ -101,7 +107,7 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         } else if (user?.role === "OVPAA") {
-          console.log("ovpaa remarks");
+          return await OVPAAApproveTeachingWorkload(twlPointsRemarks!);
         }
         for (let i = 0; teachingWorkloads.length > i; i++) {
           await ApproveTeachingWorkload(teachingWorkloads[i].id);
@@ -164,7 +170,7 @@ function Workload({
     <Container>
       {isReviewing && (
         <>
-          <RemarksWorkload user={accountReviewing!} setRemarks={setRemarks} />
+          <RemarksWorkload user={accountReviewing!} setRemarks={setRemarks} setTwlPointsRemarks={setTwlPointsRemarks} setRwlPointsRemarks={setRwlPointsRemarks} setEwlPointsRemarks={setEwlPointsRemarks} setSfPointsRemarks={setSfPointsRemarks} />
           <div
             style={{
               margin: 15,

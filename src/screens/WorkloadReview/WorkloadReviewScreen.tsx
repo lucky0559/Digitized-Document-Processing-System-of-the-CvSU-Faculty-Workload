@@ -18,6 +18,7 @@ import {
   GetAllPendingTeachingWorkloadDC,
   GetAllPendingTeachingWorkloadDean,
   GetAllPendingTeachingWorkloadOVPAA,
+  GetAllUserPendingWorkloads,
   GetExtensionWorkloadRemarksFaculty,
   GetResearchWorkloadRemarksFaculty,
   GetStrategicWorkloadRemarksFaculty,
@@ -46,7 +47,13 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const { user } = useContext(UserContext);
+  const {
+    user,
+    setHasPendingExtensionWorkload,
+    setHasPendingResearchWorkload,
+    setHasPendingStrategicWorkload,
+    setHasPendingTeachingWorkload
+  } = useContext(UserContext);
 
   useEffect(() => {
     if (isDataLoading) {
@@ -103,6 +110,21 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
       })();
     }
   }, [user?.role, user?.id, isDataLoading]);
+
+  useEffect(() => {
+    (async () => {
+      const {
+        teachingWorkloads,
+        extensionWorkloads,
+        researchWorkloads,
+        strategicFunctionWorkloads
+      } = await GetAllUserPendingWorkloads(user.email);
+      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+    })();
+  }, []);
 
   return (
     <Container>

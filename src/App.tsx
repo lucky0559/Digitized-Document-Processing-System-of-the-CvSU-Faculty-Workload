@@ -66,7 +66,7 @@ function App() {
       setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
       if (res.data.role === "System Administrator") {
         navigate("accounts", { replace: true });
-      } else if (res.data.role === "Dean") {
+      } else if (res.data.role === "Dean" || res.data.role === "OVPAA") {
         navigate("/workload-review", { replace: true });
       } else if (teachingWorkloads.length === 0) {
         navigate("teaching-workload", { replace: true });
@@ -98,7 +98,13 @@ function App() {
           hasPendingTeachingWorkload,
           hasPendingExtensionWorkload,
           hasPendingResearchWorkload,
-          hasPendingStrategicWorkload
+          hasPendingStrategicWorkload,
+          actions: {
+            setHasPendingExtensionWorkload,
+            setHasPendingResearchWorkload,
+            setHasPendingStrategicWorkload,
+            setHasPendingTeachingWorkload
+          }
         }}
       >
         <Routes>

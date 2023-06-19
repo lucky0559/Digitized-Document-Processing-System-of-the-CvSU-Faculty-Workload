@@ -1,4 +1,7 @@
+import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
+
 export type ExtensionWorkloadType = {
+  id?: string;
   designationExtensionActivity?: string[];
   extensionActivityFile?: File;
   extensionActivityFilePath?: string;
@@ -9,5 +12,5 @@ export type ExtensionWorkloadType = {
   summaryOfHoursFile?: File;
   summaryOfHoursFilePath?: string;
   ewlPoints?: number;
-  remarks?: string;
+  remarks?: PointsAndRemarks[];
 };

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import FormButton from "../../../components/FormButton";
 import { StrategicFunctionType } from "../../../types/StrategicFunction";
-import { SaveStrategicFunctionWorkload } from "../../../lib/faculty-workload.hooks";
+import {
+  GetAllUserPendingWorkloads,
+  SaveStrategicFunctionWorkload
+} from "../../../lib/faculty-workload.hooks";
 import TopNav from "../../../components/TopNav";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
@@ -13,6 +16,7 @@ import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
 import { useNavigate } from "react-router-dom";
 import { Confirm } from "semantic-ui-react";
 import Footer from "../../../components/Footer";
+import { UserContext } from "../../../App";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -225,6 +229,14 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const [numberOfStudents, setNumberOfStudents] = useState("");
 
   const navigate = useNavigate();
+
+  const {
+    user,
+    setHasPendingExtensionWorkload,
+    setHasPendingResearchWorkload,
+    setHasPendingStrategicWorkload,
+    setHasPendingTeachingWorkload
+  } = useContext(UserContext);
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length >= 0 && value !== "") {
@@ -831,6 +843,21 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
 
   const hasAcademicAdviser =
     academicAdviser?.numberOfStudents && academicAdviser?.file;
+
+  useEffect(() => {
+    (async () => {
+      const {
+        teachingWorkloads,
+        extensionWorkloads,
+        researchWorkloads,
+        strategicFunctionWorkloads
+      } = await GetAllUserPendingWorkloads(user.email);
+      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+    })();
+  }, []);
 
   return (
     <MainContainer>

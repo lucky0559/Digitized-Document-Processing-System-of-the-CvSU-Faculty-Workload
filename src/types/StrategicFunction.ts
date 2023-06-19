@@ -2,8 +2,10 @@ import {
   Designation,
   DesignationWithPoints
 } from "../screens/FacultyWorkload/StrategicFunction/StrategicFunction";
+import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
 
 export type StrategicFunctionType = {
+  id?: string;
   designationUniversityLevel?: string[];
   designationUniversityLevelFiles?: File[];
   approvedUniversityDesignationFilePath?: string[];
@@ -45,5 +47,5 @@ export type StrategicFunctionType = {
   academicAdviseesPoints?: number;
   academicAdviseesFilePath?: string;
   sfwPoints?: number;
-  remarks?: string;
+  remarks?: PointsAndRemarks[];
 };

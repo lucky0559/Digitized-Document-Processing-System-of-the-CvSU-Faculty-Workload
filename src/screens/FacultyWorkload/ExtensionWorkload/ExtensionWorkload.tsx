@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Confirm } from "semantic-ui-react";
 import Dropdown from "../../../components/Dropdown";
@@ -9,11 +9,15 @@ import { ExtensionWorkloadType } from "../../../types/ExtensionWorkload";
 import TopNav from "../../../components/TopNav";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
-import { SaveExtensionWorkload } from "../../../lib/faculty-workload.hooks";
+import {
+  GetAllUserPendingWorkloads,
+  SaveExtensionWorkload
+} from "../../../lib/faculty-workload.hooks";
 import ScreenTitle from "../../../components/ScreenTitle";
 import Footer from "../../../components/Footer";
 import { useNavigate } from "react-router-dom";
 import DesignationExtensionActivity from "./DesignationExtensionActivity";
+import { UserContext } from "../../../App";
 
 type ExtensionWorkloadProps = {
   UseLogout: () => void;
@@ -58,6 +62,14 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const [resourcePersonPoints2, setResourcePersonPoints2] = useState(0);
 
   const [isConfirming, setIsConfirming] = useState(false);
+
+  const {
+    user,
+    setHasPendingExtensionWorkload,
+    setHasPendingResearchWorkload,
+    setHasPendingStrategicWorkload,
+    setHasPendingTeachingWorkload
+  } = useContext(UserContext);
 
   const extensionWorkloadHandler = () => {
     setExtensionWorkload({
@@ -377,6 +389,21 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       [leader, coordinator, facilitator, assistants].filter(Boolean)
     );
   }, [leader, coordinator, facilitator, assistants]);
+
+  useEffect(() => {
+    (async () => {
+      const {
+        teachingWorkloads,
+        extensionWorkloads,
+        researchWorkloads,
+        strategicFunctionWorkloads
+      } = await GetAllUserPendingWorkloads(user.email);
+      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+    })();
+  }, []);
 
   return (
     <MainContainer>
