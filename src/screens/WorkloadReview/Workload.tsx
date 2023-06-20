@@ -50,8 +50,10 @@ function Workload({
   const [remarks, setRemarks] = useState("");
 
   const [twlPointsRemarks, setTwlPointsRemarks] = useState<PointsAndRemarks>();
-  const [rwlPointsRemarks, setRwlPointsRemarks] = useState<PointsAndRemarks[]>();
-  const [ewlPointsRemarks, setEwlPointsRemarks] = useState<PointsAndRemarks[]>();
+  const [rwlPointsRemarks, setRwlPointsRemarks] =
+    useState<PointsAndRemarks[]>();
+  const [ewlPointsRemarks, setEwlPointsRemarks] =
+    useState<PointsAndRemarks[]>();
   const [sfPointsRemarks, setSfPointsRemarks] = useState<PointsAndRemarks[]>();
 
   useEffect(() => {
@@ -107,9 +109,15 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         } else if (user?.role === "OVPAA") {
-          return await OVPAAApproveTeachingWorkload(twlPointsRemarks!);
+          await OVPAAApproveTeachingWorkload(twlPointsRemarks!);
+          setReviewingId("");
+          setIsDataLoading(true);
+          setIsSubmitting(false);
+          setIsReviewing(false);
+          return;
         }
         for (let i = 0; teachingWorkloads.length > i; i++) {
+          isEmailSent = true;
           await ApproveTeachingWorkload(teachingWorkloads[i].id);
         }
       }
@@ -122,9 +130,13 @@ function Workload({
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
-        }
-        for (let i = 0; researchWorkloads.length > i; i++) {
-          await ApproveResearchWorkload(researchWorkloads[i].id);
+          for (let i = 0; researchWorkloads.length > i; i++) {
+            await ApproveResearchWorkload(researchWorkloads[i].id);
+          }
+        } else if (user?.role === "OVPAA") {
+          for (let i = 0; researchWorkloads.length > i; i++) {
+            await OVPAAApproveTeachingWorkload(rwlPointsRemarks?.[i]!);
+          }
         }
       }
       if (extensionWorkloads) {
@@ -136,9 +148,13 @@ function Workload({
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
-        }
-        for (let i = 0; extensionWorkloads.length > i; i++) {
-          await ApproveExtensionWorkload(extensionWorkloads[i].id);
+          for (let i = 0; extensionWorkloads.length > i; i++) {
+            await ApproveExtensionWorkload(extensionWorkloads[i].id);
+          }
+        } else if (user?.role === "OVPAA") {
+          for (let i = 0; extensionWorkloads.length > i; i++) {
+            await OVPAAApproveTeachingWorkload(ewlPointsRemarks?.[i]!);
+          }
         }
       }
       if (strategicFunctionWorkloads) {
@@ -150,11 +166,15 @@ function Workload({
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
-        }
-        for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
-          await ApproveStrategicFunctionWorkload(
-            strategicFunctionWorkloads[i].id
-          );
+          for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
+            await ApproveStrategicFunctionWorkload(
+              strategicFunctionWorkloads[i].id
+            );
+          }
+        } else if (user?.role === "OVPAA") {
+          for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
+            await OVPAAApproveTeachingWorkload(sfPointsRemarks?.[i]!);
+          }
         }
       }
       setReviewingId("");
@@ -170,7 +190,14 @@ function Workload({
     <Container>
       {isReviewing && (
         <>
-          <RemarksWorkload user={accountReviewing!} setRemarks={setRemarks} setTwlPointsRemarks={setTwlPointsRemarks} setRwlPointsRemarks={setRwlPointsRemarks} setEwlPointsRemarks={setEwlPointsRemarks} setSfPointsRemarks={setSfPointsRemarks} />
+          <RemarksWorkload
+            user={accountReviewing!}
+            setRemarks={setRemarks}
+            setTwlPointsRemarks={setTwlPointsRemarks}
+            setRwlPointsRemarks={setRwlPointsRemarks}
+            setEwlPointsRemarks={setEwlPointsRemarks}
+            setSfPointsRemarks={setSfPointsRemarks}
+          />
           <div
             style={{
               margin: 15,

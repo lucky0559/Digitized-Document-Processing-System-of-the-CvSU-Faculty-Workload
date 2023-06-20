@@ -24,7 +24,14 @@ export type PointsAndRemarks = {
   points: string;
   remarks: string;
 };
-function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRemarks, setEwlPointsRemarks, setSfPointsRemarks }: WorkloadProps) {
+function RemarksWorkload({
+  user,
+  setRemarks,
+  setTwlPointsRemarks,
+  setRwlPointsRemarks,
+  setEwlPointsRemarks,
+  setSfPointsRemarks
+}: WorkloadProps) {
   const [teachingWorkloads, setTeachingWorkloads] =
     useState<TeachingWorkLoadType[]>();
   const [researchWorkloads, setResearchWorkloads] =
@@ -37,7 +44,6 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   const { user: userContext } = useContext(UserContext);
-
 
   useEffect(() => {
     (async () => {
@@ -183,43 +189,55 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                             min={0}
                             onChange={e => {
                               points = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
+                              if (Number(points) > 0) {
                                 workload.remarks = {
                                   key: workload.id!,
                                   points: points,
-                                  remarks: remarks
+                                  remarks: workload.remarks?.remarks!
                                 };
-                                setTwlPointsRemarks(workload.remarks)
+                                if (
+                                  Number(workload.remarks.points) > 0 &&
+                                  workload.remarks.remarks.length > 0
+                                ) {
+                                  setTwlPointsRemarks(workload.remarks);
+                                  console.log(workload.remarks);
+                                } else {
+                                  setTwlPointsRemarks(undefined);
+                                }
                               } else {
                                 workload.remarks = {
-                                  key: "",
+                                  key: workload.id!,
                                   points: "",
-                                  remarks: ""
+                                  remarks: workload.remarks?.remarks!
                                 };
-                                setTwlPointsRemarks(undefined)
                               }
-                              console.log(workload.remarks);
                             }}
                           />
                           <InputRemarks
                             onChange={e => {
                               remarks = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
+                              if (remarks.length > 0) {
                                 workload.remarks = {
                                   key: workload.id!,
-                                  points: points,
+                                  points: workload.remarks?.points!,
                                   remarks: remarks
                                 };
-                                setTwlPointsRemarks(workload.remarks)
+                                if (
+                                  Number(workload.remarks.points) > 0 &&
+                                  workload.remarks.remarks.length > 0
+                                ) {
+                                  setTwlPointsRemarks(workload.remarks);
+                                  console.log(workload.remarks);
+                                } else {
+                                  setTwlPointsRemarks(undefined);
+                                }
                               } else {
                                 workload.remarks = {
-                                  key: "",
-                                  points: "",
+                                  key: workload.id!,
+                                  points: workload.remarks?.points!,
                                   remarks: ""
                                 };
-                                setTwlPointsRemarks(undefined)
                               }
-                              console.log(workload.remarks);
                             }}
                           />
                         </div>
@@ -346,7 +364,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                             min={0}
                             onChange={e => {
                               points = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
+                              if (Number(points) > 0) {
                                 const hasData = workload.remarks?.filter(
                                   item => item.key === workload.id
                                 );
@@ -364,7 +382,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setRwlPointsRemarks(workload.remarks!)
+                                    setRwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -372,13 +390,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setRwlPointsRemarks(workload.remarks!)
+                                  setRwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setRwlPointsRemarks(workload.remarks!)
+                                setRwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -404,7 +422,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setRwlPointsRemarks(workload.remarks!)
+                                    setRwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -412,13 +430,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setRwlPointsRemarks(workload.remarks!)
+                                  setRwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setRwlPointsRemarks(workload.remarks!)
+                                setRwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -497,7 +515,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setRwlPointsRemarks(workload.remarks!)
+                                        setRwlPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -505,13 +523,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setRwlPointsRemarks(workload.remarks!)
+                                      setRwlPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setRwlPointsRemarks(workload.remarks!)
+                                    setRwlPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -540,7 +558,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setRwlPointsRemarks(workload.remarks!)
+                                        setRwlPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -548,13 +566,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setRwlPointsRemarks(workload.remarks!)
+                                      setRwlPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setRwlPointsRemarks(workload.remarks!)
+                                    setRwlPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -629,7 +647,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setRwlPointsRemarks(workload.remarks!)
+                                    setRwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -637,13 +655,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setRwlPointsRemarks(workload.remarks!)
+                                  setRwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setRwlPointsRemarks(workload.remarks!)
+                                setRwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -669,7 +687,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setRwlPointsRemarks(workload.remarks!)
+                                    setRwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -677,13 +695,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setRwlPointsRemarks(workload.remarks!)
+                                  setRwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setRwlPointsRemarks(workload.remarks!)
+                                setRwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -826,7 +844,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setEwlPointsRemarks(workload.remarks!)
+                                    setEwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -834,13 +852,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setEwlPointsRemarks(workload.remarks!)
+                                  setEwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setEwlPointsRemarks(workload.remarks!)
+                                setEwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -866,7 +884,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setEwlPointsRemarks(workload.remarks!)
+                                    setEwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -874,13 +892,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setEwlPointsRemarks(workload.remarks!)
+                                  setEwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setEwlPointsRemarks(workload.remarks!)
+                                setEwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -955,7 +973,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setEwlPointsRemarks(workload.remarks!)
+                                      setEwlPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks?.push({
@@ -963,13 +981,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setEwlPointsRemarks(workload.remarks!)
+                                    setEwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks = workload.remarks?.filter(
                                     item => item.key !== workload.id
                                   );
-                                  setEwlPointsRemarks(workload.remarks!)
+                                  setEwlPointsRemarks(workload.remarks!);
                                 }
                                 console.log(workload.remarks);
                               }}
@@ -995,7 +1013,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setEwlPointsRemarks(workload.remarks!)
+                                      setEwlPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks?.push({
@@ -1003,14 +1021,14 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setEwlPointsRemarks(workload.remarks!)
+                                    setEwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks = workload.remarks?.filter(
                                     item => item.key !== workload.id
                                   );
 
-                                  setEwlPointsRemarks(workload.remarks!)
+                                  setEwlPointsRemarks(workload.remarks!);
                                 }
                                 console.log(workload.remarks);
                               }}
@@ -1085,7 +1103,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setEwlPointsRemarks(workload.remarks!)
+                                    setEwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -1093,13 +1111,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setEwlPointsRemarks(workload.remarks!)
+                                  setEwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setEwlPointsRemarks(workload.remarks!)
+                                setEwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -1125,7 +1143,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                       points: points,
                                       remarks: remarks
                                     });
-                                    setEwlPointsRemarks(workload.remarks!)
+                                    setEwlPointsRemarks(workload.remarks!);
                                   }
                                 } else {
                                   workload.remarks?.push({
@@ -1133,13 +1151,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                     points: points,
                                     remarks: remarks
                                   });
-                                  setEwlPointsRemarks(workload.remarks!)
+                                  setEwlPointsRemarks(workload.remarks!);
                                 }
                               } else {
                                 workload.remarks = workload.remarks?.filter(
                                   item => item.key !== workload.id
                                 );
-                                setEwlPointsRemarks(workload.remarks!)
+                                setEwlPointsRemarks(workload.remarks!);
                               }
                               console.log(workload.remarks);
                             }}
@@ -1323,7 +1341,9 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                                 points: points,
                                                 remarks: remarks
                                               });
-                                              setSfPointsRemarks(workload.remarks!)
+                                              setSfPointsRemarks(
+                                                workload.remarks!
+                                              );
                                             }
                                           } else {
                                             workload.remarks?.push({
@@ -1331,14 +1351,16 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                               points: points,
                                               remarks: remarks
                                             });
-                                            setSfPointsRemarks(workload.remarks!)
+                                            setSfPointsRemarks(
+                                              workload.remarks!
+                                            );
                                           }
                                         } else {
                                           workload.remarks =
                                             workload.remarks?.filter(
                                               item => item.key !== workload.id
                                             );
-                                            setSfPointsRemarks(workload.remarks!)
+                                          setSfPointsRemarks(workload.remarks!);
                                         }
                                         console.log(workload.remarks);
                                       }}
@@ -1369,7 +1391,9 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                                 points: points,
                                                 remarks: remarks
                                               });
-                                              setSfPointsRemarks(workload.remarks!)
+                                              setSfPointsRemarks(
+                                                workload.remarks!
+                                              );
                                             }
                                           } else {
                                             workload.remarks?.push({
@@ -1377,14 +1401,16 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                               points: points,
                                               remarks: remarks
                                             });
-                                            setSfPointsRemarks(workload.remarks!)
+                                            setSfPointsRemarks(
+                                              workload.remarks!
+                                            );
                                           }
                                         } else {
                                           workload.remarks =
                                             workload.remarks?.filter(
                                               item => item.key !== workload.id
                                             );
-                                            setSfPointsRemarks(workload.remarks!)
+                                          setSfPointsRemarks(workload.remarks!);
                                         }
                                         console.log(workload.remarks);
                                       }}
@@ -1477,7 +1503,9 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                                 points: points,
                                                 remarks: remarks
                                               });
-                                              setSfPointsRemarks(workload.remarks!)
+                                              setSfPointsRemarks(
+                                                workload.remarks!
+                                              );
                                             }
                                           } else {
                                             workload.remarks?.push({
@@ -1485,14 +1513,16 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                               points: points,
                                               remarks: remarks
                                             });
-                                            setSfPointsRemarks(workload.remarks!)
+                                            setSfPointsRemarks(
+                                              workload.remarks!
+                                            );
                                           }
                                         } else {
                                           workload.remarks =
                                             workload.remarks?.filter(
                                               item => item.key !== workload.id
                                             );
-                                            setSfPointsRemarks(workload.remarks!)
+                                          setSfPointsRemarks(workload.remarks!);
                                         }
                                         console.log(workload.remarks);
                                       }}
@@ -1523,7 +1553,9 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                                 points: points,
                                                 remarks: remarks
                                               });
-                                              setSfPointsRemarks(workload.remarks!)
+                                              setSfPointsRemarks(
+                                                workload.remarks!
+                                              );
                                             }
                                           } else {
                                             workload.remarks?.push({
@@ -1531,14 +1563,16 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                               points: points,
                                               remarks: remarks
                                             });
-                                            setSfPointsRemarks(workload.remarks!)
+                                            setSfPointsRemarks(
+                                              workload.remarks!
+                                            );
                                           }
                                         } else {
                                           workload.remarks =
                                             workload.remarks?.filter(
                                               item => item.key !== workload.id
                                             );
-                                            setSfPointsRemarks(workload.remarks!)
+                                          setSfPointsRemarks(workload.remarks!);
                                         }
                                         console.log(workload.remarks);
                                       }}
@@ -1631,7 +1665,9 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                                 points: points,
                                                 remarks: remarks
                                               });
-                                              setSfPointsRemarks(workload.remarks!)
+                                              setSfPointsRemarks(
+                                                workload.remarks!
+                                              );
                                             }
                                           } else {
                                             workload.remarks?.push({
@@ -1639,14 +1675,16 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                               points: points,
                                               remarks: remarks
                                             });
-                                            setSfPointsRemarks(workload.remarks!)
+                                            setSfPointsRemarks(
+                                              workload.remarks!
+                                            );
                                           }
                                         } else {
                                           workload.remarks =
                                             workload.remarks?.filter(
                                               item => item.key !== workload.id
                                             );
-                                            setSfPointsRemarks(workload.remarks!)
+                                          setSfPointsRemarks(workload.remarks!);
                                         }
                                         console.log(workload.remarks);
                                       }}
@@ -1677,7 +1715,9 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                                 points: points,
                                                 remarks: remarks
                                               });
-                                              setSfPointsRemarks(workload.remarks!)
+                                              setSfPointsRemarks(
+                                                workload.remarks!
+                                              );
                                             }
                                           } else {
                                             workload.remarks?.push({
@@ -1685,14 +1725,16 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                               points: points,
                                               remarks: remarks
                                             });
-                                            setSfPointsRemarks(workload.remarks!)
+                                            setSfPointsRemarks(
+                                              workload.remarks!
+                                            );
                                           }
                                         } else {
                                           workload.remarks =
                                             workload.remarks?.filter(
                                               item => item.key !== workload.id
                                             );
-                                            setSfPointsRemarks(workload.remarks!)
+                                          setSfPointsRemarks(workload.remarks!);
                                         }
                                         console.log(workload.remarks);
                                       }}
@@ -1783,7 +1825,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -1791,13 +1833,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -1826,7 +1868,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -1834,13 +1876,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -1919,7 +1961,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -1927,7 +1969,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
@@ -1961,7 +2003,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -1969,13 +2011,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2062,7 +2104,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -2070,13 +2112,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2105,7 +2147,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -2113,13 +2155,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2196,7 +2238,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -2204,13 +2246,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2239,7 +2281,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -2247,13 +2289,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2339,7 +2381,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -2347,13 +2389,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2382,7 +2424,7 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                           points: points,
                                           remarks: remarks
                                         });
-                                        setSfPointsRemarks(workload.remarks!)
+                                        setSfPointsRemarks(workload.remarks!);
                                       }
                                     } else {
                                       workload.remarks?.push({
@@ -2390,13 +2432,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
                                         points: points,
                                         remarks: remarks
                                       });
-                                      setSfPointsRemarks(workload.remarks!)
+                                      setSfPointsRemarks(workload.remarks!);
                                     }
                                   } else {
                                     workload.remarks = workload.remarks?.filter(
                                       item => item.key !== workload.id
                                     );
-                                    setSfPointsRemarks(workload.remarks!)
+                                    setSfPointsRemarks(workload.remarks!);
                                   }
                                   console.log(workload.remarks);
                                 }}
@@ -2429,12 +2471,13 @@ function RemarksWorkload({ user, setRemarks, setTwlPointsRemarks, setRwlPointsRe
       {(teachingWorkloads ||
         researchWorkloads ||
         extensionWorkloads ||
-        strategicFunctionWorkloads) && (
-        <div style={{ display: "flex", marginLeft: 20 }}>
-          <BoldText>Remarks: </BoldText>
-          <Remarks onChange={e => setRemarks(e.target.value)} />
-        </div>
-      )}
+        strategicFunctionWorkloads) &&
+        userContext.role !== "OVPAA" && (
+          <div style={{ display: "flex", marginLeft: 20 }}>
+            <BoldText>Remarks: </BoldText>
+            <Remarks onChange={e => setRemarks(e.target.value)} />
+          </div>
+        )}
     </Container>
   );
 }
