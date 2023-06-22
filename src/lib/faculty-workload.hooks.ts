@@ -19,7 +19,7 @@ import { ExtensionWorkloadType } from "../types/ExtensionWorkload";
 import { ResearchWorkLoadType } from "../types/ResearchWorkLoad";
 import { StrategicFunctionType } from "../types/StrategicFunction";
 import { TeachingWorkLoadType } from "../types/TeachingWorkload";
-import { PointsAndRemarks } from '../screens/WorkloadReview/RemarksWorkload';
+import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
 
 export const SaveTeachingWorkload = async (
   teachingWorkload: TeachingWorkLoadType
@@ -770,9 +770,12 @@ export const ApproveTeachingWorkload = async (workloadId?: string) => {
   return { data };
 };
 
-export const OVPAAApproveTeachingWorkload = async (remarks: PointsAndRemarks) => {
+export const OVPAAApproveTeachingWorkload = async (
+  remarks: PointsAndRemarks
+) => {
   const { data } = await axios.patch(
-    `teaching-workload/${remarks}/ovpaa-approve-workload`
+    `teaching-workload/ovpaa-approve-workload`,
+    remarks
   );
 
   return { data };

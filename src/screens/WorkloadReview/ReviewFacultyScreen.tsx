@@ -345,6 +345,62 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                   +totalSfPoints
                 ).toFixed(2)}
               </BoldText>
+              <OvpaaContainerPointsRemarks>
+                <RemarksContainer>
+                  <BoldText>Remarks: </BoldText>
+                  {allTeachingWorkloads?.map(workload => {
+                    return <ThinText>{workload.remarks?.remarks}</ThinText>;
+                  })}
+                </RemarksContainer>
+                <PointsContainer>
+                  <BoldText>Total Teaching Workload Points: </BoldText>
+                  {allTeachingWorkloads?.map(workload => {
+                    return <ThinText>{workload.remarks?.points}</ThinText>;
+                  })}
+                </PointsContainer>
+                <PointsContainer>
+                  <BoldText>Total Research Workload Points: </BoldText>
+                  {allResearchWorkloads?.map((workload, index) => {
+                    let points = 0;
+
+                    for (let i = 0; workload.remarks?.length! > i; i++) {
+                      points = Number(workload.remarks?.[i].points) + points;
+                    }
+                    if (allResearchWorkloads.length === index + 1) {
+                      return <ThinText>{points.toString()}</ThinText>;
+                    }
+                  })}
+                </PointsContainer>
+
+                <PointsContainer>
+                  <BoldText>Total Extension Workload Points: </BoldText>
+                  {allExtensionWorkloads?.map((workload, index) => {
+                    let points = 0;
+
+                    for (let i = 0; workload.remarks?.length! > i; i++) {
+                      points = Number(workload.remarks?.[i].points) + points;
+                    }
+                    if (allExtensionWorkloads.length === index + 1) {
+                      return <ThinText>{points.toString()}</ThinText>;
+                    }
+                  })}
+                </PointsContainer>
+                <PointsContainer>
+                  <BoldText>
+                    Total Strategic Function Workload Points:{" "}
+                  </BoldText>
+                  {allStrategicFunctionWorkloads?.map((workload, index) => {
+                    let points = 0;
+
+                    for (let i = 0; workload.remarks?.length! > i; i++) {
+                      points = Number(workload.remarks?.[i].points) + points;
+                    }
+                    if (allStrategicFunctionWorkloads.length === index + 1) {
+                      return <ThinText>{points.toString()}</ThinText>;
+                    }
+                  })}
+                </PointsContainer>
+              </OvpaaContainerPointsRemarks>
             </ComputationContainer>
           </div>
           <ButtonContainer>
@@ -446,5 +502,16 @@ const ButtonContainer = styled.div`
     display: none;
   }
 `;
+
+const OvpaaContainerPointsRemarks = styled.div`
+  margin-top: 20px;
+  border: 3px solid black;
+  border-radius: 15px;
+  padding: 20px;
+`;
+
+const RemarksContainer = styled.div``;
+
+const PointsContainer = styled.div``;
 
 export default ReviewFacultyScreen;
