@@ -47,5 +47,5 @@ export type StrategicFunctionType = {
   academicAdviseesPoints?: number;
   academicAdviseesFilePath?: string;
   sfwPoints?: number;
-  remarks?: PointsAndRemarks[];
+  remarks?: PointsAndRemarks;
 };

@@ -10,7 +10,6 @@ import { User } from "../../types/User";
 import Colors from "../../constants/Colors";
 import FormButton from "../../components/FormButton";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { useNavigate } from "react-router-dom";
 
 type ReviewFacultyScreenProps = {
   userEmail?: string;
@@ -32,6 +31,12 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
 
   const [user, setUser] = useState<User>();
 
+  const [ovpaaTotalRwlPoints, setOvpaaTotalRwlPoints] = useState(0);
+  const [ovpaaTotalEwlPoints, setOvpaaTotalEwlPoints] = useState(0);
+  const [ovpaaTotalSfPoints, setOvpaaTotalSfPoints] = useState(0);
+
+  const [ovpaaRemarks, setOvpaaRemarks] = useState("");
+
   useEffect(() => {
     (async () => {
       const user = await GetUser(userId!);
@@ -50,17 +55,50 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (allResearchWorkloads?.length! > 0) {
+      const total = allResearchWorkloads?.reduce((accumulator, object) => {
+        return accumulator + Number(object.remarks?.points);
+      }, 0);
+
+      setOvpaaTotalRwlPoints(total || 0);
+      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
+      setOvpaaRemarks(allResearchWorkloads?.[0].remarks?.remarks!);
+    }
+  }, [allResearchWorkloads]);
+
+  useEffect(() => {
+    if (allExtensionWorkloads?.length! > 0) {
+      const total = allExtensionWorkloads?.reduce((accumulator, object) => {
+        return accumulator + Number(object.remarks?.points);
+      }, 0);
+      setOvpaaTotalEwlPoints(total || 0);
+      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
+      setOvpaaRemarks(allExtensionWorkloads?.[0].remarks?.remarks!);
+    }
+  }, [allExtensionWorkloads]);
+
+  useEffect(() => {
+    if (allStrategicFunctionWorkloads?.length! > 0) {
+      const total = allStrategicFunctionWorkloads?.reduce(
+        (accumulator, object) => {
+          return accumulator + Number(object.remarks?.points);
+        },
+        0
+      );
+      setOvpaaTotalSfPoints(total || 0);
+      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
+      setOvpaaRemarks(allStrategicFunctionWorkloads?.[0].remarks?.remarks!);
+    }
+  }, [allStrategicFunctionWorkloads]);
+
   let totalTwlPoints = 0;
   let totalEwlPoints = 0;
   let totalRwlPoints = 0;
   let totalSfPoints = 0;
 
   const onPrint = () => {
-    // let printContents = document.getElementById("printable")?.innerHTML;
-    // let originalContents = document.body.innerHTML;
-    // document.body.innerHTML = printContents!;
     window.print();
-    // document.body.innerHTML = originalContents;
   };
 
   return (
@@ -348,57 +386,45 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
               <OvpaaContainerPointsRemarks>
                 <RemarksContainer>
                   <BoldText>Remarks: </BoldText>
-                  {allTeachingWorkloads?.map(workload => {
-                    return <ThinText>{workload.remarks?.remarks}</ThinText>;
-                  })}
+                  {/* {(allTeachingWorkloads?.length! > 0 ||
+                    allResearchWorkloads?.length! > 0 ||
+                    allExtensionWorkloads?.length! > 0 ||
+                    allStrategicFunctionWorkloads?.length! > 0) && (
+                    <ThinText>
+                      {allTeachingWorkloads?.[0].remarks?.remarks ||
+                        allResearchWorkloads?.[0].remarks?.remarks ||
+                        allExtensionWorkloads?.[0].remarks?.remarks ||
+                        allStrategicFunctionWorkloads?.[0].remarks?.remarks}
+                    </ThinText>
+                  )} */}
+                  <ThinText>{ovpaaRemarks}</ThinText>
                 </RemarksContainer>
                 <PointsContainer>
                   <BoldText>Total Teaching Workload Points: </BoldText>
-                  {allTeachingWorkloads?.map(workload => {
-                    return <ThinText>{workload.remarks?.points}</ThinText>;
-                  })}
+                  {allTeachingWorkloads?.length! > 0 ? (
+                    <ThinText>
+                      {allTeachingWorkloads?.[0].remarks?.points}
+                    </ThinText>
+                  ) : (
+                    <ThinText>0</ThinText>
+                  )}
                 </PointsContainer>
                 <PointsContainer>
                   <BoldText>Total Research Workload Points: </BoldText>
-                  {allResearchWorkloads?.map((workload, index) => {
-                    let points = 0;
 
-                    for (let i = 0; workload.remarks?.length! > i; i++) {
-                      points = Number(workload.remarks?.[i].points) + points;
-                    }
-                    if (allResearchWorkloads.length === index + 1) {
-                      return <ThinText>{points.toString()}</ThinText>;
-                    }
-                  })}
+                  <ThinText>{ovpaaTotalRwlPoints}</ThinText>
                 </PointsContainer>
 
                 <PointsContainer>
                   <BoldText>Total Extension Workload Points: </BoldText>
-                  {allExtensionWorkloads?.map((workload, index) => {
-                    let points = 0;
 
-                    for (let i = 0; workload.remarks?.length! > i; i++) {
-                      points = Number(workload.remarks?.[i].points) + points;
-                    }
-                    if (allExtensionWorkloads.length === index + 1) {
-                      return <ThinText>{points.toString()}</ThinText>;
-                    }
-                  })}
+                  <ThinText>{ovpaaTotalEwlPoints}</ThinText>
                 </PointsContainer>
                 <PointsContainer>
                   <BoldText>
                     Total Strategic Function Workload Points:{" "}
                   </BoldText>
-                  {allStrategicFunctionWorkloads?.map((workload, index) => {
-                    let points = 0;
-
-                    for (let i = 0; workload.remarks?.length! > i; i++) {
-                      points = Number(workload.remarks?.[i].points) + points;
-                    }
-                    if (allStrategicFunctionWorkloads.length === index + 1) {
-                      return <ThinText>{points.toString()}</ThinText>;
-                    }
-                  })}
+                  <ThinText>{ovpaaTotalSfPoints}</ThinText>
                 </PointsContainer>
               </OvpaaContainerPointsRemarks>
             </ComputationContainer>

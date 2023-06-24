@@ -4,6 +4,8 @@ import { Confirm } from "semantic-ui-react";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import FormButton from "../../../components/FormButton";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import Colors from "../../../constants/Colors";
 
 type ResearchWorkload3Props = {
   researchWorkLoadHandler3: (value: boolean) => void;
@@ -101,7 +103,11 @@ const ResearchWorkload3 = ({
       />
       {(points !== 0 || fundGeneratedPoints !== 0) && (
         <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
-          <AddStudyText>Add another study</AddStudyText>
+          {isSubmitting ? (
+            <LoadingSpinner color={Colors.primary} />
+          ) : (
+            <AddStudyText>Add another study</AddStudyText>
+          )}
         </AddStudyContainer>
       )}
       <SubContainer>

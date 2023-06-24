@@ -15,6 +15,6 @@ export type ResearchWorkLoadType = {
   rwlFilePath1?: string;
   disseminatedResearchFilesPath?: string[];
   rwlPoints?: number;
-  remarks?: PointsAndRemarks[];
+  remarks?: PointsAndRemarks;
   status?: string;
 };

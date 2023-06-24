@@ -551,97 +551,6 @@ export const SaveStrategicFunctionWorkload = async (
           strategicFunctionWorkload.academicAdviseesPoints;
       }
 
-      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[0].file) {
-      //   approvedCollegeCampusDesignationFile1 =
-      //     await approvedCollegeCampusDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationCollegeCampusLevel[0].file
-      //     );
-      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath1 =
-      //     approvedCollegeCampusDesignationFile1.location;
-      // }
-      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file) {
-      //   approvedCollegeCampusDesignationFile2 =
-      //     await approvedCollegeCampusDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationCollegeCampusLevel?.[1].file
-      //     );
-      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath2 =
-      //     approvedCollegeCampusDesignationFile2.location;
-      // }
-      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file) {
-      //   approvedCollegeCampusDesignationFile3 =
-      //     await approvedCollegeCampusDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationCollegeCampusLevel?.[2].file
-      //     );
-      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath3 =
-      //     approvedCollegeCampusDesignationFile3.location;
-      // }
-      // if (strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file) {
-      //   approvedCollegeCampusDesignationFile4 =
-      //     await approvedCollegeCampusDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationCollegeCampusLevel?.[3].file
-      //     );
-      //   strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath4 =
-      //     approvedCollegeCampusDesignationFile4.location;
-      // }
-      // // DEPARTMENT
-      // if (strategicFunctionWorkload.designationDepartmentLevel?.[0].file) {
-      //   approvedDepartmentDesignationFile1 =
-      //     await approvedDepartmentDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationDepartmentLevel?.[0].file
-      //     );
-      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath1 =
-      //     approvedDepartmentDesignationFile1.location;
-      // }
-      // if (strategicFunctionWorkload.designationDepartmentLevel?.[1].file) {
-      //   approvedDepartmentDesignationFile2 =
-      //     await approvedDepartmentDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationDepartmentLevel?.[1].file
-      //     );
-      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath2 =
-      //     approvedDepartmentDesignationFile2.location;
-      // }
-      // if (strategicFunctionWorkload.designationDepartmentLevel?.[2].file) {
-      //   approvedDepartmentDesignationFile3 =
-      //     await approvedDepartmentDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationDepartmentLevel?.[2].file
-      //     );
-      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath3 =
-      //     approvedDepartmentDesignationFile3.location;
-      // }
-      // if (strategicFunctionWorkload.designationDepartmentLevel?.[3].file) {
-      //   approvedDepartmentDesignationFile4 =
-      //     await approvedDepartmentDesignationS3.uploadFile(
-      //       strategicFunctionWorkload.designationDepartmentLevel?.[3].file
-      //     );
-      //   strategicFunctionWorkload.approvedDepartmentDesignationFilePath4 =
-      //     approvedDepartmentDesignationFile4.location;
-      // }
-
-      // if (strategicFunctionWorkload.designationAsSportTrainorAcademic.file) {
-      //   sportsTrainorAcademicFile = await coachAdviserCertificateS3.uploadFile(
-      //     strategicFunctionWorkload.designationAsSportTrainorAcademic.file
-      //   );
-      // }
-
-      // if (strategicFunctionWorkload.designationAsMemberOfAdhoc.file) {
-      //   memberAdhocFile = await listAdviseesS3.uploadFile(
-      //     strategicFunctionWorkload.designationAsMemberOfAdhoc.file
-      //   );
-      // }
-
-      // if (strategicFunctionWorkload.academicAdvisees?.file) {
-      //   academicAdviseesFile = await listAdviseesS3.uploadFile(
-      //     strategicFunctionWorkload.academicAdvisees.file
-      //   );
-      // }
-
-      // strategicFunctionWorkload.sportsTrainorAcademicFilePath =
-      //   sportsTrainorAcademicFile?.location;
-
-      // strategicFunctionWorkload.memberAdhocFilePath = memberAdhocFile?.location;
-      // strategicFunctionWorkload.academicAdviseesFilePath =
-      //   academicAdviseesFile?.location;
-
       numberOfUniversity = numberOfUniversity * 18;
       numberOfCollegeCampus = numberOfCollegeCampus * 15;
       numberOfDepartmentLevel = numberOfDepartmentLevel * 12;
@@ -775,6 +684,39 @@ export const OVPAAApproveTeachingWorkload = async (
 ) => {
   const { data } = await axios.patch(
     `teaching-workload/ovpaa-approve-workload`,
+    remarks
+  );
+
+  return { data };
+};
+
+export const OVPAAApproveResearchWorkload = async (
+  remarks: PointsAndRemarks
+) => {
+  const { data } = await axios.patch(
+    `research-workload/ovpaa-approve-workload`,
+    remarks
+  );
+
+  return { data };
+};
+
+export const OVPAAApproveExtensionWorkload = async (
+  remarks: PointsAndRemarks
+) => {
+  const { data } = await axios.patch(
+    `extension-workload/ovpaa-approve-workload`,
+    remarks
+  );
+
+  return { data };
+};
+
+export const OVPAAApproveStrategicFunctionWorkload = async (
+  remarks: PointsAndRemarks
+) => {
+  const { data } = await axios.patch(
+    `strategic-function-workload/ovpaa-approve-workload`,
     remarks
   );
 

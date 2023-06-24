@@ -17,12 +17,13 @@ type WorkloadProps = {
   setRwlPointsRemarks: (value: PointsAndRemarks[]) => void;
   setEwlPointsRemarks: (value: PointsAndRemarks[]) => void;
   setSfPointsRemarks: (value: PointsAndRemarks[]) => void;
+  rwlPointsRemarks?: PointsAndRemarks[];
 };
 
 export type PointsAndRemarks = {
   key: string;
   points: string;
-  remarks: string;
+  remarks?: string;
 };
 function RemarksWorkload({
   user,
@@ -45,6 +46,15 @@ function RemarksWorkload({
 
   const { user: userContext } = useContext(UserContext);
 
+  const [rwlPointsRemarksInitial, setRwlPointsRemarksInitial] =
+    useState<PointsAndRemarks[]>();
+    const [ewlPointsRemarksInitial, setEwlPointsRemarksInitial] =
+    useState<PointsAndRemarks[]>();
+    const [sfPointsRemarksInitial, setSfPointsRemarksInitial] =
+    useState<PointsAndRemarks[]>();
+    
+  
+
   useEffect(() => {
     (async () => {
       if (userContext.role !== null) {
@@ -65,6 +75,21 @@ function RemarksWorkload({
       }
     })();
   }, [user.id, userContext.role]);
+
+  useEffect(() => {
+    setRwlPointsRemarks(rwlPointsRemarksInitial!);
+    console.log(rwlPointsRemarksInitial);
+  }, [rwlPointsRemarksInitial]);
+
+  useEffect(() => {
+    setEwlPointsRemarks(ewlPointsRemarksInitial!);
+    console.log(ewlPointsRemarksInitial);
+  }, [ewlPointsRemarksInitial]);
+
+  useEffect(() => {
+    setSfPointsRemarks(sfPointsRemarksInitial!);
+    console.log(sfPointsRemarksInitial);
+  }, [sfPointsRemarksInitial]);
 
   return (
     <Container>
@@ -106,7 +131,6 @@ function RemarksWorkload({
               <WorkloadHeaderText style={{ marginRight: 103 }}>
                 Points
               </WorkloadHeaderText>
-              <WorkloadHeaderText>Remarks</WorkloadHeaderText>
             </div>
           </div>
         )}
@@ -125,7 +149,6 @@ function RemarksWorkload({
       ) : (
         teachingWorkloads?.map(workload => {
           let points = "";
-          let remarks = "";
           return (
             <>
               <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
@@ -178,9 +201,8 @@ function RemarksWorkload({
                       {userContext.role === "OVPAA" && (
                         <div
                           style={{
-                            width: 277,
+                            width: 170,
                             display: "flex",
-                            justifyContent: "space-between",
                             marginRight: 15
                           }}
                         >
@@ -192,50 +214,17 @@ function RemarksWorkload({
                               if (Number(points) > 0) {
                                 workload.remarks = {
                                   key: workload.id!,
-                                  points: points,
-                                  remarks: workload.remarks?.remarks!
+                                  points: points
                                 };
-                                if (
-                                  Number(workload.remarks.points) > 0 &&
-                                  workload.remarks.remarks.length > 0
-                                ) {
+                                if (Number(workload.remarks.points) > 0) {
                                   setTwlPointsRemarks(workload.remarks);
-                                  console.log(workload.remarks);
                                 } else {
                                   setTwlPointsRemarks(undefined);
                                 }
                               } else {
                                 workload.remarks = {
                                   key: workload.id!,
-                                  points: "",
-                                  remarks: workload.remarks?.remarks!
-                                };
-                              }
-                            }}
-                          />
-                          <InputRemarks
-                            onChange={e => {
-                              remarks = e.target.value;
-                              if (remarks.length > 0) {
-                                workload.remarks = {
-                                  key: workload.id!,
-                                  points: workload.remarks?.points!,
-                                  remarks: remarks
-                                };
-                                if (
-                                  Number(workload.remarks.points) > 0 &&
-                                  workload.remarks.remarks.length > 0
-                                ) {
-                                  setTwlPointsRemarks(workload.remarks);
-                                  console.log(workload.remarks);
-                                } else {
-                                  setTwlPointsRemarks(undefined);
-                                }
-                              } else {
-                                workload.remarks = {
-                                  key: workload.id!,
-                                  points: workload.remarks?.points!,
-                                  remarks: ""
+                                  points: ""
                                 };
                               }
                             }}
@@ -281,7 +270,7 @@ function RemarksWorkload({
       ) : (
         researchWorkloads?.map(workload => {
           let points = "";
-          let remarks = "";
+
           return (
             <>
               <WorkloadHeaderContainer>
@@ -353,9 +342,8 @@ function RemarksWorkload({
                       {userContext.role === "OVPAA" && (
                         <div
                           style={{
-                            width: 277,
+                            width: 170,
                             display: "flex",
-                            justifyContent: "space-between",
                             marginRight: 15
                           }}
                         >
@@ -365,80 +353,39 @@ function RemarksWorkload({
                             onChange={e => {
                               points = e.target.value;
                               if (Number(points) > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
+                                const hasData = rwlPointsRemarksInitial?.filter(
+                                  item => item.key === workload.rwlFilePath
                                 );
                                 if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setRwlPointsRemarks(workload.remarks!);
+                                  const filtered =
+                                    rwlPointsRemarksInitial?.filter(
+                                      item => item.key !== workload.rwlFilePath
+                                    );
+                                  setRwlPointsRemarksInitial(filtered);
+                                  if (Number(points) > 0) {
+                                    setRwlPointsRemarksInitial([
+                                      ...filtered!,
+                                      {
+                                        key: workload.rwlFilePath!,
+                                        points: points
+                                      }
+                                    ]);
                                   }
                                 } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setRwlPointsRemarks(workload.remarks!);
+                                  setRwlPointsRemarksInitial([
+                                    {
+                                      key: workload.rwlFilePath!,
+                                      points: points
+                                    }
+                                  ]);
                                 }
                               } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
+                                setRwlPointsRemarksInitial(
+                                  rwlPointsRemarksInitial?.filter(
+                                    item => item.key !== workload.rwlFilePath
+                                  )
                                 );
-                                setRwlPointsRemarks(workload.remarks!);
                               }
-                              console.log(workload.remarks);
-                            }}
-                          />
-                          <InputRemarks
-                            onChange={e => {
-                              remarks = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
-                                );
-                                if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setRwlPointsRemarks(workload.remarks!);
-                                  }
-                                } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setRwlPointsRemarks(workload.remarks!);
-                                }
-                              } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setRwlPointsRemarks(workload.remarks!);
-                              }
-                              console.log(workload.remarks);
                             }}
                           />
                         </div>
@@ -483,9 +430,8 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 277,
+                                width: 170,
                                 display: "flex",
-                                justifyContent: "space-between",
                                 marginRight: 15
                               }}
                             >
@@ -494,87 +440,42 @@ function RemarksWorkload({
                                 min={0}
                                 onChange={e => {
                                   points = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
+                                  if (Number(points) > 0) {
+                                    const hasData =
+                                      rwlPointsRemarksInitial?.filter(
+                                        item => item.key === attachment
                                       );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setRwlPointsRemarks(workload.remarks!);
+                                    if (hasData) {
+                                      const filtered =
+                                        rwlPointsRemarksInitial?.filter(
+                                          item => item.key !== attachment
+                                        );
+                                      setRwlPointsRemarksInitial(filtered);
+                                      if (Number(points) > 0) {
+                                        setRwlPointsRemarksInitial([
+                                          ...filtered!,
+                                          {
+                                            key: attachment,
+                                            points: points
+                                          }
+                                        ]);
                                       }
                                     } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setRwlPointsRemarks(workload.remarks!);
+                                      setRwlPointsRemarksInitial([
+                                        {
+                                          key: attachment,
+                                          points: points
+                                        }
+                                      ]);
                                     }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setRwlPointsRemarks(workload.remarks!);
                                   }
-                                  console.log(workload.remarks);
-                                }}
-                              />
-                              <InputRemarks
-                                onChange={e => {
-                                  remarks = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
-                                      );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setRwlPointsRemarks(workload.remarks!);
-                                      }
-                                    } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setRwlPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setRwlPointsRemarks(workload.remarks!);
-                                  }
-                                  console.log(workload.remarks);
+                                  // else {
+                                  //   rwlPointsRemarks = rwlPointsRemarks.filter(
+                                  //     item => item.key !== attachment
+                                  //   );
+                                  //   setRwlPointsRemarks(rwlPointsRemarks);
+                                  //   console.log(rwlPointsRemarks);
+                                  // }
                                 }}
                               />
                             </div>
@@ -618,9 +519,8 @@ function RemarksWorkload({
                       {userContext.role === "OVPAA" && (
                         <div
                           style={{
-                            width: 277,
+                            width: 170,
                             display: "flex",
-                            justifyContent: "space-between",
                             marginRight: 15
                           }}
                         >
@@ -629,81 +529,41 @@ function RemarksWorkload({
                             min={0}
                             onChange={e => {
                               points = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
+                              if (Number(points) > 0) {
+                                const hasData = rwlPointsRemarksInitial?.filter(
+                                  item => item.key === workload.rwlFilePath1
                                 );
                                 if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setRwlPointsRemarks(workload.remarks!);
+                                  const filtered =
+                                    rwlPointsRemarksInitial?.filter(
+                                      item => item.key !== workload.rwlFilePath1
+                                    );
+                                  setRwlPointsRemarksInitial(filtered);
+                                  if (Number(points) > 0) {
+                                    setRwlPointsRemarksInitial([
+                                      ...filtered!,
+                                      {
+                                        key: workload.rwlFilePath1!,
+                                        points: points
+                                      }
+                                    ]);
                                   }
                                 } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setRwlPointsRemarks(workload.remarks!);
+                                  setRwlPointsRemarksInitial([
+                                    {
+                                      key: workload.rwlFilePath1!,
+                                      points: points
+                                    }
+                                  ]);
                                 }
-                              } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setRwlPointsRemarks(workload.remarks!);
                               }
-                              console.log(workload.remarks);
-                            }}
-                          />
-                          <InputRemarks
-                            onChange={e => {
-                              remarks = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
-                                );
-                                if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setRwlPointsRemarks(workload.remarks!);
-                                  }
-                                } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setRwlPointsRemarks(workload.remarks!);
-                                }
-                              } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setRwlPointsRemarks(workload.remarks!);
-                              }
-                              console.log(workload.remarks);
+                              // else {
+                              //   rwlPointsRemarks = rwlPointsRemarks.filter(
+                              //     item => item.key !== workload.rwlFilePath1
+                              //   );
+                              //   setRwlPointsRemarks(rwlPointsRemarks);
+                              //   console.log(rwlPointsRemarks);
+                              // }
                             }}
                           />
                         </div>
@@ -745,7 +605,6 @@ function RemarksWorkload({
       ) : (
         extensionWorkloads?.map(workload => {
           let points = "";
-          let remarks = "";
           return (
             <>
               <WorkloadHeaderContainer>
@@ -815,9 +674,8 @@ function RemarksWorkload({
                       {userContext.role === "OVPAA" && (
                         <div
                           style={{
-                            width: 277,
+                            width: 170,
                             display: "flex",
-                            justifyContent: "space-between",
                             marginRight: 15
                           }}
                         >
@@ -826,81 +684,38 @@ function RemarksWorkload({
                             min={0}
                             onChange={e => {
                               points = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
+                              if (Number(points) > 0) {
+                                const hasData = ewlPointsRemarksInitial?.filter(
+                                  item =>
+                                    item.key ===
+                                    workload.extensionActivityFilePath
                                 );
                                 if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
+                                  const filtered = ewlPointsRemarksInitial?.filter(
+                                    item =>
+                                      item.key !==
+                                      workload.extensionActivityFilePath
                                   );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setEwlPointsRemarks(workload.remarks!);
+                                  setEwlPointsRemarksInitial(filtered);
+                                  if (Number(points) > 0) {
+                                    setEwlPointsRemarksInitial([...filtered!, {
+                                      key: workload.extensionActivityFilePath!,
+                                      points: points
+                                    }]);
                                   }
                                 } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setEwlPointsRemarks(workload.remarks!);
+                                  setEwlPointsRemarksInitial([{
+                                    key: workload.extensionActivityFilePath!,
+                                    points: points
+                                  }]);
                                 }
                               } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setEwlPointsRemarks(workload.remarks!);
+                                setEwlPointsRemarksInitial(ewlPointsRemarksInitial?.filter(
+                                  item =>
+                                    item.key !==
+                                    workload.extensionActivityFilePath
+                                ))
                               }
-                              console.log(workload.remarks);
-                            }}
-                          />
-                          <InputRemarks
-                            onChange={e => {
-                              remarks = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
-                                );
-                                if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setEwlPointsRemarks(workload.remarks!);
-                                  }
-                                } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setEwlPointsRemarks(workload.remarks!);
-                                }
-                              } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setEwlPointsRemarks(workload.remarks!);
-                              }
-                              console.log(workload.remarks);
                             }}
                           />
                         </div>
@@ -944,9 +759,8 @@ function RemarksWorkload({
                         {userContext.role === "OVPAA" && (
                           <div
                             style={{
-                              width: 277,
+                              width: 170,
                               display: "flex",
-                              justifyContent: "space-between",
                               marginRight: 15
                             }}
                           >
@@ -955,82 +769,38 @@ function RemarksWorkload({
                               min={0}
                               onChange={e => {
                                 points = e.target.value;
-                                if (Number(points) > 0 && remarks.length > 0) {
-                                  const hasData = workload.remarks?.filter(
-                                    item => item.key === workload.id
+                                if (Number(points) > 0) {
+                                  const hasData = ewlPointsRemarksInitial?.filter(
+                                    item =>
+                                      item.key ===
+                                      filePath
                                   );
                                   if (hasData) {
-                                    const filtered = workload.remarks?.filter(
-                                      item => item.key !== workload.id
+                                    const filtered = ewlPointsRemarksInitial?.filter(
+                                      item =>
+                                        item.key !==
+                                        filePath
                                     );
-                                    workload.remarks = filtered;
-                                    if (
-                                      Number(points) > 0 &&
-                                      remarks.length > 0
-                                    ) {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setEwlPointsRemarks(workload.remarks!);
+                                    setEwlPointsRemarksInitial(filtered);
+                                    if (Number(points) > 0) {
+                                      setEwlPointsRemarksInitial([...filtered!, {
+                                        key: filePath,
+                                        points: points
+                                      }]);
                                     }
                                   } else {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setEwlPointsRemarks(workload.remarks!);
+                                    setEwlPointsRemarksInitial([{
+                                      key: filePath,
+                                      points: points
+                                    }]);
                                   }
                                 } else {
-                                  workload.remarks = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  setEwlPointsRemarks(workload.remarks!);
+                                  setEwlPointsRemarksInitial(ewlPointsRemarksInitial?.filter(
+                                    item =>
+                                      item.key !==
+                                      filePath
+                                  ))
                                 }
-                                console.log(workload.remarks);
-                              }}
-                            />
-                            <InputRemarks
-                              onChange={e => {
-                                remarks = e.target.value;
-                                if (Number(points) > 0 && remarks.length > 0) {
-                                  const hasData = workload.remarks?.filter(
-                                    item => item.key === workload.id
-                                  );
-                                  if (hasData) {
-                                    const filtered = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    workload.remarks = filtered;
-                                    if (
-                                      Number(points) > 0 &&
-                                      remarks.length > 0
-                                    ) {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setEwlPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setEwlPointsRemarks(workload.remarks!);
-                                  }
-                                } else {
-                                  workload.remarks = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-
-                                  setEwlPointsRemarks(workload.remarks!);
-                                }
-                                console.log(workload.remarks);
                               }}
                             />
                           </div>
@@ -1074,9 +844,8 @@ function RemarksWorkload({
                       {userContext.role === "OVPAA" && (
                         <div
                           style={{
-                            width: 277,
+                            width: 170,
                             display: "flex",
-                            justifyContent: "space-between",
                             marginRight: 15
                           }}
                         >
@@ -1085,81 +854,38 @@ function RemarksWorkload({
                             min={0}
                             onChange={e => {
                               points = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
+                              if (Number(points) > 0) {
+                                const hasData = ewlPointsRemarksInitial?.filter(
+                                  item =>
+                                    item.key ===
+                                    workload.summaryOfHoursFilePath
                                 );
                                 if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
+                                  const filtered = ewlPointsRemarksInitial?.filter(
+                                    item =>
+                                      item.key !==
+                                      workload.summaryOfHoursFilePath
                                   );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setEwlPointsRemarks(workload.remarks!);
+                                  setEwlPointsRemarksInitial(filtered);
+                                  if (Number(points) > 0) {
+                                    setEwlPointsRemarksInitial([...filtered!, {
+                                      key: workload.summaryOfHoursFilePath!,
+                                      points: points
+                                    }]);
                                   }
                                 } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setEwlPointsRemarks(workload.remarks!);
+                                  setEwlPointsRemarksInitial([{
+                                    key: workload.summaryOfHoursFilePath!,
+                                    points: points
+                                  }]);
                                 }
                               } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setEwlPointsRemarks(workload.remarks!);
+                                setEwlPointsRemarksInitial(ewlPointsRemarksInitial?.filter(
+                                  item =>
+                                    item.key !==
+                                    workload.summaryOfHoursFilePath
+                                ))
                               }
-                              console.log(workload.remarks);
-                            }}
-                          />
-                          <InputRemarks
-                            onChange={e => {
-                              remarks = e.target.value;
-                              if (Number(points) > 0 && remarks.length > 0) {
-                                const hasData = workload.remarks?.filter(
-                                  item => item.key === workload.id
-                                );
-                                if (hasData) {
-                                  const filtered = workload.remarks?.filter(
-                                    item => item.key !== workload.id
-                                  );
-                                  workload.remarks = filtered;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    workload.remarks?.push({
-                                      key: workload.id!,
-                                      points: points,
-                                      remarks: remarks
-                                    });
-                                    setEwlPointsRemarks(workload.remarks!);
-                                  }
-                                } else {
-                                  workload.remarks?.push({
-                                    key: workload.id!,
-                                    points: points,
-                                    remarks: remarks
-                                  });
-                                  setEwlPointsRemarks(workload.remarks!);
-                                }
-                              } else {
-                                workload.remarks = workload.remarks?.filter(
-                                  item => item.key !== workload.id
-                                );
-                                setEwlPointsRemarks(workload.remarks!);
-                              }
-                              console.log(workload.remarks);
                             }}
                           />
                         </div>
@@ -1201,7 +927,6 @@ function RemarksWorkload({
       ) : (
         strategicFunctionWorkloads?.map(workload => {
           let points = "";
-          let remarks = "";
           return (
             <>
               <WorkloadHeaderContainer>
@@ -1307,9 +1032,8 @@ function RemarksWorkload({
                                 {userContext.role === "OVPAA" && (
                                   <div
                                     style={{
-                                      width: 277,
+                                      width: 170,
                                       display: "flex",
-                                      justifyContent: "space-between",
                                       marginRight: 15
                                     }}
                                   >
@@ -1318,101 +1042,35 @@ function RemarksWorkload({
                                       min={0}
                                       onChange={e => {
                                         points = e.target.value;
-                                        if (
-                                          Number(points) > 0 &&
-                                          remarks.length > 0
-                                        ) {
+                                        if (Number(points) > 0) {
                                           const hasData =
-                                            workload.remarks?.filter(
-                                              item => item.key === workload.id
+                                            sfPointsRemarksInitial?.filter(
+                                              item => item.key === path
                                             );
                                           if (hasData) {
                                             const filtered =
-                                              workload.remarks?.filter(
-                                                item => item.key !== workload.id
+                                            sfPointsRemarksInitial?.filter(
+                                                item => item.key !== path
                                               );
-                                            workload.remarks = filtered;
-                                            if (
-                                              Number(points) > 0 &&
-                                              remarks.length > 0
-                                            ) {
-                                              workload.remarks?.push({
-                                                key: workload.id!,
-                                                points: points,
-                                                remarks: remarks
-                                              });
-                                              setSfPointsRemarks(
-                                                workload.remarks!
-                                              );
+                                            setSfPointsRemarksInitial(filtered);
+                                            if (Number(points) > 0) {
+                                              setSfPointsRemarksInitial([...filtered!, {
+                                                key: path,
+                                                points: points
+                                              }]);
                                             }
                                           } else {
-                                            workload.remarks?.push({
-                                              key: workload.id!,
-                                              points: points,
-                                              remarks: remarks
-                                            });
-                                            setSfPointsRemarks(
-                                              workload.remarks!
-                                            );
+                                            setSfPointsRemarksInitial([{
+                                              key: path,
+                                              points: points
+                                            }]);
                                           }
                                         } else {
-                                          workload.remarks =
-                                            workload.remarks?.filter(
-                                              item => item.key !== workload.id
-                                            );
-                                          setSfPointsRemarks(workload.remarks!);
+                                          setSfPointsRemarksInitial(
+                                          sfPointsRemarksInitial?.filter(
+                                              item => item.key !== path
+                                            ))
                                         }
-                                        console.log(workload.remarks);
-                                      }}
-                                    />
-                                    <InputRemarks
-                                      onChange={e => {
-                                        remarks = e.target.value;
-                                        if (
-                                          Number(points) > 0 &&
-                                          remarks.length > 0
-                                        ) {
-                                          const hasData =
-                                            workload.remarks?.filter(
-                                              item => item.key === workload.id
-                                            );
-                                          if (hasData) {
-                                            const filtered =
-                                              workload.remarks?.filter(
-                                                item => item.key !== workload.id
-                                              );
-                                            workload.remarks = filtered;
-                                            if (
-                                              Number(points) > 0 &&
-                                              remarks.length > 0
-                                            ) {
-                                              workload.remarks?.push({
-                                                key: workload.id!,
-                                                points: points,
-                                                remarks: remarks
-                                              });
-                                              setSfPointsRemarks(
-                                                workload.remarks!
-                                              );
-                                            }
-                                          } else {
-                                            workload.remarks?.push({
-                                              key: workload.id!,
-                                              points: points,
-                                              remarks: remarks
-                                            });
-                                            setSfPointsRemarks(
-                                              workload.remarks!
-                                            );
-                                          }
-                                        } else {
-                                          workload.remarks =
-                                            workload.remarks?.filter(
-                                              item => item.key !== workload.id
-                                            );
-                                          setSfPointsRemarks(workload.remarks!);
-                                        }
-                                        console.log(workload.remarks);
                                       }}
                                     />
                                   </div>
@@ -1469,9 +1127,8 @@ function RemarksWorkload({
                                 {userContext.role === "OVPAA" && (
                                   <div
                                     style={{
-                                      width: 277,
+                                      width: 170,
                                       display: "flex",
-                                      justifyContent: "space-between",
                                       marginRight: 15
                                     }}
                                   >
@@ -1480,101 +1137,35 @@ function RemarksWorkload({
                                       min={0}
                                       onChange={e => {
                                         points = e.target.value;
-                                        if (
-                                          Number(points) > 0 &&
-                                          remarks.length > 0
-                                        ) {
+                                        if (Number(points) > 0) {
                                           const hasData =
-                                            workload.remarks?.filter(
-                                              item => item.key === workload.id
+                                            sfPointsRemarksInitial?.filter(
+                                              item => item.key === path
                                             );
                                           if (hasData) {
                                             const filtered =
-                                              workload.remarks?.filter(
-                                                item => item.key !== workload.id
+                                            sfPointsRemarksInitial?.filter(
+                                                item => item.key !== path
                                               );
-                                            workload.remarks = filtered;
-                                            if (
-                                              Number(points) > 0 &&
-                                              remarks.length > 0
-                                            ) {
-                                              workload.remarks?.push({
-                                                key: workload.id!,
-                                                points: points,
-                                                remarks: remarks
-                                              });
-                                              setSfPointsRemarks(
-                                                workload.remarks!
-                                              );
+                                            setSfPointsRemarksInitial(filtered);
+                                            if (Number(points) > 0) {
+                                              setSfPointsRemarksInitial([...filtered!, {
+                                                key: path,
+                                                points: points
+                                              }]);
                                             }
                                           } else {
-                                            workload.remarks?.push({
-                                              key: workload.id!,
-                                              points: points,
-                                              remarks: remarks
-                                            });
-                                            setSfPointsRemarks(
-                                              workload.remarks!
-                                            );
+                                            setSfPointsRemarksInitial([{
+                                              key: path,
+                                              points: points
+                                            }]);
                                           }
                                         } else {
-                                          workload.remarks =
-                                            workload.remarks?.filter(
-                                              item => item.key !== workload.id
-                                            );
-                                          setSfPointsRemarks(workload.remarks!);
+                                          setSfPointsRemarksInitial(
+                                          sfPointsRemarksInitial?.filter(
+                                              item => item.key !== path
+                                            ))
                                         }
-                                        console.log(workload.remarks);
-                                      }}
-                                    />
-                                    <InputRemarks
-                                      onChange={e => {
-                                        remarks = e.target.value;
-                                        if (
-                                          Number(points) > 0 &&
-                                          remarks.length > 0
-                                        ) {
-                                          const hasData =
-                                            workload.remarks?.filter(
-                                              item => item.key === workload.id
-                                            );
-                                          if (hasData) {
-                                            const filtered =
-                                              workload.remarks?.filter(
-                                                item => item.key !== workload.id
-                                              );
-                                            workload.remarks = filtered;
-                                            if (
-                                              Number(points) > 0 &&
-                                              remarks.length > 0
-                                            ) {
-                                              workload.remarks?.push({
-                                                key: workload.id!,
-                                                points: points,
-                                                remarks: remarks
-                                              });
-                                              setSfPointsRemarks(
-                                                workload.remarks!
-                                              );
-                                            }
-                                          } else {
-                                            workload.remarks?.push({
-                                              key: workload.id!,
-                                              points: points,
-                                              remarks: remarks
-                                            });
-                                            setSfPointsRemarks(
-                                              workload.remarks!
-                                            );
-                                          }
-                                        } else {
-                                          workload.remarks =
-                                            workload.remarks?.filter(
-                                              item => item.key !== workload.id
-                                            );
-                                          setSfPointsRemarks(workload.remarks!);
-                                        }
-                                        console.log(workload.remarks);
                                       }}
                                     />
                                   </div>
@@ -1631,9 +1222,8 @@ function RemarksWorkload({
                                 {userContext.role === "OVPAA" && (
                                   <div
                                     style={{
-                                      width: 277,
+                                      width: 170,
                                       display: "flex",
-                                      justifyContent: "space-between",
                                       marginRight: 15
                                     }}
                                   >
@@ -1642,101 +1232,35 @@ function RemarksWorkload({
                                       min={0}
                                       onChange={e => {
                                         points = e.target.value;
-                                        if (
-                                          Number(points) > 0 &&
-                                          remarks.length > 0
-                                        ) {
+                                        if (Number(points) > 0) {
                                           const hasData =
-                                            workload.remarks?.filter(
-                                              item => item.key === workload.id
+                                            sfPointsRemarksInitial?.filter(
+                                              item => item.key === path
                                             );
                                           if (hasData) {
                                             const filtered =
-                                              workload.remarks?.filter(
-                                                item => item.key !== workload.id
+                                            sfPointsRemarksInitial?.filter(
+                                                item => item.key !== path
                                               );
-                                            workload.remarks = filtered;
-                                            if (
-                                              Number(points) > 0 &&
-                                              remarks.length > 0
-                                            ) {
-                                              workload.remarks?.push({
-                                                key: workload.id!,
-                                                points: points,
-                                                remarks: remarks
-                                              });
-                                              setSfPointsRemarks(
-                                                workload.remarks!
-                                              );
+                                            setSfPointsRemarksInitial(filtered);
+                                            if (Number(points) > 0) {
+                                              setSfPointsRemarksInitial([...filtered!, {
+                                                key: path,
+                                                points: points
+                                              }]);
                                             }
                                           } else {
-                                            workload.remarks?.push({
-                                              key: workload.id!,
-                                              points: points,
-                                              remarks: remarks
-                                            });
-                                            setSfPointsRemarks(
-                                              workload.remarks!
-                                            );
+                                            setSfPointsRemarksInitial([{
+                                              key: path,
+                                              points: points
+                                            }]);
                                           }
                                         } else {
-                                          workload.remarks =
-                                            workload.remarks?.filter(
-                                              item => item.key !== workload.id
-                                            );
-                                          setSfPointsRemarks(workload.remarks!);
+                                          setSfPointsRemarksInitial(
+                                          sfPointsRemarksInitial?.filter(
+                                              item => item.key !== path
+                                            ))
                                         }
-                                        console.log(workload.remarks);
-                                      }}
-                                    />
-                                    <InputRemarks
-                                      onChange={e => {
-                                        remarks = e.target.value;
-                                        if (
-                                          Number(points) > 0 &&
-                                          remarks.length > 0
-                                        ) {
-                                          const hasData =
-                                            workload.remarks?.filter(
-                                              item => item.key === workload.id
-                                            );
-                                          if (hasData) {
-                                            const filtered =
-                                              workload.remarks?.filter(
-                                                item => item.key !== workload.id
-                                              );
-                                            workload.remarks = filtered;
-                                            if (
-                                              Number(points) > 0 &&
-                                              remarks.length > 0
-                                            ) {
-                                              workload.remarks?.push({
-                                                key: workload.id!,
-                                                points: points,
-                                                remarks: remarks
-                                              });
-                                              setSfPointsRemarks(
-                                                workload.remarks!
-                                              );
-                                            }
-                                          } else {
-                                            workload.remarks?.push({
-                                              key: workload.id!,
-                                              points: points,
-                                              remarks: remarks
-                                            });
-                                            setSfPointsRemarks(
-                                              workload.remarks!
-                                            );
-                                          }
-                                        } else {
-                                          workload.remarks =
-                                            workload.remarks?.filter(
-                                              item => item.key !== workload.id
-                                            );
-                                          setSfPointsRemarks(workload.remarks!);
-                                        }
-                                        console.log(workload.remarks);
                                       }}
                                     />
                                   </div>
@@ -1793,9 +1317,8 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 277,
+                                width: 170,
                                 display: "flex",
-                                justifyContent: "space-between",
                                 marginRight: 15
                               }}
                             >
@@ -1804,87 +1327,35 @@ function RemarksWorkload({
                                 min={0}
                                 onChange={e => {
                                   points = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
+                                  if (Number(points) > 0) {
+                                    const hasData =
+                                      sfPointsRemarksInitial?.filter(
+                                        item => item.key === workload.designationAsSportTrainorAcademicFilePath
                                       );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
+                                    if (hasData) {
+                                      const filtered =
+                                      sfPointsRemarksInitial?.filter(
+                                          item => item.key !== workload.designationAsSportTrainorAcademicFilePath
+                                        );
+                                      setSfPointsRemarksInitial(filtered);
+                                      if (Number(points) > 0) {
+                                        setSfPointsRemarksInitial([...filtered!, {
+                                          key: workload.designationAsSportTrainorAcademicFilePath!,
+                                          points: points
+                                        }]);
                                       }
                                     } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
+                                      setSfPointsRemarksInitial([{
+                                        key: workload.designationAsSportTrainorAcademicFilePath!,
+                                        points: points
+                                      }]);
                                     }
                                   } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
+                                    setSfPointsRemarksInitial(
+                                    sfPointsRemarksInitial?.filter(
+                                        item => item.key !== workload.designationAsSportTrainorAcademicFilePath
+                                      ))
                                   }
-                                  console.log(workload.remarks);
-                                }}
-                              />
-                              <InputRemarks
-                                onChange={e => {
-                                  remarks = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
-                                      );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
-                                      }
-                                    } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
-                                  }
-                                  console.log(workload.remarks);
                                 }}
                               />
                             </div>
@@ -1929,9 +1400,8 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 277,
+                                width: 170,
                                 display: "flex",
-                                justifyContent: "space-between",
                                 marginRight: 15
                               }}
                             >
@@ -1940,86 +1410,35 @@ function RemarksWorkload({
                                 min={0}
                                 onChange={e => {
                                   points = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
+                                  if (Number(points) > 0) {
+                                    const hasData =
+                                      sfPointsRemarksInitial?.filter(
+                                        item => item.key === workload.designationAsSportTrainorAcademicFilePath1
                                       );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
+                                    if (hasData) {
+                                      const filtered =
+                                      sfPointsRemarksInitial?.filter(
+                                          item => item.key !== workload.designationAsSportTrainorAcademicFilePath1
+                                        );
+                                      setSfPointsRemarksInitial(filtered);
+                                      if (Number(points) > 0) {
+                                        setSfPointsRemarksInitial([...filtered!, {
+                                          key: workload.designationAsSportTrainorAcademicFilePath1!,
+                                          points: points
+                                        }]);
                                       }
                                     } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
+                                      setSfPointsRemarksInitial([{
+                                        key: workload.designationAsSportTrainorAcademicFilePath1!,
+                                        points: points
+                                      }]);
                                     }
                                   } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
+                                    setSfPointsRemarksInitial(
+                                    sfPointsRemarksInitial?.filter(
+                                        item => item.key !== workload.designationAsSportTrainorAcademicFilePath1
+                                      ))
                                   }
-                                  console.log(workload.remarks);
-                                }}
-                              />
-                              <InputRemarks
-                                onChange={e => {
-                                  remarks = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
-                                      );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
-                                      }
-                                    } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
-                                  }
-                                  console.log(workload.remarks);
                                 }}
                               />
                             </div>
@@ -2036,7 +1455,7 @@ function RemarksWorkload({
                       </ThinText>
                     </ColumnContainer>
                     <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.designationAsMemberOfAdhoc && (
+                      {workload.memberAdhocFilePath && (
                         <div
                           style={{
                             display: "flex",
@@ -2046,7 +1465,7 @@ function RemarksWorkload({
                           }}
                         >
                           <a
-                            href={workload.designationAsMemberOfAdhoc}
+                            href={workload.memberAdhocFilePath}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -2072,9 +1491,8 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 277,
+                                width: 170,
                                 display: "flex",
-                                justifyContent: "space-between",
                                 marginRight: 15
                               }}
                             >
@@ -2083,87 +1501,35 @@ function RemarksWorkload({
                                 min={0}
                                 onChange={e => {
                                   points = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
+                                  if (Number(points) > 0) {
+                                    const hasData =
+                                      sfPointsRemarksInitial?.filter(
+                                        item => item.key === workload.memberAdhocFilePath
                                       );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
+                                    if (hasData) {
+                                      const filtered =
+                                      sfPointsRemarksInitial?.filter(
+                                          item => item.key !== workload.memberAdhocFilePath
+                                        );
+                                      setSfPointsRemarksInitial(filtered);
+                                      if (Number(points) > 0) {
+                                        setSfPointsRemarksInitial([...filtered!, {
+                                          key: workload.memberAdhocFilePath!,
+                                          points: points
+                                        }]);
                                       }
                                     } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
+                                      setSfPointsRemarksInitial([{
+                                        key: workload.memberAdhocFilePath!,
+                                        points: points
+                                      }]);
                                     }
                                   } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
+                                    setSfPointsRemarksInitial(
+                                    sfPointsRemarksInitial?.filter(
+                                        item => item.key !== workload.memberAdhocFilePath
+                                      ))
                                   }
-                                  console.log(workload.remarks);
-                                }}
-                              />
-                              <InputRemarks
-                                onChange={e => {
-                                  remarks = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
-                                      );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
-                                      }
-                                    } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
-                                  }
-                                  console.log(workload.remarks);
                                 }}
                               />
                             </div>
@@ -2206,9 +1572,8 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 277,
+                                width: 170,
                                 display: "flex",
-                                justifyContent: "space-between",
                                 marginRight: 15
                               }}
                             >
@@ -2217,87 +1582,35 @@ function RemarksWorkload({
                                 min={0}
                                 onChange={e => {
                                   points = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
+                                  if (Number(points) > 0) {
+                                    const hasData =
+                                      sfPointsRemarksInitial?.filter(
+                                        item => item.key === workload.memberAdhocFilePath1
                                       );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
+                                    if (hasData) {
+                                      const filtered =
+                                      sfPointsRemarksInitial?.filter(
+                                          item => item.key !== workload.memberAdhocFilePath1
+                                        );
+                                      setSfPointsRemarksInitial(filtered);
+                                      if (Number(points) > 0) {
+                                        setSfPointsRemarksInitial([...filtered!, {
+                                          key: workload.memberAdhocFilePath1!,
+                                          points: points
+                                        }]);
                                       }
                                     } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
+                                      setSfPointsRemarksInitial([{
+                                        key: workload.memberAdhocFilePath1!,
+                                        points: points
+                                      }]);
                                     }
                                   } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
+                                    setSfPointsRemarksInitial(
+                                    sfPointsRemarksInitial?.filter(
+                                        item => item.key !== workload.memberAdhocFilePath1
+                                      ))
                                   }
-                                  console.log(workload.remarks);
-                                }}
-                              />
-                              <InputRemarks
-                                onChange={e => {
-                                  remarks = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
-                                      );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
-                                      }
-                                    } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
-                                  }
-                                  console.log(workload.remarks);
                                 }}
                               />
                             </div>
@@ -2349,9 +1662,8 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 277,
+                                width: 170,
                                 display: "flex",
-                                justifyContent: "space-between",
                                 marginRight: 15
                               }}
                             >
@@ -2360,87 +1672,35 @@ function RemarksWorkload({
                                 min={0}
                                 onChange={e => {
                                   points = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
+                                  if (Number(points) > 0) {
+                                    const hasData =
+                                      sfPointsRemarksInitial?.filter(
+                                        item => item.key === workload.academicAdviseesFilePath
                                       );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
+                                    if (hasData) {
+                                      const filtered =
+                                      sfPointsRemarksInitial?.filter(
+                                          item => item.key !== workload.academicAdviseesFilePath
+                                        );
+                                      setSfPointsRemarksInitial(filtered);
+                                      if (Number(points) > 0) {
+                                        setSfPointsRemarksInitial([...filtered!, {
+                                          key: workload.academicAdviseesFilePath!,
+                                          points: points
+                                        }]);
                                       }
                                     } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
+                                      setSfPointsRemarksInitial([{
+                                        key: workload.academicAdviseesFilePath!,
+                                        points: points
+                                      }]);
                                     }
                                   } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
+                                    setSfPointsRemarksInitial(
+                                    sfPointsRemarksInitial?.filter(
+                                        item => item.key !== workload.academicAdviseesFilePath
+                                      ))
                                   }
-                                  console.log(workload.remarks);
-                                }}
-                              />
-                              <InputRemarks
-                                onChange={e => {
-                                  remarks = e.target.value;
-                                  if (
-                                    Number(points) > 0 &&
-                                    remarks.length > 0
-                                  ) {
-                                    const hasData = workload.remarks?.filter(
-                                      item => item.key === workload.id
-                                    );
-                                    if (hasData) {
-                                      const filtered = workload.remarks?.filter(
-                                        item => item.key !== workload.id
-                                      );
-                                      workload.remarks = filtered;
-                                      if (
-                                        Number(points) > 0 &&
-                                        remarks.length > 0
-                                      ) {
-                                        workload.remarks?.push({
-                                          key: workload.id!,
-                                          points: points,
-                                          remarks: remarks
-                                        });
-                                        setSfPointsRemarks(workload.remarks!);
-                                      }
-                                    } else {
-                                      workload.remarks?.push({
-                                        key: workload.id!,
-                                        points: points,
-                                        remarks: remarks
-                                      });
-                                      setSfPointsRemarks(workload.remarks!);
-                                    }
-                                  } else {
-                                    workload.remarks = workload.remarks?.filter(
-                                      item => item.key !== workload.id
-                                    );
-                                    setSfPointsRemarks(workload.remarks!);
-                                  }
-                                  console.log(workload.remarks);
                                 }}
                               />
                             </div>
@@ -2471,13 +1731,12 @@ function RemarksWorkload({
       {(teachingWorkloads ||
         researchWorkloads ||
         extensionWorkloads ||
-        strategicFunctionWorkloads) &&
-        userContext.role !== "OVPAA" && (
-          <div style={{ display: "flex", marginLeft: 20 }}>
-            <BoldText>Remarks: </BoldText>
-            <Remarks onChange={e => setRemarks(e.target.value)} />
-          </div>
-        )}
+        strategicFunctionWorkloads) && (
+        <div style={{ display: "flex", marginLeft: 20 }}>
+          <BoldText>Remarks: </BoldText>
+          <Remarks onChange={e => setRemarks(e.target.value)} />
+        </div>
+      )}
     </Container>
   );
 }
@@ -2544,11 +1803,6 @@ const ParentLevelContainer = styled.div`
 
 const InputPoints = styled.input`
   width: 40px;
-`;
-
-const InputRemarks = styled.input`
-  width: 150px,
-  margin-left: 50px
 `;
 
 const Remarks = styled.textarea`

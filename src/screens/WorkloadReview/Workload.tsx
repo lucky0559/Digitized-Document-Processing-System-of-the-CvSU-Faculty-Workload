@@ -10,6 +10,9 @@ import {
   ApproveResearchWorkload,
   ApproveStrategicFunctionWorkload,
   ApproveTeachingWorkload,
+  OVPAAApproveExtensionWorkload,
+  OVPAAApproveResearchWorkload,
+  OVPAAApproveStrategicFunctionWorkload,
   OVPAAApproveTeachingWorkload,
   SendRemarks,
   getAllPendingWorkloadByIdAndCurrentProcessRole
@@ -99,7 +102,7 @@ function Workload({
         reviewingId,
         user?.role!
       );
-      if (teachingWorkloads) {
+      if (teachingWorkloads.length > 0) {
         if (
           !isEmailSent &&
           remarks &&
@@ -109,19 +112,19 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         } else if (user?.role === "OVPAA") {
+          let modified = twlPointsRemarks;
+          if (modified != undefined) {
+            modified.remarks = remarks;
+            setTwlPointsRemarks(modified);
+          }
           await OVPAAApproveTeachingWorkload(twlPointsRemarks!);
-          setReviewingId("");
-          setIsDataLoading(true);
-          setIsSubmitting(false);
-          setIsReviewing(false);
-          return;
         }
         for (let i = 0; teachingWorkloads.length > i; i++) {
           isEmailSent = true;
           await ApproveTeachingWorkload(teachingWorkloads[i].id);
         }
       }
-      if (researchWorkloads) {
+      if (researchWorkloads.length > 0) {
         if (
           !isEmailSent &&
           remarks &&
@@ -134,12 +137,16 @@ function Workload({
             await ApproveResearchWorkload(researchWorkloads[i].id);
           }
         } else if (user?.role === "OVPAA") {
+          let modified = rwlPointsRemarks;
           for (let i = 0; researchWorkloads.length > i; i++) {
-            await OVPAAApproveTeachingWorkload(rwlPointsRemarks?.[i]!);
+            modified![i].key = researchWorkloads[i].id;
+            modified![i].remarks = remarks;
+            setRwlPointsRemarks(modified);
+            await OVPAAApproveResearchWorkload(rwlPointsRemarks?.[i]!);
           }
         }
       }
-      if (extensionWorkloads) {
+      if (extensionWorkloads.length > 0) {
         if (
           !isEmailSent &&
           remarks &&
@@ -152,12 +159,17 @@ function Workload({
             await ApproveExtensionWorkload(extensionWorkloads[i].id);
           }
         } else if (user?.role === "OVPAA") {
+          let modified = ewlPointsRemarks;
           for (let i = 0; extensionWorkloads.length > i; i++) {
-            await OVPAAApproveTeachingWorkload(ewlPointsRemarks?.[i]!);
+            if (modified != undefined) {
+              modified[i].remarks = remarks;
+              setEwlPointsRemarks(modified);
+            }
+            await OVPAAApproveExtensionWorkload(ewlPointsRemarks?.[i]!);
           }
         }
       }
-      if (strategicFunctionWorkloads) {
+      if (strategicFunctionWorkloads.length > 0) {
         if (
           !isEmailSent &&
           remarks &&
@@ -172,8 +184,13 @@ function Workload({
             );
           }
         } else if (user?.role === "OVPAA") {
+          let modified = sfPointsRemarks;
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
-            await OVPAAApproveTeachingWorkload(sfPointsRemarks?.[i]!);
+            if (modified != undefined) {
+              modified[i].remarks = remarks;
+              setSfPointsRemarks(modified);
+            }
+            await OVPAAApproveStrategicFunctionWorkload(sfPointsRemarks?.[i]!);
           }
         }
       }
@@ -197,6 +214,7 @@ function Workload({
             setRwlPointsRemarks={setRwlPointsRemarks}
             setEwlPointsRemarks={setEwlPointsRemarks}
             setSfPointsRemarks={setSfPointsRemarks}
+            rwlPointsRemarks={rwlPointsRemarks}
           />
           <div
             style={{
@@ -207,11 +225,6 @@ function Workload({
           >
             <FormButton text="Back" onClicked={onCloseReviewScreen} />
             <div style={{ marginRight: 100 }}>
-              {/* <FormButton
-                text="Disapprove"
-                onClicked={onDisapprove}
-                isSubmitting={isSubmitting}
-              /> */}
               <FormButton
                 text="Approve"
                 onClicked={onApprove}
