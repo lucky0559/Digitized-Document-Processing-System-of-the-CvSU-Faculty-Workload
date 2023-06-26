@@ -183,6 +183,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     if (designationStudy !== researchWorkLoad?.designationStudy) {
       setResearchWorkLoad({
         ...researchWorkLoad,
+        typeOfStudy: typeOfStudy,
         designationStudy: designationStudyDisplay
       });
     }
@@ -212,6 +213,13 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     });
   }, [rwlFile]);
 
+  useEffect(() => {
+    setResearchWorkLoad({
+      ...researchWorkLoad,
+      rwlFile1
+    });
+  }, [rwlFile1]);
+
   const researchWorkLoadHandler2 = () => {
     if (fundGenerated) {
       setResearchWorkLoad({
@@ -236,12 +244,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const rwlFile1Handler = (value?: File) => {
     setRwlFile1(value);
   };
-  useEffect(() => {
-    setResearchWorkLoad({
-      ...researchWorkLoad,
-      rwlFile1
-    });
-  }, [rwlFile1]);
 
   useEffect(() => {
     if (fundGeneratedDisplay !== researchWorkLoad?.fundGenerated) {
@@ -274,7 +276,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         study4?.file!
       ]
     });
-    if (researchWorkLoad?.fundingOfStudy !== "Cvsu Funded") {
+    if (researchWorkLoad?.fundingOfStudy !== "CvSU Funded") {
       researchWorkLoad!.typeOfStudy = undefined;
       researchWorkLoad!.designationStudy = undefined;
       researchWorkLoad!.rwlFile = undefined;
@@ -340,7 +342,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           actions.setHasPendingStrategicWorkload(
             strategicFunctionWorkloads.length > 0
           );
-          console.log("hey menu");
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
@@ -387,7 +388,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           actions.setHasPendingStrategicWorkload(
             strategicFunctionWorkloads.length > 0
           );
-          console.log("hey menu");
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
@@ -537,6 +537,13 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   }, [designationStudy, rwlFile, fundGenerated]);
 
   useEffect(() => {
+    if (fundGenerated && rwlFile1) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        fundGenerated,
+        rwlFile1
+      });
+    }
     if (fundGenerated === "Above 1,000,000.00" && rwlFile1) {
       setFundGeneratedPoints(3);
     } else if (fundGenerated === "500,001.00 - 1,000,000.00" && rwlFile1) {

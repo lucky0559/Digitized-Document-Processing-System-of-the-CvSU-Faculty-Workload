@@ -364,7 +364,7 @@ export default function RegisterScreen({
               {isRegisterSuccess && (
                 <ErrorMessageContainer>
                   <SuccessMessageText>
-                    Registration Successfully, Please check your email for the
+                    Registration successful. Please check your email for the
                     verification link to proceed.
                   </SuccessMessageText>
                 </ErrorMessageContainer>

@@ -87,7 +87,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
         0
       );
       setOvpaaTotalSfPoints(total || 0);
-      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
       setOvpaaRemarks(allStrategicFunctionWorkloads?.[0].remarks?.remarks!);
     }
   }, [allStrategicFunctionWorkloads]);
@@ -148,9 +147,15 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                     <BoldText>Teaching Work Load (TWL)</BoldText>
                     <ColumnParentContainer>
                       <ColumnContainer>
-                        <ThinText>Number of Preparation:</ThinText>
-                        <ThinText>Number of Contact Hours:</ThinText>
-                        <ThinText>Number of Students:</ThinText>
+                        {workload.numberOfPreparations && (
+                          <ThinText>Number of Preparation:</ThinText>
+                        )}
+                        {workload.contactHours && (
+                          <ThinText>Number of Contact Hours:</ThinText>
+                        )}
+                        {workload.totalNoOfStudents && (
+                          <ThinText>Number of Students:</ThinText>
+                        )}
                       </ColumnContainer>
                       <ColumnContainer>
                         <BoldText>{workload.numberOfPreparations}</BoldText>
@@ -191,15 +196,33 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                     <BoldText>Research Work Load (RWL)</BoldText>
                     <ColumnParentContainer>
                       <ColumnContainer>
-                        <ThinText>Title of the Study:</ThinText>
-                        <ThinText>Funding of the Study:</ThinText>
-                        <ThinText>Designation in the Study:</ThinText>
-                        <ThinText>Status of the Study:</ThinText>
+                        {workload.titleOfStudy && (
+                          <ThinText>Title of the Study:</ThinText>
+                        )}
+                        {workload.fundingOfStudy && (
+                          <ThinText>Funding of the Study:</ThinText>
+                        )}
+                        {workload.typeOfStudy && (
+                          <ThinText>Type of Study:</ThinText>
+                        )}
+                        {workload.designationStudy && (
+                          <ThinText>Designation in the Study:</ThinText>
+                        )}
+                        {workload.fundGenerated && (
+                          <ThinText>
+                            Fund Generated per Semester (in peso):
+                          </ThinText>
+                        )}
+                        {workload.status && (
+                          <ThinText>Status of the Study:</ThinText>
+                        )}
                       </ColumnContainer>
                       <ColumnContainer>
                         <BoldText>{workload.titleOfStudy}</BoldText>
                         <BoldText>{workload.fundingOfStudy}</BoldText>
+                        <BoldText>{workload.typeOfStudy}</BoldText>
                         <BoldText>{workload.designationStudy}</BoldText>
+                        <BoldText>{workload.fundGenerated}</BoldText>
                         <BoldText style={{ textTransform: "capitalize" }}>
                           {workload.status}
                         </BoldText>
@@ -236,24 +259,30 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                     <BoldText>Extension Work Load (EWL)</BoldText>
                     <ColumnParentContainer>
                       <ColumnContainer>
-                        <ThinText>Designation in Extension Activity:</ThinText>
-                        <ThinText>
-                          Number of Hours rendered in Extension Activity:
-                        </ThinText>
-                        <ThinText>
-                          Resource Person in an Extension Activity:
-                        </ThinText>
-                        <ThinText>
-                          Resource Person in an Extension Activity:
-                        </ThinText>
+                        {workload.designationExtensionActivity && (
+                          <ThinText>
+                            Designation in Extension Activity:
+                          </ThinText>
+                        )}
+                        {workload.totalNumberHours && (
+                          <ThinText>
+                            Number of Hours rendered in Extension Activity:
+                          </ThinText>
+                        )}
+                        {workload.resourcePerson && (
+                          <ThinText>
+                            Resource Person in an Extension Activity:
+                          </ThinText>
+                        )}
                       </ColumnContainer>
                       <ColumnContainer>
                         <BoldText>
                           {workload.designationExtensionActivity}
                         </BoldText>
                         <BoldText>{workload.totalNumberHours}</BoldText>
-                        <BoldText>{workload.resourcePerson}</BoldText>
-                        <BoldText>{workload.resourcePerson}</BoldText>
+                        <BoldText>
+                          {workload.resourcePerson?.join(", ")}
+                        </BoldText>
                       </ColumnContainer>
                     </ColumnParentContainer>
                     <div
@@ -290,64 +319,81 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                     <ColumnParentContainer>
                       <ParentLevelContainer>
                         <LevelContainer>
-                          <ColumnContainer>
-                            <ThinText>University Level:</ThinText>
-                          </ColumnContainer>
-                          <ColumnContainer>
-                            {workload.designationUniversityLevel?.map(
-                              designationUniversityLevel => {
-                                return (
-                                  <BoldText>
-                                    {designationUniversityLevel}
-                                  </BoldText>
-                                );
-                              }
-                            )}
-                          </ColumnContainer>
+                          {workload.designationUniversityLevel?.length! > 0 && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>University Level:</ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationUniversityLevel?.map(
+                                  designationUniversityLevel => {
+                                    return (
+                                      <BoldText>
+                                        {designationUniversityLevel}
+                                      </BoldText>
+                                    );
+                                  }
+                                )}
+                              </ColumnContainer>
+                            </>
+                          )}
                         </LevelContainer>
                         <LevelContainer>
-                          <ColumnContainer>
-                            <ThinText>College Level:</ThinText>
-                          </ColumnContainer>
-                          <ColumnContainer>
-                            {workload.designationCollegeCampusLevel?.map(
-                              designationCollegeCampusLevel => {
-                                return (
-                                  <BoldText>
-                                    {designationCollegeCampusLevel}
-                                  </BoldText>
-                                );
-                              }
-                            )}
-                          </ColumnContainer>
-                        </LevelContainer>
-
-                        <LevelContainer>
-                          <ColumnContainer>
-                            <ThinText>Department Level:</ThinText>
-                          </ColumnContainer>
-                          <ColumnContainer>
-                            {workload.designationDepartmentLevel?.map(
-                              designationDepartmentLevel => {
-                                return (
-                                  <BoldText>
-                                    {designationDepartmentLevel}
-                                  </BoldText>
-                                );
-                              }
-                            )}
-                          </ColumnContainer>
+                          {workload.designationCollegeCampusLevel?.length! >
+                            0 && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>College Level:</ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationCollegeCampusLevel?.map(
+                                  designationCollegeCampusLevel => {
+                                    return (
+                                      <BoldText>
+                                        {designationCollegeCampusLevel}
+                                      </BoldText>
+                                    );
+                                  }
+                                )}
+                              </ColumnContainer>
+                            </>
+                          )}
                         </LevelContainer>
 
                         <LevelContainer>
-                          <ColumnContainer>
-                            <ThinText>
-                              Designation as Academic Adviser:
-                            </ThinText>
-                          </ColumnContainer>
-                          <ColumnContainer>
-                            <BoldText>{workload.academicAdvisees}</BoldText>
-                          </ColumnContainer>
+                          {workload.designationDepartmentLevel?.length! > 0 && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>Department Level:</ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationDepartmentLevel?.map(
+                                  designationDepartmentLevel => {
+                                    return (
+                                      <BoldText>
+                                        {designationDepartmentLevel}
+                                      </BoldText>
+                                    );
+                                  }
+                                )}
+                              </ColumnContainer>
+                            </>
+                          )}
+                        </LevelContainer>
+
+                        <LevelContainer>
+                          {workload.academicAdvisees && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>
+                                  Designation as Academic Adviser:
+                                </ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                <BoldText>{workload.academicAdvisees}</BoldText>
+                              </ColumnContainer>
+                            </>
+                          )}
                         </LevelContainer>
                       </ParentLevelContainer>
                     </ColumnParentContainer>
@@ -386,17 +432,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
               <OvpaaContainerPointsRemarks>
                 <RemarksContainer>
                   <BoldText>Remarks: </BoldText>
-                  {/* {(allTeachingWorkloads?.length! > 0 ||
-                    allResearchWorkloads?.length! > 0 ||
-                    allExtensionWorkloads?.length! > 0 ||
-                    allStrategicFunctionWorkloads?.length! > 0) && (
-                    <ThinText>
-                      {allTeachingWorkloads?.[0].remarks?.remarks ||
-                        allResearchWorkloads?.[0].remarks?.remarks ||
-                        allExtensionWorkloads?.[0].remarks?.remarks ||
-                        allStrategicFunctionWorkloads?.[0].remarks?.remarks}
-                    </ThinText>
-                  )} */}
+
                   <ThinText>{ovpaaRemarks}</ThinText>
                 </RemarksContainer>
                 <PointsContainer>

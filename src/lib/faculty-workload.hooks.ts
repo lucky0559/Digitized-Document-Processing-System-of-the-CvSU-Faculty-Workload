@@ -68,6 +68,54 @@ export const SaveResearchWorkload = async (
       const file = await rwlAwsConfigS3.uploadFile(researchWorkload.rwlFile);
       researchWorkload.rwlFilePath = file.location;
 
+      if (
+        researchWorkload.disseminatedResearch?.length! > 0 &&
+        researchWorkload.disseminatedResearchFiles?.[0]
+      ) {
+        disseminatedResearchFile1 = await rwl2AwsConfigS3.uploadFile(
+          researchWorkload.disseminatedResearchFiles?.[0]
+        );
+        researchWorkload.disseminatedResearchFilesPath = [
+          disseminatedResearchFile1.location
+        ];
+      }
+
+      if (
+        researchWorkload.disseminatedResearch?.length! > 0 &&
+        researchWorkload.disseminatedResearchFiles?.[1]
+      ) {
+        disseminatedResearchFile2 = await rwl2AwsConfigS3.uploadFile(
+          researchWorkload.disseminatedResearchFiles?.[1]
+        );
+        researchWorkload.disseminatedResearchFilesPath?.push(
+          disseminatedResearchFile2.location
+        );
+      }
+
+      if (
+        researchWorkload.disseminatedResearch?.length! > 0 &&
+        researchWorkload.disseminatedResearchFiles?.[2]
+      ) {
+        disseminatedResearchFile3 = await rwl2AwsConfigS3.uploadFile(
+          researchWorkload.disseminatedResearchFiles?.[2]
+        );
+        researchWorkload.disseminatedResearchFilesPath?.push(
+          disseminatedResearchFile3.location
+        );
+      }
+
+      if (
+        researchWorkload.disseminatedResearch?.length! > 0 &&
+        researchWorkload.disseminatedResearchFiles?.[3]
+      ) {
+        disseminatedResearchFile4 = await rwl2AwsConfigS3.uploadFile(
+          researchWorkload.disseminatedResearchFiles?.[3]
+        );
+        researchWorkload.disseminatedResearchFilesPath?.push(
+          disseminatedResearchFile4.location
+        );
+      }
+
       const { data } = await axios.post(
         `research-workload/${userId}/save`,
         researchWorkload
