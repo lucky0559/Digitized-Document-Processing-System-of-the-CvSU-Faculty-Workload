@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginDTO, SendResetPasswordLink } from "../../lib/user.hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { User } from "../../types/User";
+import { UserContext } from "../../App";
 
 type LoginScreenProps = {
   onLoginButtonClick?: () => void;
@@ -54,11 +55,18 @@ export default function LoginScreen({
 
   const [successResetSendMessage, setSuccessResetSendMessage] = useState("");
 
+  const { loginError } = useContext(UserContext);
+
   const onSubmit = async (values: LoginDTO) => {
     setIsSubmitting(true);
     UseLogin(values);
-    setErrorMessage("");
   };
+
+  useEffect(() => {
+    if (loginError) {
+      setIsSubmitting(false);
+    }
+  }, [loginError]);
 
   const onSendResetPasswordLink = async () => {
     setIsSubmitting(true);
@@ -190,9 +198,9 @@ export default function LoginScreen({
                     className="invalid-feedback"
                   />
                 </FieldGroup>
-                {errorMessage && (
+                {loginError && (
                   <ErrorMessageContainer>
-                    <ErrorMessageText>{errorMessage}</ErrorMessageText>
+                    <ErrorMessageText>{loginError}</ErrorMessageText>
                   </ErrorMessageContainer>
                 )}
                 <ForgotPasswordContainer

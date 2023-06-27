@@ -50,37 +50,44 @@ function App() {
 
   const navigate = useNavigate();
 
+  const [loginError, setLoginError] = useState("");
+
   const UseLogin = async (values: LoginDTO) => {
-    await Login(values).then(async res => {
-      localStorage.setItem("userId", res.data.id);
-      // localStorage.setItem("role", res.data.role);
-      const {
-        teachingWorkloads,
-        extensionWorkloads,
-        researchWorkloads,
-        strategicFunctionWorkloads
-      } = await GetAllUserPendingWorkloads(res.data.email);
-      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-      setHasPendingResearchWorkload(researchWorkloads.length > 0);
-      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
-      if (res.data.role === "System Administrator") {
-        navigate("accounts", { replace: true });
-      } else if (res.data.role === "Dean" || res.data.role === "OVPAA") {
-        navigate("/workload-review", { replace: true });
-      } else if (teachingWorkloads.length === 0) {
-        navigate("teaching-workload", { replace: true });
-      } else if (extensionWorkloads.length === 0) {
-        navigate("extension-workload", { replace: true });
-      } else if (researchWorkloads.length === 0) {
-        navigate("research-workload", { replace: true });
-      } else if (strategicFunctionWorkloads.length === 0) {
-        navigate("strategic-function-workload", { replace: true });
-      } else {
-        navigate("workload-review", { replace: true });
-      }
-      setUser(res.data);
-    });
+    setLoginError("");
+    await Login(values)
+      .then(async res => {
+        localStorage.setItem("userId", res.data.id);
+        // localStorage.setItem("role", res.data.role);
+        const {
+          teachingWorkloads,
+          extensionWorkloads,
+          researchWorkloads,
+          strategicFunctionWorkloads
+        } = await GetAllUserPendingWorkloads(res.data.email);
+        setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+        setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+        setHasPendingResearchWorkload(researchWorkloads.length > 0);
+        setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+        if (res.data.role === "System Administrator") {
+          navigate("accounts", { replace: true });
+        } else if (res.data.role === "Dean" || res.data.role === "OVPAA") {
+          navigate("/workload-review", { replace: true });
+        } else if (teachingWorkloads.length === 0) {
+          navigate("teaching-workload", { replace: true });
+        } else if (extensionWorkloads.length === 0) {
+          navigate("extension-workload", { replace: true });
+        } else if (researchWorkloads.length === 0) {
+          navigate("research-workload", { replace: true });
+        } else if (strategicFunctionWorkloads.length === 0) {
+          navigate("strategic-function-workload", { replace: true });
+        } else {
+          navigate("workload-review", { replace: true });
+        }
+        setUser(res.data);
+      })
+      .catch(e => {
+        setLoginError(e.response.data.message);
+      });
   };
 
   const UseLogout = () => {
@@ -104,7 +111,8 @@ function App() {
             setHasPendingResearchWorkload,
             setHasPendingStrategicWorkload,
             setHasPendingTeachingWorkload
-          }
+          },
+          loginError
         }}
       >
         <Routes>
