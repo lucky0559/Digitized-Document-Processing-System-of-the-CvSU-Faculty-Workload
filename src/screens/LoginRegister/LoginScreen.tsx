@@ -149,7 +149,7 @@ export default function LoginScreen({
             {({ values, errors, handleSubmit, touched, handleChange }) => (
               <FormStyled>
                 <FieldGroup>
-                  <Label>Username</Label>
+                  <Label>Username/Email</Label>
                   <FieldIconContainer>
                     <TextInput
                       type="text"
