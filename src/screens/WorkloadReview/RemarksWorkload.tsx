@@ -48,12 +48,10 @@ function RemarksWorkload({
 
   const [rwlPointsRemarksInitial, setRwlPointsRemarksInitial] =
     useState<PointsAndRemarks[]>();
-    const [ewlPointsRemarksInitial, setEwlPointsRemarksInitial] =
+  const [ewlPointsRemarksInitial, setEwlPointsRemarksInitial] =
     useState<PointsAndRemarks[]>();
-    const [sfPointsRemarksInitial, setSfPointsRemarksInitial] =
+  const [sfPointsRemarksInitial, setSfPointsRemarksInitial] =
     useState<PointsAndRemarks[]>();
-    
-  
 
   useEffect(() => {
     (async () => {
@@ -78,12 +76,10 @@ function RemarksWorkload({
 
   useEffect(() => {
     setRwlPointsRemarks(rwlPointsRemarksInitial!);
-    console.log(rwlPointsRemarksInitial);
   }, [rwlPointsRemarksInitial]);
 
   useEffect(() => {
     setEwlPointsRemarks(ewlPointsRemarksInitial!);
-    console.log(ewlPointsRemarksInitial);
   }, [ewlPointsRemarksInitial]);
 
   useEffect(() => {
@@ -691,30 +687,38 @@ function RemarksWorkload({
                                     workload.extensionActivityFilePath
                                 );
                                 if (hasData) {
-                                  const filtered = ewlPointsRemarksInitial?.filter(
+                                  const filtered =
+                                    ewlPointsRemarksInitial?.filter(
+                                      item =>
+                                        item.key !==
+                                        workload.extensionActivityFilePath
+                                    );
+                                  setEwlPointsRemarksInitial(filtered);
+                                  if (Number(points) > 0) {
+                                    setEwlPointsRemarksInitial([
+                                      ...filtered!,
+                                      {
+                                        key: workload.extensionActivityFilePath!,
+                                        points: points
+                                      }
+                                    ]);
+                                  }
+                                } else {
+                                  setEwlPointsRemarksInitial([
+                                    {
+                                      key: workload.extensionActivityFilePath!,
+                                      points: points
+                                    }
+                                  ]);
+                                }
+                              } else {
+                                setEwlPointsRemarksInitial(
+                                  ewlPointsRemarksInitial?.filter(
                                     item =>
                                       item.key !==
                                       workload.extensionActivityFilePath
-                                  );
-                                  setEwlPointsRemarksInitial(filtered);
-                                  if (Number(points) > 0) {
-                                    setEwlPointsRemarksInitial([...filtered!, {
-                                      key: workload.extensionActivityFilePath!,
-                                      points: points
-                                    }]);
-                                  }
-                                } else {
-                                  setEwlPointsRemarksInitial([{
-                                    key: workload.extensionActivityFilePath!,
-                                    points: points
-                                  }]);
-                                }
-                              } else {
-                                setEwlPointsRemarksInitial(ewlPointsRemarksInitial?.filter(
-                                  item =>
-                                    item.key !==
-                                    workload.extensionActivityFilePath
-                                ))
+                                  )
+                                );
                               }
                             }}
                           />
@@ -770,36 +774,39 @@ function RemarksWorkload({
                               onChange={e => {
                                 points = e.target.value;
                                 if (Number(points) > 0) {
-                                  const hasData = ewlPointsRemarksInitial?.filter(
-                                    item =>
-                                      item.key ===
-                                      filePath
-                                  );
-                                  if (hasData) {
-                                    const filtered = ewlPointsRemarksInitial?.filter(
-                                      item =>
-                                        item.key !==
-                                        filePath
+                                  const hasData =
+                                    ewlPointsRemarksInitial?.filter(
+                                      item => item.key === filePath
                                     );
+                                  if (hasData) {
+                                    const filtered =
+                                      ewlPointsRemarksInitial?.filter(
+                                        item => item.key !== filePath
+                                      );
                                     setEwlPointsRemarksInitial(filtered);
                                     if (Number(points) > 0) {
-                                      setEwlPointsRemarksInitial([...filtered!, {
-                                        key: filePath,
-                                        points: points
-                                      }]);
+                                      setEwlPointsRemarksInitial([
+                                        ...filtered!,
+                                        {
+                                          key: filePath,
+                                          points: points
+                                        }
+                                      ]);
                                     }
                                   } else {
-                                    setEwlPointsRemarksInitial([{
-                                      key: filePath,
-                                      points: points
-                                    }]);
+                                    setEwlPointsRemarksInitial([
+                                      {
+                                        key: filePath,
+                                        points: points
+                                      }
+                                    ]);
                                   }
                                 } else {
-                                  setEwlPointsRemarksInitial(ewlPointsRemarksInitial?.filter(
-                                    item =>
-                                      item.key !==
-                                      filePath
-                                  ))
+                                  setEwlPointsRemarksInitial(
+                                    ewlPointsRemarksInitial?.filter(
+                                      item => item.key !== filePath
+                                    )
+                                  );
                                 }
                               }}
                             />
@@ -857,34 +864,41 @@ function RemarksWorkload({
                               if (Number(points) > 0) {
                                 const hasData = ewlPointsRemarksInitial?.filter(
                                   item =>
-                                    item.key ===
-                                    workload.summaryOfHoursFilePath
+                                    item.key === workload.summaryOfHoursFilePath
                                 );
                                 if (hasData) {
-                                  const filtered = ewlPointsRemarksInitial?.filter(
+                                  const filtered =
+                                    ewlPointsRemarksInitial?.filter(
+                                      item =>
+                                        item.key !==
+                                        workload.summaryOfHoursFilePath
+                                    );
+                                  setEwlPointsRemarksInitial(filtered);
+                                  if (Number(points) > 0) {
+                                    setEwlPointsRemarksInitial([
+                                      ...filtered!,
+                                      {
+                                        key: workload.summaryOfHoursFilePath!,
+                                        points: points
+                                      }
+                                    ]);
+                                  }
+                                } else {
+                                  setEwlPointsRemarksInitial([
+                                    {
+                                      key: workload.summaryOfHoursFilePath!,
+                                      points: points
+                                    }
+                                  ]);
+                                }
+                              } else {
+                                setEwlPointsRemarksInitial(
+                                  ewlPointsRemarksInitial?.filter(
                                     item =>
                                       item.key !==
                                       workload.summaryOfHoursFilePath
-                                  );
-                                  setEwlPointsRemarksInitial(filtered);
-                                  if (Number(points) > 0) {
-                                    setEwlPointsRemarksInitial([...filtered!, {
-                                      key: workload.summaryOfHoursFilePath!,
-                                      points: points
-                                    }]);
-                                  }
-                                } else {
-                                  setEwlPointsRemarksInitial([{
-                                    key: workload.summaryOfHoursFilePath!,
-                                    points: points
-                                  }]);
-                                }
-                              } else {
-                                setEwlPointsRemarksInitial(ewlPointsRemarksInitial?.filter(
-                                  item =>
-                                    item.key !==
-                                    workload.summaryOfHoursFilePath
-                                ))
+                                  )
+                                );
                               }
                             }}
                           />
@@ -1049,27 +1063,33 @@ function RemarksWorkload({
                                             );
                                           if (hasData) {
                                             const filtered =
-                                            sfPointsRemarksInitial?.filter(
+                                              sfPointsRemarksInitial?.filter(
                                                 item => item.key !== path
                                               );
                                             setSfPointsRemarksInitial(filtered);
                                             if (Number(points) > 0) {
-                                              setSfPointsRemarksInitial([...filtered!, {
-                                                key: path,
-                                                points: points
-                                              }]);
+                                              setSfPointsRemarksInitial([
+                                                ...filtered!,
+                                                {
+                                                  key: path,
+                                                  points: points
+                                                }
+                                              ]);
                                             }
                                           } else {
-                                            setSfPointsRemarksInitial([{
-                                              key: path,
-                                              points: points
-                                            }]);
+                                            setSfPointsRemarksInitial([
+                                              {
+                                                key: path,
+                                                points: points
+                                              }
+                                            ]);
                                           }
                                         } else {
                                           setSfPointsRemarksInitial(
-                                          sfPointsRemarksInitial?.filter(
+                                            sfPointsRemarksInitial?.filter(
                                               item => item.key !== path
-                                            ))
+                                            )
+                                          );
                                         }
                                       }}
                                     />
@@ -1144,27 +1164,33 @@ function RemarksWorkload({
                                             );
                                           if (hasData) {
                                             const filtered =
-                                            sfPointsRemarksInitial?.filter(
+                                              sfPointsRemarksInitial?.filter(
                                                 item => item.key !== path
                                               );
                                             setSfPointsRemarksInitial(filtered);
                                             if (Number(points) > 0) {
-                                              setSfPointsRemarksInitial([...filtered!, {
-                                                key: path,
-                                                points: points
-                                              }]);
+                                              setSfPointsRemarksInitial([
+                                                ...filtered!,
+                                                {
+                                                  key: path,
+                                                  points: points
+                                                }
+                                              ]);
                                             }
                                           } else {
-                                            setSfPointsRemarksInitial([{
-                                              key: path,
-                                              points: points
-                                            }]);
+                                            setSfPointsRemarksInitial([
+                                              {
+                                                key: path,
+                                                points: points
+                                              }
+                                            ]);
                                           }
                                         } else {
                                           setSfPointsRemarksInitial(
-                                          sfPointsRemarksInitial?.filter(
+                                            sfPointsRemarksInitial?.filter(
                                               item => item.key !== path
-                                            ))
+                                            )
+                                          );
                                         }
                                       }}
                                     />
@@ -1239,27 +1265,33 @@ function RemarksWorkload({
                                             );
                                           if (hasData) {
                                             const filtered =
-                                            sfPointsRemarksInitial?.filter(
+                                              sfPointsRemarksInitial?.filter(
                                                 item => item.key !== path
                                               );
                                             setSfPointsRemarksInitial(filtered);
                                             if (Number(points) > 0) {
-                                              setSfPointsRemarksInitial([...filtered!, {
-                                                key: path,
-                                                points: points
-                                              }]);
+                                              setSfPointsRemarksInitial([
+                                                ...filtered!,
+                                                {
+                                                  key: path,
+                                                  points: points
+                                                }
+                                              ]);
                                             }
                                           } else {
-                                            setSfPointsRemarksInitial([{
-                                              key: path,
-                                              points: points
-                                            }]);
+                                            setSfPointsRemarksInitial([
+                                              {
+                                                key: path,
+                                                points: points
+                                              }
+                                            ]);
                                           }
                                         } else {
                                           setSfPointsRemarksInitial(
-                                          sfPointsRemarksInitial?.filter(
+                                            sfPointsRemarksInitial?.filter(
                                               item => item.key !== path
-                                            ))
+                                            )
+                                          );
                                         }
                                       }}
                                     />
@@ -1330,31 +1362,43 @@ function RemarksWorkload({
                                   if (Number(points) > 0) {
                                     const hasData =
                                       sfPointsRemarksInitial?.filter(
-                                        item => item.key === workload.designationAsSportTrainorAcademicFilePath
+                                        item =>
+                                          item.key ===
+                                          workload.designationAsSportTrainorAcademicFilePath
                                       );
                                     if (hasData) {
                                       const filtered =
-                                      sfPointsRemarksInitial?.filter(
-                                          item => item.key !== workload.designationAsSportTrainorAcademicFilePath
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.designationAsSportTrainorAcademicFilePath
                                         );
                                       setSfPointsRemarksInitial(filtered);
                                       if (Number(points) > 0) {
-                                        setSfPointsRemarksInitial([...filtered!, {
-                                          key: workload.designationAsSportTrainorAcademicFilePath!,
-                                          points: points
-                                        }]);
+                                        setSfPointsRemarksInitial([
+                                          ...filtered!,
+                                          {
+                                            key: workload.designationAsSportTrainorAcademicFilePath!,
+                                            points: points
+                                          }
+                                        ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([{
-                                        key: workload.designationAsSportTrainorAcademicFilePath!,
-                                        points: points
-                                      }]);
+                                      setSfPointsRemarksInitial([
+                                        {
+                                          key: workload.designationAsSportTrainorAcademicFilePath!,
+                                          points: points
+                                        }
+                                      ]);
                                     }
                                   } else {
                                     setSfPointsRemarksInitial(
-                                    sfPointsRemarksInitial?.filter(
-                                        item => item.key !== workload.designationAsSportTrainorAcademicFilePath
-                                      ))
+                                      sfPointsRemarksInitial?.filter(
+                                        item =>
+                                          item.key !==
+                                          workload.designationAsSportTrainorAcademicFilePath
+                                      )
+                                    );
                                   }
                                 }}
                               />
@@ -1413,31 +1457,43 @@ function RemarksWorkload({
                                   if (Number(points) > 0) {
                                     const hasData =
                                       sfPointsRemarksInitial?.filter(
-                                        item => item.key === workload.designationAsSportTrainorAcademicFilePath1
+                                        item =>
+                                          item.key ===
+                                          workload.designationAsSportTrainorAcademicFilePath1
                                       );
                                     if (hasData) {
                                       const filtered =
-                                      sfPointsRemarksInitial?.filter(
-                                          item => item.key !== workload.designationAsSportTrainorAcademicFilePath1
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.designationAsSportTrainorAcademicFilePath1
                                         );
                                       setSfPointsRemarksInitial(filtered);
                                       if (Number(points) > 0) {
-                                        setSfPointsRemarksInitial([...filtered!, {
-                                          key: workload.designationAsSportTrainorAcademicFilePath1!,
-                                          points: points
-                                        }]);
+                                        setSfPointsRemarksInitial([
+                                          ...filtered!,
+                                          {
+                                            key: workload.designationAsSportTrainorAcademicFilePath1!,
+                                            points: points
+                                          }
+                                        ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([{
-                                        key: workload.designationAsSportTrainorAcademicFilePath1!,
-                                        points: points
-                                      }]);
+                                      setSfPointsRemarksInitial([
+                                        {
+                                          key: workload.designationAsSportTrainorAcademicFilePath1!,
+                                          points: points
+                                        }
+                                      ]);
                                     }
                                   } else {
                                     setSfPointsRemarksInitial(
-                                    sfPointsRemarksInitial?.filter(
-                                        item => item.key !== workload.designationAsSportTrainorAcademicFilePath1
-                                      ))
+                                      sfPointsRemarksInitial?.filter(
+                                        item =>
+                                          item.key !==
+                                          workload.designationAsSportTrainorAcademicFilePath1
+                                      )
+                                    );
                                   }
                                 }}
                               />
@@ -1504,31 +1560,43 @@ function RemarksWorkload({
                                   if (Number(points) > 0) {
                                     const hasData =
                                       sfPointsRemarksInitial?.filter(
-                                        item => item.key === workload.memberAdhocFilePath
+                                        item =>
+                                          item.key ===
+                                          workload.memberAdhocFilePath
                                       );
                                     if (hasData) {
                                       const filtered =
-                                      sfPointsRemarksInitial?.filter(
-                                          item => item.key !== workload.memberAdhocFilePath
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.memberAdhocFilePath
                                         );
                                       setSfPointsRemarksInitial(filtered);
                                       if (Number(points) > 0) {
-                                        setSfPointsRemarksInitial([...filtered!, {
-                                          key: workload.memberAdhocFilePath!,
-                                          points: points
-                                        }]);
+                                        setSfPointsRemarksInitial([
+                                          ...filtered!,
+                                          {
+                                            key: workload.memberAdhocFilePath!,
+                                            points: points
+                                          }
+                                        ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([{
-                                        key: workload.memberAdhocFilePath!,
-                                        points: points
-                                      }]);
+                                      setSfPointsRemarksInitial([
+                                        {
+                                          key: workload.memberAdhocFilePath!,
+                                          points: points
+                                        }
+                                      ]);
                                     }
                                   } else {
                                     setSfPointsRemarksInitial(
-                                    sfPointsRemarksInitial?.filter(
-                                        item => item.key !== workload.memberAdhocFilePath
-                                      ))
+                                      sfPointsRemarksInitial?.filter(
+                                        item =>
+                                          item.key !==
+                                          workload.memberAdhocFilePath
+                                      )
+                                    );
                                   }
                                 }}
                               />
@@ -1585,31 +1653,43 @@ function RemarksWorkload({
                                   if (Number(points) > 0) {
                                     const hasData =
                                       sfPointsRemarksInitial?.filter(
-                                        item => item.key === workload.memberAdhocFilePath1
+                                        item =>
+                                          item.key ===
+                                          workload.memberAdhocFilePath1
                                       );
                                     if (hasData) {
                                       const filtered =
-                                      sfPointsRemarksInitial?.filter(
-                                          item => item.key !== workload.memberAdhocFilePath1
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.memberAdhocFilePath1
                                         );
                                       setSfPointsRemarksInitial(filtered);
                                       if (Number(points) > 0) {
-                                        setSfPointsRemarksInitial([...filtered!, {
-                                          key: workload.memberAdhocFilePath1!,
-                                          points: points
-                                        }]);
+                                        setSfPointsRemarksInitial([
+                                          ...filtered!,
+                                          {
+                                            key: workload.memberAdhocFilePath1!,
+                                            points: points
+                                          }
+                                        ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([{
-                                        key: workload.memberAdhocFilePath1!,
-                                        points: points
-                                      }]);
+                                      setSfPointsRemarksInitial([
+                                        {
+                                          key: workload.memberAdhocFilePath1!,
+                                          points: points
+                                        }
+                                      ]);
                                     }
                                   } else {
                                     setSfPointsRemarksInitial(
-                                    sfPointsRemarksInitial?.filter(
-                                        item => item.key !== workload.memberAdhocFilePath1
-                                      ))
+                                      sfPointsRemarksInitial?.filter(
+                                        item =>
+                                          item.key !==
+                                          workload.memberAdhocFilePath1
+                                      )
+                                    );
                                   }
                                 }}
                               />
@@ -1675,31 +1755,43 @@ function RemarksWorkload({
                                   if (Number(points) > 0) {
                                     const hasData =
                                       sfPointsRemarksInitial?.filter(
-                                        item => item.key === workload.academicAdviseesFilePath
+                                        item =>
+                                          item.key ===
+                                          workload.academicAdviseesFilePath
                                       );
                                     if (hasData) {
                                       const filtered =
-                                      sfPointsRemarksInitial?.filter(
-                                          item => item.key !== workload.academicAdviseesFilePath
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.academicAdviseesFilePath
                                         );
                                       setSfPointsRemarksInitial(filtered);
                                       if (Number(points) > 0) {
-                                        setSfPointsRemarksInitial([...filtered!, {
-                                          key: workload.academicAdviseesFilePath!,
-                                          points: points
-                                        }]);
+                                        setSfPointsRemarksInitial([
+                                          ...filtered!,
+                                          {
+                                            key: workload.academicAdviseesFilePath!,
+                                            points: points
+                                          }
+                                        ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([{
-                                        key: workload.academicAdviseesFilePath!,
-                                        points: points
-                                      }]);
+                                      setSfPointsRemarksInitial([
+                                        {
+                                          key: workload.academicAdviseesFilePath!,
+                                          points: points
+                                        }
+                                      ]);
                                     }
                                   } else {
                                     setSfPointsRemarksInitial(
-                                    sfPointsRemarksInitial?.filter(
-                                        item => item.key !== workload.academicAdviseesFilePath
-                                      ))
+                                      sfPointsRemarksInitial?.filter(
+                                        item =>
+                                          item.key !==
+                                          workload.academicAdviseesFilePath
+                                      )
+                                    );
                                   }
                                 }}
                               />

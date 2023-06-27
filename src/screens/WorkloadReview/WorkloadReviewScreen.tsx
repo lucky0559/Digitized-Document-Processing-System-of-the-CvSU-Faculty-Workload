@@ -59,22 +59,38 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
     if (isDataLoading) {
       (async () => {
         if (user.role === "Department Chairperson") {
-          const teachingWorkloads = await GetAllPendingTeachingWorkloadDC();
+          const teachingWorkloads = await GetAllPendingTeachingWorkloadDC(
+            user.id
+          );
           setAllTeachingWorkload(teachingWorkloads.data);
-          const researchWorkLoads = await GetAllPendingResearchWorkloadDC();
+          const researchWorkLoads = await GetAllPendingResearchWorkloadDC(
+            user.id
+          );
           setAllResearchWorkload(researchWorkLoads.data);
-          const extensionWorkloads = await GetAllPendingExtensionWorkloadDC();
+          const extensionWorkloads = await GetAllPendingExtensionWorkloadDC(
+            user.id
+          );
           setAllExtensionWorkload(extensionWorkloads.data);
-          const strategicWorkloads = await GetAllPendingStrategicWorkloadDC();
+          const strategicWorkloads = await GetAllPendingStrategicWorkloadDC(
+            user.id
+          );
           setAllStrategicWorkload(strategicWorkloads.data);
         } else if (user.role === "Dean") {
-          const teachingWorkloads = await GetAllPendingTeachingWorkloadDean();
+          const teachingWorkloads = await GetAllPendingTeachingWorkloadDean(
+            user.id
+          );
           setAllTeachingWorkload(teachingWorkloads.data);
-          const researchWorkLoads = await GetAllPendingResearchWorkloadDean();
+          const researchWorkLoads = await GetAllPendingResearchWorkloadDean(
+            user.id
+          );
           setAllResearchWorkload(researchWorkLoads.data);
-          const extensionWorkloads = await GetAllPendingExtensionWorkloadDean();
+          const extensionWorkloads = await GetAllPendingExtensionWorkloadDean(
+            user.id
+          );
           setAllExtensionWorkload(extensionWorkloads.data);
-          const strategicWorkloads = await GetAllPendingStrategicWorkloadDean();
+          const strategicWorkloads = await GetAllPendingStrategicWorkloadDean(
+            user.id
+          );
           setAllStrategicWorkload(strategicWorkloads.data);
         } else if (user.role === "OVPAA") {
           const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();

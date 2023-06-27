@@ -623,17 +623,17 @@ export const SaveStrategicFunctionWorkload = async (
   }
 };
 
-export const GetAllPendingTeachingWorkloadDC = async () => {
+export const GetAllPendingTeachingWorkloadDC = async (userId: string) => {
   const { data } = await axios.get(
-    "teaching-workload/all-pending-teaching-workload-dc"
+    `teaching-workload/${userId}/all-pending-teaching-workload-dc`
   );
 
   return { data };
 };
 
-export const GetAllPendingTeachingWorkloadDean = async () => {
+export const GetAllPendingTeachingWorkloadDean = async (userId: string) => {
   const { data } = await axios.get(
-    "teaching-workload/all-pending-teaching-workload-dean"
+    `teaching-workload/${userId}/all-pending-teaching-workload-dean`
   );
 
   return { data };
@@ -647,17 +647,17 @@ export const GetAllPendingTeachingWorkloadOVPAA = async () => {
   return { data };
 };
 
-export const GetAllPendingResearchWorkloadDC = async () => {
+export const GetAllPendingResearchWorkloadDC = async (userId: string) => {
   const { data } = await axios.get(
-    "research-workload/all-pending-research-workload-dc"
+    `research-workload/${userId}/all-pending-research-workload-dc`
   );
 
   return { data };
 };
 
-export const GetAllPendingResearchWorkloadDean = async () => {
+export const GetAllPendingResearchWorkloadDean = async (userId: string) => {
   const { data } = await axios.get(
-    "research-workload/all-pending-research-workload-dean"
+    `research-workload/${userId}/all-pending-research-workload-dean`
   );
 
   return { data };
@@ -671,17 +671,17 @@ export const GetAllPendingResearchWorkloadOVPAA = async () => {
   return { data };
 };
 
-export const GetAllPendingExtensionWorkloadDC = async () => {
+export const GetAllPendingExtensionWorkloadDC = async (userId: string) => {
   const { data } = await axios.get(
-    "extension-workload/all-pending-extension-workload-dc"
+    `extension-workload/${userId}/all-pending-extension-workload-dc`
   );
 
   return { data };
 };
 
-export const GetAllPendingExtensionWorkloadDean = async () => {
+export const GetAllPendingExtensionWorkloadDean = async (userId: string) => {
   const { data } = await axios.get(
-    "extension-workload/all-pending-extension-workload-dean"
+    `extension-workload/${userId}/all-pending-extension-workload-dean`
   );
 
   return { data };
@@ -695,17 +695,17 @@ export const GetAllPendingExtensionWorkloadOVPAA = async () => {
   return { data };
 };
 
-export const GetAllPendingStrategicWorkloadDC = async () => {
+export const GetAllPendingStrategicWorkloadDC = async (userId: string) => {
   const { data } = await axios.get(
-    "strategic-function-workload/all-pending-strategic-workload-dc"
+    `strategic-function-workload/${userId}/all-pending-strategic-workload-dc`
   );
 
   return { data };
 };
 
-export const GetAllPendingStrategicWorkloadDean = async () => {
+export const GetAllPendingStrategicWorkloadDean = async (userId: string) => {
   const { data } = await axios.get(
-    "strategic-function-workload/all-pending-strategic-workload-dean"
+    `strategic-function-workload/${userId}/all-pending-strategic-workload-dean`
   );
 
   return { data };
