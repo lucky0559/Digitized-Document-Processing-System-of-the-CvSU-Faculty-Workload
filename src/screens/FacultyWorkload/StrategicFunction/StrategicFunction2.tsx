@@ -327,7 +327,7 @@ const PointsText = styled.span`
 
 const SportsSocioTitleText = styled.span`
   font-weight: 400;
-  font-size: 20px;
+  font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
 `;
