@@ -525,7 +525,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   }, [memberUniversity2]);
 
   const textInputTitleAcademicAdviser = (value: string) => {
-    console.log(value);
     setAcademicAdviser({
       ...academicAdviser,
       numberOfStudents: value
@@ -609,10 +608,16 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationAsMemberOfAdhocPoints: Number(memberUniversity?.points),
           designationAsMemberOfAdhocPoints1: Number(memberUniversity1?.points),
           designationAsMemberOfAdhocPoints2: Number(memberUniversity2?.points),
-          academicAdvisees: academicAdviser?.numberOfStudents,
-          academicAdviseesFile: academicAdviser?.file,
+          academicAdvisees: academicAdviser?.file
+            ? academicAdviser?.numberOfStudents
+            : undefined,
+          academicAdviseesFile: academicAdviser?.numberOfStudents
+            ? academicAdviser?.file
+            : undefined,
           academicAdviseesPoints:
-            Number(academicAdviser?.numberOfStudents) * 0.023
+            academicAdviser?.numberOfStudents && academicAdviser?.file
+              ? Number(academicAdviser?.numberOfStudents) * 0.023
+              : undefined
         });
       }
     })();

@@ -66,7 +66,11 @@ function TextInputWithTitlePointUpload({
           {textField && (
             <Input
               style={{ textAlign: "center" }}
-              value={!pointsVal ? 0 : (Number(pointsVal) * 0.023).toFixed(2)}
+              value={
+                !pointsVal || !fileName
+                  ? 0
+                  : (Number(pointsVal) * 0.023).toFixed(2)
+              }
               disabled={true}
             />
           )}
