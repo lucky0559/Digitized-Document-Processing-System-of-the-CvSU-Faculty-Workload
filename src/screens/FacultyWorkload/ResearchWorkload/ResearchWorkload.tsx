@@ -393,6 +393,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             navigate("/research-workload", { replace: true });
           } else if (!extensionWorkloads) {
             navigate("/extension-workload", { replace: true });
+          } else if (!strategicFunctionWorkloads) {
+            navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-review", { replace: true });
           }

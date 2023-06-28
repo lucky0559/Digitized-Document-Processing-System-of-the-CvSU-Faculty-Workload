@@ -165,9 +165,25 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             Number(resourcePersonPoints) +
             totalNumberHoursPoints;
           await SaveExtensionWorkload(extensionWorkload);
+          const {
+            teachingWorkloads,
+            extensionWorkloads,
+            researchWorkloads,
+            strategicFunctionWorkloads
+          } = await GetAllUserPendingWorkloads(user.email);
+          setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+          setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+          setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
           setIsSubmitting(false);
           clearStates();
-          navigate("/strategic-function-workload", { replace: true });
+          if (setHasPendingStrategicWorkload) {
+            navigate("/workload-review", { replace: true });
+          } else if (!strategicFunctionWorkloads) {
+            navigate("/strategic-function-workload", { replace: true });
+          } else {
+            navigate("/workload-review", { replace: true });
+          }
         }
       }
     })();

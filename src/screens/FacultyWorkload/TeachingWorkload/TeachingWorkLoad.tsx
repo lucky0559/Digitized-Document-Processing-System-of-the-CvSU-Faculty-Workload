@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../../components/Footer";
@@ -10,9 +10,13 @@ import TopNav from "../../../components/TopNav";
 import UploadFileButton from "../../../components/UploadFileButton";
 import Colors from "../../../constants/Colors";
 import { WorkloadType } from "../../../constants/Strings";
-import { SaveTeachingWorkload } from "../../../lib/faculty-workload.hooks";
+import {
+  GetAllUserPendingWorkloads,
+  SaveTeachingWorkload
+} from "../../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../../types/TeachingWorkload";
 import { Confirm } from "semantic-ui-react";
+import { UserContext } from "../../../App";
 
 type TeachingWorkLoadProps = {
   UseLogout: () => void;
@@ -41,6 +45,8 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   const [isConfirming, setIsConfirming] = useState(false);
 
+  const { user } = useContext(UserContext);
+
   const onSubmit = async () => {
     setTeachingWorkLoad({
       numberOfPreparations,
@@ -66,9 +72,22 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
           console.log(teachingWorkLoad);
           await SaveTeachingWorkload(teachingWorkLoad);
+          const {
+            extensionWorkloads,
+            researchWorkloads,
+            strategicFunctionWorkloads
+          } = await GetAllUserPendingWorkloads(user.email);
           setIsSubmitting(false);
           clearStates();
-          navigate("/research-workload", { replace: true });
+          if (!researchWorkloads) {
+            navigate("/research-workload", { replace: true });
+          } else if (!extensionWorkloads) {
+            navigate("/extension-workload", { replace: true });
+          } else if (!strategicFunctionWorkloads) {
+            navigate("/strategic-function-workload", { replace: true });
+          } else {
+            navigate("/workload-review", { replace: true });
+          }
         }
       }
     })();
