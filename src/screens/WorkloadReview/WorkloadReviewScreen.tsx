@@ -30,6 +30,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ReviewFacultyScreen from "./ReviewFacultyScreen";
 import { UserContext } from "../../App";
+import OvpaaWorkloadReview, { OvpaaWorkloads } from "./OvpaaWorkloadReview";
 
 type WorkloadReviewScreenProps = {
   UseLogout: () => void;
@@ -42,6 +43,15 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
   const [allResearchWorkload, setAllResearchWorkload] = useState<User[]>();
   const [allExtensionWorkload, setAllExtensionWorkload] = useState<User[]>();
   const [allStrategicWorkload, setAllStrategicWorkload] = useState<User[]>();
+
+  const [ovpaaTeachingWorkloads, setOvpaaTeachingWorkloads] =
+    useState<OvpaaWorkloads>();
+  const [ovpaaResearchWorkloads, setOvpaaResearchWorkloads] =
+    useState<OvpaaWorkloads>();
+  const [ovpaaExtensionWorkloads, setOvpaaExtensionWorkloads] =
+    useState<OvpaaWorkloads>();
+  const [ovpaaStrategicWorkloads, setOvpaaStrategicWorkloads] =
+    useState<OvpaaWorkloads>();
 
   const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
 
@@ -94,14 +104,18 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
           setAllStrategicWorkload(strategicWorkloads.data);
         } else if (user.role === "OVPAA") {
           const teachingWorkloads = await GetAllPendingTeachingWorkloadOVPAA();
+          setOvpaaTeachingWorkloads(teachingWorkloads.data);
           setAllTeachingWorkload(teachingWorkloads.data);
           const researchWorkLoads = await GetAllPendingResearchWorkloadOVPAA();
+          setOvpaaResearchWorkloads(researchWorkLoads.data);
           setAllResearchWorkload(researchWorkLoads.data);
           const extensionWorkloads =
             await GetAllPendingExtensionWorkloadOVPAA();
+          setOvpaaExtensionWorkloads(extensionWorkloads.data);
           setAllExtensionWorkload(extensionWorkloads.data);
           const strategicWorkloads =
             await GetAllPendingStrategicWorkloadOVPAA();
+          setOvpaaStrategicWorkloads(strategicWorkloads.data);
           setAllStrategicWorkload(strategicWorkloads.data);
         } else if (user?.role === "Faculty") {
           const teachingWorkloads = await GetTeachingWorkloadRemarksFaculty(
@@ -165,6 +179,15 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
             {!isDataLoading ? (
               user?.role === "Faculty" ? (
                 <ReviewFacultyScreen userEmail={user?.email} />
+              ) : user?.role === "OVPAA" ? (
+                <OvpaaWorkloadReview
+                  teachingWorkload={ovpaaTeachingWorkloads}
+                  researchWorkload={ovpaaResearchWorkloads}
+                  extensionWorkload={ovpaaExtensionWorkloads}
+                  allStrategicWorkload={ovpaaStrategicWorkloads}
+                  isDataLoading={isDataLoading}
+                  setIsDataLoading={setIsDataLoading}
+                />
               ) : !isDataLoading &&
                 (allTeachingWorkload ||
                   allResearchWorkload ||

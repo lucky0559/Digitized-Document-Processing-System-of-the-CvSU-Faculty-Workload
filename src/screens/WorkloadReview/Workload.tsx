@@ -27,6 +27,7 @@ type WorkloadProps = {
   allStrategicWorkload?: User[];
   isDataLoading: boolean;
   setIsDataLoading: (value: boolean) => void;
+  isWorkloadListReviewing?: boolean;
 };
 function Workload({
   teachingWorkload,
@@ -34,7 +35,8 @@ function Workload({
   extensionWorkload,
   allStrategicWorkload,
   isDataLoading,
-  setIsDataLoading
+  setIsDataLoading,
+  isWorkloadListReviewing
 }: WorkloadProps) {
   const userId = localStorage.getItem("userId");
 
@@ -234,7 +236,7 @@ function Workload({
           </div>
         </>
       )}
-      {isDataLoading && !isReviewing && (
+      {isDataLoading && (!isReviewing || !isWorkloadListReviewing) && (
         <div
           style={{
             display: "flex",
@@ -304,6 +306,7 @@ function Workload({
             </tbody>
           </Table>
         )}
+
       {!isDataLoading &&
         teachingWorkload?.length! <= 0 &&
         researchWorkload?.length! <= 0 &&
