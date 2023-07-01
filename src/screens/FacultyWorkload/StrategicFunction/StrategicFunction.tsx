@@ -230,13 +230,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
 
   const navigate = useNavigate();
 
-  const {
-    user,
-    setHasPendingExtensionWorkload,
-    setHasPendingResearchWorkload,
-    setHasPendingStrategicWorkload,
-    setHasPendingTeachingWorkload
-  } = useContext(UserContext);
+  const { user, actions } = useContext(UserContext);
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length >= 0 && value !== "") {
@@ -540,6 +534,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
 
   const onNextSubmit = () => {
     setIsSubmitting(true);
+    setIsConfirming(false);
   };
 
   useEffect(() => {
@@ -668,6 +663,11 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
         try {
           await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
           // window.location.reload();
+          const { strategicFunctionWorkloads } =
+            await GetAllUserPendingWorkloads(user.email);
+          actions.setHasPendingStrategicWorkload(
+            strategicFunctionWorkloads.length > 0
+          );
           clearStates();
           navigate("/workload-review", { replace: true });
         } catch (e) {
@@ -857,10 +857,12 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
         researchWorkloads,
         strategicFunctionWorkloads
       } = await GetAllUserPendingWorkloads(user.email);
-      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-      setHasPendingResearchWorkload(researchWorkloads.length > 0);
-      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+      actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingStrategicWorkload(
+        strategicFunctionWorkloads.length > 0
+      );
     })();
   }, []);
 
