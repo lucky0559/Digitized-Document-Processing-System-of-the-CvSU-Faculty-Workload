@@ -419,7 +419,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
               <BoldText style={{ marginBottom: 30 }}>
                 TWL + RWL + EWL + SF = TOTAL EARNED CREDIT UNITS
               </BoldText>
-              <BoldText>
+              <BoldText style={{ fontSize: 20 }}>
                 {totalTwlPoints} + {totalRwlPoints} + {totalEwlPoints} +{" "}
                 {totalSfPoints} ={" "}
                 {(
@@ -509,14 +509,14 @@ const ThinText = styled.span`
   line-height: 15px;
 `;
 const BoldText = styled.span`
-  font-family: HurmeGeometricSans3;
+  font-family: HurmeGeometricSans3Bold;
   font-weight: bold;
   font-size: 15px;
   line-height: 15px;
 `;
 
 const HeaderText = styled.span`
-  font-family: HurmeGeometricSans3;
+  font-family: HurmeGeometricSans3Bold;
   font-weight: bold;
   font-size: 20px;
   line-height: 15px;
