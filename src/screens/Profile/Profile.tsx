@@ -432,7 +432,7 @@ function Profile({ UseLogout }: ProfileProps) {
               </DetailContainer>
             </UserDetailContainer>
             <ButtonsContainer>
-              {hasESignature ? (
+              {/* {hasESignature ? (
                 <ButtonStyled>
                   {isSubmitting ? (
                     <LoadingSpinner color={Colors.primary} />
@@ -460,7 +460,7 @@ function Profile({ UseLogout }: ProfileProps) {
                     Upload E-Signature
                   </ButtonText>
                 </ButtonStyled>
-              )}
+              )} */}
               <ButtonStyled onClick={() => setIsChangingPassword(true)}>
                 <ButtonText>Change Password</ButtonText>
               </ButtonStyled>
