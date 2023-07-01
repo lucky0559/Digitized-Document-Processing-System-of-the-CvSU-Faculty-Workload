@@ -15,6 +15,7 @@ import WorkloadReviewScreen from "./screens/WorkloadReview/WorkloadReviewScreen"
 import { User } from "./types/User";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import { GetAllUserPendingWorkloads } from "./lib/faculty-workload.hooks";
+import WorkloadSummary from "./screens/WorkloadReview/WorkloadSummary";
 
 export const UserContext = createContext<any>(null);
 
@@ -29,8 +30,10 @@ function App() {
   const hasAccessInWorkloadReview =
     user?.role === "Department Chairperson" ||
     user?.role === "Dean" ||
-    user?.role === "OVPAA" ||
-    user?.role === "Faculty";
+    user?.role === "OVPAA";
+
+  const hasAccessInWorkloadSummary =
+    user?.role === "Department Chairperson" || user?.role === "Faculty";
 
   const hasAccessInReports =
     user?.role === "Department Chairperson" ||
@@ -193,6 +196,14 @@ function App() {
             element={
               <Protected isSignedIn={!!user || hasAccessInWorkloadReview}>
                 <WorkloadReviewScreen UseLogout={UseLogout} />
+              </Protected>
+            }
+          />
+          <Route
+            path="/workload-summary"
+            element={
+              <Protected isSignedIn={!!user || hasAccessInWorkloadSummary}>
+                <WorkloadSummary UseLogout={UseLogout} />
               </Protected>
             }
           />
