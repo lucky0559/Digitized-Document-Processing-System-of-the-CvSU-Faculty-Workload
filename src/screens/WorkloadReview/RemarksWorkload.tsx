@@ -948,435 +948,474 @@ function RemarksWorkload({
               </WorkloadHeaderContainer>
               <ColumnParentContainer>
                 <ParentLevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>University Level:</ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.designationUniversityLevel?.map(
-                        designationUniversityLevel => {
-                          return (
-                            <BoldText>{designationUniversityLevel}</BoldText>
-                          );
-                        }
-                      )}
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>College Level:</ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.designationCollegeCampusLevel?.map(
-                        designationCollegeCampusLevel => {
-                          return (
-                            <BoldText>{designationCollegeCampusLevel}</BoldText>
-                          );
-                        }
-                      )}
-                    </ColumnContainer>
-                  </LevelContainer>
+                  {workload.designationUniversityLevel?.length! > 0 && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>University Level:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.designationUniversityLevel?.map(
+                          designationUniversityLevel => {
+                            return (
+                              <BoldText>{designationUniversityLevel}</BoldText>
+                            );
+                          }
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.designationCollegeCampusLevel?.length! > 0 && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>College Level:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.designationCollegeCampusLevel?.map(
+                          designationCollegeCampusLevel => {
+                            return (
+                              <BoldText>
+                                {designationCollegeCampusLevel}
+                              </BoldText>
+                            );
+                          }
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.designationDepartmentLevel?.length! > 0 && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Department Level:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.designationDepartmentLevel?.map(
+                          designationDepartmentLevel => {
+                            return (
+                              <BoldText>{designationDepartmentLevel}</BoldText>
+                            );
+                          }
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.academicAdvisees && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Designation as Academic Adviser:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        <BoldText>{workload.academicAdvisees}</BoldText>
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.approvedUniversityDesignationFilePath &&
+                    workload.approvedUniversityDesignationFilePath.length >
+                      0 && (
+                      <LevelContainer>
+                        <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                          <ThinText>
+                            Designation at the University Level Attachment/s:
+                          </ThinText>
+                        </ColumnContainer>
+                        <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                          {workload.approvedUniversityDesignationFilePath &&
+                            workload.approvedUniversityDesignationFilePath.map(
+                              path => {
+                                return (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      width: "100%",
+                                      justifyContent: "space-between"
+                                    }}
+                                  >
+                                    <a
+                                      href={path}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "none",
+                                        alignItems: "flex-start",
+                                        display: "flex"
+                                      }}
+                                    >
+                                      <ThinText
+                                        style={{
+                                          color: "white",
+                                          fontSize: 12,
+                                          backgroundColor: Colors.buttonPrimary,
+                                          paddingLeft: 5,
+                                          paddingRight: 5,
+                                          cursor: "pointer"
+                                        }}
+                                        onClick={() => {}}
+                                      >
+                                        Attachment
+                                      </ThinText>
+                                    </a>
+                                    {userContext.role === "OVPAA" && (
+                                      <div
+                                        style={{
+                                          width: 170,
+                                          display: "flex",
+                                          marginRight: 15
+                                        }}
+                                      >
+                                        <InputPoints
+                                          type="number"
+                                          min={0}
+                                          onChange={e => {
+                                            points = e.target.value;
+                                            if (Number(points) > 0) {
+                                              const hasData =
+                                                sfPointsRemarksInitial?.filter(
+                                                  item => item.key === path
+                                                );
+                                              if (hasData) {
+                                                const filtered =
+                                                  sfPointsRemarksInitial?.filter(
+                                                    item => item.key !== path
+                                                  );
+                                                setSfPointsRemarksInitial(
+                                                  filtered
+                                                );
+                                                if (Number(points) > 0) {
+                                                  setSfPointsRemarksInitial([
+                                                    ...filtered!,
+                                                    {
+                                                      key: path,
+                                                      points: points
+                                                    }
+                                                  ]);
+                                                }
+                                              } else {
+                                                setSfPointsRemarksInitial([
+                                                  {
+                                                    key: path,
+                                                    points: points
+                                                  }
+                                                ]);
+                                              }
+                                            } else {
+                                              setSfPointsRemarksInitial(
+                                                sfPointsRemarksInitial?.filter(
+                                                  item => item.key !== path
+                                                )
+                                              );
+                                            }
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+                            )}
+                        </ColumnContainer>
+                      </LevelContainer>
+                    )}
 
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>Department Level:</ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.designationDepartmentLevel?.map(
-                        designationDepartmentLevel => {
-                          return (
-                            <BoldText>{designationDepartmentLevel}</BoldText>
-                          );
-                        }
-                      )}
-                    </ColumnContainer>
-                  </LevelContainer>
+                  {workload.approvedCollegeCampusDesignationFilePath &&
+                    workload.approvedCollegeCampusDesignationFilePath.length >
+                      0 && (
+                      <LevelContainer>
+                        <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                          <ThinText>
+                            Designation at the College/Campus Level
+                            Attachment/s:
+                          </ThinText>
+                        </ColumnContainer>
+                        <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                          {workload.approvedCollegeCampusDesignationFilePath &&
+                            workload.approvedCollegeCampusDesignationFilePath.map(
+                              path => {
+                                return (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      width: "100%",
+                                      justifyContent: "space-between"
+                                    }}
+                                  >
+                                    <a
+                                      href={path}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "none",
+                                        alignItems: "flex-start",
+                                        display: "flex"
+                                      }}
+                                    >
+                                      <ThinText
+                                        style={{
+                                          color: "white",
+                                          fontSize: 12,
+                                          backgroundColor: Colors.buttonPrimary,
+                                          paddingLeft: 5,
+                                          paddingRight: 5,
+                                          cursor: "pointer"
+                                        }}
+                                        onClick={() => {}}
+                                      >
+                                        Attachment
+                                      </ThinText>
+                                    </a>
+                                    {userContext.role === "OVPAA" && (
+                                      <div
+                                        style={{
+                                          width: 170,
+                                          display: "flex",
+                                          marginRight: 15
+                                        }}
+                                      >
+                                        <InputPoints
+                                          type="number"
+                                          min={0}
+                                          onChange={e => {
+                                            points = e.target.value;
+                                            if (Number(points) > 0) {
+                                              const hasData =
+                                                sfPointsRemarksInitial?.filter(
+                                                  item => item.key === path
+                                                );
+                                              if (hasData) {
+                                                const filtered =
+                                                  sfPointsRemarksInitial?.filter(
+                                                    item => item.key !== path
+                                                  );
+                                                setSfPointsRemarksInitial(
+                                                  filtered
+                                                );
+                                                if (Number(points) > 0) {
+                                                  setSfPointsRemarksInitial([
+                                                    ...filtered!,
+                                                    {
+                                                      key: path,
+                                                      points: points
+                                                    }
+                                                  ]);
+                                                }
+                                              } else {
+                                                setSfPointsRemarksInitial([
+                                                  {
+                                                    key: path,
+                                                    points: points
+                                                  }
+                                                ]);
+                                              }
+                                            } else {
+                                              setSfPointsRemarksInitial(
+                                                sfPointsRemarksInitial?.filter(
+                                                  item => item.key !== path
+                                                )
+                                              );
+                                            }
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+                            )}
+                        </ColumnContainer>
+                      </LevelContainer>
+                    )}
 
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>Designation as Academic Adviser:</ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      <BoldText>{workload.academicAdvisees}</BoldText>
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>
-                        Designation at the University Level Attachment/s:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.approvedUniversityDesignationFilePath &&
-                        workload.approvedUniversityDesignationFilePath.map(
-                          path => {
-                            return (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  width: "100%",
-                                  justifyContent: "space-between"
-                                }}
-                              >
-                                <a
-                                  href={path}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  style={{
-                                    textDecoration: "none",
-                                    alignItems: "flex-start",
-                                    display: "flex"
-                                  }}
-                                >
-                                  <ThinText
-                                    style={{
-                                      color: "white",
-                                      fontSize: 12,
-                                      backgroundColor: Colors.buttonPrimary,
-                                      paddingLeft: 5,
-                                      paddingRight: 5,
-                                      cursor: "pointer"
-                                    }}
-                                    onClick={() => {}}
-                                  >
-                                    Attachment
-                                  </ThinText>
-                                </a>
-                                {userContext.role === "OVPAA" && (
+                  {workload.approvedDepartmentDesignationFilePath &&
+                    workload.approvedDepartmentDesignationFilePath.length >
+                      0 && (
+                      <LevelContainer>
+                        <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                          <ThinText>
+                            Designation at the Department Level Attachment/s:
+                          </ThinText>
+                        </ColumnContainer>
+                        <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                          {workload.approvedDepartmentDesignationFilePath &&
+                            workload.approvedDepartmentDesignationFilePath.map(
+                              path => {
+                                return (
                                   <div
                                     style={{
-                                      width: 170,
                                       display: "flex",
-                                      marginRight: 15
+                                      flexDirection: "row",
+                                      width: "100%",
+                                      justifyContent: "space-between"
                                     }}
                                   >
-                                    <InputPoints
-                                      type="number"
-                                      min={0}
-                                      onChange={e => {
-                                        points = e.target.value;
-                                        if (Number(points) > 0) {
-                                          const hasData =
-                                            sfPointsRemarksInitial?.filter(
-                                              item => item.key === path
-                                            );
-                                          if (hasData) {
-                                            const filtered =
-                                              sfPointsRemarksInitial?.filter(
-                                                item => item.key !== path
-                                              );
-                                            setSfPointsRemarksInitial(filtered);
-                                            if (Number(points) > 0) {
-                                              setSfPointsRemarksInitial([
-                                                ...filtered!,
-                                                {
-                                                  key: path,
-                                                  points: points
-                                                }
-                                              ]);
-                                            }
-                                          } else {
-                                            setSfPointsRemarksInitial([
-                                              {
-                                                key: path,
-                                                points: points
-                                              }
-                                            ]);
-                                          }
-                                        } else {
-                                          setSfPointsRemarksInitial(
-                                            sfPointsRemarksInitial?.filter(
-                                              item => item.key !== path
-                                            )
-                                          );
-                                        }
+                                    <a
+                                      href={path}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "none",
+                                        alignItems: "flex-start",
+                                        display: "flex"
                                       }}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          }
-                        )}
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>
-                        Designation at the College/Campus Level Attachment/s:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.approvedCollegeCampusDesignationFilePath &&
-                        workload.approvedCollegeCampusDesignationFilePath.map(
-                          path => {
-                            return (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  width: "100%",
-                                  justifyContent: "space-between"
-                                }}
-                              >
-                                <a
-                                  href={path}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  style={{
-                                    textDecoration: "none",
-                                    alignItems: "flex-start",
-                                    display: "flex"
-                                  }}
-                                >
-                                  <ThinText
-                                    style={{
-                                      color: "white",
-                                      fontSize: 12,
-                                      backgroundColor: Colors.buttonPrimary,
-                                      paddingLeft: 5,
-                                      paddingRight: 5,
-                                      cursor: "pointer"
-                                    }}
-                                    onClick={() => {}}
-                                  >
-                                    Attachment
-                                  </ThinText>
-                                </a>
-                                {userContext.role === "OVPAA" && (
-                                  <div
-                                    style={{
-                                      width: 170,
-                                      display: "flex",
-                                      marginRight: 15
-                                    }}
-                                  >
-                                    <InputPoints
-                                      type="number"
-                                      min={0}
-                                      onChange={e => {
-                                        points = e.target.value;
-                                        if (Number(points) > 0) {
-                                          const hasData =
-                                            sfPointsRemarksInitial?.filter(
-                                              item => item.key === path
-                                            );
-                                          if (hasData) {
-                                            const filtered =
-                                              sfPointsRemarksInitial?.filter(
-                                                item => item.key !== path
-                                              );
-                                            setSfPointsRemarksInitial(filtered);
+                                    >
+                                      <ThinText
+                                        style={{
+                                          color: "white",
+                                          fontSize: 12,
+                                          backgroundColor: Colors.buttonPrimary,
+                                          paddingLeft: 5,
+                                          paddingRight: 5,
+                                          cursor: "pointer"
+                                        }}
+                                        onClick={() => {}}
+                                      >
+                                        Attachment
+                                      </ThinText>
+                                    </a>
+                                    {userContext.role === "OVPAA" && (
+                                      <div
+                                        style={{
+                                          width: 170,
+                                          display: "flex",
+                                          marginRight: 15
+                                        }}
+                                      >
+                                        <InputPoints
+                                          type="number"
+                                          min={0}
+                                          onChange={e => {
+                                            points = e.target.value;
                                             if (Number(points) > 0) {
-                                              setSfPointsRemarksInitial([
-                                                ...filtered!,
-                                                {
-                                                  key: path,
-                                                  points: points
+                                              const hasData =
+                                                sfPointsRemarksInitial?.filter(
+                                                  item => item.key === path
+                                                );
+                                              if (hasData) {
+                                                const filtered =
+                                                  sfPointsRemarksInitial?.filter(
+                                                    item => item.key !== path
+                                                  );
+                                                setSfPointsRemarksInitial(
+                                                  filtered
+                                                );
+                                                if (Number(points) > 0) {
+                                                  setSfPointsRemarksInitial([
+                                                    ...filtered!,
+                                                    {
+                                                      key: path,
+                                                      points: points
+                                                    }
+                                                  ]);
                                                 }
-                                              ]);
-                                            }
-                                          } else {
-                                            setSfPointsRemarksInitial([
-                                              {
-                                                key: path,
-                                                points: points
+                                              } else {
+                                                setSfPointsRemarksInitial([
+                                                  {
+                                                    key: path,
+                                                    points: points
+                                                  }
+                                                ]);
                                               }
-                                            ]);
-                                          }
-                                        } else {
-                                          setSfPointsRemarksInitial(
-                                            sfPointsRemarksInitial?.filter(
-                                              item => item.key !== path
-                                            )
-                                          );
-                                        }
-                                      }}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          }
-                        )}
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>
-                        Designation at the Department Level Attachment/s:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.approvedDepartmentDesignationFilePath &&
-                        workload.approvedDepartmentDesignationFilePath.map(
-                          path => {
-                            return (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  width: "100%",
-                                  justifyContent: "space-between"
-                                }}
-                              >
-                                <a
-                                  href={path}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  style={{
-                                    textDecoration: "none",
-                                    alignItems: "flex-start",
-                                    display: "flex"
-                                  }}
-                                >
-                                  <ThinText
-                                    style={{
-                                      color: "white",
-                                      fontSize: 12,
-                                      backgroundColor: Colors.buttonPrimary,
-                                      paddingLeft: 5,
-                                      paddingRight: 5,
-                                      cursor: "pointer"
-                                    }}
-                                    onClick={() => {}}
-                                  >
-                                    Attachment
-                                  </ThinText>
-                                </a>
-                                {userContext.role === "OVPAA" && (
-                                  <div
-                                    style={{
-                                      width: 170,
-                                      display: "flex",
-                                      marginRight: 15
-                                    }}
-                                  >
-                                    <InputPoints
-                                      type="number"
-                                      min={0}
-                                      onChange={e => {
-                                        points = e.target.value;
-                                        if (Number(points) > 0) {
-                                          const hasData =
-                                            sfPointsRemarksInitial?.filter(
-                                              item => item.key === path
-                                            );
-                                          if (hasData) {
-                                            const filtered =
-                                              sfPointsRemarksInitial?.filter(
-                                                item => item.key !== path
+                                            } else {
+                                              setSfPointsRemarksInitial(
+                                                sfPointsRemarksInitial?.filter(
+                                                  item => item.key !== path
+                                                )
                                               );
-                                            setSfPointsRemarksInitial(filtered);
-                                            if (Number(points) > 0) {
-                                              setSfPointsRemarksInitial([
-                                                ...filtered!,
-                                                {
-                                                  key: path,
-                                                  points: points
-                                                }
-                                              ]);
                                             }
-                                          } else {
-                                            setSfPointsRemarksInitial([
-                                              {
-                                                key: path,
-                                                points: points
-                                              }
-                                            ]);
-                                          }
-                                        } else {
-                                          setSfPointsRemarksInitial(
-                                            sfPointsRemarksInitial?.filter(
-                                              item => item.key !== path
-                                            )
-                                          );
-                                        }
-                                      }}
-                                    />
+                                          }}
+                                        />
+                                      </div>
+                                    )}
                                   </div>
-                                )}
-                              </div>
-                            );
-                          }
-                        )}
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>
-                        Designation as Sports/Socio-Cultural Coach or Trainor
-                        and Academic Organization Adviser Attachment/s:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.designationAsSportTrainorAcademicFilePath && (
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          <a
-                            href={
-                              workload.designationAsSportTrainorAcademicFilePath
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
+                                );
+                              }
+                            )}
+                        </ColumnContainer>
+                      </LevelContainer>
+                    )}
+
+                  {workload.designationAsSportTrainorAcademicFilePath && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>
+                          Designation as Sports/Socio-Cultural Coach or Trainor
+                          and Academic Organization Adviser Attachment/s:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.designationAsSportTrainorAcademicFilePath && (
+                          <div
                             style={{
-                              textDecoration: "none",
-                              alignItems: "flex-start",
-                              display: "flex"
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
                             }}
                           >
-                            <ThinText
+                            <a
+                              href={
+                                workload.designationAsSportTrainorAcademicFilePath
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
                               style={{
-                                color: "white",
-                                fontSize: 12,
-                                backgroundColor: Colors.buttonPrimary,
-                                paddingLeft: 5,
-                                paddingRight: 5,
-                                cursor: "pointer"
-                              }}
-                              onClick={() => {}}
-                            >
-                              Attachment
-                            </ThinText>
-                          </a>
-                          {userContext.role === "OVPAA" && (
-                            <div
-                              style={{
-                                width: 170,
-                                display: "flex",
-                                marginRight: 15
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
                               }}
                             >
-                              <InputPoints
-                                type="number"
-                                min={0}
-                                onChange={e => {
-                                  points = e.target.value;
-                                  if (Number(points) > 0) {
-                                    const hasData =
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key ===
-                                          workload.designationAsSportTrainorAcademicFilePath
-                                      );
-                                    if (hasData) {
-                                      const filtered =
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
                                         sfPointsRemarksInitial?.filter(
                                           item =>
-                                            item.key !==
+                                            item.key ===
                                             workload.designationAsSportTrainorAcademicFilePath
                                         );
-                                      setSfPointsRemarksInitial(filtered);
-                                      if (Number(points) > 0) {
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.designationAsSportTrainorAcademicFilePath
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.designationAsSportTrainorAcademicFilePath!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
                                         setSfPointsRemarksInitial([
-                                          ...filtered!,
                                           {
                                             key: workload.designationAsSportTrainorAcademicFilePath!,
                                             points: points
@@ -1384,94 +1423,94 @@ function RemarksWorkload({
                                         ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([
-                                        {
-                                          key: workload.designationAsSportTrainorAcademicFilePath!,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setSfPointsRemarksInitial(
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key !==
-                                          workload.designationAsSportTrainorAcademicFilePath
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      {workload.designationAsSportTrainorAcademicFilePath1 && (
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          <a
-                            href={
-                              workload.designationAsSportTrainorAcademicFilePath1
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "none",
-                              alignItems: "flex-start",
-                              display: "flex"
-                            }}
-                          >
-                            <ThinText
-                              style={{
-                                color: "white",
-                                fontSize: 12,
-                                backgroundColor: Colors.buttonPrimary,
-                                paddingLeft: 5,
-                                paddingRight: 5,
-                                cursor: "pointer"
-                              }}
-                              onClick={() => {}}
-                            >
-                              Attachment
-                            </ThinText>
-                          </a>
-                          {userContext.role === "OVPAA" && (
-                            <div
-                              style={{
-                                width: 170,
-                                display: "flex",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints
-                                type="number"
-                                min={0}
-                                onChange={e => {
-                                  points = e.target.value;
-                                  if (Number(points) > 0) {
-                                    const hasData =
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key ===
-                                          workload.designationAsSportTrainorAcademicFilePath1
-                                      );
-                                    if (hasData) {
-                                      const filtered =
+                                      setSfPointsRemarksInitial(
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
+                                            workload.designationAsSportTrainorAcademicFilePath
+                                        )
+                                      );
+                                    }
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {workload.designationAsSportTrainorAcademicFilePath1 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={
+                                workload.designationAsSportTrainorAcademicFilePath1
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
                                             workload.designationAsSportTrainorAcademicFilePath1
                                         );
-                                      setSfPointsRemarksInitial(filtered);
-                                      if (Number(points) > 0) {
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.designationAsSportTrainorAcademicFilePath1
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.designationAsSportTrainorAcademicFilePath1!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
                                         setSfPointsRemarksInitial([
-                                          ...filtered!,
                                           {
                                             key: workload.designationAsSportTrainorAcademicFilePath1!,
                                             points: points
@@ -1479,102 +1518,104 @@ function RemarksWorkload({
                                         ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([
-                                        {
-                                          key: workload.designationAsSportTrainorAcademicFilePath1!,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setSfPointsRemarksInitial(
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key !==
-                                          workload.designationAsSportTrainorAcademicFilePath1
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>
-                        Designation as Member of University-Wide AdHoc Committee
-                        Attachment/s:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.memberAdhocFilePath && (
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          <a
-                            href={workload.memberAdhocFilePath}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "none",
-                              alignItems: "flex-start",
-                              display: "flex"
-                            }}
-                          >
-                            <ThinText
-                              style={{
-                                color: "white",
-                                fontSize: 12,
-                                backgroundColor: Colors.buttonPrimary,
-                                paddingLeft: 5,
-                                paddingRight: 5,
-                                cursor: "pointer"
-                              }}
-                              onClick={() => {}}
-                            >
-                              Attachment
-                            </ThinText>
-                          </a>
-                          {userContext.role === "OVPAA" && (
-                            <div
-                              style={{
-                                width: 170,
-                                display: "flex",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints
-                                type="number"
-                                min={0}
-                                onChange={e => {
-                                  points = e.target.value;
-                                  if (Number(points) > 0) {
-                                    const hasData =
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key ===
-                                          workload.memberAdhocFilePath
-                                      );
-                                    if (hasData) {
-                                      const filtered =
+                                      setSfPointsRemarksInitial(
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
+                                            workload.designationAsSportTrainorAcademicFilePath1
+                                        )
+                                      );
+                                    }
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.memberAdhocFilePath && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>
+                          Designation as Member of University-Wide AdHoc
+                          Committee Attachment/s:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.memberAdhocFilePath && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={workload.memberAdhocFilePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
                                             workload.memberAdhocFilePath
                                         );
-                                      setSfPointsRemarksInitial(filtered);
-                                      if (Number(points) > 0) {
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.memberAdhocFilePath
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.memberAdhocFilePath!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
                                         setSfPointsRemarksInitial([
-                                          ...filtered!,
                                           {
                                             key: workload.memberAdhocFilePath!,
                                             points: points
@@ -1582,92 +1623,92 @@ function RemarksWorkload({
                                         ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([
-                                        {
-                                          key: workload.memberAdhocFilePath!,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setSfPointsRemarksInitial(
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key !==
-                                          workload.memberAdhocFilePath
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      {workload.memberAdhocFilePath1 && (
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          <a
-                            href={workload.memberAdhocFilePath1}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "none",
-                              alignItems: "flex-start",
-                              display: "flex"
-                            }}
-                          >
-                            <ThinText
-                              style={{
-                                color: "white",
-                                fontSize: 12,
-                                backgroundColor: Colors.buttonPrimary,
-                                paddingLeft: 5,
-                                paddingRight: 5,
-                                cursor: "pointer"
-                              }}
-                              onClick={() => {}}
-                            >
-                              Attachment
-                            </ThinText>
-                          </a>
-                          {userContext.role === "OVPAA" && (
-                            <div
-                              style={{
-                                width: 170,
-                                display: "flex",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints
-                                type="number"
-                                min={0}
-                                onChange={e => {
-                                  points = e.target.value;
-                                  if (Number(points) > 0) {
-                                    const hasData =
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key ===
-                                          workload.memberAdhocFilePath1
-                                      );
-                                    if (hasData) {
-                                      const filtered =
+                                      setSfPointsRemarksInitial(
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
+                                            workload.memberAdhocFilePath
+                                        )
+                                      );
+                                    }
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {workload.memberAdhocFilePath1 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={workload.memberAdhocFilePath1}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
                                             workload.memberAdhocFilePath1
                                         );
-                                      setSfPointsRemarksInitial(filtered);
-                                      if (Number(points) > 0) {
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.memberAdhocFilePath1
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.memberAdhocFilePath1!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
                                         setSfPointsRemarksInitial([
-                                          ...filtered!,
                                           {
                                             key: workload.memberAdhocFilePath1!,
                                             points: points
@@ -1675,101 +1716,103 @@ function RemarksWorkload({
                                         ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([
-                                        {
-                                          key: workload.memberAdhocFilePath1!,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setSfPointsRemarksInitial(
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key !==
-                                          workload.memberAdhocFilePath1
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </ColumnContainer>
-                  </LevelContainer>
-                  <LevelContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                      <ThinText>
-                        Designation as Academic Adviser Attachment/s:
-                      </ThinText>
-                    </ColumnContainer>
-                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                      {workload.academicAdviseesFilePath && (
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          <a
-                            href={workload.academicAdviseesFilePath}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "none",
-                              alignItems: "flex-start",
-                              display: "flex"
-                            }}
-                          >
-                            <ThinText
-                              style={{
-                                color: "white",
-                                fontSize: 12,
-                                backgroundColor: Colors.buttonPrimary,
-                                paddingLeft: 5,
-                                paddingRight: 5,
-                                cursor: "pointer"
-                              }}
-                              onClick={() => {}}
-                            >
-                              Attachment
-                            </ThinText>
-                          </a>
-                          {userContext.role === "OVPAA" && (
-                            <div
-                              style={{
-                                width: 170,
-                                display: "flex",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints
-                                type="number"
-                                min={0}
-                                onChange={e => {
-                                  points = e.target.value;
-                                  if (Number(points) > 0) {
-                                    const hasData =
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key ===
-                                          workload.academicAdviseesFilePath
-                                      );
-                                    if (hasData) {
-                                      const filtered =
+                                      setSfPointsRemarksInitial(
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
+                                            workload.memberAdhocFilePath1
+                                        )
+                                      );
+                                    }
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.academicAdviseesFilePath && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>
+                          Designation as Academic Adviser Attachment/s:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.academicAdviseesFilePath && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={workload.academicAdviseesFilePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
                                             workload.academicAdviseesFilePath
                                         );
-                                      setSfPointsRemarksInitial(filtered);
-                                      if (Number(points) > 0) {
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.academicAdviseesFilePath
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.academicAdviseesFilePath!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
                                         setSfPointsRemarksInitial([
-                                          ...filtered!,
                                           {
                                             key: workload.academicAdviseesFilePath!,
                                             points: points
@@ -1777,30 +1820,23 @@ function RemarksWorkload({
                                         ]);
                                       }
                                     } else {
-                                      setSfPointsRemarksInitial([
-                                        {
-                                          key: workload.academicAdviseesFilePath!,
-                                          points: points
-                                        }
-                                      ]);
+                                      setSfPointsRemarksInitial(
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.academicAdviseesFilePath
+                                        )
+                                      );
                                     }
-                                  } else {
-                                    setSfPointsRemarksInitial(
-                                      sfPointsRemarksInitial?.filter(
-                                        item =>
-                                          item.key !==
-                                          workload.academicAdviseesFilePath
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </ColumnContainer>
-                  </LevelContainer>
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
                 </ParentLevelContainer>
               </ColumnParentContainer>
               <div

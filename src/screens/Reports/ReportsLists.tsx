@@ -28,15 +28,20 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
             <TrStyled>
               <TdStyled>{item.firstName}</TdStyled>
               <TdStyled>{item.academicRank}</TdStyled>
-              <TdStyled>{item.twlPoints}</TdStyled>
-              <TdStyled>{item.rwlPoints}</TdStyled>
-              <TdStyled>{item.ewlPoints}</TdStyled>
-              <TdStyled>{item.sfwlPoints}</TdStyled>
+              <TdStyled>{item.twlPoints ? item.twlPoints : 0}</TdStyled>
+              <TdStyled>{item.rwlPoints ? item.rwlPoints : 0}</TdStyled>
+              <TdStyled>{item.ewlPoints ? item.ewlPoints : 0}</TdStyled>
+              <TdStyled>{item.sfwlPoints ? item.sfwlPoints : 0}</TdStyled>
               <TdStyled>
-                {+item.twlPoints! +
-                  +item.rwlPoints! +
-                  +item.ewlPoints! +
-                  +item.sfwlPoints!}
+                {item.twlPoints
+                  ? +item.twlPoints!
+                  : 0 + item.rwlPoints!
+                  ? +item.rwlPoints!
+                  : 0 + item.ewlPoints!
+                  ? +item.ewlPoints!
+                  : 0 + item.sfwlPoints!
+                  ? +item.sfwlPoints!
+                  : 0}
               </TdStyled>
             </TrStyled>
           );

@@ -14,7 +14,6 @@ type ReportsScreenProps = {
 };
 
 const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [usersReports, setUsersReports] = useState<User[]>();
 
@@ -66,10 +65,6 @@ const FooterContainer = styled.div`
   align-self: flex-end;
   width: 100%;
   z-index: 1;
-`;
-
-const WorkloadsContainer = styled.div`
-  margin-right: 20%;
 `;
 
 export default ReportsScreen;
