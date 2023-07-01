@@ -156,9 +156,14 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           }
 
           extensionWorkload.ewlPoints =
-            Number(designationExtensionActivityPoints) +
-            Number(resourcePersonPoints) +
-            totalNumberHoursPoints;
+            points +
+            designationActivityPoints +
+            resourcePersonActivityPoints +
+            (!summaryOfHoursFile
+              ? 0
+              : Number(totalNumberHours) * 0.05556 >= 3
+              ? 3
+              : Number((Number(totalNumberHours) * 0.05556).toFixed(2)));
           await SaveExtensionWorkload(extensionWorkload);
           const {
             teachingWorkloads,
