@@ -63,15 +63,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const {
-    user,
-    setHasPendingExtensionWorkload,
-    setHasPendingResearchWorkload,
-    setHasPendingStrategicWorkload,
-    setHasPendingTeachingWorkload
-  } = useContext(UserContext);
+  const { user, actions } = useContext(UserContext);
 
-  const extensionWorkloadHandler = () => {
+  const extensionWorkloadHandler = async () => {
     setExtensionWorkload({
       designationExtensionActivity: [
         leader,
@@ -92,6 +86,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       summaryOfHoursFile
     });
     setIsSubmitting(true);
+    setIsConfirming(false);
   };
 
   useEffect(() => {
@@ -171,15 +166,15 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
-          setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-          setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-          setHasPendingResearchWorkload(researchWorkloads.length > 0);
-          setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+          actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+          actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+          actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          actions.setHasPendingStrategicWorkload(
+            strategicFunctionWorkloads.length > 0
+          );
           setIsSubmitting(false);
           clearStates();
-          if (setHasPendingStrategicWorkload) {
-            navigate("/workload-review", { replace: true });
-          } else if (!strategicFunctionWorkloads) {
+          if (strategicFunctionWorkloads.length === 0) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-review", { replace: true });
@@ -414,10 +409,12 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         researchWorkloads,
         strategicFunctionWorkloads
       } = await GetAllUserPendingWorkloads(user.email);
-      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-      setHasPendingResearchWorkload(researchWorkloads.length > 0);
-      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+      actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingStrategicWorkload(
+        strategicFunctionWorkloads.length > 0
+      );
     })();
   }, []);
 

@@ -45,7 +45,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const { user } = useContext(UserContext);
+  const { user, actions } = useContext(UserContext);
 
   const onSubmit = async () => {
     setTeachingWorkLoad({
@@ -77,13 +77,18 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
+          actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+          actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          actions.setHasPendingStrategicWorkload(
+            strategicFunctionWorkloads.length > 0
+          );
           setIsSubmitting(false);
           clearStates();
-          if (!researchWorkloads) {
+          if (researchWorkloads.length === 0) {
             navigate("/research-workload", { replace: true });
-          } else if (!extensionWorkloads) {
+          } else if (extensionWorkloads.length === 0) {
             navigate("/extension-workload", { replace: true });
-          } else if (!strategicFunctionWorkloads) {
+          } else if (strategicFunctionWorkloads.length === 0) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-review", { replace: true });

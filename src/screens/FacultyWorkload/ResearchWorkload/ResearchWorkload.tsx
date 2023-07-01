@@ -391,9 +391,9 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
-          } else if (!extensionWorkloads) {
+          } else if (extensionWorkloadsPending.length === 0) {
             navigate("/extension-workload", { replace: true });
-          } else if (!strategicFunctionWorkloads) {
+          } else if (strategicFunctionWorkloads.length === 0) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-review", { replace: true });
