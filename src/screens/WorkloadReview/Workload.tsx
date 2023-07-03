@@ -28,6 +28,7 @@ type WorkloadProps = {
   isDataLoading: boolean;
   setIsDataLoading: (value: boolean) => void;
   isWorkloadListReviewing?: boolean;
+  setIsWorkloadBackButtonShow?: (value: boolean) => void;
 };
 function Workload({
   teachingWorkload,
@@ -36,7 +37,8 @@ function Workload({
   allStrategicWorkload,
   isDataLoading,
   setIsDataLoading,
-  isWorkloadListReviewing
+  isWorkloadListReviewing,
+  setIsWorkloadBackButtonShow
 }: WorkloadProps) {
   const userId = localStorage.getItem("userId");
 
@@ -88,6 +90,7 @@ function Workload({
   ]);
 
   const onCloseReviewScreen = () => {
+    setIsWorkloadBackButtonShow && setIsWorkloadBackButtonShow(true);
     setIsReviewing(false);
   };
 
@@ -293,6 +296,10 @@ function Workload({
                               setAccountReviewing(item);
                               setReviewingId(item.id!);
                               setIsReviewing(true);
+                              if (isWorkloadListReviewing) {
+                                setIsWorkloadBackButtonShow &&
+                                setIsWorkloadBackButtonShow(false);
+                              }
                             }}
                           >
                             <ButtonText>Review</ButtonText>

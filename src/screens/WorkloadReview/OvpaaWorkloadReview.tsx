@@ -43,6 +43,8 @@ const OvpaaWorkloadReview = ({
   setIsDataLoading
 }: OvpaaWorkloadReviewProps) => {
   const [isWorkloadListReviewing, setIsWorkloadListReviewing] = useState(false);
+  const [isWorkloadBackButtonShow, setIsWorkloadBackButtonShow] =
+    useState(false);
 
   const [teachingWorkloads, setTeachingWorkloads] = useState<User[]>();
   const [researchWorkloads, setResearchWorkloads] = useState<User[]>();
@@ -61,11 +63,14 @@ const OvpaaWorkloadReview = ({
             isDataLoading={isDataLoading}
             setIsDataLoading={setIsDataLoading}
             isWorkloadListReviewing={isWorkloadListReviewing}
+            setIsWorkloadBackButtonShow={setIsWorkloadBackButtonShow}
           />
-          <FormButton
-            text="Back"
-            onClicked={() => setIsWorkloadListReviewing(false)}
-          />
+          {isWorkloadBackButtonShow && (
+            <FormButton
+              text="Back"
+              onClicked={() => setIsWorkloadListReviewing(false)}
+            />
+          )}
         </SubContainer>
       ) : (
         <>
@@ -85,6 +90,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CAFENR);
                       setStrategicWorkloads(allStrategicWorkload?.CAFENR);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -104,6 +110,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CAS);
                       setStrategicWorkloads(allStrategicWorkload?.CAS);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -123,6 +130,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CCJ);
                       setStrategicWorkloads(allStrategicWorkload?.CCJ);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -142,6 +150,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CED);
                       setStrategicWorkloads(allStrategicWorkload?.CED);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -161,6 +170,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CEIT);
                       setStrategicWorkloads(allStrategicWorkload?.CEIT);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -180,6 +190,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CEMDS);
                       setStrategicWorkloads(allStrategicWorkload?.CEMDS);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -199,6 +210,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CON);
                       setStrategicWorkloads(allStrategicWorkload?.CON);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -218,6 +230,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CSPEAR);
                       setStrategicWorkloads(allStrategicWorkload?.CSPEAR);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -237,6 +250,7 @@ const OvpaaWorkloadReview = ({
                       setExtensionWorkloads(extensionWorkload?.CVMBS);
                       setStrategicWorkloads(allStrategicWorkload?.CVMBS);
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -265,6 +279,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Bacoor Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -292,6 +307,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Carmona Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -319,6 +335,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Cavite City Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -346,6 +363,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Gen. Trias Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -367,6 +385,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Imus Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -390,6 +409,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Silang Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -413,6 +433,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Tanza Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
@@ -436,6 +457,7 @@ const OvpaaWorkloadReview = ({
                         allStrategicWorkload?.["Trece Campus"]
                       );
                       setIsWorkloadListReviewing(true);
+                      setIsWorkloadBackButtonShow(true);
                     }}
                   >
                     <ButtonText>Review</ButtonText>
