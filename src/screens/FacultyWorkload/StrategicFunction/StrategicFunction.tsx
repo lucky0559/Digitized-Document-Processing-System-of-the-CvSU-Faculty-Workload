@@ -1595,6 +1595,13 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           Number(memberUniversity2?.points) +
                           Number(academicAdviser.numberOfStudents) * 0.023
                         ).toFixed(2)}`}
+                      {hasAcademicAdviser &&
+                        hasMemberUniversity &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
                     </Label>
                   </div>
                   <FormButton
