@@ -68,9 +68,10 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           teachingWorkLoad.twlFile
         ) {
           const totalNoOfStudents =
+            parseFloat(teachingWorkLoad.numberOfPreparations) +
+            parseFloat(teachingWorkLoad?.contactHours) +
             parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
-          teachingWorkLoad.totalTeachingWorkload = totalNoOfStudents;
-          console.log(teachingWorkLoad);
+          teachingWorkLoad.totalTeachingWorkload = Number(totalNoOfStudents);
           await SaveTeachingWorkload(teachingWorkLoad);
           const {
             extensionWorkloads,
