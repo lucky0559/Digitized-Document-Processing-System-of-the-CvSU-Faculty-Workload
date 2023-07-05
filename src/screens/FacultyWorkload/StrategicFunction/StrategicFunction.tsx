@@ -669,7 +669,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
             strategicFunctionWorkloads.length > 0
           );
           clearStates();
-          navigate("/workload-review", { replace: true });
+          navigate("/workload-summary", { replace: true });
         } catch (e) {
           console.log(e);
         }

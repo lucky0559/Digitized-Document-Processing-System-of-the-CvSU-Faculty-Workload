@@ -324,20 +324,15 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study3Points +
             study4Points;
           await SaveResearchWorkload(researchWorkLoad!);
-          const { extensionWorkloads } = await GetAllUserPendingWorkloads(
-            user.email
-          );
 
           const {
             teachingWorkloads,
-            extensionWorkloads: extensionWorkloadsPending,
+            extensionWorkloads,
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
           actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-          actions.setHasPendingExtensionWorkload(
-            extensionWorkloadsPending.length > 0
-          );
+          actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
           actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
           actions.setHasPendingStrategicWorkload(
             strategicFunctionWorkloads.length > 0
@@ -345,10 +340,12 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
-          } else if (!extensionWorkloads) {
+          } else if (extensionWorkloads.length === 0) {
             navigate("/extension-workload", { replace: true });
+          } else if (strategicFunctionWorkloads.length === 0) {
+            navigate("/strategic-function-workload", { replace: true });
           } else {
-            navigate("/workload-review", { replace: true });
+            navigate("/workload-summary", { replace: true });
           }
         } else {
           // for external funded
@@ -371,19 +368,15 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study3Points +
             study4Points;
           await SaveResearchWorkload(researchWorkLoad!);
-          const { extensionWorkloads } = await GetAllUserPendingWorkloads(
-            user.email
-          );
+
           const {
             teachingWorkloads,
-            extensionWorkloads: extensionWorkloadsPending,
+            extensionWorkloads,
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
           actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-          actions.setHasPendingExtensionWorkload(
-            extensionWorkloadsPending.length > 0
-          );
+          actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
           actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
           actions.setHasPendingStrategicWorkload(
             strategicFunctionWorkloads.length > 0
@@ -391,12 +384,12 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           clearStates();
           if (isAddStudy) {
             navigate("/research-workload", { replace: true });
-          } else if (extensionWorkloadsPending.length === 0) {
+          } else if (extensionWorkloads.length === 0) {
             navigate("/extension-workload", { replace: true });
           } else if (strategicFunctionWorkloads.length === 0) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
-            navigate("/workload-review", { replace: true });
+            navigate("/workload-summary", { replace: true });
           }
         }
       }
