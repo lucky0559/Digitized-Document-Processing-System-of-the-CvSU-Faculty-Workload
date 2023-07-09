@@ -130,14 +130,15 @@ function Workload({
         }
       }
       if (researchWorkloads.length > 0) {
-        if (
-          !isEmailSent &&
-          remarks &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (!isEmailSent) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
+        }
+        if (
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
           for (let i = 0; researchWorkloads.length > i; i++) {
             await ApproveResearchWorkload(researchWorkloads[i].id);
           }
@@ -152,14 +153,15 @@ function Workload({
         }
       }
       if (extensionWorkloads.length > 0) {
-        if (
-          !isEmailSent &&
-          remarks &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (!isEmailSent) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
+        }
+        if (
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
           for (let i = 0; extensionWorkloads.length > i; i++) {
             await ApproveExtensionWorkload(extensionWorkloads[i].id);
           }
@@ -175,14 +177,15 @@ function Workload({
         }
       }
       if (strategicFunctionWorkloads.length > 0) {
-        if (
-          !isEmailSent &&
-          remarks &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (!isEmailSent) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
+        }
+        if (
+          remarks &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
             await ApproveStrategicFunctionWorkload(
               strategicFunctionWorkloads[i].id
@@ -298,7 +301,7 @@ function Workload({
                               setIsReviewing(true);
                               if (isWorkloadListReviewing) {
                                 setIsWorkloadBackButtonShow &&
-                                setIsWorkloadBackButtonShow(false);
+                                  setIsWorkloadBackButtonShow(false);
                               }
                             }}
                           >

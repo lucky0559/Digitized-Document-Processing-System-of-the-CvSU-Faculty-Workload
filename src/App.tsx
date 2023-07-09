@@ -84,7 +84,7 @@ function App() {
         } else if (strategicFunctionWorkloads.length === 0) {
           navigate("strategic-function-workload", { replace: true });
         } else {
-          navigate("workload-review", { replace: true });
+          navigate("workload-summary", { replace: true });
         }
         setUser(res.data);
       })

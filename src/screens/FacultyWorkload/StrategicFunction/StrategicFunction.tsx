@@ -1595,10 +1595,20 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                           Number(memberUniversity2?.points) +
                           Number(academicAdviser.numberOfStudents) * 0.023
                         ).toFixed(2)}`}
-                      {hasAcademicAdviser &&
+                      {!hasSportsSocio &&
+                        hasAcademicAdviser &&
                         hasMemberUniversity &&
                         `Total Strategic Function Workload = ${(
                           points +
+                          Number(memberUniversity.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasAcademicAdviser &&
+                        hasMemberUniversity &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
                           Number(memberUniversity.points) +
                           Number(academicAdviser.numberOfStudents) * 0.023
                         ).toFixed(2)}`}

@@ -31,6 +31,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
 
   const [user, setUser] = useState<User>();
 
+  const [ovpaaTotalTwlPoints, setOvpaaTotalTwlPoints] = useState(0);
   const [ovpaaTotalRwlPoints, setOvpaaTotalRwlPoints] = useState(0);
   const [ovpaaTotalEwlPoints, setOvpaaTotalEwlPoints] = useState(0);
   const [ovpaaTotalSfPoints, setOvpaaTotalSfPoints] = useState(0);
@@ -54,6 +55,16 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
       setIsDataLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    if (allTeachingWorkloads?.length! > 0) {
+      setOvpaaTotalTwlPoints(
+        Number(allTeachingWorkloads?.[0].remarks?.points) || 0
+      );
+      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
+      setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
+    }
+  }, [allTeachingWorkloads]);
 
   useEffect(() => {
     if (allResearchWorkloads?.length! > 0) {
@@ -437,23 +448,14 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 </RemarksContainer>
                 <PointsContainer>
                   <BoldText>Total Teaching Workload Points: </BoldText>
-                  {allTeachingWorkloads?.length! > 0 ? (
-                    <ThinText>
-                      {allTeachingWorkloads?.[0].remarks?.points}
-                    </ThinText>
-                  ) : (
-                    <ThinText>0</ThinText>
-                  )}
+                  <ThinText>{ovpaaTotalTwlPoints}</ThinText>
                 </PointsContainer>
                 <PointsContainer>
                   <BoldText>Total Research Workload Points: </BoldText>
-
                   <ThinText>{ovpaaTotalRwlPoints}</ThinText>
                 </PointsContainer>
-
                 <PointsContainer>
                   <BoldText>Total Extension Workload Points: </BoldText>
-
                   <ThinText>{ovpaaTotalEwlPoints}</ThinText>
                 </PointsContainer>
                 <PointsContainer>
