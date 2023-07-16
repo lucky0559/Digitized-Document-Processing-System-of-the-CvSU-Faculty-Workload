@@ -115,6 +115,17 @@ const Menu = ({
           </>
         )}
 
+      {user.role === "Department Chairperson" || user.role === "Faculty" ? (
+        <NavButtonContainer>
+          <NavButtonText
+            onClick={() => navigate("/workload-summary", { replace: true })}
+            isActive={location === "/workload-summary"}
+          >
+            Workload Summary
+          </NavButtonText>
+        </NavButtonContainer>
+      ) : null}
+
       {user.role === "Dean" ||
       user.role === "Department Chairperson" ||
       user.role === "OVPAA" ? (
@@ -124,17 +135,6 @@ const Menu = ({
             isActive={location === "/workload-review"}
           >
             Workload Review
-          </NavButtonText>
-        </NavButtonContainer>
-      ) : null}
-
-      {user.role === "Department Chairperson" || user.role === "Faculty" ? (
-        <NavButtonContainer>
-          <NavButtonText
-            onClick={() => navigate("/workload-summary", { replace: true })}
-            isActive={location === "/workload-summary"}
-          >
-            Workload Summary
           </NavButtonText>
         </NavButtonContainer>
       ) : null}
