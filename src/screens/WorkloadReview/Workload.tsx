@@ -169,6 +169,7 @@ function Workload({
           let modified = ewlPointsRemarks;
           for (let i = 0; extensionWorkloads.length > i; i++) {
             if (modified != undefined) {
+              modified![i].key = extensionWorkloads[i].id;
               modified[i].remarks = remarks;
               setEwlPointsRemarks(modified);
             }
@@ -195,6 +196,7 @@ function Workload({
           let modified = sfPointsRemarks;
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
             if (modified != undefined) {
+              modified![i].key = strategicFunctionWorkloads[i].id;
               modified[i].remarks = remarks;
               setSfPointsRemarks(modified);
             }

@@ -62,7 +62,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
         Number(allTeachingWorkloads?.[0].remarks?.points) || 0
       );
       // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
-      setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
+      if (allTeachingWorkloads?.[0].remarks?.remarks?.length! > 0)
+        setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
     }
   }, [allTeachingWorkloads]);
 
@@ -73,8 +74,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
       }, 0);
 
       setOvpaaTotalRwlPoints(total || 0);
-      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
-      setOvpaaRemarks(allResearchWorkloads?.[0].remarks?.remarks!);
+      if (allResearchWorkloads?.[0].remarks?.remarks?.length! > 0)
+        setOvpaaRemarks(allResearchWorkloads?.[0].remarks?.remarks!);
     }
   }, [allResearchWorkloads]);
 
@@ -84,8 +85,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
         return accumulator + Number(object.remarks?.points);
       }, 0);
       setOvpaaTotalEwlPoints(total || 0);
-      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
-      setOvpaaRemarks(allExtensionWorkloads?.[0].remarks?.remarks!);
+      if (allExtensionWorkloads?.[0].remarks?.remarks?.length! > 0)
+        setOvpaaRemarks(allExtensionWorkloads?.[0].remarks?.remarks!);
     }
   }, [allExtensionWorkloads]);
 
@@ -98,7 +99,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
         0
       );
       setOvpaaTotalSfPoints(total || 0);
-      setOvpaaRemarks(allStrategicFunctionWorkloads?.[0].remarks?.remarks!);
+      if (allStrategicFunctionWorkloads?.[0].remarks?.remarks?.length! > 0)
+        setOvpaaRemarks(allStrategicFunctionWorkloads?.[0].remarks?.remarks!);
     }
   }, [allStrategicFunctionWorkloads]);
 
