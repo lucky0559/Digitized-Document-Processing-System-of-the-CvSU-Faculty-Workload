@@ -72,7 +72,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
       const total = allResearchWorkloads?.reduce((accumulator, object) => {
         return accumulator + Number(object.remarks?.points);
       }, 0);
-
+      console.log(allResearchWorkloads);
       setOvpaaTotalRwlPoints(total || 0);
       if (allResearchWorkloads?.[0].remarks?.remarks?.length! > 0)
         setOvpaaRemarks(allResearchWorkloads?.[0].remarks?.remarks!);

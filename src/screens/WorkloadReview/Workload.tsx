@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
@@ -110,7 +110,6 @@ function Workload({
       if (teachingWorkloads.length > 0) {
         if (
           !isEmailSent &&
-          remarks &&
           (user?.role === "Department Chairperson" || user?.role === "Dean")
         ) {
           await SendRemarks(user?.role, reviewingId, remarks);
@@ -131,22 +130,24 @@ function Workload({
       }
       if (researchWorkloads.length > 0) {
         if (!isEmailSent) {
-          await SendRemarks(user?.role, reviewingId, remarks);
+          // await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
         }
-        if (
-          remarks &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
           for (let i = 0; researchWorkloads.length > i; i++) {
             await ApproveResearchWorkload(researchWorkloads[i].id);
           }
         } else if (user?.role === "OVPAA") {
           let modified = rwlPointsRemarks;
+          let points = 0;
           for (let i = 0; researchWorkloads.length > i; i++) {
             modified![i].key = researchWorkloads[i].id;
             modified![i].remarks = remarks;
+            for (let a = 0; modified?.length! > a; a++) {
+              points = points + Number(modified![a].points);
+            }
+            modified![i].points = points.toString();
             setRwlPointsRemarks(modified);
             await OVPAAApproveResearchWorkload(rwlPointsRemarks?.[i]!);
           }
@@ -158,19 +159,21 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         }
-        if (
-          remarks &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
           for (let i = 0; extensionWorkloads.length > i; i++) {
             await ApproveExtensionWorkload(extensionWorkloads[i].id);
           }
         } else if (user?.role === "OVPAA") {
           let modified = ewlPointsRemarks;
+          let points = 0;
           for (let i = 0; extensionWorkloads.length > i; i++) {
             if (modified != undefined) {
               modified![i].key = extensionWorkloads[i].id;
               modified[i].remarks = remarks;
+              for (let a = 0; modified?.length! > a; a++) {
+                points = points + Number(modified![a].points);
+              }
+              modified![i].points = points.toString();
               setEwlPointsRemarks(modified);
             }
             await OVPAAApproveExtensionWorkload(ewlPointsRemarks?.[i]!);
@@ -183,10 +186,7 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         }
-        if (
-          remarks &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
             await ApproveStrategicFunctionWorkload(
               strategicFunctionWorkloads[i].id
@@ -194,10 +194,15 @@ function Workload({
           }
         } else if (user?.role === "OVPAA") {
           let modified = sfPointsRemarks;
+          let points = 0;
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
             if (modified != undefined) {
               modified![i].key = strategicFunctionWorkloads[i].id;
               modified[i].remarks = remarks;
+              for (let a = 0; modified?.length! > a; a++) {
+                points = points + Number(modified![a].points);
+              }
+              modified![i].points = points.toString();
               setSfPointsRemarks(modified);
             }
             await OVPAAApproveStrategicFunctionWorkload(sfPointsRemarks?.[i]!);
@@ -210,8 +215,6 @@ function Workload({
       setIsReviewing(false);
     }
   };
-
-  const onDisapprove = async () => {};
 
   return (
     <Container>

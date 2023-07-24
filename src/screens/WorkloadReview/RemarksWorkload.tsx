@@ -239,12 +239,12 @@ function RemarksWorkload({
                 }}
               >
                 <ColumnContainer style={{ paddingLeft: 90 }}>
-                  <BoldText>TOTAL:</BoldText>
+                  {/* <BoldText>TOTAL:</BoldText> */}
                 </ColumnContainer>
                 <ColumnContainer>
-                  <BoldText>
+                  {/* <BoldText>
                     {Number(workload.totalTeachingWorkload).toFixed(2)}
-                  </BoldText>
+                  </BoldText> */}
                 </ColumnContainer>
               </div>
             </>
@@ -576,10 +576,10 @@ function RemarksWorkload({
                 }}
               >
                 <ColumnContainer style={{ paddingLeft: 90 }}>
-                  <BoldText>TOTAL:</BoldText>
+                  {/* <BoldText>TOTAL:</BoldText> */}
                 </ColumnContainer>
                 <ColumnContainer>
-                  <BoldText>{workload.rwlPoints}</BoldText>
+                  {/* <BoldText>{workload.rwlPoints}</BoldText> */}
                 </ColumnContainer>
               </div>
             </>
@@ -916,10 +916,10 @@ function RemarksWorkload({
                 }}
               >
                 <ColumnContainer style={{ paddingLeft: 90 }}>
-                  <BoldText>TOTAL:</BoldText>
+                  {/* <BoldText>TOTAL:</BoldText> */}
                 </ColumnContainer>
                 <ColumnContainer>
-                  <BoldText>{Number(workload.ewlPoints).toFixed(2)}</BoldText>
+                  {/* <BoldText>{Number(workload.ewlPoints).toFixed(2)}</BoldText> */}
                 </ColumnContainer>
               </div>
             </>
@@ -1846,10 +1846,10 @@ function RemarksWorkload({
                 }}
               >
                 <ColumnContainer style={{ paddingLeft: 90 }}>
-                  <BoldText>TOTAL:</BoldText>
+                  {/* <BoldText>TOTAL:</BoldText> */}
                 </ColumnContainer>
                 <ColumnContainer>
-                  <BoldText>{workload.sfwPoints}</BoldText>
+                  {/* <BoldText>{workload.sfwPoints}</BoldText> */}
                 </ColumnContainer>
               </div>
             </>
