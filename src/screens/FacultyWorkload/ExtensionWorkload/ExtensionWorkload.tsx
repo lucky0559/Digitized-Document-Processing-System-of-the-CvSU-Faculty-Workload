@@ -171,7 +171,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
-          actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+          actions.setHasPendingTeachingWorkload(
+            !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+          );
           actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
           actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
           actions.setHasPendingStrategicWorkload(
@@ -414,7 +416,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         researchWorkloads,
         strategicFunctionWorkloads
       } = await GetAllUserPendingWorkloads(user.email);
-      actions.setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
+      actions.setHasPendingTeachingWorkload(
+        !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+      );
       actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
       actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
       actions.setHasPendingStrategicWorkload(

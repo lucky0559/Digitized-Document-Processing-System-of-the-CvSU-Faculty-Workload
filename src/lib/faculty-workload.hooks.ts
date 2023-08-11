@@ -20,12 +20,25 @@ import { ResearchWorkLoadType } from "../types/ResearchWorkLoad";
 import { StrategicFunctionType } from "../types/StrategicFunction";
 import { TeachingWorkLoadType } from "../types/TeachingWorkload";
 import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
+import { WORKLOAD_STATUS } from "../enums/workloadEnums";
 
 export const SaveTeachingWorkload = async (
-  teachingWorkload: TeachingWorkLoadType
+  teachingWorkload: TeachingWorkLoadType,
+  workloadStatus: number
 ) => {
   const userId = localStorage.getItem("userId");
   const s3 = new ReactS3Client(twlAwsConfig);
+
+  switch (workloadStatus) {
+    case WORKLOAD_STATUS.SAVE:
+      teachingWorkload.isSubmitted = false;
+      break;
+    case WORKLOAD_STATUS.SUBMITTED:
+      teachingWorkload.isSubmitted = true;
+      break;
+    default:
+      break;
+  }
 
   if (
     teachingWorkload.twlFile &&

@@ -9,4 +9,5 @@ export type TeachingWorkLoadType = {
   twlFilePath?: string;
   totalTeachingWorkload?: number;
   remarks?: PointsAndRemarks;
+  isSubmitted?: boolean;
 };

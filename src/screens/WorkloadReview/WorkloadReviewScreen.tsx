@@ -57,13 +57,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
 
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const {
-    user,
-    setHasPendingExtensionWorkload,
-    setHasPendingResearchWorkload,
-    setHasPendingStrategicWorkload,
-    setHasPendingTeachingWorkload
-  } = useContext(UserContext);
+  const { user, actions } = useContext(UserContext);
 
   useEffect(() => {
     if (isDataLoading) {
@@ -149,10 +143,14 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         researchWorkloads,
         strategicFunctionWorkloads
       } = await GetAllUserPendingWorkloads(user.email);
-      setHasPendingTeachingWorkload(teachingWorkloads.length > 0);
-      setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-      setHasPendingResearchWorkload(researchWorkloads.length > 0);
-      setHasPendingStrategicWorkload(strategicFunctionWorkloads.length > 0);
+      actions.setHasPendingTeachingWorkload(
+        !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+      );
+      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingStrategicWorkload(
+        strategicFunctionWorkloads.length > 0
+      );
     })();
   }, []);
 

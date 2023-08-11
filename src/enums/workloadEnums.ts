@@ -1,0 +1,6 @@
+enum WORKLOAD_STATUS {
+  SAVE = 1,
+  SUBMITTED
+}
+
+export { WORKLOAD_STATUS };

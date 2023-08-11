@@ -17,6 +17,7 @@ import {
 import { TeachingWorkLoadType } from "../../../types/TeachingWorkload";
 import { Confirm } from "semantic-ui-react";
 import { UserContext } from "../../../App";
+import { WORKLOAD_STATUS } from "../../../enums/workloadEnums";
 
 type TeachingWorkLoadProps = {
   UseLogout: () => void;
@@ -43,19 +44,35 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   const navigate = useNavigate();
 
+  const [isSaving, setIsSaving] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
 
   const { user, actions } = useContext(UserContext);
 
-  const onSubmit = async () => {
+  const [workloadStatus, setWorkloadStatus] = useState<number>();
+
+  const onSave = async () => {
+    setIsSaving(false);
     setTeachingWorkLoad({
       numberOfPreparations,
       contactHours,
       totalNoOfStudents,
       twlFile
     });
+    setWorkloadStatus(WORKLOAD_STATUS.SAVE);
     setIsSubmitting(true);
+  };
+
+  const onSubmit = async () => {
     setIsConfirming(false);
+    setTeachingWorkLoad({
+      numberOfPreparations,
+      contactHours,
+      totalNoOfStudents,
+      twlFile
+    });
+    setWorkloadStatus(WORKLOAD_STATUS.SUBMITTED);
+    setIsSubmitting(true);
   };
 
   useEffect(() => {
@@ -65,31 +82,37 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           teachingWorkLoad?.contactHours &&
           teachingWorkLoad.numberOfPreparations &&
           teachingWorkLoad.totalNoOfStudents &&
-          teachingWorkLoad.twlFile
+          teachingWorkLoad.twlFile &&
+          workloadStatus
         ) {
           const totalNoOfStudents =
             parseFloat(teachingWorkLoad.numberOfPreparations) +
             parseFloat(teachingWorkLoad?.contactHours) +
             parseFloat(teachingWorkLoad.totalNoOfStudents) * 0.023;
           teachingWorkLoad.totalTeachingWorkload = Number(totalNoOfStudents);
-          await SaveTeachingWorkload(teachingWorkLoad);
+          await SaveTeachingWorkload(teachingWorkLoad, workloadStatus);
           const {
             extensionWorkloads,
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
-          actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-          actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          actions.setHasPendingExtensionWorkload(
+            !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+          );
+          actions.setHasPendingResearchWorkload(
+            !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+          );
           actions.setHasPendingStrategicWorkload(
-            strategicFunctionWorkloads.length > 0
+            !!strategicFunctionWorkloads.length &&
+              strategicFunctionWorkloads[0].isSubmitted
           );
           setIsSubmitting(false);
           clearStates();
-          if (researchWorkloads.length === 0) {
+          if (!!!researchWorkloads.length) {
             navigate("/research-workload", { replace: true });
-          } else if (extensionWorkloads.length === 0) {
+          } else if (!!!extensionWorkloads.length) {
             navigate("/extension-workload", { replace: true });
-          } else if (strategicFunctionWorkloads.length === 0) {
+          } else if (!!!strategicFunctionWorkloads.length) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-summary", { replace: true });
@@ -97,6 +120,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
         }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting]);
 
   const clearStates = () => {
@@ -137,6 +161,13 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   return (
     <MainContainer>
+      <Confirm
+        open={isSaving}
+        onCancel={() => setIsSaving(false)}
+        onConfirm={onSave}
+        content="Confirm saving of workload?"
+        size="large"
+      />
       <Confirm
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
@@ -208,18 +239,38 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             <Label style={{ fontWeight: "bold" }}>
               Total Teaching Workload = {points.toFixed(2).toString()}
             </Label>
-            <FormButton
-              text="Submit"
-              onClicked={() => setIsConfirming(true)}
-              isSubmitting={isSubmitting}
-              disabled={
-                numberOfPreparations.length <= 0 ||
-                contactHours.length <= 0 ||
-                totalNoOfStudents.length <= 0 ||
-                twlFile?.name.length! <= 0 ||
-                twlFile?.name === undefined
-              }
-            ></FormButton>
+            <div>
+              <FormButton
+                text="Save"
+                onClicked={() => setIsSaving(true)}
+                isSubmitting={
+                  isSubmitting && workloadStatus === WORKLOAD_STATUS.SAVE
+                }
+                disabled={
+                  numberOfPreparations.length <= 0 ||
+                  contactHours.length <= 0 ||
+                  totalNoOfStudents.length <= 0 ||
+                  twlFile?.name.length! <= 0 ||
+                  twlFile?.name === undefined ||
+                  isSubmitting
+                }
+              ></FormButton>
+              <FormButton
+                text="Submit"
+                onClicked={() => setIsConfirming(true)}
+                isSubmitting={
+                  isSubmitting && workloadStatus === WORKLOAD_STATUS.SUBMITTED
+                }
+                disabled={
+                  numberOfPreparations.length <= 0 ||
+                  contactHours.length <= 0 ||
+                  totalNoOfStudents.length <= 0 ||
+                  twlFile?.name.length! <= 0 ||
+                  twlFile?.name === undefined ||
+                  isSubmitting
+                }
+              ></FormButton>
+            </div>
           </ButtonContainer>
         </Container>
       </BodyContainer>
