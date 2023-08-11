@@ -1,4 +1,5 @@
 export type User = {
+  id?: string;
   workloadId?: string;
   username: string;
   email: string;
@@ -25,6 +26,7 @@ export type User = {
   remarks?: string;
   ewlPoints?: number;
   rwlPoints?: number;
-  sfwlPoints?: number;
+  sfwPoints?: number;
   twlPoints?: number;
+  status?: string;
 };

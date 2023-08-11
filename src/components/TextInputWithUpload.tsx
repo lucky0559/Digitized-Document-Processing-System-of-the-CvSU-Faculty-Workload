@@ -4,7 +4,7 @@ import UploadFileButton from "./UploadFileButton";
 
 type TextInputWithUploadProps = {
   inputLabel: string;
-  uploadLabel: string;
+  uploadLabel?: string;
   onChangeTextInput: (value: string) => void;
   val?: string;
   onFileSelect: (file?: File) => void;
@@ -40,6 +40,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   padding-top: 30px;
+  margin-left: 35px;
 `;
 
 const Label = styled.label`
@@ -56,6 +57,7 @@ const InputContainer = styled.div`
   display: flex;
   align-items: start;
   justify-content: flex-start;
+  width: 50%;
 `;
 
 const UploadContainer = styled.div`
@@ -65,6 +67,7 @@ const UploadContainer = styled.div`
 
 const Input = styled.input`
   margin-left: 42px;
+  width: 100%;
 `;
 
 export default TextInputWithUpload;

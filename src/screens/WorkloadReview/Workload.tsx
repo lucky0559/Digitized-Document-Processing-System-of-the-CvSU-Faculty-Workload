@@ -1,9 +1,24 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import CheckboxWorkload from "../../components/CheckboxWorkload";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import { User } from "../../types/User";
+import { GetUser } from "../../lib/user.hooks";
+import _ from "lodash";
+import {
+  ApproveExtensionWorkload,
+  ApproveResearchWorkload,
+  ApproveStrategicFunctionWorkload,
+  ApproveTeachingWorkload,
+  OVPAAApproveExtensionWorkload,
+  OVPAAApproveResearchWorkload,
+  OVPAAApproveStrategicFunctionWorkload,
+  OVPAAApproveTeachingWorkload,
+  SendRemarks,
+  getAllPendingWorkloadByIdAndCurrentProcessRole
+} from "../../lib/faculty-workload.hooks";
+import RemarksWorkload, { PointsAndRemarks } from "./RemarksWorkload";
+import FormButton from "../../components/FormButton";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -11,166 +26,371 @@ type WorkloadProps = {
   extensionWorkload?: User[];
   allStrategicWorkload?: User[];
   isDataLoading: boolean;
+  setIsDataLoading: (value: boolean) => void;
+  isWorkloadListReviewing?: boolean;
+  setIsWorkloadBackButtonShow?: (value: boolean) => void;
 };
 function Workload({
   teachingWorkload,
   researchWorkload,
   extensionWorkload,
   allStrategicWorkload,
-  isDataLoading
+  isDataLoading,
+  setIsDataLoading,
+  isWorkloadListReviewing,
+  setIsWorkloadBackButtonShow
 }: WorkloadProps) {
+  const userId = localStorage.getItem("userId");
+
+  const [user, setUser] = useState<User>();
+
+  const [users, setUsers] = useState<User[]>();
+
+  const [isReviewing, setIsReviewing] = useState(false);
+
+  const [accountReviewing, setAccountReviewing] = useState<User>();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [reviewingId, setReviewingId] = useState("");
+
+  const [remarks, setRemarks] = useState("");
+
+  const [twlPointsRemarks, setTwlPointsRemarks] = useState<PointsAndRemarks>();
+  const [rwlPointsRemarks, setRwlPointsRemarks] =
+    useState<PointsAndRemarks[]>();
+  const [ewlPointsRemarks, setEwlPointsRemarks] =
+    useState<PointsAndRemarks[]>();
+  const [sfPointsRemarks, setSfPointsRemarks] = useState<PointsAndRemarks[]>();
+
+  useEffect(() => {
+    if (!isReviewing) {
+      (async () => {
+        setUser(await GetUser(userId!));
+        const data1 = Array.prototype.concat(
+          teachingWorkload,
+          researchWorkload
+        );
+        const data2 = Array.prototype.concat(
+          extensionWorkload,
+          allStrategicWorkload
+        );
+        const mergeData = Array.prototype.concat(data1, data2);
+        const reduceData = _.uniqBy(mergeData, "email");
+        setUsers(reduceData);
+      })();
+    }
+  }, [
+    teachingWorkload,
+    researchWorkload,
+    extensionWorkload,
+    allStrategicWorkload,
+    userId,
+    isReviewing
+  ]);
+
+  const onCloseReviewScreen = () => {
+    setIsWorkloadBackButtonShow && setIsWorkloadBackButtonShow(true);
+    setIsReviewing(false);
+  };
+
+  const onApprove = async () => {
+    if (user?.role !== null && reviewingId) {
+      setIsSubmitting(true);
+      let isEmailSent = false;
+      const {
+        teachingWorkloads,
+        researchWorkloads,
+        extensionWorkloads,
+        strategicFunctionWorkloads
+      } = await getAllPendingWorkloadByIdAndCurrentProcessRole(
+        reviewingId,
+        user?.role!
+      );
+      if (teachingWorkloads.length > 0) {
+        if (
+          !isEmailSent &&
+          (user?.role === "Department Chairperson" || user?.role === "Dean")
+        ) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        } else if (user?.role === "OVPAA") {
+          let modified = twlPointsRemarks;
+          if (modified != undefined) {
+            modified.remarks = remarks;
+            setTwlPointsRemarks(modified);
+          }
+          await OVPAAApproveTeachingWorkload(twlPointsRemarks!);
+        }
+        for (let i = 0; teachingWorkloads.length > i; i++) {
+          isEmailSent = true;
+          await ApproveTeachingWorkload(teachingWorkloads[i].id);
+        }
+      }
+      if (researchWorkloads.length > 0) {
+        if (!isEmailSent) {
+          // await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        }
+        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
+          for (let i = 0; researchWorkloads.length > i; i++) {
+            await ApproveResearchWorkload(researchWorkloads[i].id);
+          }
+        } else if (user?.role === "OVPAA") {
+          let modified = rwlPointsRemarks;
+          let points = 0;
+          for (let i = 0; researchWorkloads.length > i; i++) {
+            modified![i].key = researchWorkloads[i].id;
+            modified![i].remarks = remarks;
+            for (let a = 0; modified?.length! > a; a++) {
+              points = points + Number(modified![a].points);
+            }
+            modified![i].points = points.toString();
+            setRwlPointsRemarks(modified);
+            await OVPAAApproveResearchWorkload(rwlPointsRemarks?.[i]!);
+          }
+        }
+      }
+      if (extensionWorkloads.length > 0) {
+        if (!isEmailSent) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        }
+        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
+          for (let i = 0; extensionWorkloads.length > i; i++) {
+            await ApproveExtensionWorkload(extensionWorkloads[i].id);
+          }
+        } else if (user?.role === "OVPAA") {
+          let modified = ewlPointsRemarks;
+          let points = 0;
+          for (let i = 0; extensionWorkloads.length > i; i++) {
+            if (modified != undefined) {
+              modified![i].key = extensionWorkloads[i].id;
+              modified[i].remarks = remarks;
+              for (let a = 0; modified?.length! > a; a++) {
+                points = points + Number(modified![a].points);
+              }
+              modified![i].points = points.toString();
+              setEwlPointsRemarks(modified);
+            }
+            await OVPAAApproveExtensionWorkload(ewlPointsRemarks?.[i]!);
+          }
+        }
+      }
+      if (strategicFunctionWorkloads.length > 0) {
+        if (!isEmailSent) {
+          await SendRemarks(user?.role, reviewingId, remarks);
+          isEmailSent = true;
+          setRemarks("");
+        }
+        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
+          for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
+            await ApproveStrategicFunctionWorkload(
+              strategicFunctionWorkloads[i].id
+            );
+          }
+        } else if (user?.role === "OVPAA") {
+          let modified = sfPointsRemarks;
+          let points = 0;
+          for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
+            if (modified != undefined) {
+              modified![i].key = strategicFunctionWorkloads[i].id;
+              modified[i].remarks = remarks;
+              for (let a = 0; modified?.length! > a; a++) {
+                points = points + Number(modified![a].points);
+              }
+              modified![i].points = points.toString();
+              setSfPointsRemarks(modified);
+            }
+            await OVPAAApproveStrategicFunctionWorkload(sfPointsRemarks?.[i]!);
+          }
+        }
+      }
+      setReviewingId("");
+      setIsDataLoading(true);
+      setIsSubmitting(false);
+      setIsReviewing(false);
+    }
+  };
+
   return (
     <Container>
-      <Table>
-        <tr>
-          <ThStyle>Name</ThStyle>
-          <ThStyle>Academic Rank</ThStyle>
-          <ThStyle>Workload Type</ThStyle>
-          <ThStyle>Approved/Disapproved with Remarks</ThStyle>
-        </tr>
-        {isDataLoading && (
+      {isReviewing && (
+        <>
+          <RemarksWorkload
+            user={accountReviewing!}
+            setRemarks={setRemarks}
+            setTwlPointsRemarks={setTwlPointsRemarks}
+            setRwlPointsRemarks={setRwlPointsRemarks}
+            setEwlPointsRemarks={setEwlPointsRemarks}
+            setSfPointsRemarks={setSfPointsRemarks}
+            rwlPointsRemarks={rwlPointsRemarks}
+          />
           <div
             style={{
-              position: "absolute",
-              marginLeft: "27%",
-              marginTop: "10%"
+              margin: 15,
+              display: "flex",
+              justifyContent: "space-between"
             }}
           >
-            <LoadingSpinner color={Colors.primary} />
+            <FormButton text="Back" onClicked={onCloseReviewScreen} />
+            <div style={{ marginRight: 100 }}>
+              <FormButton
+                text="Approve"
+                onClicked={onApprove}
+                isSubmitting={isSubmitting}
+              />
+            </div>
           </div>
+        </>
+      )}
+      {isDataLoading && (!isReviewing || !isWorkloadListReviewing) && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      )}
+
+      {(teachingWorkload?.length! > 0 ||
+        researchWorkload?.length! > 0 ||
+        extensionWorkload?.length! > 0 ||
+        allStrategicWorkload?.length! > 0) &&
+        !isDataLoading &&
+        !isReviewing &&
+        users && (
+          <Table>
+            <TableCaption>
+              {user?.role === "Department Chairperson"
+                ? user.department
+                : user?.role === "OVPAA"
+                ? ""
+                : user?.campus}
+            </TableCaption>
+            <tbody>
+              <tr>
+                <ThStyle>Name of Faculty</ThStyle>
+                <ThStyle>Academic Rank</ThStyle>
+                <ThStyle>Status</ThStyle>
+                <ThStyle></ThStyle>
+              </tr>
+
+              {!isDataLoading &&
+                users &&
+                users?.map((item, index) => {
+                  return (
+                    item && (
+                      <tr key={index}>
+                        <TdStyle>
+                          <TdText>{item.firstName}</TdText>
+                        </TdStyle>
+                        <TdStyle>
+                          <TdText>{item.academicRank}</TdText>
+                        </TdStyle>
+                        <TdStyle>
+                          <TdText>In-Progress</TdText>
+                        </TdStyle>
+                        <TdStyle>
+                          <Button
+                            onClick={() => {
+                              setAccountReviewing(item);
+                              setReviewingId(item.id!);
+                              setIsReviewing(true);
+                              if (isWorkloadListReviewing) {
+                                setIsWorkloadBackButtonShow &&
+                                  setIsWorkloadBackButtonShow(false);
+                              }
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </TdStyle>
+                      </tr>
+                    )
+                  );
+                  // }
+                })}
+            </tbody>
+          </Table>
         )}
 
-        {!isDataLoading &&
-          teachingWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>Teaching Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    twlFilePath={item.twlFilePath}
-                    workloadId={item.workloadId}
-                    workloadType="Teaching Workload"
-                  />
-                </TdStyle>
-              </tr>
-            );
-          })}
-        {!isDataLoading &&
-          researchWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>Research Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    rwlFilePath={item.rwlFilePath}
-                    rwlFilePath1={item.rwlFilePath1}
-                    rwlFilePath2={item.rwlFilePath2}
-                    workloadType="Research Workload"
-                    workloadId={item.workloadId}
-                  />
-                </TdStyle>
-              </tr>
-            );
-          })}
-        {!isDataLoading &&
-          extensionWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>Extension Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    extensionActivityFilePath={item.extensionActivityFilePath}
-                    certificateFilePath={item.certificateFilePath}
-                    summaryOfHoursFilePath={item.summaryOfHoursFilePath}
-                    workloadType="Extension Workload"
-                    workloadId={item.workloadId}
-                  />
-                </TdStyle>
-              </tr>
-            );
-          })}
-        {!isDataLoading &&
-          allStrategicWorkload?.map((item, index) => {
-            return (
-              <tr>
-                <TdStyle>
-                  <TdText key={index}>{item.firstName}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>{item.academicRank}</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <TdText key={index}>Strategic Function Workload</TdText>
-                </TdStyle>
-                <TdStyle>
-                  <CheckboxWorkload
-                    approvedUniversityDesignationFilePath={
-                      item.approvedUniversityDesignationFilePath
-                    }
-                    approvedCollegeCampusDesignationFilePath={
-                      item.approvedCollegeCampusDesignationFilePath
-                    }
-                    approvedDepartmentDesignationFilePath={
-                      item.approvedDepartmentDesignationFilePath
-                    }
-                    coachAdviserCertificateFilePath={
-                      item.coachAdviserCertificateFilePath
-                    }
-                    approvedDesignationFilePath={
-                      item.approvedDesignationFilePath
-                    }
-                    listOfAdviseesFilePath={item.listOfAdviseesFilePath}
-                    workloadType="Strategic Function Workload"
-                    workloadId={item.workloadId}
-                  />
-                </TdStyle>
-              </tr>
-            );
-          })}
-      </Table>
+      {!isDataLoading &&
+        teachingWorkload?.length! <= 0 &&
+        researchWorkload?.length! <= 0 &&
+        extensionWorkload?.length! <= 0 &&
+        allStrategicWorkload?.length! <= 0 && (
+          <div>
+            <ButtonText>No data.</ButtonText>
+          </div>
+        )}
     </Container>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 90%;
+`;
 
-const Table = styled.table``;
+const Table = styled.table`
+  width: 100%;
+  border: 2px solid black;
+  height: auto;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 20px 0;
+`;
 
 const TdText = styled.text`
-  // align-text: center;
+  font-family: HurmeGeometricSans3;
 `;
 
 const TdStyle = styled.td`
   text-align: center;
-  padding-bottom: 100px;
+  padding-bottom: 20px;
 `;
 
 const ThStyle = styled.th`
   padding: 15px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const Button = styled.div`
+  margin-left: 10px;
+  width: 118px;
+  height: 23px;
+  border-radius: 10px;
+  background-color: ${Colors.textFieldBackground};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ButtonText = styled.label`
+  font-family: HurmeGeometricSans3;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TableCaption = styled.caption`
+  font-size: 20px;
+  font-weight: bold;
+  font-family: HurmeGeometricSans3;
 `;
 
 export default Workload;

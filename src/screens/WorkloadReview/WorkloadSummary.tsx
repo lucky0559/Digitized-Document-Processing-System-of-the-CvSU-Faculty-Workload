@@ -36,7 +36,7 @@ type WorkloadReviewScreenProps = {
   UseLogout: () => void;
 };
 
-const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
+const WorkloadSummary = ({ UseLogout }: WorkloadReviewScreenProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const [allTeachingWorkload, setAllTeachingWorkload] = useState<User[]>();
@@ -171,58 +171,10 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         </div>
         <BodyContainer>
           <ScreenTitleContainer>
-            <ScreenTitle title="Workload Review" />
+            <ScreenTitle title="Workload Summary" />
           </ScreenTitleContainer>
           <WorkloadsContainer>
-            {!isDataLoading ? (
-              user?.role === "Faculty" ? (
-                <ReviewFacultyScreen userEmail={user?.email} />
-              ) : user?.role === "OVPAA" ? (
-                <OvpaaWorkloadReview
-                  teachingWorkload={ovpaaTeachingWorkloads}
-                  researchWorkload={ovpaaResearchWorkloads}
-                  extensionWorkload={ovpaaExtensionWorkloads}
-                  allStrategicWorkload={ovpaaStrategicWorkloads}
-                  isDataLoading={isDataLoading}
-                  setIsDataLoading={setIsDataLoading}
-                />
-              ) : !isDataLoading &&
-                (allTeachingWorkload ||
-                  allResearchWorkload ||
-                  allExtensionWorkload ||
-                  allStrategicWorkload) ? (
-                <Workload
-                  teachingWorkload={allTeachingWorkload}
-                  researchWorkload={allResearchWorkload}
-                  extensionWorkload={allExtensionWorkload}
-                  allStrategicWorkload={allStrategicWorkload}
-                  isDataLoading={isDataLoading}
-                  setIsDataLoading={setIsDataLoading}
-                />
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 30
-                  }}
-                >
-                  <LoadingSpinner color={Colors.primary} />
-                </div>
-              )
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 30
-                }}
-              >
-                <LoadingSpinner color={Colors.primary} />
-              </div>
-            )}
+            <ReviewFacultyScreen userEmail={user?.email} />
           </WorkloadsContainer>
         </BodyContainer>
       </div>
@@ -272,4 +224,4 @@ const ScreenTitleContainer = styled.div`
   }
 `;
 
-export default WorkloadReviewScreen;
+export default WorkloadSummary;

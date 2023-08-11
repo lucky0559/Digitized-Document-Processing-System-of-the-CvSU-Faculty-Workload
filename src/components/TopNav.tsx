@@ -35,7 +35,7 @@ const Container = styled.div`
   flex-direction: row;
   display: flex;
   justify-content: space-between;
-  position: relative;
+  position: fixed;
   z-index: 1;
 `;
 

@@ -5,32 +5,34 @@ import Colors from "../constants/Colors";
 
 type ProfileTabProps = {
   isProfileOpen: boolean;
+  UseLogout: () => void;
+  isAdmin?: boolean;
 };
 
-const ProfileTab = ({ isProfileOpen }: ProfileTabProps) => {
+const ProfileTab = ({ isProfileOpen, UseLogout, isAdmin }: ProfileTabProps) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-    navigate("/");
+    UseLogout();
   };
 
-  window.setTimeout(() => {
-    document.getElementById("container")!.style.visibility = "visible";
-  }, 5000);
+  // window.setTimeout(() => {
+  //   document.getElementById("container")!.style.visibility = "visible";
+  // }, 5000);
 
   return (
     <Container
       id="container"
-      style={{ visibility: "hidden" }}
+      // style={{ visibility: "hidden" }}
       isProfileOpen={isProfileOpen}
     >
-      <NavButtonContainer
-        onClick={() => navigate("/profile", { replace: true })}
-      >
-        <NavButtonText isActive={true}>Profile</NavButtonText>
-      </NavButtonContainer>
+      {!isAdmin && (
+        <NavButtonContainer
+          onClick={() => navigate("/profile", { replace: true })}
+        >
+          <NavButtonText isActive={true}>Profile</NavButtonText>
+        </NavButtonContainer>
+      )}
       <NavButtonContainer onClick={logoutHandler}>
         <NavButtonText isActive={true}>Logout</NavButtonText>
       </NavButtonContainer>

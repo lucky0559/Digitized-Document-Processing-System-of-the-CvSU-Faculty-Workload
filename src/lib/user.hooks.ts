@@ -70,3 +70,35 @@ export const ChangePassword = async (
   );
   return { data };
 };
+
+export const ChangeUserRole = async (id: string, role: string) => {
+  const { data } = await axios.patch(`user/${id}/${role}/change-role`);
+  return { data };
+};
+
+export const GetAllUser = async () => {
+  const { data } = await axios.get("/user");
+  return { data };
+};
+
+export const SendResetPasswordLink = async (email: string) => {
+  const { data } = await axios.post(`user/${email}/reset-password`);
+  return { data };
+};
+
+export const FindUserByPasswordCode = async (passwordCode: string) => {
+  const { data: user } = await axios.get(
+    `user/${passwordCode}/find-by-passwordResetCode`
+  );
+  return { user };
+};
+
+export const ResetChangePassword = async (
+  username: string,
+  password: string
+) => {
+  const { data } = await axios.patch(
+    `user/${username}/${password}/reset-change-password`
+  );
+  return { data };
+};

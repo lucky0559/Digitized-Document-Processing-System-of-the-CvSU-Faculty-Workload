@@ -9,8 +9,11 @@ import { GetTotalWorkloadPoints } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
 import ReportsLists from "./ReportsLists";
 
-const ReportsScreen = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+type ReportsScreenProps = {
+  UseLogout: () => void;
+};
+
+const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [usersReports, setUsersReports] = useState<User[]>();
 
@@ -32,7 +35,7 @@ const ReportsScreen = () => {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Reports" />
         <ReportsLists usersReports={usersReports} />
@@ -55,14 +58,14 @@ const BodyContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-top: 50px;
 `;
 
 const FooterContainer = styled.div`
   margin-top: auto;
-`;
-
-const WorkloadsContainer = styled.div`
-  margin-right: 20%;
+  align-self: flex-end;
+  width: 100%;
+  z-index: 1;
 `;
 
 export default ReportsScreen;

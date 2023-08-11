@@ -22,7 +22,11 @@ import { ESignature } from "../../types/ESignature";
 import { User } from "../../types/User";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-function Profile() {
+type ProfileProps = {
+  UseLogout: () => void;
+};
+
+function Profile({ UseLogout }: ProfileProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const userId = localStorage.getItem("userId");
@@ -137,7 +141,7 @@ function Profile() {
           setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
         }
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
+      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         {isLoading ? (
           <LoadingSpinner color={Colors.primary} />
@@ -180,7 +184,41 @@ function Profile() {
               </DropDownContainer>
               <DropDownContainer>
                 <Dropdown
-                  option={DROPDOWN_LISTS.DEPARTMENT}
+                  option={
+                    editedUser!.campus === "Bacoor Campus"
+                      ? DROPDOWN_LISTS.BACOOR_DEPARTMENT
+                      : editedUser!.campus === "Carmona Campus"
+                      ? DROPDOWN_LISTS.CARMONA_DEPARTMENT
+                      : editedUser!.campus === "Cavite City Campus"
+                      ? DROPDOWN_LISTS.CAVITE_CITY_DEPARTMENT
+                      : editedUser!.campus === "Gen. Trias Campus"
+                      ? DROPDOWN_LISTS.GEN_TRIAS_DEPARTMENT
+                      : editedUser!.campus === "Imus Campus"
+                      ? DROPDOWN_LISTS.IMUS_DEPARTMENT
+                      : editedUser!.campus === "Silang Campus"
+                      ? DROPDOWN_LISTS.SILANG_DEPARTMENT
+                      : editedUser!.campus === "Tanza Campus"
+                      ? DROPDOWN_LISTS.TANZA_DEPARTMENT
+                      : editedUser!.campus === "Trece Campus"
+                      ? DROPDOWN_LISTS.TRECE_DEPARTMENT
+                      : editedUser!.campus === "CAFENR_COLLEGE"
+                      ? DROPDOWN_LISTS.CAFENR_COLLEGE
+                      : editedUser!.campus === "CAS_COLLEGE"
+                      ? DROPDOWN_LISTS.CAS_COLLEGE
+                      : editedUser!.campus === "CCJ_COLLEGE"
+                      ? DROPDOWN_LISTS.CCJ_COLLEGE
+                      : editedUser!.campus === "CED_COLLEGE"
+                      ? DROPDOWN_LISTS.CED_COLLEGE
+                      : editedUser!.campus === "CEIT_COLLEGE"
+                      ? DROPDOWN_LISTS.CEIT_COLLEGE
+                      : editedUser!.campus === "CEMDS_COLLEGE"
+                      ? DROPDOWN_LISTS.CEMDS_COLLEGE
+                      : editedUser!.campus === "CON_COLLEGE"
+                      ? DROPDOWN_LISTS.CON_COLLEGE
+                      : editedUser!.campus === "CSPEAR_COLLEGE"
+                      ? DROPDOWN_LISTS.CSPEAR_COLLEGE
+                      : DROPDOWN_LISTS.CVMBS_COLLEGE
+                  }
                   label="Department"
                   onSelect={departmentHandler}
                   val={editedDepartment ? editedDepartment : user?.department}
@@ -394,7 +432,7 @@ function Profile() {
               </DetailContainer>
             </UserDetailContainer>
             <ButtonsContainer>
-              {hasESignature ? (
+              {/* {hasESignature ? (
                 <ButtonStyled>
                   {isSubmitting ? (
                     <LoadingSpinner color={Colors.primary} />
@@ -422,7 +460,7 @@ function Profile() {
                     Upload E-Signature
                   </ButtonText>
                 </ButtonStyled>
-              )}
+              )} */}
               <ButtonStyled onClick={() => setIsChangingPassword(true)}>
                 <ButtonText>Change Password</ButtonText>
               </ButtonStyled>

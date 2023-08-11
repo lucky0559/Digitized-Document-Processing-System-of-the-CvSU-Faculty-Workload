@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import UploadFileButton from "../../../components/UploadFileButton";
 import FormButton from "../../../components/FormButton";
-import Colors from "../../../constants/Colors";
-import { WorkloadType } from "../../../constants/Strings";
 import { StrategicFunctionType } from "../../../types/StrategicFunction";
-import { useNavigate } from "react-router";
-import { SaveStrategicFunctionWorkload } from "../../../lib/faculty-workload.hooks";
+import {
+  GetAllUserPendingWorkloads,
+  SaveStrategicFunctionWorkload
+} from "../../../lib/faculty-workload.hooks";
 import TopNav from "../../../components/TopNav";
 import Menu from "../../../components/Menu";
 import ProfileTab from "../../../components/ProfileTab";
 import ScreenTitle from "../../../components/ScreenTitle";
 import StrategicFunction1 from "./StrategicFunction1";
 import StrategicFunction2 from "./StrategicFunction2";
+import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
+import { useNavigate } from "react-router-dom";
+import { Confirm } from "semantic-ui-react";
+import Footer from "../../../components/Footer";
+import { UserContext } from "../../../App";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -25,67 +29,97 @@ export type DesignationWithPoints = {
   file?: File;
 };
 
+type AcademicAdviserType = {
+  numberOfStudents?: string;
+  file?: File;
+};
+
 export type Designation = {
   title?: string;
   file?: File;
 };
 
-const StrategicFunction = () => {
+type StrategicFunctionProps = {
+  UseLogout: () => void;
+};
+
+const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const [strategicFunctionWorkload, setStrategicFunctionWorkload] =
     useState<StrategicFunctionType>();
 
-  const navigate = useNavigate();
+  const [points, setPoints] = useState(0);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // POINTS FULLFILL FOR UNIVERSITY WORKLOAD
+  const [
+    isDesignationUniversity1Fullfill,
+    setIsDesignationUniversity1Fullfill
+  ] = useState(false);
+  const [
+    isDesignationUniversity2Fullfill,
+    setIsDesignationUniversity2Fullfill
+  ] = useState(false);
+  const [
+    isDesignationUniversity3Fullfill,
+    setIsDesignationUniversity3Fullfill
+  ] = useState(false);
+  const [
+    isDesignationUniversity4Fullfill,
+    setIsDesignationUniversity4Fullfill
+  ] = useState(false);
+
+  // POINTS FULLFILL FOR COLLEGE/CAMPUS WORKLOAD
+  const [
+    isDesignationCollegeCampus1Fullfill,
+    setIsDesignationCollegeCampus1Fullfill
+  ] = useState(false);
+  const [
+    isDesignationCollegeCampus2Fullfill,
+    setIsDesignationCollegeCampus2Fullfill
+  ] = useState(false);
+  const [
+    isDesignationCollegeCampus3Fullfill,
+    setIsDesignationCollegeCampus3Fullfill
+  ] = useState(false);
+  const [
+    isDesignationCollegeCampus4Fullfill,
+    setIsDesignationCollegeCampus4Fullfill
+  ] = useState(false);
+
+  // POINTS FULLFILL FOR DEPARTMENT WORKLOAD
+  const [
+    isDesignationDepartment1Fullfill,
+    setIsDesignationDepartment1Fullfill
+  ] = useState(false);
+  const [
+    isDesignationDepartment2Fullfill,
+    setIsDesignationDepartment2Fullfill
+  ] = useState(false);
+  const [
+    isDesignationDepartment3Fullfill,
+    setIsDesignationDepartment3Fullfill
+  ] = useState(false);
+  const [
+    isDesignationDepartment4Fullfill,
+    setIsDesignationDepartment4Fullfill
+  ] = useState(false);
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
 
-  const [
-    designationAsSportTrainorAcademic,
-    setDesignationAsSportTrainorAcademic
-  ] = useState<string | undefined>("");
-  const [designationAsMemberOfAdhoc, setDesignationAsMemberOfAdhoc] = useState<
-    string | undefined
-  >("");
-  const [totalOfAcademicAdvisees, setTotalOfAcademicAdvisees] = useState<
-    string | undefined
-  >("");
-  // const [
-  //   approvedUniversityDesignationFile,
-  //   setApprovedUniversityDesignationFile
-  // ] = useState<File[]>();
-  const [
-    customApprovedUniversityDesignation,
-    setCustomApprovedUniversityDesignation
-  ] = useState<Designation>();
-  const approvedCollegeCampusDesignationFile: File[] = [];
-  const [
-    customApprovedCollegeCampusDesignationFile,
-    setCustomApprovedCollegeCampusDesignationFile
-  ] = useState<File>();
-  const approvedDepartmentDesignationFile: File[] = [];
-  const [
-    customApprovedDepartmentDesignationFile,
-    setCustomApprovedDepartmentDesignationFile
-  ] = useState<File>();
   const [sportsSocio, setSportsSocio] = useState<DesignationWithPoints>();
+  const [sportsSocio1, setSportsSocio1] = useState<DesignationWithPoints>();
+  const [sportsSocio2, setSportsSocio2] = useState<DesignationWithPoints>();
   const [memberUniversity, setMemberUniversity] =
     useState<DesignationWithPoints>();
-  const [academicAdviser, setAcademicAdviser] =
+  const [memberUniversity1, setMemberUniversity1] =
     useState<DesignationWithPoints>();
-  const [coachAdviserCertificateFile, setCoachAdviserCertificateFile] =
-    useState<File>();
-  const [approvedDesignationFile, setApprovedDesignationFile] =
-    useState<File>();
-  const [listOfAdviseesFile, setListOfAdviseesFile] = useState<File>();
+  const [memberUniversity2, setMemberUniversity2] =
+    useState<DesignationWithPoints>();
+  const [academicAdviser, setAcademicAdviser] = useState<AcademicAdviserType>();
 
-  const [steps, setSteps] = useState(1);
-
-  // const fileHandler = (file?: File) => {
-  //   approvedUniversityDesignationFileHandler(file);
-  // };
+  const [isConfirming, setIsConfirming] = useState(false);
 
   // UNIVERSITY FILE SELECT
   const approvedUniversityDesignationFileHandler1 = (value?: File) => {
@@ -165,228 +199,6 @@ const StrategicFunction = () => {
     });
   };
 
-  // const setDesignationUniversityLevelHandler = (
-  //   designationUniversityLevelValue: string
-  // ) => {
-  //   dataClicked(designationUniversityLevelValue);
-  //   designationUniversityLevelHandler(designationUniversityLevelValue);
-  // };
-
-  // const onSubmit = () => {
-  //   setStrategicFunctionHandler();
-  // };
-
-  // //SF
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
-  //   string[]
-  // >([]);
-
-  // const [boxClicked, setBoxClicked] = useState(0);
-
-  // const dataClicked = (value: string) => {
-  //   if (dataValue.includes(value)) {
-  //     const index = dataValue.indexOf(value);
-  //     if (index > -1) {
-  //       dataValue.splice(index, 1);
-  //     }
-  //   } else {
-  //     dataValue.push(value);
-  //   }
-  //   setBoxClicked(boxClicked + 1);
-  // };
-
-  // useEffect(() => {
-  //   dataValue = [...designationUniversityLevel];
-  // }, [boxClicked]);
-
-  // const designationUniversityLevelHandler = (value: string) => {
-  //   if (designationUniversityLevel.includes(value)) {
-  //     const index = designationUniversityLevel.indexOf(value);
-  //     if (index > -1) {
-  //       designationUniversityLevel.splice(index, 1);
-  //     }
-  //   } else {
-  //     designationUniversityLevel.push(value);
-  //   }
-  // };
-
-  // const setStrategicFunctionHandler = async () => {
-  //   setStrategicFunctionWorkload({
-  //     designationUniversityLevel: designationUniversityLevel,
-  //     approvedUniversityDesignationFile
-  //   });
-  //   setSteps(steps + 1);
-  // };
-
-  // // SF1
-  // const [
-  //   designationCollegeCampusLevelReserve,
-  //   setDesignationCollegeCampusLevelReserve
-  // ] = useState<string[]>([]);
-
-  // const designationCollegeCampusLevelHandler = (value: string) => {
-  //   if (designationCollegeCampusLevelReserve.includes(value)) {
-  //     const index = designationCollegeCampusLevelReserve.indexOf(value);
-  //     if (index > -1) {
-  //       designationCollegeCampusLevelReserve.splice(index, 1);
-  //     }
-  //   } else {
-  //     designationCollegeCampusLevelReserve.push(value);
-  //   }
-  // };
-
-  // const setStrategicFunction1Handler = async () => {
-  //   setStrategicFunctionWorkload({
-  //     ...strategicFunctionWorkload,
-
-  //     designationCollegeCampusLevel: designationCollegeCampusLevelReserve,
-  //     approvedCollegeCampusDesignationFile
-  //   });
-  //   setSteps(steps + 1);
-  // };
-
-  // const approvedCollegeCampusDesignationFileHandler = (value?: File) => {
-  //   setApprovedCollegeCampusDesignationFile(value);
-  // };
-
-  // //SF2
-  // const [
-  //   designationDepartmentLevelReserve,
-  //   setDesignationDepartmentLevelReserve
-  // ] = useState<string[]>([]);
-
-  // const designationDepartmentLevelHandler = (value: string) => {
-  //   if (designationDepartmentLevelReserve.includes(value)) {
-  //     const index = designationDepartmentLevelReserve.indexOf(value);
-  //     if (index > -1) {
-  //       designationDepartmentLevelReserve.splice(index, 1);
-  //     }
-  //   } else {
-  //     designationDepartmentLevelReserve.push(value);
-  //   }
-  // };
-
-  // const setStrategicFunction2Handler = async () => {
-  //   setStrategicFunctionWorkload({
-  //     ...strategicFunctionWorkload,
-  //     designationDepartmentLevel: designationDepartmentLevelReserve,
-  //     approvedDepartmentDesignationFile
-  //   });
-  //   setSteps(steps + 1);
-  // };
-
-  // const approvedDepartmentDesignationFileHandler = (value?: File) => {
-  //   setApprovedDepartmentDesignationFile(value);
-  // };
-
-  // //SF3
-  // const setStrategicFunction3Handler = async () => {
-  //   setStrategicFunctionWorkload({
-  //     ...strategicFunctionWorkload,
-  //     designationAsSportTrainorAcademic,
-  //     coachAdviserCertificateFile,
-  //     designationAsMemberOfAdhoc,
-  //     approvedDesignationFile,
-  //     totalOfAcademicAdvisees,
-  //     listOfAdviseesFile
-  //   });
-  //   setIsSubmitting(true);
-  // };
-
-  // const coachAdviserCertificateFileHandler = (value?: File) => {
-  //   setCoachAdviserCertificateFile(value);
-  // };
-
-  // const approvedDesignationFileHandler = (value?: File) => {
-  //   setApprovedDesignationFile(value);
-  // };
-
-  // const designationAsMemberHandler = (value?: string) => {
-  //   setDesignationAsMemberOfAdhoc(value);
-  // };
-
-  // const setTotalNumberAcademicAdviseesHandler = (value?: string) => {
-  //   setTotalOfAcademicAdvisees(value);
-  // };
-
-  // const listAdviseesFileHandler = (value?: File) => {
-  //   setListOfAdviseesFile(value);
-  // };
-
-  // const setDesignationSSTAActivity = (value?: string) => {
-  //   setDesignationAsSportTrainorAcademic(value);
-  // };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (isSubmitting) {
-  //       if (
-  //         strategicFunctionWorkload?.approvedUniversityDesignationFile &&
-  //         strategicFunctionWorkload.designationUniversityLevel &&
-  //         strategicFunctionWorkload.approvedCollegeCampusDesignationFile &&
-  //         strategicFunctionWorkload.approvedDepartmentDesignationFile &&
-  //         strategicFunctionWorkload.approvedDesignationFile &&
-  //         strategicFunctionWorkload.coachAdviserCertificateFile &&
-  //         strategicFunctionWorkload.designationAsMemberOfAdhoc &&
-  //         strategicFunctionWorkload.designationAsSportTrainorAcademic &&
-  //         strategicFunctionWorkload.designationCollegeCampusLevel &&
-  //         strategicFunctionWorkload.designationDepartmentLevel &&
-  //         strategicFunctionWorkload.listOfAdviseesFile &&
-  //         strategicFunctionWorkload.totalOfAcademicAdvisees
-  //       ) {
-  //         let designationUniversityPoints;
-  //         let designationCollegeCampusPoints;
-  //         let designationDepartmentPoints;
-  //         let designationSportsSocioPoint;
-  //         let totalNumberOfAcademicAdviseesPoints;
-
-  //         designationUniversityPoints =
-  //           strategicFunctionWorkload.designationUniversityLevel.length * 18;
-  //         designationCollegeCampusPoints =
-  //           strategicFunctionWorkload.designationCollegeCampusLevel.length * 15;
-  //         designationDepartmentPoints =
-  //           strategicFunctionWorkload.designationDepartmentLevel.length * 12;
-
-  //         if (
-  //           strategicFunctionWorkload.designationAsSportTrainorAcademic ===
-  //           "University Level"
-  //         ) {
-  //           designationSportsSocioPoint = 5;
-  //         } else {
-  //           designationSportsSocioPoint = 3;
-  //         }
-
-  //         totalNumberOfAcademicAdviseesPoints =
-  //           parseFloat(strategicFunctionWorkload.totalOfAcademicAdvisees) *
-  //           0.023;
-
-  //         strategicFunctionWorkload.sfwPoints =
-  //           designationUniversityPoints +
-  //           designationCollegeCampusPoints +
-  //           designationDepartmentPoints +
-  //           designationSportsSocioPoint +
-  //           totalNumberOfAcademicAdviseesPoints;
-
-  //         // await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-  //         setIsSubmitting(false);
-  //         window.location.reload();
-  //       }
-  //     }
-  //   })();
-  // }, [isSubmitting]);
-
-  const clearStates = () => {};
-
-  const [designationUniversityLevel, setDesignationUniversityLevel] = useState<
-    string[]
-  >([]);
-  const [designationCollegeCampusLevel, setDesignationCollegeCampusLevel] =
-    useState<string[]>([]);
-  const [designationDepartmentLevel, setDesignationDepartmentLevel] = useState<
-    string[]
-  >([]);
-
   const [designationUniversity1, setDesignationUniversity1] =
     useState<Designation>();
   const [designationUniversity2, setDesignationUniversity2] =
@@ -414,44 +226,11 @@ const StrategicFunction = () => {
   const [departmentDesignation4, setDepartmentDesignation4] =
     useState<Designation>();
 
-  const [
-    collegeCampusLevelInputDesignation,
-    setCollegeCampusLevelInputDesignation
-  ] = useState("");
-  const [departmentLevelInputDesignation, setDepartmentLevelInputDesignation] =
-    useState("");
-  const [sportsSocioInputDesignation, setSportsSocioInputDesignation] =
-    useState<DesignationWithTitleAndPoints>();
-  const [
-    sportsSocioInputDesignationTitle,
-    setSportsSocioInputDesignationTitle
-  ] = useState("");
-  const [
-    sportsSocioInputDesignationPoints,
-    setSportsSocioInputDesignationPoints
-  ] = useState("");
-  const [
-    memberUniversityWideInputDesignation,
-    setMemberUniversityWideInputDesignation
-  ] = useState<DesignationWithTitleAndPoints>();
-  const [
-    memberUniversityWideInputDesignationTitle,
-    setMemberUniversityWideInputDesignationTitle
-  ] = useState("");
-  const [
-    memberUniversityWideInputDesignationPoints,
-    setMemberUniversityWideInputDesignationPoints
-  ] = useState("");
-  const [academicAdviserInputDesignation, setAcademicAdviserInputDesignation] =
-    useState<DesignationWithTitleAndPoints>();
-  const [
-    academicAdviserInputDesignationTitle,
-    setAcademicAdviserInputDesignationTitle
-  ] = useState("");
-  const [
-    academicAdviserInputDesignationPoints,
-    setAcademicAdviserInputDesignationPoints
-  ] = useState("");
+  const [numberOfStudents, setNumberOfStudents] = useState("");
+
+  const navigate = useNavigate();
+
+  const { user, actions } = useContext(UserContext);
 
   const onSelectDesignationUniversity1 = (value: string) => {
     if (value.length >= 0 && value !== "") {
@@ -481,12 +260,10 @@ const StrategicFunction = () => {
   };
 
   const textInputDesignationUniversity4 = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setDesignationUniversity4({
-        ...designationUniversity4,
-        title: value
-      });
-    }
+    setDesignationUniversity4({
+      ...designationUniversity4,
+      title: value
+    });
   };
 
   const onSelectCollegeCampusDesignation1 = (value: string) => {
@@ -517,12 +294,10 @@ const StrategicFunction = () => {
   };
 
   const textInputCollegeCampusDesignation4 = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setCollegeCampusDesignation4({
-        ...collegeCampusDesignation4,
-        title: value
-      });
-    }
+    setCollegeCampusDesignation4({
+      ...collegeCampusDesignation4,
+      title: value
+    });
   };
 
   const onSelectDepartmentDesignation1 = (value: string) => {
@@ -553,66 +328,45 @@ const StrategicFunction = () => {
   };
 
   const textInputDepartmentDesignation4 = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setDepartmentDesignation4({
-        ...departmentDesignation4,
-        title: value
-      });
-    }
-  };
-
-  const textInputSportsSocioDesignationTitle = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setSportsSocioInputDesignationTitle(value);
-    }
-  };
-
-  const textInputSportsSocioDesignationPoints = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setSportsSocioInputDesignationPoints(value);
-    }
-  };
-
-  const textInputMemberUniversityWideDesignationTitle = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setMemberUniversityWideInputDesignationTitle(value);
-    }
-  };
-
-  const textInputMemberUniversityWideDesignationPoints = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setMemberUniversityWideInputDesignationPoints(value);
-    }
-  };
-
-  const textInputAcademicAdviserDesignationTitle = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setAcademicAdviserInputDesignationTitle(value);
-    }
-  };
-
-  const textInputAcademicAdviserDesignationPoints = (value: string) => {
-    if (value.length >= 0 || value !== "") {
-      setAcademicAdviserInputDesignationPoints(value);
-    }
+    setDepartmentDesignation4({
+      ...departmentDesignation4,
+      title: value
+    });
   };
 
   const textInputTitleSportsSocio = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setSportsSocio({
-        ...sportsSocio,
-        title: value
-      });
-    }
+    setSportsSocio({
+      ...sportsSocio,
+      title: value
+    });
+  };
+
+  const textInputTitleSportsSocio1 = (value: string) => {
+    setSportsSocio1({
+      ...sportsSocio1,
+      title: value
+    });
+  };
+
+  const textInputTitleSportsSocio2 = (value: string) => {
+    setSportsSocio2({
+      ...sportsSocio2,
+      title: value
+    });
   };
 
   const textInputPointsSportsSocio = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setSportsSocio({
-        ...sportsSocio,
-        points: value
-      });
-    }
+    setSportsSocio({
+      ...sportsSocio,
+      points: value
+    });
+  };
+
+  const textInputPointsSportsSocio1 = (value: string) => {
+    setSportsSocio1({
+      ...sportsSocio1,
+      points: value
+    });
   };
 
   const fileHandlerSportsSocio = (value?: File) => {
@@ -622,22 +376,98 @@ const StrategicFunction = () => {
     });
   };
 
-  const textInputTitleMemberUniversity = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setMemberUniversity({
-        ...memberUniversity,
-        title: value
+  const fileHandlerSportsSocio1 = (value?: File) => {
+    setSportsSocio1({
+      ...sportsSocio1,
+      file: value
+    });
+  };
+
+  const fileHandlerSportsSocio2 = (value?: File) => {
+    setSportsSocio2({
+      ...sportsSocio2,
+      file: value
+    });
+  };
+
+  useEffect(() => {
+    if (sportsSocio?.title && sportsSocio.file) {
+      let designationPoints;
+      if (sportsSocio.title === DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]) {
+        designationPoints = "5";
+      } else {
+        designationPoints = "3";
+      }
+      setSportsSocio({
+        ...sportsSocio,
+        points: designationPoints
       });
     }
+  }, [sportsSocio]);
+
+  useEffect(() => {
+    if (sportsSocio1?.title && sportsSocio1.file) {
+      let designationPoints;
+      if (sportsSocio1.title === DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]) {
+        designationPoints = "5";
+      } else {
+        designationPoints = "3";
+      }
+      setSportsSocio1({
+        ...sportsSocio1,
+        points: designationPoints
+      });
+    }
+  }, [sportsSocio1]);
+
+  useEffect(() => {
+    if (sportsSocio2?.title && sportsSocio2.file) {
+      let designationPoints;
+      if (sportsSocio2.title === DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]) {
+        designationPoints = "5";
+      } else {
+        designationPoints = "3";
+      }
+      setSportsSocio2({
+        ...sportsSocio2,
+        points: designationPoints
+      });
+    }
+  }, [sportsSocio2]);
+
+  const textInputTitleMemberUniversity = (value: string) => {
+    setMemberUniversity({
+      ...memberUniversity,
+      title: value
+    });
+  };
+
+  const textInputTitleMemberUniversity1 = (value: string) => {
+    setMemberUniversity1({
+      ...memberUniversity1,
+      title: value
+    });
+  };
+
+  const textInputTitleMemberUniversity2 = (value: string) => {
+    setMemberUniversity2({
+      ...memberUniversity2,
+      title: value
+    });
   };
 
   const textInputPointsMemberUniversity = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setMemberUniversity({
-        ...memberUniversity,
-        points: value
-      });
-    }
+    setMemberUniversity({
+      ...memberUniversity,
+      points: value
+    });
+  };
+
+  const textInputPointsMemberUniversity1 = (value: string) => {
+    setMemberUniversity1({
+      ...memberUniversity1,
+      points: value
+    });
   };
 
   const fileHandlerMemberUniversity = (value?: File) => {
@@ -647,22 +477,52 @@ const StrategicFunction = () => {
     });
   };
 
-  const textInputTitleAcademicAdviser = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setAcademicAdviser({
-        ...academicAdviser,
-        title: value
-      });
-    }
+  const fileHandlerMemberUniversity1 = (value?: File) => {
+    setMemberUniversity1({
+      ...memberUniversity1,
+      file: value
+    });
   };
 
-  const textInputPointsAcademicAdviser = (value: string) => {
-    if (value.length >= 0 && value !== "") {
-      setAcademicAdviser({
-        ...academicAdviser,
-        points: value
+  const fileHandlerMemberUniversity2 = (value?: File) => {
+    setMemberUniversity2({
+      ...memberUniversity2,
+      file: value
+    });
+  };
+
+  useEffect(() => {
+    if (memberUniversity?.title && memberUniversity.file) {
+      setMemberUniversity({
+        ...memberUniversity,
+        points: "0.05"
       });
     }
+  }, [memberUniversity]);
+
+  useEffect(() => {
+    if (memberUniversity1?.title && memberUniversity1.file) {
+      setMemberUniversity1({
+        ...memberUniversity1,
+        points: "0.05"
+      });
+    }
+  }, [memberUniversity1]);
+
+  useEffect(() => {
+    if (memberUniversity2?.title && memberUniversity2.file) {
+      setMemberUniversity2({
+        ...memberUniversity2,
+        points: "0.05"
+      });
+    }
+  }, [memberUniversity2]);
+
+  const textInputTitleAcademicAdviser = (value: string) => {
+    setAcademicAdviser({
+      ...academicAdviser,
+      numberOfStudents: value
+    });
   };
 
   const fileHandlerAcademicAdviser = (value?: File) => {
@@ -672,749 +532,1114 @@ const StrategicFunction = () => {
     });
   };
 
-  // useEffect(() => {
-  //   if (designationUniversityLevel[0]) {
-  //     setDisplayDesignationUniversity1(designationUniversityLevel[0]);
-  //   }
-  //   if (designationUniversityLevel[1]) {
-  //     setDesignationUniversity2(designationUniversityLevel[1]);
-  //   }
-  //   if (designationUniversityLevel[2]) {
-  //     setDesignationUniversity3(designationUniversityLevel[2]);
-  //   }
-  // }, [backHandler]);
-
   const onNextSubmit = () => {
-    if (steps === 1) {
-      // // UNIVERSITY
-      // if (
-      //   approvedUniversityDesignationFile.length !== 0 ||
-      //   strategicFunctionWorkload?.approvedUniversityDesignationFile?.length! <
-      //     approvedUniversityDesignationFile.length
-      // ) {
-      //   if (
-      //     approvedUniversityDesignationFile[0] &&
-      //     approvedUniversityDesignationFile[1] &&
-      //     approvedUniversityDesignationFile[2]
-      //   ) {
-      //     console.log(approvedUniversityDesignationFile);
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (
-      //     approvedUniversityDesignationFile[0] &&
-      //     approvedUniversityDesignationFile[1]
-      //   ) {
-      //     approvedUniversityDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (
-      //     approvedUniversityDesignationFile[0] &&
-      //     approvedUniversityDesignationFile[2]
-      //   ) {
-      //     approvedUniversityDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (
-      //     approvedUniversityDesignationFile[1] &&
-      //     approvedUniversityDesignationFile[2]
-      //   ) {
-      //     approvedUniversityDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (approvedUniversityDesignationFile[0]) {
-      //     approvedUniversityDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-      //     approvedUniversityDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (approvedUniversityDesignationFile[1]) {
-      //     approvedUniversityDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-      //     approvedUniversityDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   } else if (approvedUniversityDesignationFile[2]) {
-      //     approvedUniversityDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[0]!;
-      //     approvedUniversityDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedUniversityDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFile
-      //     });
-      //   }
-      // }
-      // // COLEGE CAMPUS
-      // if (
-      //   approvedCollegeCampusDesignationFile.length !== 0 ||
-      //   strategicFunctionWorkload?.approvedCollegeCampusDesignationFile
-      //     ?.length! < approvedCollegeCampusDesignationFile.length
-      // ) {
-      //   if (
-      //     approvedCollegeCampusDesignationFile[0] &&
-      //     approvedCollegeCampusDesignationFile[1] &&
-      //     approvedCollegeCampusDesignationFile[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (
-      //     approvedCollegeCampusDesignationFile[0] &&
-      //     approvedCollegeCampusDesignationFile[1]
-      //   ) {
-      //     approvedCollegeCampusDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (
-      //     approvedCollegeCampusDesignationFile[0] &&
-      //     approvedCollegeCampusDesignationFile[2]
-      //   ) {
-      //     approvedCollegeCampusDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (
-      //     approvedCollegeCampusDesignationFile[1] &&
-      //     approvedCollegeCampusDesignationFile[2]
-      //   ) {
-      //     approvedCollegeCampusDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (approvedCollegeCampusDesignationFile[0]) {
-      //     approvedCollegeCampusDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-      //     approvedCollegeCampusDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (approvedCollegeCampusDesignationFile[1]) {
-      //     approvedCollegeCampusDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-      //     approvedCollegeCampusDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   } else if (approvedCollegeCampusDesignationFile[2]) {
-      //     approvedCollegeCampusDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[0]!;
-      //     approvedCollegeCampusDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedCollegeCampusDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       approvedUniversityDesignationFile,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   }
-      // }
-      setSteps(steps + 1);
-    }
-    if (steps === 2) {
-      // DEPARTMENT CAMPUS
-      // if (
-      //   approvedDepartmentDesignationFile.length !== 0 ||
-      //   strategicFunctionWorkload?.approvedDepartmentDesignationFile?.length! <
-      //     approvedDepartmentDesignationFile.length
-      // ) {
-      //   if (
-      //     approvedDepartmentDesignationFile[0] &&
-      //     approvedDepartmentDesignationFile[1] &&
-      //     approvedDepartmentDesignationFile[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (
-      //     approvedDepartmentDesignationFile[0] &&
-      //     approvedDepartmentDesignationFile[1]
-      //   ) {
-      //     approvedDepartmentDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (
-      //     approvedDepartmentDesignationFile[0] &&
-      //     approvedDepartmentDesignationFile[2]
-      //   ) {
-      //     approvedDepartmentDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (
-      //     approvedDepartmentDesignationFile[1] &&
-      //     approvedDepartmentDesignationFile[2]
-      //   ) {
-      //     approvedDepartmentDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (approvedDepartmentDesignationFile[0]) {
-      //     approvedDepartmentDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-      //     approvedDepartmentDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (approvedDepartmentDesignationFile[1]) {
-      //     approvedDepartmentDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-      //     approvedDepartmentDesignationFile[2] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[2]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   } else if (approvedDepartmentDesignationFile[2]) {
-      //     approvedDepartmentDesignationFile[0] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[0]!;
-      //     approvedDepartmentDesignationFile[1] =
-      //       strategicFunctionWorkload?.approvedDepartmentDesignationFile?.[1]!;
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   }
-      // }
-      // setDesignationDepartmentLevel(
-      //   [
-      //     departmentDesignation1,
-      //     departmentDesignation2,
-      //     departmentDesignation3,
-      //     departmentLevelInputDesignation
-      //   ].filter(Boolean)
-      // );
-      setIsSubmitting(true);
-    }
+    setIsSubmitting(true);
+    setIsConfirming(false);
   };
-
-  // DESIGNATION UNIVERSITY
-  // useEffect(() => {
-  //   if (designationUniversity1) {
-  //     setDisplayDesignationUniversity1(designationUniversity1.title);
-  //   }
-  //   if (designationUniversity2) {
-  //     setDisplayDesignationUniversity2(designationUniversity2);
-  //   }
-  //   if (designationUniversity3) {
-  //     setDisplayDesignationUniversity3(designationUniversity3);
-  //   }
-  // }, [designationUniversity1, designationUniversity2, designationUniversity3]);
-
-  // useEffect(() => {
-  //   if (
-  //     displayDesignationUniversity1 !==
-  //       strategicFunctionWorkload?.designationUniversityLevel?.[0] ||
-  //     displayDesignationUniversity2 !==
-  //       strategicFunctionWorkload?.designationUniversityLevel?.[1] ||
-  //     displayDesignationUniversity3 !==
-  //       strategicFunctionWorkload?.designationUniversityLevel?.[2]
-  //   ) {
-  //     if (
-  //       displayDesignationUniversity1 &&
-  //       displayDesignationUniversity2 &&
-  //       displayDesignationUniversity3
-  //     ) {
-  //       setDesignationUniversityLevel(
-  //         [
-  //           displayDesignationUniversity1,
-  //           displayDesignationUniversity2,
-  //           displayDesignationUniversity3
-  //         ].filter(Boolean)
-  //       );
-  //     } else if (
-  //       displayDesignationUniversity1 &&
-  //       displayDesignationUniversity2
-  //     ) {
-  //       setDesignationUniversityLevel(
-  //         [displayDesignationUniversity1, displayDesignationUniversity2].filter(
-  //           Boolean
-  //         )
-  //       );
-  //     } else if (displayDesignationUniversity1) {
-  //       setDesignationUniversityLevel(
-  //         [displayDesignationUniversity1].filter(Boolean)
-  //       );
-  //     } else if (displayDesignationUniversity2) {
-  //       setDesignationUniversityLevel(
-  //         [displayDesignationUniversity2].filter(Boolean)
-  //       );
-  //     } else if (displayDesignationUniversity3) {
-  //       setDesignationUniversityLevel(
-  //         [displayDesignationUniversity3].filter(Boolean)
-  //       );
-  //     }
-  //   }
-  // }, [
-  //   displayDesignationUniversity1,
-  //   displayDesignationUniversity2,
-  //   displayDesignationUniversity3
-  // ]);
-
-  // COLLEGE CAMPUS DESIGNATION
-  // useEffect(() => {
-  //   if (collegeCampusDesignation1) {
-  //     setDisplayCollegeCampusDesignation1(collegeCampusDesignation1);
-  //   }
-  //   if (collegeCampusDesignation2) {
-  //     setDisplayCollegeCampusDesignation2(collegeCampusDesignation2);
-  //   }
-  //   if (collegeCampusDesignation3) {
-  //     setDisplayCollegeCampusDesignation3(collegeCampusDesignation3);
-  //   }
-  // }, [
-  //   collegeCampusDesignation1,
-  //   collegeCampusDesignation2,
-  //   collegeCampusDesignation3
-  // ]);
-
-  // useEffect(() => {
-  //   if (
-  //     displayCollegeCampusDesignation1 !==
-  //       strategicFunctionWorkload?.designationCollegeCampusLevel?.[0] ||
-  //     displayCollegeCampusDesignation2 !==
-  //       strategicFunctionWorkload?.designationCollegeCampusLevel?.[1] ||
-  //     displayCollegeCampusDesignation3 !==
-  //       strategicFunctionWorkload?.designationCollegeCampusLevel?.[2]
-  //   ) {
-  //     if (
-  //       displayCollegeCampusDesignation1 &&
-  //       displayCollegeCampusDesignation2 &&
-  //       displayCollegeCampusDesignation3
-  //     ) {
-  //       setDesignationCollegeCampusLevel(
-  //         [
-  //           displayCollegeCampusDesignation1,
-  //           displayCollegeCampusDesignation2,
-  //           displayCollegeCampusDesignation3
-  //         ].filter(Boolean)
-  //       );
-  //     } else if (
-  //       displayCollegeCampusDesignation1 &&
-  //       displayCollegeCampusDesignation2
-  //     ) {
-  //       setDesignationCollegeCampusLevel(
-  //         [
-  //           displayCollegeCampusDesignation1,
-  //           displayCollegeCampusDesignation2
-  //         ].filter(Boolean)
-  //       );
-  //     } else if (displayCollegeCampusDesignation1) {
-  //       setDesignationCollegeCampusLevel(
-  //         [displayCollegeCampusDesignation1].filter(Boolean)
-  //       );
-  //     } else if (displayCollegeCampusDesignation2) {
-  //       setDesignationCollegeCampusLevel(
-  //         [displayCollegeCampusDesignation2].filter(Boolean)
-  //       );
-  //     } else if (displayCollegeCampusDesignation3) {
-  //       setDesignationCollegeCampusLevel(
-  //         [displayCollegeCampusDesignation3].filter(Boolean)
-  //       );
-  //     }
-  //   }
-  // }, [
-  //   displayCollegeCampusDesignation1,
-  //   displayCollegeCampusDesignation2,
-  //   displayCollegeCampusDesignation3
-  // ]);
-
-  // DEPARTMENT DESIGNATION
-  // useEffect(() => {
-  //   if (departmentDesignation1) {
-  //     setDisplayDepartmentDesignation1(departmentDesignation1);
-  //   }
-  //   if (departmentDesignation2) {
-  //     setDisplayDepartmentDesignation2(departmentDesignation2);
-  //   }
-  //   if (departmentDesignation3) {
-  //     setDisplayDepartmentDesignation3(departmentDesignation3);
-  //   }
-  // }, [departmentDesignation1, departmentDesignation2, departmentDesignation3]);
-
-  // useEffect(() => {
-  //   if (
-  //     displayDepartmentDesignation1 !==
-  //       strategicFunctionWorkload?.designationDepartmentLevel?.[0] ||
-  //     displayDepartmentDesignation2 !==
-  //       strategicFunctionWorkload?.designationDepartmentLevel?.[1] ||
-  //     displayDepartmentDesignation3 !==
-  //       strategicFunctionWorkload?.designationDepartmentLevel?.[2]
-  //   ) {
-  //     if (
-  //       displayDepartmentDesignation1 &&
-  //       displayDepartmentDesignation2 &&
-  //       displayDepartmentDesignation3
-  //     ) {
-  //       setDesignationDepartmentLevel(
-  //         [
-  //           displayDepartmentDesignation1,
-  //           displayDepartmentDesignation2,
-  //           displayDepartmentDesignation3
-  //         ].filter(Boolean)
-  //       );
-  //     } else if (
-  //       displayDepartmentDesignation1 &&
-  //       displayDepartmentDesignation2
-  //     ) {
-  //       setDesignationDepartmentLevel(
-  //         [displayDepartmentDesignation1, displayDepartmentDesignation2].filter(
-  //           Boolean
-  //         )
-  //       );
-  //     } else if (displayDepartmentDesignation1) {
-  //       setDesignationDepartmentLevel(
-  //         [displayDepartmentDesignation1].filter(Boolean)
-  //       );
-  //     } else if (displayDepartmentDesignation2) {
-  //       setDesignationDepartmentLevel(
-  //         [displayDepartmentDesignation2].filter(Boolean)
-  //       );
-  //     } else if (displayDepartmentDesignation3) {
-  //       setDesignationDepartmentLevel(
-  //         [displayDepartmentDesignation3].filter(Boolean)
-  //       );
-  //     }
-  //   }
-  // }, [
-  //   displayDepartmentDesignation1,
-  //   displayDepartmentDesignation2,
-  //   displayDepartmentDesignation3
-  // ]);
 
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        // if (
-        //   strategicFunctionWorkload?.approvedUniversityDesignationFile &&
-        //   strategicFunctionWorkload.designationUniversityLevel &&
-        //   strategicFunctionWorkload.approvedCollegeCampusDesignationFile &&
-        //   strategicFunctionWorkload.approvedDepartmentDesignationFile &&
-        //   strategicFunctionWorkload.approvedDesignationFile &&
-        //   strategicFunctionWorkload.coachAdviserCertificateFile &&
-        //   strategicFunctionWorkload.designationAsMemberOfAdhoc &&
-        //   strategicFunctionWorkload.designationAsSportTrainorAcademic &&
-        //   strategicFunctionWorkload.designationCollegeCampusLevel &&
-        //   strategicFunctionWorkload.designationDepartmentLevel &&
-        //   strategicFunctionWorkload.listOfAdviseesFile &&
-        //   strategicFunctionWorkload.totalOfAcademicAdvisees
-        // ) {
-        //   let designationUniversityPoints;
-        //   let designationCollegeCampusPoints;
-        //   let designationDepartmentPoints;
-        //   let designationSportsSocioPoint;
-        //   let totalNumberOfAcademicAdviseesPoints;
-        //   designationUniversityPoints =
-        //     strategicFunctionWorkload.designationUniversityLevel.length * 18;
-        //   designationCollegeCampusPoints =
-        //     strategicFunctionWorkload.designationCollegeCampusLevel.length * 15;
-        //   designationDepartmentPoints =
-        //     strategicFunctionWorkload.designationDepartmentLevel.length * 12;
-        //   if (
-        //     strategicFunctionWorkload.designationAsSportTrainorAcademic ===
-        //     "University Level"
-        //   ) {
-        //     designationSportsSocioPoint = 5;
-        //   } else {
-        //     designationSportsSocioPoint = 3;
-        //   }
-        //   totalNumberOfAcademicAdviseesPoints =
-        //     parseFloat(strategicFunctionWorkload.totalOfAcademicAdvisees) *
-        //     0.023;
-        //   strategicFunctionWorkload.sfwPoints =
-        //     designationUniversityPoints +
-        //     designationCollegeCampusPoints +
-        //     designationDepartmentPoints +
-        //     designationSportsSocioPoint +
-        //     totalNumberOfAcademicAdviseesPoints;
-        //   // await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-        //   setIsSubmitting(false);
-        //   // window.location.reload();
-        // }
-        // console.log(strategicFunctionWorkload);
         setStrategicFunctionWorkload({
           designationUniversityLevel: [
-            designationUniversity1!,
-            designationUniversity2!,
-            designationUniversity3!,
-            designationUniversity4!
+            designationUniversity1?.file! && designationUniversity1?.title!,
+            designationUniversity2?.file! && designationUniversity2?.title!,
+            designationUniversity3?.file! && designationUniversity3?.title!,
+            designationUniversity4?.file! && designationUniversity4?.title!
           ].filter(Boolean),
-          designationCollegeCampusLevel: [
-            collegeCampusDesignation1!,
-            collegeCampusDesignation2!,
-            collegeCampusDesignation3!,
-            collegeCampusDesignation4!
+          designationUniversityLevelFiles: [
+            designationUniversity1?.file!,
+            designationUniversity2?.file!,
+            designationUniversity3?.file!,
+            designationUniversity4?.file!
           ],
-          designationAsSportTrainorAcademic: sportsSocio,
-          designationAsMemberOfAdhoc: memberUniversity,
-          academicAdvisees: academicAdviser
+          designationCollegeCampusLevel: [
+            collegeCampusDesignation1?.file! &&
+              collegeCampusDesignation1?.title!,
+            collegeCampusDesignation2?.file! &&
+              collegeCampusDesignation2?.title!,
+            collegeCampusDesignation3?.file! &&
+              collegeCampusDesignation3?.title!,
+            collegeCampusDesignation4?.file! &&
+              collegeCampusDesignation4?.title!
+          ].filter(Boolean),
+          designationCollegeCampusLevelFiles: [
+            collegeCampusDesignation1?.file!,
+            collegeCampusDesignation2?.file!,
+            collegeCampusDesignation3?.file!,
+            collegeCampusDesignation4?.file!
+          ],
+          designationDepartmentLevel: [
+            departmentDesignation1?.file! && departmentDesignation1?.title!,
+            departmentDesignation2?.file! && departmentDesignation2?.title!,
+            departmentDesignation3?.file! && departmentDesignation3?.title!,
+            departmentDesignation4?.file! && departmentDesignation4?.title!
+          ].filter(Boolean),
+          designationDepartmentLevelFiles: [
+            departmentDesignation1?.file!,
+            departmentDesignation2?.file!,
+            departmentDesignation3?.file!,
+            departmentDesignation4?.file!
+          ],
+          designationAsSportTrainorAcademic: sportsSocio?.title,
+          designationAsSportTrainorAcademic1: sportsSocio1?.title,
+          designationAsSportTrainorAcademic2: sportsSocio2?.title,
+          designationAsSportTrainorAcademicFile: sportsSocio?.file,
+          designationAsSportTrainorAcademicFile1: sportsSocio1?.file,
+          designationAsSportTrainorAcademicFile2: sportsSocio2?.file,
+          designationAsSportTrainorAcademicPoints: Number(sportsSocio?.points),
+          designationAsSportTrainorAcademicPoints1: Number(
+            sportsSocio1?.points
+          ),
+          designationAsSportTrainorAcademicPoints2: Number(
+            sportsSocio2?.points
+          ),
+          designationAsMemberOfAdhoc: memberUniversity?.title,
+          designationAsMemberOfAdhoc1: memberUniversity1?.title,
+          designationAsMemberOfAdhoc2: memberUniversity2?.title,
+          designationAsMemberOfAdhocFile: memberUniversity?.file,
+          designationAsMemberOfAdhocFile1: memberUniversity1?.file,
+          designationAsMemberOfAdhocFile2: memberUniversity2?.file,
+          designationAsMemberOfAdhocPoints: Number(memberUniversity?.points),
+          designationAsMemberOfAdhocPoints1: Number(memberUniversity1?.points),
+          designationAsMemberOfAdhocPoints2: Number(memberUniversity2?.points),
+          academicAdvisees: academicAdviser?.file
+            ? academicAdviser?.numberOfStudents
+            : undefined,
+          academicAdviseesFile: academicAdviser?.numberOfStudents
+            ? academicAdviser?.file
+            : undefined,
+          academicAdviseesPoints:
+            academicAdviser?.numberOfStudents && academicAdviser?.file
+              ? Number(academicAdviser?.numberOfStudents) * 0.023
+              : undefined
         });
       }
-
-      // if (designationUniversityLevel!.length > 0) {
-      //   if (
-      //     strategicFunctionWorkload?.designationUniversityLevel?.[0] !==
-      //       designationUniversityLevel?.[0] ||
-      //     strategicFunctionWorkload?.designationUniversityLevel?.[1] !==
-      //       designationUniversityLevel?.[1] ||
-      //     strategicFunctionWorkload?.designationUniversityLevel?.[2] !==
-      //       designationUniversityLevel?.[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedUniversityDesignationFil
-      //     });
-      //   }
-      // }
-
-      // if (designationCollegeCampusLevel!.length > 0) {
-      //   if (
-      //     strategicFunctionWorkload?.designationCollegeCampusLevel?.[0] !==
-      //       designationCollegeCampusLevel?.[0] ||
-      //     strategicFunctionWorkload?.designationCollegeCampusLevel?.[1] !==
-      //       designationCollegeCampusLevel?.[1] ||
-      //     strategicFunctionWorkload?.designationCollegeCampusLevel?.[2] !==
-      //       designationCollegeCampusLevel?.[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedCollegeCampusDesignationFile
-      //     });
-      //   }
-      // }
-
-      // if (designationDepartmentLevel!.length > 0) {
-      //   if (
-      //     strategicFunctionWorkload?.designationDepartmentLevel?.[0] !==
-      //       designationDepartmentLevel?.[0] ||
-      //     strategicFunctionWorkload?.designationDepartmentLevel?.[1] !==
-      //       designationDepartmentLevel?.[1] ||
-      //     strategicFunctionWorkload?.designationDepartmentLevel?.[2] !==
-      //       designationDepartmentLevel?.[2]
-      //   ) {
-      //     setStrategicFunctionWorkload({
-      //       ...strategicFunctionWorkload,
-      //       approvedDepartmentDesignationFile
-      //     });
-      //   }
-      // }
     })();
   }, [isSubmitting]);
 
+  const clearStates = () => {
+    setStrategicFunctionWorkload({});
+    setPoints(0);
+    setIsDesignationUniversity1Fullfill(false);
+    setIsDesignationUniversity2Fullfill(false);
+    setIsDesignationUniversity3Fullfill(false);
+    setIsDesignationUniversity4Fullfill(false);
+    setIsDesignationCollegeCampus1Fullfill(false);
+    setIsDesignationCollegeCampus2Fullfill(false);
+    setIsDesignationCollegeCampus3Fullfill(false);
+    setIsDesignationCollegeCampus4Fullfill(false);
+    setIsDesignationDepartment1Fullfill(false);
+    setIsDesignationDepartment2Fullfill(false);
+    setIsDesignationDepartment3Fullfill(false);
+    setIsDesignationDepartment4Fullfill(false);
+    setIsProfileOpen(false);
+    setIsSubmitting(false);
+    setIsFacultySubmenuOpen(false);
+    setSportsSocio({});
+    setSportsSocio1({});
+    setSportsSocio2({});
+    setMemberUniversity({});
+    setMemberUniversity1({});
+    setMemberUniversity2({});
+    setAcademicAdviser({});
+    setDesignationUniversity1({});
+    setDesignationUniversity2({});
+    setDesignationUniversity3({});
+    setDesignationUniversity4({});
+    setCollegeCampusDesignation1({});
+    setCollegeCampusDesignation2({});
+    setCollegeCampusDesignation3({});
+    setCollegeCampusDesignation4({});
+    setDepartmentDesignation1({});
+    setDepartmentDesignation2({});
+    setDepartmentDesignation3({});
+    setDepartmentDesignation4({});
+  };
+
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        console.log(strategicFunctionWorkload);
+        try {
+          await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
+          // window.location.reload();
+          const { strategicFunctionWorkloads } =
+            await GetAllUserPendingWorkloads(user.email);
+          actions.setHasPendingStrategicWorkload(
+            strategicFunctionWorkloads.length > 0
+          );
+          clearStates();
+          navigate("/workload-summary", { replace: true });
+        } catch (e) {
+          console.log(e);
+        }
         setIsSubmitting(false);
-        // try {
-        //   await SaveStrategicFunctionWorkload(strategicFunctionWorkload);
-        //   setIsSubmitting(false);
-        // } catch (e) {
-        //   setIsSubmitting(false);
-        // }
       }
     })();
   }, [strategicFunctionWorkload]);
 
+  // POINTS FOR UNIVERSITY WORKLOAD
+  useEffect(() => {
+    if (
+      designationUniversity1?.title &&
+      designationUniversity1.file &&
+      !isDesignationUniversity1Fullfill
+    ) {
+      setIsDesignationUniversity1Fullfill(true);
+      setPoints(points + 18);
+    }
+    if (
+      designationUniversity2?.title &&
+      designationUniversity2.file &&
+      !isDesignationUniversity2Fullfill
+    ) {
+      setIsDesignationUniversity2Fullfill(true);
+      setPoints(points + 18);
+    }
+    if (
+      designationUniversity3?.title &&
+      designationUniversity3.file &&
+      !isDesignationUniversity3Fullfill
+    ) {
+      setIsDesignationUniversity3Fullfill(true);
+      setPoints(points + 18);
+    }
+    if (
+      designationUniversity4?.title &&
+      designationUniversity4.file &&
+      !isDesignationUniversity4Fullfill
+    ) {
+      setIsDesignationUniversity4Fullfill(true);
+      setPoints(points + 18);
+    } else if (
+      !designationUniversity4?.title &&
+      designationUniversity4?.file &&
+      isDesignationUniversity4Fullfill
+    ) {
+      setIsDesignationUniversity4Fullfill(false);
+      setPoints(points - 18);
+    }
+  }, [
+    designationUniversity1,
+    designationUniversity2,
+    designationUniversity3,
+    designationUniversity4
+  ]);
+
+  // POINTS FOR COLLEGE/CAMPUS WORKLOAD
+  useEffect(() => {
+    if (
+      collegeCampusDesignation1?.title &&
+      collegeCampusDesignation1.file &&
+      !isDesignationCollegeCampus1Fullfill
+    ) {
+      setIsDesignationCollegeCampus1Fullfill(true);
+      setPoints(points + 15);
+    }
+    if (
+      collegeCampusDesignation2?.title &&
+      collegeCampusDesignation2.file &&
+      !isDesignationCollegeCampus2Fullfill
+    ) {
+      setIsDesignationCollegeCampus2Fullfill(true);
+      setPoints(points + 15);
+    }
+    if (
+      collegeCampusDesignation3?.title &&
+      collegeCampusDesignation3.file &&
+      !isDesignationCollegeCampus3Fullfill
+    ) {
+      setIsDesignationCollegeCampus3Fullfill(true);
+      setPoints(points + 15);
+    }
+    if (
+      collegeCampusDesignation4?.title &&
+      collegeCampusDesignation4.file &&
+      !isDesignationCollegeCampus4Fullfill
+    ) {
+      setIsDesignationCollegeCampus4Fullfill(true);
+      setPoints(points + 15);
+    } else if (
+      !collegeCampusDesignation4?.title &&
+      collegeCampusDesignation4?.file &&
+      isDesignationCollegeCampus4Fullfill
+    ) {
+      setIsDesignationCollegeCampus4Fullfill(false);
+      setPoints(points - 15);
+    }
+  }, [
+    collegeCampusDesignation1,
+    collegeCampusDesignation2,
+    collegeCampusDesignation3,
+    collegeCampusDesignation4
+  ]);
+
+  // POINTS FOR DEPARTMENT WORKLOAD
+  useEffect(() => {
+    if (
+      departmentDesignation1?.title &&
+      departmentDesignation1.file &&
+      !isDesignationDepartment1Fullfill
+    ) {
+      setIsDesignationDepartment1Fullfill(true);
+      setPoints(points + 12);
+    }
+    if (
+      departmentDesignation2?.title &&
+      departmentDesignation2.file &&
+      !isDesignationDepartment2Fullfill
+    ) {
+      setIsDesignationDepartment2Fullfill(true);
+      setPoints(points + 12);
+    }
+    if (
+      departmentDesignation3?.title &&
+      departmentDesignation3.file &&
+      !isDesignationDepartment3Fullfill
+    ) {
+      setIsDesignationDepartment3Fullfill(true);
+      setPoints(points + 12);
+    }
+    if (
+      departmentDesignation4?.title &&
+      departmentDesignation4.file &&
+      !isDesignationDepartment4Fullfill
+    ) {
+      setIsDesignationDepartment4Fullfill(true);
+      setPoints(points + 12);
+    } else if (
+      !departmentDesignation4?.title &&
+      departmentDesignation4?.file &&
+      isDesignationDepartment4Fullfill
+    ) {
+      setIsDesignationDepartment4Fullfill(false);
+      setPoints(points - 12);
+    }
+  }, [
+    departmentDesignation1,
+    departmentDesignation2,
+    departmentDesignation3,
+    departmentDesignation4
+  ]);
+
+  const hasSportsSocio =
+    sportsSocio?.points && sportsSocio?.file && sportsSocio?.title;
+
+  const hasSportsSocio1 =
+    sportsSocio1?.points && sportsSocio1?.file && sportsSocio1?.title;
+
+  const hasSportsSocio2 =
+    sportsSocio2?.points && sportsSocio2?.file && sportsSocio2?.title;
+
+  const hasMemberUniversity =
+    memberUniversity?.points &&
+    memberUniversity?.file &&
+    memberUniversity?.title;
+
+  const hasMemberUniversity1 =
+    memberUniversity1?.points &&
+    memberUniversity1?.file &&
+    memberUniversity1?.title;
+
+  const hasMemberUniversity2 =
+    memberUniversity2?.points &&
+    memberUniversity2?.file &&
+    memberUniversity2?.title;
+
+  const hasAcademicAdviser =
+    academicAdviser?.numberOfStudents && academicAdviser?.file;
+
+  useEffect(() => {
+    (async () => {
+      const {
+        teachingWorkloads,
+        extensionWorkloads,
+        researchWorkloads,
+        strategicFunctionWorkloads
+      } = await GetAllUserPendingWorkloads(user.email);
+      actions.setHasPendingTeachingWorkload(
+        !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+      );
+      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
+      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingStrategicWorkload(
+        strategicFunctionWorkloads.length > 0
+      );
+    })();
+  }, []);
+
   return (
     <MainContainer>
-      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-      <Menu
-        isFacultySubmenuOpen={isFacultySubmenuOpen}
-        facultySubMenuHandler={() =>
-          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-        }
+      <Confirm
+        open={isConfirming}
+        onCancel={() => setIsConfirming(false)}
+        onConfirm={onNextSubmit}
+        content="Confirm submission?"
+        size="large"
       />
-      <ProfileTab isProfileOpen={isProfileOpen} />
-      <BodyContainer>
-        <ScreenTitle title="Strategic Functions (SF)" />
-        <Container>
-          {steps === 1 && (
-            <StrategicFunction1
-              onUniversityLevelSelect1={onSelectDesignationUniversity1}
-              onUniversityLevelSelect2={onSelectDesignationUniversity2}
-              onUniversityLevelSelect3={onSelectDesignationUniversity3}
-              textInputUniversityLevel4={textInputDesignationUniversity4}
-              universityLevelInputDesignation={designationUniversity4?.title}
-              displayDesignationUniversity1={designationUniversity1?.title}
-              displayDesignationUniversity2={designationUniversity2?.title}
-              displayDesignationUniversity3={designationUniversity3?.title}
-              onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
-              onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
-              onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
-              textInputCollegeCampusLevel4={textInputCollegeCampusDesignation4}
-              displayDesignationCollegeCampus1={
-                collegeCampusDesignation1?.title
-              }
-              displayDesignationCollegeCampus2={
-                collegeCampusDesignation2?.title
-              }
-              displayDesignationCollegeCampus3={
-                collegeCampusDesignation3?.title
-              }
-              collegeCampusLevelInputDesignation={
-                collegeCampusDesignation4?.title
-              }
-              onFileUniversityLevelSelect1={
-                approvedUniversityDesignationFileHandler1
-              }
-              onFileUniversityLevelSelect2={
-                approvedUniversityDesignationFileHandler2
-              }
-              onFileUniversityLevelSelect3={
-                approvedUniversityDesignationFileHandler3
-              }
-              onFileCustomUniversityLevelSelect={
-                customApprovedUniversityDesignationFileHandler
-              }
-              customUniversityFileName={designationUniversity4?.file?.name}
-              universityLevelFileName1={designationUniversity1?.file?.name}
-              universityLevelFileName2={designationUniversity2?.file?.name}
-              universityLevelFileName3={designationUniversity3?.file?.name}
-              onFileCollegeCampusLevelSelect1={
-                approvedCollegeCampusDesignationFileHandler1
-              }
-              onFileCollegeCampusLevelSelect2={
-                approvedCollegeCampusDesignationFileHandler2
-              }
-              onFileCollegeCampusLevelSelect3={
-                approvedCollegeCampusDesignationFileHandler3
-              }
-              onFileCustomCollegeCampusLevelSelect={
-                customApprovedCollegeCampusDesignationFileHandler
-              }
-              collegeCampusLevelFileName1={
-                collegeCampusDesignation1?.file?.name
-              }
-              collegeCampusLevelFileName2={
-                collegeCampusDesignation2?.file?.name
-              }
-              collegeCampusLevelFileName3={
-                collegeCampusDesignation3?.file?.name
-              }
-              customcollegeCampusLevelFileName={
-                collegeCampusDesignation4?.file?.name
-              }
-            />
-          )}
-          {steps === 2 && (
-            <StrategicFunction2
-              onSelectDepartmentDesignation1={onSelectDepartmentDesignation1}
-              onSelectDepartmentDesignation2={onSelectDepartmentDesignation2}
-              onSelectDepartmentDesignation3={onSelectDepartmentDesignation3}
-              textInputDepartmentDesignation4={textInputDepartmentDesignation4}
-              displayDesignationDepartment1={departmentDesignation1?.title}
-              displayDesignationDepartment2={departmentDesignation2?.title}
-              displayDesignationDepartment3={departmentDesignation3?.title}
-              departmentLevelInputDesignation={departmentDesignation4?.title}
-              onFileDepartmentLevelSelect1={
-                approvedDepartmentDesignationFileHandler1
-              }
-              onFileDepartmentLevelSelect2={
-                approvedDepartmentDesignationFileHandler2
-              }
-              onFileDepartmentLevelSelect3={
-                approvedDepartmentDesignationFileHandler3
-              }
-              onFileCustomDepartmentLevelSelect={
-                customApprovedDepartmentDesignationFileHandler
-              }
-              departmentLevelFileName1={departmentDesignation1?.file?.name}
-              departmentLevelFileName2={departmentDesignation2?.file?.name}
-              departmentLevelFileName3={departmentDesignation3?.file?.name}
-              customDepartmentFileName={departmentDesignation4?.file?.name}
-              onTextInputSportsSocioDesignationTitle={textInputTitleSportsSocio}
-              onTextInputSportsSocioDesignationPoints={
-                textInputPointsSportsSocio
-              }
-              sportsSocioTitle={sportsSocio?.title}
-              sportsSocioPoints={sportsSocio?.points}
-              fileHandlerSportsSocio={fileHandlerSportsSocio}
-              fileNameSportsSocio={sportsSocio?.file?.name}
-              onTextInputMemberUniversityWideDesignationTitle={
-                textInputTitleMemberUniversity
-              }
-              onTextInputMemberUniversityWideDesignationPoints={
-                textInputPointsMemberUniversity
-              }
-              memberUniversityTitle={memberUniversity?.title}
-              memberUniversityPoints={memberUniversity?.points}
-              fileHandlerMemberUniversity={fileHandlerMemberUniversity}
-              fileNameMemberUniversity={memberUniversity?.file?.name}
-              onTextInputAcademicAdviserDesignationTitle={
-                textInputTitleAcademicAdviser
-              }
-              onTextInputAcademicAdviserDesignationPoints={
-                textInputPointsAcademicAdviser
-              }
-              academicAdviserTitle={academicAdviser?.title}
-              academicAdviserPoints={academicAdviser?.points}
-              fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
-              fileNameAcademicAdviser={academicAdviser?.file?.name}
-            />
-          )}
-          <Buttons>
-            {steps > 1 && (
-              <ButtonContainer>
-                <FormButton
-                  text="Back"
-                  onClicked={() => setSteps(steps - 1)}
-                ></FormButton>
-              </ButtonContainer>
-            )}
-            <ButtonContainer>
-              <FormButton
-                text={steps !== 2 ? "Next" : "Submit"}
-                onClicked={onNextSubmit}
-              ></FormButton>
-            </ButtonContainer>
-          </Buttons>
-        </Container>
-      </BodyContainer>
+      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+      <Content>
+        <Menu
+          isFacultySubmenuOpen={isFacultySubmenuOpen}
+          facultySubMenuHandler={() =>
+            setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
+          }
+        />
+        <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
+        <BodyContainer>
+          <ScreenTitle title="Faculty Workload" />
+          {/* <ScreenTitle title="Strategic Functions (SF)" /> */}
+          <Container>
+            <>
+              <WorkloadTextContainer>
+                <WorkloadText>{WorkloadType.STRATEGIC_FUNCTION}</WorkloadText>
+              </WorkloadTextContainer>
+              <StrategicFunction1
+                onUniversityLevelSelect1={onSelectDesignationUniversity1}
+                onUniversityLevelSelect2={onSelectDesignationUniversity2}
+                onUniversityLevelSelect3={onSelectDesignationUniversity3}
+                textInputUniversityLevel4={textInputDesignationUniversity4}
+                universityLevelInputDesignation={designationUniversity4?.title}
+                displayDesignationUniversity1={designationUniversity1?.title}
+                displayDesignationUniversity2={designationUniversity2?.title}
+                displayDesignationUniversity3={designationUniversity3?.title}
+                onCollegeCampusLevelSelect1={onSelectCollegeCampusDesignation1}
+                onCollegeCampusLevelSelect2={onSelectCollegeCampusDesignation2}
+                onCollegeCampusLevelSelect3={onSelectCollegeCampusDesignation3}
+                textInputCollegeCampusLevel4={
+                  textInputCollegeCampusDesignation4
+                }
+                displayDesignationCollegeCampus1={
+                  collegeCampusDesignation1?.title
+                }
+                displayDesignationCollegeCampus2={
+                  collegeCampusDesignation2?.title
+                }
+                displayDesignationCollegeCampus3={
+                  collegeCampusDesignation3?.title
+                }
+                collegeCampusLevelInputDesignation={
+                  collegeCampusDesignation4?.title
+                }
+                onFileUniversityLevelSelect1={
+                  approvedUniversityDesignationFileHandler1
+                }
+                onFileUniversityLevelSelect2={
+                  approvedUniversityDesignationFileHandler2
+                }
+                onFileUniversityLevelSelect3={
+                  approvedUniversityDesignationFileHandler3
+                }
+                onFileCustomUniversityLevelSelect={
+                  customApprovedUniversityDesignationFileHandler
+                }
+                customUniversityFileName={designationUniversity4?.file?.name}
+                universityLevelFileName1={designationUniversity1?.file?.name}
+                universityLevelFileName2={designationUniversity2?.file?.name}
+                universityLevelFileName3={designationUniversity3?.file?.name}
+                onFileCollegeCampusLevelSelect1={
+                  approvedCollegeCampusDesignationFileHandler1
+                }
+                onFileCollegeCampusLevelSelect2={
+                  approvedCollegeCampusDesignationFileHandler2
+                }
+                onFileCollegeCampusLevelSelect3={
+                  approvedCollegeCampusDesignationFileHandler3
+                }
+                onFileCustomCollegeCampusLevelSelect={
+                  customApprovedCollegeCampusDesignationFileHandler
+                }
+                collegeCampusLevelFileName1={
+                  collegeCampusDesignation1?.file?.name
+                }
+                collegeCampusLevelFileName2={
+                  collegeCampusDesignation2?.file?.name
+                }
+                collegeCampusLevelFileName3={
+                  collegeCampusDesignation3?.file?.name
+                }
+                customcollegeCampusLevelFileName={
+                  collegeCampusDesignation4?.file?.name
+                }
+              />
+              <StrategicFunction2
+                onSelectDepartmentDesignation1={onSelectDepartmentDesignation1}
+                onSelectDepartmentDesignation2={onSelectDepartmentDesignation2}
+                onSelectDepartmentDesignation3={onSelectDepartmentDesignation3}
+                textInputDepartmentDesignation4={
+                  textInputDepartmentDesignation4
+                }
+                displayDesignationDepartment1={departmentDesignation1?.title}
+                displayDesignationDepartment2={departmentDesignation2?.title}
+                displayDesignationDepartment3={departmentDesignation3?.title}
+                departmentLevelInputDesignation={departmentDesignation4?.title}
+                onFileDepartmentLevelSelect1={
+                  approvedDepartmentDesignationFileHandler1
+                }
+                onFileDepartmentLevelSelect2={
+                  approvedDepartmentDesignationFileHandler2
+                }
+                onFileDepartmentLevelSelect3={
+                  approvedDepartmentDesignationFileHandler3
+                }
+                onFileCustomDepartmentLevelSelect={
+                  customApprovedDepartmentDesignationFileHandler
+                }
+                departmentLevelFileName1={departmentDesignation1?.file?.name}
+                departmentLevelFileName2={departmentDesignation2?.file?.name}
+                departmentLevelFileName3={departmentDesignation3?.file?.name}
+                customDepartmentFileName={departmentDesignation4?.file?.name}
+                onTextInputSportsSocioDesignationTitle={
+                  textInputTitleSportsSocio
+                }
+                onTextInputSportsSocioDesignationPoints={
+                  textInputPointsSportsSocio
+                }
+                sportsSocioTitle={sportsSocio?.title}
+                sportsSocioPoints={sportsSocio?.points}
+                fileHandlerSportsSocio={fileHandlerSportsSocio}
+                fileNameSportsSocio={sportsSocio?.file?.name}
+                onTextInputSportsSocioDesignationTitle1={
+                  textInputTitleSportsSocio1
+                }
+                onTextInputSportsSocioDesignationPoints1={
+                  textInputPointsSportsSocio1
+                }
+                sportsSocioTitle1={sportsSocio1?.title}
+                sportsSocioPoints1={sportsSocio1?.points}
+                fileHandlerSportsSocio1={fileHandlerSportsSocio1}
+                fileNameSportsSocio1={sportsSocio1?.file?.name}
+                onTextInputSportsSocioDesignationTitle2={
+                  textInputTitleSportsSocio2
+                }
+                sportsSocioTitle2={sportsSocio2?.title}
+                sportsSocioPoints2={sportsSocio2?.points}
+                fileHandlerSportsSocio2={fileHandlerSportsSocio2}
+                fileNameSportsSocio2={sportsSocio2?.file?.name}
+                onTextInputMemberUniversityWideDesignationTitle={
+                  textInputTitleMemberUniversity
+                }
+                onTextInputMemberUniversityWideDesignationPoints={
+                  textInputPointsMemberUniversity
+                }
+                memberUniversityTitle={memberUniversity?.title}
+                memberUniversityPoints={memberUniversity?.points}
+                fileHandlerMemberUniversity={fileHandlerMemberUniversity}
+                fileNameMemberUniversity={memberUniversity?.file?.name}
+                onTextInputMemberUniversityWideDesignationTitle1={
+                  textInputTitleMemberUniversity1
+                }
+                onTextInputMemberUniversityWideDesignationTitle2={
+                  textInputTitleMemberUniversity2
+                }
+                onTextInputMemberUniversityWideDesignationPoints1={
+                  textInputPointsMemberUniversity1
+                }
+                memberUniversityTitle1={memberUniversity1?.title}
+                memberUniversityTitle2={memberUniversity2?.title}
+                memberUniversityPoints1={memberUniversity1?.points}
+                memberUniversityPoints2={memberUniversity2?.points}
+                fileHandlerMemberUniversity1={fileHandlerMemberUniversity1}
+                fileHandlerMemberUniversity2={fileHandlerMemberUniversity2}
+                fileNameMemberUniversity1={memberUniversity1?.file?.name}
+                fileNameMemberUniversity2={memberUniversity2?.file?.name}
+                onTextInputAcademicAdviserDesignationTitle={
+                  textInputTitleAcademicAdviser
+                }
+                academicAdviserTitle={academicAdviser?.numberOfStudents}
+                academicAdviserPoints={academicAdviser?.numberOfStudents}
+                fileHandlerAcademicAdviser={fileHandlerAcademicAdviser}
+                fileNameAcademicAdviser={academicAdviser?.file?.name}
+                universityWidePoints={memberUniversity?.points}
+                universityWidePoints1={memberUniversity1?.points}
+                universityWidePoints2={memberUniversity2?.points}
+              />
+            </>
+            <FormFooterContainer>
+              <Buttons>
+                <ButtonContainer>
+                  <div>
+                    <Label style={{ fontWeight: "bold" }}>
+                      {hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {!hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasSportsSocio2 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio2?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasSportsSocio2 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(sportsSocio2?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(memberUniversity.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio?.points) +
+                          Number(sportsSocio1?.points) +
+                          Number(memberUniversity1.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points + Number(sportsSocio?.points)
+                        ).toFixed(2)}`}
+                      {!hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points + Number(sportsSocio1?.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points + Number(memberUniversity.points)
+                        ).toFixed(2)}`}
+                      {!hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points + Number(memberUniversity1.points)
+                        ).toFixed(2)}`}
+                      {!hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points + Number(memberUniversity2.points)
+                        ).toFixed(2)}`}
+                      {!hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity2.points) +
+                          Number(memberUniversity1.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points) +
+                          Number(sportsSocio.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points) +
+                          Number(sportsSocio1.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points) +
+                          Number(sportsSocio1.points) +
+                          Number(sportsSocio.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points) +
+                          Number(sportsSocio1.points) +
+                          Number(sportsSocio.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points) +
+                          Number(sportsSocio1.points) +
+                          Number(sportsSocio.points)
+                        ).toFixed(2)}`}
+                      {/* {hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        `Total Strategic Function Workload = ${
+                          points + Number(academicAdviser.points)
+                        }`} */}
+                      {/* {!hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        `Total Strategic Function Workload = ${points}`} */}
+                      {hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasAcademicAdviser &&
+                        hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio.points)
+                        ).toFixed(2)}`}
+                      {hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio1.points)
+                        ).toFixed(2)}`}
+                      {hasAcademicAdviser &&
+                        hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio1.points) +
+                          Number(sportsSocio.points)
+                        ).toFixed(2)}`}
+                      {hasAcademicAdviser &&
+                        hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio1.points) +
+                          Number(sportsSocio.points) +
+                          Number(memberUniversity.points)
+                        ).toFixed(2)}`}
+                      {hasAcademicAdviser &&
+                        hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        !hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio1.points) +
+                          Number(sportsSocio.points) +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(sportsSocio1.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(sportsSocio1.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        !hasAcademicAdviser &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(sportsSocio1.points) +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasAcademicAdviser &&
+                        !hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(sportsSocio1.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasAcademicAdviser &&
+                        hasMemberUniversity &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(sportsSocio1.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(memberUniversity?.points)
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        hasAcademicAdviser &&
+                        !hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(sportsSocio1.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        hasSportsSocio &&
+                        !hasSportsSocio1 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio.points)
+                        ).toFixed(2)}`}
+                      {hasMemberUniversity &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        hasAcademicAdviser &&
+                        !hasSportsSocio &&
+                        hasSportsSocio1 &&
+                        `Total Strategic Function Workload = ${
+                          points +
+                          Number(memberUniversity?.points) +
+                          Number(memberUniversity1?.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023 +
+                          Number(sportsSocio1.points)
+                        }`}
+                      {!hasSportsSocio &&
+                        !hasMemberUniversity &&
+                        !hasAcademicAdviser &&
+                        !hasSportsSocio1 &&
+                        !hasMemberUniversity1 &&
+                        !hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${points}`}
+                      {!hasSportsSocio &&
+                        !hasMemberUniversity &&
+                        hasAcademicAdviser &&
+                        !hasSportsSocio1 &&
+                        hasMemberUniversity1 &&
+                        hasMemberUniversity2 &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity1.points) +
+                          Number(memberUniversity2?.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {!hasSportsSocio &&
+                        hasAcademicAdviser &&
+                        hasMemberUniversity &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(memberUniversity.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                      {hasSportsSocio &&
+                        hasAcademicAdviser &&
+                        hasMemberUniversity &&
+                        `Total Strategic Function Workload = ${(
+                          points +
+                          Number(sportsSocio.points) +
+                          Number(memberUniversity.points) +
+                          Number(academicAdviser.numberOfStudents) * 0.023
+                        ).toFixed(2)}`}
+                    </Label>
+                  </div>
+                  <FormButton
+                    text="Submit"
+                    onClicked={() => setIsConfirming(true)}
+                    isSubmitting={isSubmitting}
+                  ></FormButton>
+                </ButtonContainer>
+              </Buttons>
+            </FormFooterContainer>
+          </Container>
+        </BodyContainer>
+      </Content>
+      {/* <FooterContainer>
+        <Footer />
+      </FooterContainer> */}
     </MainContainer>
   );
 };
 
 const MainContainer = styled.div`
   min-height: 100vh;
+`;
+
+const Content = styled.div`
   display: flex;
-  flex-direction: column;
 `;
 
 const BodyContainer = styled.div`
@@ -1424,16 +1649,46 @@ const BodyContainer = styled.div`
   flex-direction: column;
   border: 5px solid black;
   border-radius: 15px;
-  margin: 80px;
+  margin: 120px 120px 120px 268px;
 `;
 
 const Container = styled.div`
   padding: 30px;
-  width: 95%;
+  width: 85%;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 20px 0px 0px;
+  width: 100%;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 80px;
+  justify-content: flex-end;
+`;
+
+const Label = styled.label`
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const FormFooterContainer = styled.div`
+  display: flex;
+  width: 100%;
 `;
 
 const WorkloadTextContainer = styled.div`
@@ -1448,92 +1703,11 @@ const WorkloadText = styled.text`
   font-family: HurmeGeometricSans3;
 `;
 
-const UploadContainer = styled.div`
-  width: auto;
-  max-width: 500px;
-  flex-direction: row;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const UploadTextDescription = styled.label`
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 18px;
-  font-family: HurmeGeometricSans3;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
+const FooterContainer = styled.div`
+  margin-top: auto;
   align-self: flex-end;
-  margin: 20px 20px 0px 0px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: row;
   width: 100%;
-  margin-top: 80px;
-  justify-content: flex-end;
-`;
-
-const UploadFileContainer = styled.div`
-  max-width: 100px;
-`;
-
-const UniversityLabelContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-  margin: 30px;
-`;
-
-const UniversityLabelText = styled.text`
-  font-family: HurmeGeometricSans3SemiBold;
-  font-size: 15px;
-  line-height: 15px;
-`;
-
-const CheckBoxGroupContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-left: 50px;
-`;
-
-const CheckBoxColumnContainer = styled.div`
-  display: flex;
-  align-items: start;
-  flex-direction: column;
-`;
-
-const CheckBoxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-`;
-
-const CheckBox = styled.div<{ isSelected: boolean }>`
-  border: 1px solid black;
-  min-width: 12px;
-  min-height: 12px;
-  margin-right: 5px;
-  cursor: pointer;
-  background-color: ${p => (p.isSelected ? Colors.active : "none")};
-  transition: opacity 0.1s ease-in-out;
-  &:hover {
-    opacity: 0.3;
-  }
-`;
-
-const CheckBoxLabel = styled.text`
-  font-family: HurmeGeometricSans3;
-  font-size: 15px;
-  line-height: 15px;
+  z-index: 1;
 `;
 
 export default StrategicFunction;

@@ -4,7 +4,6 @@ import DropdownWithUpload from "../../../components/DropdownWithUpload";
 import TextInputWithTitlePointUpload from "../../../components/TextInputWithTitlePointsUpload";
 import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
-import { DesignationWithTitleAndPoints } from "./StrategicFunction";
 
 type StrategicFunction2Props = {
   onSelectDepartmentDesignation1: (value: string) => void;
@@ -29,18 +28,43 @@ type StrategicFunction2Props = {
   sportsSocioPoints?: string;
   fileHandlerSportsSocio: (value?: File) => void;
   fileNameSportsSocio?: string;
+  onTextInputSportsSocioDesignationTitle1: (value: string) => void;
+  onTextInputSportsSocioDesignationPoints1: (value: string) => void;
+  sportsSocioTitle1?: string;
+  sportsSocioPoints1?: string;
+  fileHandlerSportsSocio1: (value?: File) => void;
+  fileNameSportsSocio1?: string;
   onTextInputMemberUniversityWideDesignationTitle: (value: string) => void;
   onTextInputMemberUniversityWideDesignationPoints: (value: string) => void;
   memberUniversityTitle?: string;
   memberUniversityPoints?: string;
   fileHandlerMemberUniversity: (value?: File) => void;
   fileNameMemberUniversity?: string;
+  onTextInputMemberUniversityWideDesignationTitle1: (value: string) => void;
+  onTextInputMemberUniversityWideDesignationTitle2: (value: string) => void;
+  onTextInputMemberUniversityWideDesignationPoints1: (value: string) => void;
+  memberUniversityTitle1?: string;
+  memberUniversityTitle2?: string;
+  memberUniversityPoints1?: string;
+  memberUniversityPoints2?: string;
+  fileHandlerMemberUniversity1: (value?: File) => void;
+  fileHandlerMemberUniversity2: (value?: File) => void;
+  fileNameMemberUniversity1?: string;
+  fileNameMemberUniversity2?: string;
   onTextInputAcademicAdviserDesignationTitle: (value: string) => void;
-  onTextInputAcademicAdviserDesignationPoints: (value: string) => void;
+  onTextInputAcademicAdviserDesignationPoints?: (value: string) => void;
   academicAdviserTitle?: string;
   academicAdviserPoints?: string;
   fileHandlerAcademicAdviser: (value?: File) => void;
   fileNameAcademicAdviser?: string;
+  onTextInputSportsSocioDesignationTitle2: (value: string) => void;
+  sportsSocioTitle2?: string;
+  sportsSocioPoints2?: string;
+  fileHandlerSportsSocio2: (value?: File) => void;
+  fileNameSportsSocio2?: string;
+  universityWidePoints?: string;
+  universityWidePoints1?: string;
+  universityWidePoints2?: string;
 };
 
 function StrategicFunction2({
@@ -66,18 +90,43 @@ function StrategicFunction2({
   sportsSocioPoints,
   fileHandlerSportsSocio,
   fileNameSportsSocio,
+  onTextInputSportsSocioDesignationTitle1,
+  onTextInputSportsSocioDesignationPoints1,
+  sportsSocioTitle1,
+  sportsSocioPoints1,
+  fileHandlerSportsSocio1,
+  fileNameSportsSocio1,
+  onTextInputSportsSocioDesignationTitle2,
+  sportsSocioTitle2,
+  sportsSocioPoints2,
+  fileHandlerSportsSocio2,
+  fileNameSportsSocio2,
   onTextInputMemberUniversityWideDesignationTitle,
   onTextInputMemberUniversityWideDesignationPoints,
   memberUniversityTitle,
   memberUniversityPoints,
   fileHandlerMemberUniversity,
   fileNameMemberUniversity,
+  onTextInputMemberUniversityWideDesignationTitle1,
+  onTextInputMemberUniversityWideDesignationPoints1,
+  memberUniversityTitle1,
+  memberUniversityPoints1,
+  fileHandlerMemberUniversity1,
+  fileNameMemberUniversity1,
   onTextInputAcademicAdviserDesignationTitle,
   onTextInputAcademicAdviserDesignationPoints,
   academicAdviserTitle,
   academicAdviserPoints,
   fileHandlerAcademicAdviser,
-  fileNameAcademicAdviser
+  fileNameAcademicAdviser,
+  universityWidePoints,
+  universityWidePoints1,
+  universityWidePoints2,
+  onTextInputMemberUniversityWideDesignationTitle2,
+  memberUniversityTitle2,
+  memberUniversityPoints2,
+  fileHandlerMemberUniversity2,
+  fileNameMemberUniversity2
 }: StrategicFunction2Props) {
   return (
     <>
@@ -99,7 +148,6 @@ function StrategicFunction2({
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
-            uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation2}
             val={displayDesignationDepartment2}
@@ -112,7 +160,6 @@ function StrategicFunction2({
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
-            uploadLabel="Upload approved department designation here:"
             options={DROPDOWN_LISTS.DESIGNATION_DEPARTMENT_LEVEL}
             onSelect={onSelectDepartmentDesignation3}
             val={displayDesignationDepartment3}
@@ -125,7 +172,6 @@ function StrategicFunction2({
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
-            uploadLabel="Upload approved department designation here:"
             onChangeTextInput={textInputDepartmentDesignation4}
             val={departmentLevelInputDesignation}
             onFileSelect={onFileCustomDepartmentLevelSelect}
@@ -135,24 +181,72 @@ function StrategicFunction2({
       </DepartmentLevelContainer>
       <DepartmentLevelContainer>
         <div>
+          <SportsSocioTitleText style={{ textAlign: "center" }}>
+            Designation as Sports/Socio-Cultural Coach or Trainor and Academic
+            Organization Adviser
+          </SportsSocioTitleText>
+        </div>
+        <div>
+          <DropdownUploadContainer>
+            <DropdownWithUpload
+              options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
+              onSelect={onTextInputSportsSocioDesignationTitle}
+              val={sportsSocioTitle}
+              onFileSelect={fileHandlerSportsSocio}
+              fileName={fileNameSportsSocio}
+            />
+            <PointsContainer>
+              <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+                Points:{" "}
+              </PointsText>
+              <PointsText>
+                {sportsSocioPoints ? sportsSocioPoints : "0"}
+              </PointsText>
+            </PointsContainer>
+          </DropdownUploadContainer>
+          <DropdownUploadContainer>
+            <DropdownWithUpload
+              options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
+              onSelect={onTextInputSportsSocioDesignationTitle1}
+              val={sportsSocioTitle1}
+              onFileSelect={fileHandlerSportsSocio1}
+              fileName={fileNameSportsSocio1}
+            />
+            <PointsContainer>
+              <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+                Points:{" "}
+              </PointsText>
+              <PointsText>
+                {sportsSocioPoints1 ? sportsSocioPoints1 : "0"}
+              </PointsText>
+            </PointsContainer>
+          </DropdownUploadContainer>
+          <DropdownUploadContainer>
+            <DropdownWithUpload
+              options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
+              onSelect={onTextInputSportsSocioDesignationTitle2}
+              val={sportsSocioTitle2}
+              onFileSelect={fileHandlerSportsSocio2}
+              fileName={fileNameSportsSocio2}
+            />
+            <PointsContainer>
+              <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+                Points:{" "}
+              </PointsText>
+              <PointsText>
+                {sportsSocioPoints2 ? sportsSocioPoints2 : "0"}
+              </PointsText>
+            </PointsContainer>
+          </DropdownUploadContainer>
+          <div style={{ marginTop: 40 }}>
+            <SportsSocioTitleText style={{ textAlign: "center" }}>
+              Designation as Member of University-Wide AdHoc Committee
+            </SportsSocioTitleText>
+          </div>
           <TextInputWithTitlePointUpload
-            inputLabel="Designation as Sports/Socio-Cultural Coach or Trainor and Academic Organization Adviser"
-            uploadLabel="Upload coach or adviser certificate here:"
-            onChangeTextInputTitle={onTextInputSportsSocioDesignationTitle}
-            onChangeTextInputPoints={onTextInputSportsSocioDesignationPoints}
-            titleVal={sportsSocioTitle}
-            pointsVal={sportsSocioPoints}
-            fileHandler={fileHandlerSportsSocio}
-            fileName={fileNameSportsSocio}
-          />
-          <TextInputWithTitlePointUpload
-            inputLabel="Designation as Member of University-Wide AdHoc Committee"
-            uploadLabel="Upload approved designation here:"
+            universityWidePoints={universityWidePoints}
             onChangeTextInputTitle={
               onTextInputMemberUniversityWideDesignationTitle
-            }
-            onChangeTextInputPoints={
-              onTextInputMemberUniversityWideDesignationPoints
             }
             titleVal={memberUniversityTitle}
             pointsVal={memberUniversityPoints}
@@ -160,16 +254,37 @@ function StrategicFunction2({
             fileName={fileNameMemberUniversity}
           />
           <TextInputWithTitlePointUpload
+            universityWidePoints={universityWidePoints1}
+            onChangeTextInputTitle={
+              onTextInputMemberUniversityWideDesignationTitle1
+            }
+            titleVal={memberUniversityTitle1}
+            pointsVal={memberUniversityPoints1}
+            fileHandler={fileHandlerMemberUniversity1}
+            fileName={fileNameMemberUniversity1}
+          />
+          <TextInputWithTitlePointUpload
+            universityWidePoints={universityWidePoints2}
+            onChangeTextInputTitle={
+              onTextInputMemberUniversityWideDesignationTitle2
+            }
+            titleVal={memberUniversityTitle2}
+            pointsVal={memberUniversityPoints2}
+            fileHandler={fileHandlerMemberUniversity2}
+            fileName={fileNameMemberUniversity2}
+          />
+          <TextInputWithTitlePointUpload
             inputLabel="Designation as Academic Adviser"
             uploadLabel="Upload list of advisees here:"
             onChangeTextInputTitle={onTextInputAcademicAdviserDesignationTitle}
-            onChangeTextInputPoints={
-              onTextInputAcademicAdviserDesignationPoints
-            }
             titleVal={academicAdviserTitle}
             pointsVal={academicAdviserPoints}
             fileHandler={fileHandlerAcademicAdviser}
             fileName={fileNameAcademicAdviser}
+            pointsLabel="0.023 per Advisee"
+            textField={true}
+            customize={true}
+            customLabel="Number of Advisee"
           />
         </div>
       </DepartmentLevelContainer>
@@ -190,6 +305,31 @@ const LevelLabel = styled.text`
   font-size: 20px;
   line-height: 18px;
   font-family: HurmeGeometricSans3SemiBold;
+`;
+
+const PointsContainer = styled.div`
+  display: flex;
+  width: 30%;
+  padding-top: 30px;
+  align-items: center;
+`;
+
+const DropdownUploadContainer = styled.div`
+  display: flex;
+`;
+
+const PointsText = styled.span`
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const SportsSocioTitleText = styled.span`
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
 `;
 
 export default StrategicFunction2;

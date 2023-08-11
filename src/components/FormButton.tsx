@@ -44,6 +44,7 @@ const Container = styled.div<{ disabled?: boolean }>`
   &:hover {
     opacity: 0.7;
   }
+  margin-bottom: 15px;
 `;
 
 const ButtonText = styled.text<{ disabled?: boolean }>`

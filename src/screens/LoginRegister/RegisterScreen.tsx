@@ -102,7 +102,7 @@ export default function RegisterScreen({
       values
     ) as Required<RegisterFormValueType>;
     finalValues.campus = campus || DROPDOWN_LISTS.CAMPUS[0];
-    finalValues.department = department || DROPDOWN_LISTS.DEPARTMENT[0];
+    finalValues.department = department;
     finalValues.academicRank = academicRank || DROPDOWN_LISTS.ACADEMIC_RANK[0];
     await Register(finalValues)
       .then(() => {
@@ -316,9 +316,44 @@ export default function RegisterScreen({
                   onSelect={campusHandler}
                 />
                 <Dropdown
-                  option={DROPDOWN_LISTS.DEPARTMENT}
+                  option={
+                    campus === "Bacoor Campus"
+                      ? DROPDOWN_LISTS.BACOOR_DEPARTMENT
+                      : campus === "Carmona Campus"
+                      ? DROPDOWN_LISTS.CARMONA_DEPARTMENT
+                      : campus === "Cavite City Campus"
+                      ? DROPDOWN_LISTS.CAVITE_CITY_DEPARTMENT
+                      : campus === "Gen. Trias Campus"
+                      ? DROPDOWN_LISTS.GEN_TRIAS_DEPARTMENT
+                      : campus === "Imus Campus"
+                      ? DROPDOWN_LISTS.IMUS_DEPARTMENT
+                      : campus === "Silang Campus"
+                      ? DROPDOWN_LISTS.SILANG_DEPARTMENT
+                      : campus === "Tanza Campus"
+                      ? DROPDOWN_LISTS.TANZA_DEPARTMENT
+                      : campus === "Trece Campus"
+                      ? DROPDOWN_LISTS.TRECE_DEPARTMENT
+                      : campus === "CAFENR"
+                      ? DROPDOWN_LISTS.CAFENR_COLLEGE
+                      : campus === "CAS"
+                      ? DROPDOWN_LISTS.CAS_COLLEGE
+                      : campus === "CCJ"
+                      ? DROPDOWN_LISTS.CCJ_COLLEGE
+                      : campus === "CED"
+                      ? DROPDOWN_LISTS.CED_COLLEGE
+                      : campus === "CEIT"
+                      ? DROPDOWN_LISTS.CEIT_COLLEGE
+                      : campus === "CEMDS"
+                      ? DROPDOWN_LISTS.CEMDS_COLLEGE
+                      : campus === "CON"
+                      ? DROPDOWN_LISTS.CON_COLLEGE
+                      : campus === "CSPEAR"
+                      ? DROPDOWN_LISTS.CSPEAR_COLLEGE
+                      : DROPDOWN_LISTS.CVMBS_COLLEGE
+                  }
                   label="Department"
                   onSelect={departmentHandler}
+                  isDisable={!campus || campus === "-----"}
                 />
                 <Dropdown
                   option={DROPDOWN_LISTS.ACADEMIC_RANK}
@@ -329,7 +364,8 @@ export default function RegisterScreen({
               {isRegisterSuccess && (
                 <ErrorMessageContainer>
                   <SuccessMessageText>
-                    Registration Successfully, Please Verify your email first
+                    Registration successful. Please check your email for the
+                    verification link to proceed.
                   </SuccessMessageText>
                 </ErrorMessageContainer>
               )}

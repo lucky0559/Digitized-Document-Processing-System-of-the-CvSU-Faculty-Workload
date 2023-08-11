@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -9,12 +9,16 @@ import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
 import { useNavigate } from "react-router-dom";
-import { Login, LoginDTO } from "../../lib/user.hooks";
+import { LoginDTO, SendResetPasswordLink } from "../../lib/user.hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { User } from "../../types/User";
+import { UserContext } from "../../App";
 
 type LoginScreenProps = {
   onLoginButtonClick?: () => void;
   onRegisterButtonClick?: () => void;
+  UseLogin: (values: LoginDTO) => void;
+  user?: User;
 };
 
 type LoginFormValueType = {
@@ -34,7 +38,9 @@ const LoginFormSchema = Yup.object().shape({
 
 export default function LoginScreen({
   onLoginButtonClick,
-  onRegisterButtonClick
+  onRegisterButtonClick,
+  UseLogin,
+  user
 }: LoginScreenProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,22 +49,38 @@ export default function LoginScreen({
   const height = window.innerHeight;
   const isDesktopTablet = window.innerWidth > 1201;
 
-  const navigate = useNavigate();
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+
+  const [email, setEmail] = useState("");
+
+  const [successResetSendMessage, setSuccessResetSendMessage] = useState("");
+
+  const { loginError } = useContext(UserContext);
 
   const onSubmit = async (values: LoginDTO) => {
     setIsSubmitting(true);
-    await Login(values)
-      .then(res => {
-        setIsSubmitting(false);
-        localStorage.setItem("userId", res.data.id);
-        localStorage.setItem("role", res.data.role);
-        navigate("teaching-workload", { replace: true });
-        setErrorMessage("");
-      })
-      .catch(error => {
-        setErrorMessage(error.response.data.message);
-        setIsSubmitting(false);
-      });
+    UseLogin(values);
+  };
+
+  useEffect(() => {
+    if (loginError) {
+      setIsSubmitting(false);
+    }
+  }, [loginError]);
+
+  const onSendResetPasswordLink = async () => {
+    setIsSubmitting(true);
+    setSuccessResetSendMessage("");
+    setErrorMessage("");
+    try {
+      await SendResetPasswordLink(email);
+      setEmail("");
+      setSuccessResetSendMessage("A reset link was sent to your email.");
+    } catch (e) {
+      setErrorMessage("Email not registered.");
+      console.log(e);
+    }
+    setIsSubmitting(false);
   };
 
   return (
@@ -68,89 +90,143 @@ export default function LoginScreen({
         <CvsuLogoImg src={CvsuLogo} />
       </Header>
       <FormContainer>
-        <Formik
-          initialValues={initialFormValues}
-          validationSchema={LoginFormSchema}
-          onSubmit={onSubmit}
-        >
-          {({ values, errors, handleSubmit, touched, handleChange }) => (
-            <FormStyled>
-              <FieldGroup>
-                <Label>Username</Label>
-                <FieldIconContainer>
-                  <TextInput
-                    type="text"
-                    name="username"
-                    value={values.username}
-                    onChange={handleChange}
-                    className={
-                      touched.username && errors.username ? "is-invalid" : ""
-                    }
-                  />
-                  <AiFillEye size={20} opacity={0} />
-                </FieldIconContainer>
-                <ErrorMessageStyle
-                  component="div"
-                  name="username"
-                  className="invalid-feedback"
+        {isForgotPassword ? (
+          <SendEmailContainer>
+            <FieldGroup style={{ marginBottom: 20 }}>
+              <Label>Email</Label>
+              <FieldIconContainer>
+                <TextInput
+                  type={"email"}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                 />
-              </FieldGroup>
-              <FieldGroup>
-                <Label>Password</Label>
-                <FieldIconContainer>
-                  <TextInput
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    className={
-                      touched.password && errors.password ? "is-invalid" : ""
-                    }
-                  />
-                  {showPassword ? (
-                    <AiFillEye
-                      size={20}
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <AiFillEyeInvisible
-                      size={20}
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </FieldIconContainer>
-                <ErrorMessageStyle
-                  component="div"
-                  name="password"
-                  className="invalid-feedback"
-                />
-              </FieldGroup>
+              </FieldIconContainer>
               {errorMessage && (
-                <ErrorMessageContainer>
+                <ErrorMessageContainer
+                  style={{
+                    marginLeft: 0
+                  }}
+                >
                   <ErrorMessageText>{errorMessage}</ErrorMessageText>
                 </ErrorMessageContainer>
               )}
-              <ForgotPasswordContainer>
-                <ForgotPasswordText>Forgot Password</ForgotPasswordText>
-              </ForgotPasswordContainer>
-              <ButtonsContainer>
-                <Button
-                  type="submit"
-                  text="Log In"
-                  color={Colors.buttonPrimary}
-                  onClick={() => handleSubmit}
-                  isSubmitting={isSubmitting}
-                />
-                <Button
-                  type="button"
-                  text="Register"
-                  color={Colors.buttonSecondary}
-                  onClick={onRegisterButtonClick}
-                />
-              </ButtonsContainer>
-            </FormStyled>
-          )}
-        </Formik>
+              {successResetSendMessage && (
+                <ErrorMessageContainer
+                  style={{
+                    marginLeft: 0
+                  }}
+                >
+                  <ErrorMessageText style={{ color: "green" }}>
+                    {successResetSendMessage}
+                  </ErrorMessageText>
+                </ErrorMessageContainer>
+              )}
+            </FieldGroup>
+            <Button
+              type="button"
+              text="Send Reset Link"
+              color={Colors.buttonPrimary}
+              onClick={onSendResetPasswordLink}
+              isSubmitting={isSubmitting}
+              disable={!email || !email.includes("@cvsu.edu.ph")}
+              hoverOpacity={
+                !email || !email.includes("@cvsu.edu.ph") ? ".5" : undefined
+              }
+            />
+            <Button
+              type="button"
+              text="Back"
+              color={Colors.buttonSecondary}
+              onClick={() => setIsForgotPassword(false)}
+            />
+          </SendEmailContainer>
+        ) : (
+          <Formik
+            initialValues={initialFormValues}
+            validationSchema={LoginFormSchema}
+            onSubmit={onSubmit}
+          >
+            {({ values, errors, handleSubmit, touched, handleChange }) => (
+              <FormStyled>
+                <FieldGroup>
+                  <Label>Username/Email</Label>
+                  <FieldIconContainer>
+                    <TextInput
+                      type="text"
+                      name="username"
+                      value={values.username}
+                      onChange={handleChange}
+                      className={
+                        touched.username && errors.username ? "is-invalid" : ""
+                      }
+                    />
+                    <AiFillEye size={20} opacity={0} />
+                  </FieldIconContainer>
+                  <ErrorMessageStyle
+                    component="div"
+                    name="username"
+                    className="invalid-feedback"
+                  />
+                </FieldGroup>
+                <FieldGroup>
+                  <Label>Password</Label>
+                  <FieldIconContainer>
+                    <TextInput
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      className={
+                        touched.password && errors.password ? "is-invalid" : ""
+                      }
+                    />
+                    {showPassword ? (
+                      <AiFillEye
+                        size={20}
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    ) : (
+                      <AiFillEyeInvisible
+                        size={20}
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    )}
+                  </FieldIconContainer>
+                  <ErrorMessageStyle
+                    component="div"
+                    name="password"
+                    className="invalid-feedback"
+                  />
+                </FieldGroup>
+                {loginError && (
+                  <ErrorMessageContainer>
+                    <ErrorMessageText>{loginError}</ErrorMessageText>
+                  </ErrorMessageContainer>
+                )}
+                <ForgotPasswordContainer
+                  onClick={() => setIsForgotPassword(true)}
+                >
+                  <ForgotPasswordText>Forgot Password</ForgotPasswordText>
+                </ForgotPasswordContainer>
+                <ButtonsContainer>
+                  <Button
+                    type="submit"
+                    text="Log In"
+                    color={Colors.buttonPrimary}
+                    onClick={() => handleSubmit}
+                    isSubmitting={isSubmitting}
+                  />
+                  <Button
+                    type="button"
+                    text="Register"
+                    color={Colors.buttonSecondary}
+                    onClick={onRegisterButtonClick}
+                  />
+                </ButtonsContainer>
+              </FormStyled>
+            )}
+          </Formik>
+        )}
       </FormContainer>
     </Container>
   );
@@ -281,4 +357,13 @@ const FieldIconContainer = styled.div`
   align-items: center;
   background-color: #ececec;
   padding: 0 5px 0 5px;
+`;
+
+const SendEmailContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;

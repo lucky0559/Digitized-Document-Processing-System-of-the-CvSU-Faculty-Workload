@@ -29,7 +29,11 @@ const UploadFileButton = ({
           </ButtonText>
         </Container>
       ) : (
-        <FileName> {workloadFileName || fileName} </FileName>
+        <FileName>
+          {" "}
+          {workloadFileName?.substring(0, 7) + "..." ||
+            fileName.substring(0, 7) + "..."}{" "}
+        </FileName>
       )}
     </>
   );
