@@ -174,14 +174,19 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           actions.setHasPendingTeachingWorkload(
             !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
           );
-          actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-          actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+          actions.setHasPendingExtensionWorkload(
+            !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+          );
+          actions.setHasPendingResearchWorkload(
+            !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+          );
           actions.setHasPendingStrategicWorkload(
-            strategicFunctionWorkloads.length > 0
+            !!strategicFunctionWorkloads.length &&
+              strategicFunctionWorkloads[0].isSubmitted
           );
           setIsSubmitting(false);
           clearStates();
-          if (strategicFunctionWorkloads.length === 0) {
+          if (!!!strategicFunctionWorkloads.length) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-summary", { replace: true });
@@ -419,10 +424,15 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       actions.setHasPendingTeachingWorkload(
         !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
       );
-      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingExtensionWorkload(
+        !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+      );
+      actions.setHasPendingResearchWorkload(
+        !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+      );
       actions.setHasPendingStrategicWorkload(
-        strategicFunctionWorkloads.length > 0
+        !!strategicFunctionWorkloads.length &&
+          strategicFunctionWorkloads[0].isSubmitted
       );
     })();
   }, []);

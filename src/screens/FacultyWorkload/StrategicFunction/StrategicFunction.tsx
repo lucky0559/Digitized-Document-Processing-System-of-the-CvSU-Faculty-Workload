@@ -37,6 +37,7 @@ type AcademicAdviserType = {
 export type Designation = {
   title?: string;
   file?: File;
+  filename?: string;
 };
 
 type StrategicFunctionProps = {
@@ -860,10 +861,15 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
       actions.setHasPendingTeachingWorkload(
         !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
       );
-      actions.setHasPendingExtensionWorkload(extensionWorkloads.length > 0);
-      actions.setHasPendingResearchWorkload(researchWorkloads.length > 0);
+      actions.setHasPendingExtensionWorkload(
+        !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+      );
+      actions.setHasPendingResearchWorkload(
+        !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+      );
       actions.setHasPendingStrategicWorkload(
-        strategicFunctionWorkloads.length > 0
+        !!strategicFunctionWorkloads.length &&
+          strategicFunctionWorkloads[0].isSubmitted
       );
     })();
   }, []);

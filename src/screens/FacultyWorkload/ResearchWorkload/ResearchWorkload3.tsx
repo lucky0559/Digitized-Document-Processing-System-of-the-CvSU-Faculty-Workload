@@ -34,8 +34,9 @@ type ResearchWorkload3Props = {
   study2Points: number;
   study3Points: number;
   study4Points: number;
-  fundGeneratedPoints: number;
+  fundGeneratedPoints?: number;
   isDisseminatedOnly?: boolean;
+  studyPoints?: number;
 };
 
 const ResearchWorkload3 = ({
@@ -66,7 +67,8 @@ const ResearchWorkload3 = ({
   fundGeneratedPoints,
   researchWorkLoadHandler2,
   researchWorkLoadHandler1,
-  isDisseminatedOnly
+  isDisseminatedOnly,
+  studyPoints
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -98,7 +100,7 @@ const ResearchWorkload3 = ({
 
           researchWorkLoadHandler3(false);
         }}
-        content="Confirm submission?"
+        content="Confirm saving of workload?"
         size="large"
       />
       {(points !== 0 || fundGeneratedPoints !== 0) && (
@@ -157,11 +159,12 @@ const ResearchWorkload3 = ({
           Total Research Workload ={" "}
           {(
             points +
+            (studyPoints || 0) +
             study1Points +
             study2Points +
             study3Points +
             study4Points +
-            fundGeneratedPoints
+            (fundGeneratedPoints || 0)
           ).toString()}
         </Label>
       </TotalPointsContainer>
@@ -173,7 +176,7 @@ const ResearchWorkload3 = ({
           style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
         >
           <FormButton
-            text="Submit"
+            text="Save"
             onClicked={() => setIsConfirming(true)}
             isSubmitting={isSubmitting}
             disabled={

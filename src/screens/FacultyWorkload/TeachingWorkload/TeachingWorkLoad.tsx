@@ -18,7 +18,7 @@ import { TeachingWorkLoadType } from "../../../types/TeachingWorkload";
 import { Confirm } from "semantic-ui-react";
 import { UserContext } from "../../../App";
 import { WORKLOAD_STATUS } from "../../../enums/workloadEnums";
-import { getSavedWorkload } from "../../../lib/teaching-workload.hooks";
+import { getTwlSavedWorkload } from "../../../lib/teaching-workload.hooks";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 
 type TeachingWorkLoadProps = {
@@ -70,7 +70,6 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        console.log(teachingWorkLoad);
         if (
           teachingWorkLoad?.contactHours &&
           teachingWorkLoad.numberOfPreparations &&
@@ -157,7 +156,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const { data } = await getSavedWorkload(user.id);
+      const { data } = await getTwlSavedWorkload(user.id);
       setTeachingWorkLoad(data);
       setNumberOfPreparations(data.numberOfPreparations || "");
       setContactHours(data.contactHours || "");
