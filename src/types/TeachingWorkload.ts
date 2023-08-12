@@ -10,4 +10,5 @@ export type TeachingWorkLoadType = {
   totalTeachingWorkload?: number;
   remarks?: PointsAndRemarks;
   isSubmitted?: boolean;
+  filename?: string;
 };

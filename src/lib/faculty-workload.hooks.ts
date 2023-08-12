@@ -41,7 +41,7 @@ export const SaveTeachingWorkload = async (
   }
 
   if (
-    teachingWorkload.twlFile &&
+    (teachingWorkload.twlFile || teachingWorkload.filename) &&
     teachingWorkload.numberOfPreparations &&
     Number(teachingWorkload.numberOfPreparations) > 0 &&
     teachingWorkload.contactHours &&
@@ -50,8 +50,11 @@ export const SaveTeachingWorkload = async (
     Number(teachingWorkload.totalNoOfStudents) > 0
   ) {
     try {
-      const res = await s3.uploadFile(teachingWorkload.twlFile);
-      teachingWorkload.twlFilePath = res.location;
+      if (teachingWorkload.twlFile) {
+        const res = await s3.uploadFile(teachingWorkload.twlFile);
+        teachingWorkload.filename = teachingWorkload.twlFile.name;
+        teachingWorkload.twlFilePath = res.location;
+      }
       const { data } = await axios.post(
         `teaching-workload/${userId}/save`,
         teachingWorkload
