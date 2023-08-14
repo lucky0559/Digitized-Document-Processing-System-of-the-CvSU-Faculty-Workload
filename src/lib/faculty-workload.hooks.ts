@@ -67,142 +67,174 @@ export const SaveTeachingWorkload = async (
 };
 
 export const SaveResearchWorkload = async (
-  researchWorkload: ResearchWorkLoadType
+  researchWorkload: ResearchWorkLoadType,
+  workloadStatus: number
 ) => {
   const userId = localStorage.getItem("userId");
   const rwlAwsConfigS3 = new ReactS3Client(rwlAwsConfig);
   const rwl1AwsConfigS3 = new ReactS3Client(rwl1AwsConfig);
   const rwl2AwsConfigS3 = new ReactS3Client(rwl2AwsConfig);
 
+  switch (workloadStatus) {
+    case WORKLOAD_STATUS.SAVE:
+      researchWorkload.isSubmitted = false;
+      break;
+    case WORKLOAD_STATUS.SUBMITTED:
+      researchWorkload.isSubmitted = true;
+      break;
+    default:
+      break;
+  }
+
   let disseminatedResearchFile1;
   let disseminatedResearchFile2;
   let disseminatedResearchFile3;
   let disseminatedResearchFile4;
 
-  if (researchWorkload.rwlFile) {
-    try {
+  if (researchWorkload.fundingOfStudy === "CvSU Funded") {
+    if (researchWorkload.rwlFile) {
       const file = await rwlAwsConfigS3.uploadFile(researchWorkload.rwlFile);
+      researchWorkload.rwlFilename = researchWorkload.rwlFile.name;
       researchWorkload.rwlFilePath = file.location;
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[0]
-      ) {
-        disseminatedResearchFile1 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[0]
-        );
-        researchWorkload.disseminatedResearchFilesPath = [
-          disseminatedResearchFile1.location
-        ];
-      }
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[1]
-      ) {
-        disseminatedResearchFile2 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[1]
-        );
-        researchWorkload.disseminatedResearchFilesPath?.push(
-          disseminatedResearchFile2.location
-        );
-      }
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[2]
-      ) {
-        disseminatedResearchFile3 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[2]
-        );
-        researchWorkload.disseminatedResearchFilesPath?.push(
-          disseminatedResearchFile3.location
-        );
-      }
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[3]
-      ) {
-        disseminatedResearchFile4 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[3]
-        );
-        researchWorkload.disseminatedResearchFilesPath?.push(
-          disseminatedResearchFile4.location
-        );
-      }
-
-      const { data } = await axios.post(
-        `research-workload/${userId}/save`,
-        researchWorkload
-      );
-      return { data };
-    } catch (exception) {
-      console.log(exception);
     }
-  }
 
-  if (researchWorkload.rwlFile1) {
-    try {
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[0]
+    ) {
+      disseminatedResearchFile1 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[0]
+      );
+      researchWorkload.disseminatedResearchFilenames = [
+        researchWorkload.disseminatedResearchFiles?.[0].name
+      ];
+      researchWorkload.disseminatedResearchFilesPath = [
+        disseminatedResearchFile1.location
+      ];
+    }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[1]
+    ) {
+      disseminatedResearchFile2 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[1]
+      );
+      researchWorkload.disseminatedResearchFilenames?.push(
+        researchWorkload.disseminatedResearchFiles?.[1].name
+      );
+      researchWorkload.disseminatedResearchFilesPath?.push(
+        disseminatedResearchFile2.location
+      );
+    }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[2]
+    ) {
+      disseminatedResearchFile3 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[2]
+      );
+      researchWorkload.disseminatedResearchFilenames?.push(
+        researchWorkload.disseminatedResearchFiles?.[2].name
+      );
+      researchWorkload.disseminatedResearchFilesPath?.push(
+        disseminatedResearchFile3.location
+      );
+    }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[3]
+    ) {
+      disseminatedResearchFile4 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[3]
+      );
+      researchWorkload.disseminatedResearchFilenames?.push(
+        researchWorkload.disseminatedResearchFiles?.[3].name
+      );
+      researchWorkload.disseminatedResearchFilesPath?.push(
+        disseminatedResearchFile4.location
+      );
+    }
+
+    const { data } = await axios.post(
+      `research-workload/${userId}/save`,
+      researchWorkload
+    );
+    return { data };
+  } else {
+    if (researchWorkload.rwlFile1) {
       const file1 = await rwl1AwsConfigS3.uploadFile(researchWorkload.rwlFile1);
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[0]
-      ) {
-        disseminatedResearchFile1 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[0]
-        );
-        researchWorkload.disseminatedResearchFilesPath = [
-          disseminatedResearchFile1.location
-        ];
-      }
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[1]
-      ) {
-        disseminatedResearchFile2 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[1]
-        );
-        researchWorkload.disseminatedResearchFilesPath?.push(
-          disseminatedResearchFile2.location
-        );
-      }
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[2]
-      ) {
-        disseminatedResearchFile3 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[2]
-        );
-        researchWorkload.disseminatedResearchFilesPath?.push(
-          disseminatedResearchFile3.location
-        );
-      }
-
-      if (
-        researchWorkload.disseminatedResearch?.length! > 0 &&
-        researchWorkload.disseminatedResearchFiles?.[3]
-      ) {
-        disseminatedResearchFile4 = await rwl2AwsConfigS3.uploadFile(
-          researchWorkload.disseminatedResearchFiles?.[3]
-        );
-        researchWorkload.disseminatedResearchFilesPath?.push(
-          disseminatedResearchFile4.location
-        );
-      }
-
+      researchWorkload.rwlFilename1 = researchWorkload.rwlFile1.name;
       researchWorkload.rwlFilePath1 = file1.location;
-      const { data } = await axios.post(
-        `research-workload/${userId}/save`,
-        researchWorkload
-      );
-      return { data };
-    } catch (exception) {
-      console.log(exception);
     }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[0]
+    ) {
+      disseminatedResearchFile1 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[0]
+      );
+      researchWorkload.disseminatedResearchFilenames = [
+        researchWorkload.disseminatedResearchFiles?.[0].name
+      ];
+      researchWorkload.disseminatedResearchFilesPath = [
+        disseminatedResearchFile1.location
+      ];
+    }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[1]
+    ) {
+      disseminatedResearchFile2 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[1]
+      );
+      researchWorkload.disseminatedResearchFilenames?.push(
+        researchWorkload.disseminatedResearchFiles?.[1].name
+      );
+      researchWorkload.disseminatedResearchFilesPath?.push(
+        disseminatedResearchFile2.location
+      );
+    }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[2]
+    ) {
+      disseminatedResearchFile3 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[2]
+      );
+      researchWorkload.disseminatedResearchFilenames?.push(
+        researchWorkload.disseminatedResearchFiles?.[2].name
+      );
+      researchWorkload.disseminatedResearchFilesPath?.push(
+        disseminatedResearchFile3.location
+      );
+    }
+
+    if (
+      researchWorkload.disseminatedResearch?.length! > 0 &&
+      researchWorkload.disseminatedResearchFiles?.[3]
+    ) {
+      disseminatedResearchFile4 = await rwl2AwsConfigS3.uploadFile(
+        researchWorkload.disseminatedResearchFiles?.[3]
+      );
+      researchWorkload.disseminatedResearchFilenames?.push(
+        researchWorkload.disseminatedResearchFiles?.[3].name
+      );
+      researchWorkload.disseminatedResearchFilesPath?.push(
+        disseminatedResearchFile4.location
+      );
+    }
+
+    const { data } = await axios.post(
+      `research-workload/${userId}/save`,
+      researchWorkload
+    );
+    return { data };
   }
 };
 

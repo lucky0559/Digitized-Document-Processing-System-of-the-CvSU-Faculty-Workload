@@ -36,6 +36,7 @@ type ResearchWorkload2Props = {
   study4?: string;
   onStudy4FileSelect: (value?: File) => void;
   study4FileName?: string;
+  studyPoints: number;
 };
 
 const ResearchWorkload2 = ({
@@ -68,7 +69,8 @@ const ResearchWorkload2 = ({
   onSelectStudy4,
   study4,
   onStudy4FileSelect,
-  study4FileName
+  study4FileName,
+  studyPoints
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
     rwlFile1Handler(file);
@@ -107,7 +109,7 @@ const ResearchWorkload2 = ({
           </UploadContainer>
           <TotalPointsContainer>
             <Label style={{ fontWeight: "bold" }}>
-              Study Points = {fundGeneratedPoints.toString()}
+              Study Points = {studyPoints.toString()}
             </Label>
           </TotalPointsContainer>
         </SubContainer>
@@ -139,6 +141,7 @@ const ResearchWorkload2 = ({
         study3Points={study3Points}
         study4Points={study4Points}
         fundGeneratedPoints={fundGeneratedPoints}
+        studyPoints={studyPoints}
       />
     </>
   );

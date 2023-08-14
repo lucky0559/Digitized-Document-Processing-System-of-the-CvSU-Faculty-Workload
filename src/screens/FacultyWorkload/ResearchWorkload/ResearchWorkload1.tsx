@@ -171,7 +171,7 @@ const ResearchWorkload1 = ({
         study2Points={study2Points}
         study3Points={study3Points}
         study4Points={study4Points}
-        fundGeneratedPoints={fundGeneratedPoints}
+        studyPoints={studyPoints}
       />
     </>
   );
