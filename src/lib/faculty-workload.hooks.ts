@@ -91,12 +91,13 @@ export const SaveResearchWorkload = async (
   let disseminatedResearchFile3;
   let disseminatedResearchFile4;
 
-  try {
+  if (researchWorkload.fundingOfStudy === "CvSU Funded") {
     if (researchWorkload.rwlFile) {
       const file = await rwlAwsConfigS3.uploadFile(researchWorkload.rwlFile);
       researchWorkload.rwlFilename = researchWorkload.rwlFile.name;
       researchWorkload.rwlFilePath = file.location;
     }
+
     if (
       researchWorkload.disseminatedResearch?.length! > 0 &&
       researchWorkload.disseminatedResearchFiles?.[0]
@@ -162,16 +163,13 @@ export const SaveResearchWorkload = async (
       researchWorkload
     );
     return { data };
-  } catch (exception) {
-    console.log(exception);
-  }
-
-  try {
+  } else {
     if (researchWorkload.rwlFile1) {
       const file1 = await rwl1AwsConfigS3.uploadFile(researchWorkload.rwlFile1);
-      researchWorkload.rwlFilename = researchWorkload.rwlFile1.name;
+      researchWorkload.rwlFilename1 = researchWorkload.rwlFile1.name;
       researchWorkload.rwlFilePath1 = file1.location;
     }
+
     if (
       researchWorkload.disseminatedResearch?.length! > 0 &&
       researchWorkload.disseminatedResearchFiles?.[0]
@@ -231,13 +229,12 @@ export const SaveResearchWorkload = async (
         disseminatedResearchFile4.location
       );
     }
+
     const { data } = await axios.post(
       `research-workload/${userId}/save`,
       researchWorkload
     );
     return { data };
-  } catch (exception) {
-    console.log(exception);
   }
 };
 

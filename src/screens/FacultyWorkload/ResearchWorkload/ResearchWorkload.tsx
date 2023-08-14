@@ -68,20 +68,21 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const [studyPoints, setStudyPoints] = useState(0);
 
+  const [fundGeneratedPoints, setFundGeneratedPoints] = useState(0);
+
   const { user, actions } = useContext(UserContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const researchWorkLoadHandler = () => {
-    if (fundingOfStudy) {
-      if (!!fundingOfStudy?.length) {
-        setResearchWorkLoad({
-          ...researchWorkLoad,
-          titleOfStudy,
-          fundingOfStudy
-        });
-      }
+    if (!!fundingOfStudy?.length || fundDisplay) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        titleOfStudy,
+        fundingOfStudy: fundingOfStudy || fundDisplay
+      });
     }
+
     if (fundingOfStudy === "CvSU Funded") {
       setSteps(2);
     } else if (fundingOfStudy === "Externally Funded") {
@@ -97,7 +98,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     if (fundDisplay !== researchWorkLoad?.fundingOfStudy) {
       setResearchWorkLoad({
         ...researchWorkLoad,
-        fundingOfStudy: fundDisplay
+        fundingOfStudy: fundDisplay || fundingOfStudy
       });
     }
     if (researchWorkLoad?.fundingOfStudy) {
@@ -117,17 +118,17 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const backHandler = () => {
     if (steps === 2) {
-      if (designationStudy) {
+      if (designationStudy || designationStudyDisplay) {
         setResearchWorkLoad({
           ...researchWorkLoad,
           typeOfStudy,
-          designationStudy,
+          designationStudy: designationStudy || designationStudyDisplay,
           rwlFile
         });
       } else {
         setResearchWorkLoad({
           typeOfStudy,
-          designationStudy,
+          designationStudy: designationStudy || designationStudyDisplay,
           rwlFile,
           ...researchWorkLoad
         });
@@ -136,15 +137,15 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
 
     if (steps === 3) {
-      if (fundGenerated) {
+      if (fundGenerated || fundGeneratedDisplay) {
         setResearchWorkLoad({
           ...researchWorkLoad,
-          fundGenerated,
+          fundGenerated: fundGenerated || fundGeneratedDisplay,
           rwlFile1
         });
       } else {
         setResearchWorkLoad({
-          fundGenerated,
+          fundGenerated: fundGenerated || fundGeneratedDisplay,
           rwlFile1,
           ...researchWorkLoad
         });
@@ -167,17 +168,17 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   const researchWorkLoadHandler1 = () => {
-    if (designationStudy) {
+    if (designationStudy || designationStudyDisplay) {
       setResearchWorkLoad({
         ...researchWorkLoad,
-        typeOfStudy: typeOfStudy,
-        designationStudy: designationStudy,
+        typeOfStudy,
+        designationStudy: designationStudy || designationStudyDisplay,
         rwlFile: rwlFile
       });
     } else {
       setResearchWorkLoad({
-        typeOfStudy: typeOfStudy,
-        designationStudy: designationStudy,
+        typeOfStudy,
+        designationStudy: designationStudy || designationStudyDisplay,
         rwlFile: rwlFile,
         ...researchWorkLoad
       });
@@ -185,11 +186,14 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   useEffect(() => {
-    if (designationStudy !== researchWorkLoad?.designationStudy) {
+    if (
+      (designationStudy || designationStudyDisplay) !==
+      researchWorkLoad?.designationStudy
+    ) {
       setResearchWorkLoad({
         ...researchWorkLoad,
-        typeOfStudy: typeOfStudy,
-        designationStudy: designationStudyDisplay
+        typeOfStudy,
+        designationStudy: designationStudyDisplay || designationStudy
       });
     }
     if (researchWorkLoad?.designationStudy) {
@@ -226,15 +230,15 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   }, [rwlFile1]);
 
   const researchWorkLoadHandler2 = () => {
-    if (fundGenerated) {
+    if (fundGenerated || fundGeneratedDisplay) {
       setResearchWorkLoad({
         ...researchWorkLoad,
-        fundGenerated,
+        fundGenerated: fundGenerated || fundGeneratedDisplay,
         rwlFile1
       });
     } else {
       setResearchWorkLoad({
-        fundGenerated,
+        fundGenerated: fundGenerated || fundGeneratedDisplay,
         rwlFile1,
         ...researchWorkLoad
       });
@@ -251,46 +255,48 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   useEffect(() => {
-    if (fundGeneratedDisplay !== researchWorkLoad?.fundGenerated) {
+    if (
+      (fundGeneratedDisplay || fundGenerated) !==
+      researchWorkLoad?.fundGenerated
+    ) {
       setResearchWorkLoad({
         ...researchWorkLoad,
-        fundGenerated: fundGeneratedDisplay
+        fundGenerated: fundGeneratedDisplay || fundGenerated
       });
-
-      if (researchWorkLoad?.fundGenerated) {
-        setFundGeneratedDisplay(researchWorkLoad?.fundGenerated);
-      } else {
-        setFundGeneratedDisplay(fundGenerated);
-      }
     }
-  }, [fundGenerated]);
+  }, [fundGenerated, fundGeneratedDisplay]);
 
   const researchWorkLoadHandler3 = (isAddStudy: boolean) => {
     setIsAddStudy(isAddStudy);
     setResearchWorkLoad({
       ...researchWorkLoad,
       disseminatedResearch: [
-        study1?.file! && study1?.title!,
-        study2?.file! && study2?.title!,
-        study3?.file! && study3?.title!,
-        study4?.file! && study4?.title!
+        (study1?.filename || study1?.file!) && study1?.title!,
+        (study2?.filename || study2?.file!) && study2?.title!,
+        (study3?.filename || study3?.file!) && study3?.title!,
+        (study4?.filename || study4?.file!) && study4?.title!
       ].filter(Boolean),
       disseminatedResearchFiles: [
         study1?.file!,
         study2?.file!,
         study3?.file!,
         study4?.file!
-      ]
+      ],
+      typeOfStudy,
+      designationStudy: designationStudy || designationStudyDisplay,
+      fundGenerated: fundGenerated || fundGeneratedDisplay
     });
     if (researchWorkLoad?.fundingOfStudy !== "CvSU Funded") {
       researchWorkLoad!.typeOfStudy = undefined;
       researchWorkLoad!.designationStudy = undefined;
       researchWorkLoad!.rwlFile = undefined;
       researchWorkLoad!.rwlFilePath = undefined;
+      researchWorkLoad!.rwlFilename1 = undefined;
     } else {
       researchWorkLoad.fundGenerated = undefined;
       researchWorkLoad.rwlFile1 = undefined;
       researchWorkLoad.rwlFilePath1 = undefined;
+      researchWorkLoad!.rwlFilename = undefined;
     }
     onSubmit();
   };
@@ -306,18 +312,21 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           researchWorkLoad?.titleOfStudy &&
           researchWorkLoad.fundingOfStudy &&
           researchWorkLoad.typeOfStudy &&
-          researchWorkLoad.designationStudy &&
+          (researchWorkLoad.designationStudy || designationStudyDisplay) &&
           (researchWorkLoad.rwlFile || researchWorkLoad.rwlFilename)
         ) {
           let designationStudyPoints;
+
           if (
             researchWorkLoad.designationStudy ===
-            "Program Leader/Co-Program Leader"
+              "Program Leader/Co-Program Leader" ||
+            designationStudyDisplay === "Program Leader/Co-Program Leader"
           ) {
             designationStudyPoints = 9;
           } else if (
             researchWorkLoad.designationStudy ===
-            "Project Leader/Co-Project Leader"
+              "Project Leader/Co-Project Leader" ||
+            designationStudyDisplay === "Project Leader/Co-Project Leader"
           ) {
             designationStudyPoints = 6;
           } else {
@@ -365,21 +374,23 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           researchWorkLoad?.rwlFilename1
         ) {
           // for external funded
-          let fundGeneratedPoints;
 
-          if (researchWorkLoad?.fundGenerated === "Above 1,000,000.00") {
-            fundGeneratedPoints = 3;
-          } else if (
-            researchWorkLoad?.fundGenerated === "500,001.00 - 1,000,000.00"
+          if (
+            (researchWorkLoad?.fundGenerated || fundGenerated) ===
+            "Above 1,000,000.00"
           ) {
-            fundGeneratedPoints = 2;
+            setStudyPoints(3);
+          } else if (
+            (researchWorkLoad?.fundGenerated || fundGenerated) ===
+            "500,001.00 - 1,000,000.00"
+          ) {
+            setStudyPoints(2);
           } else {
-            fundGeneratedPoints = 1;
+            setStudyPoints(1);
           }
-
           researchWorkLoad!.rwlPoints = Number(
             (
-              fundGeneratedPoints +
+              studyPoints +
               study1Points +
               study2Points +
               study3Points +
@@ -523,7 +534,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   let designationStudyPoints = 0;
-  const [fundGeneratedPoints, setFundGeneratedPoints] = useState(0);
+  let generatedPoints = 0;
+
   const [study1Points, setStudy1Points] = useState(0);
   const [study2Points, setStudy2Points] = useState(0);
   const [study3Points, setStudy3Points] = useState(0);
@@ -533,7 +545,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     if (
       designationStudy === "Program Leader/Co-Program Leader" &&
       typeOfStudy &&
-      rwlFile
+      (rwlFile || researchWorkLoad?.rwlFilename)
     ) {
       designationStudyPoints = 9;
       setStudyPoints(9);
@@ -541,7 +553,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     } else if (
       designationStudy === "Project Leader/Co-Project Leader" &&
       typeOfStudy &&
-      rwlFile
+      (rwlFile || researchWorkLoad?.rwlFilename)
     ) {
       designationStudyPoints = 6;
       setStudyPoints(6);
@@ -549,7 +561,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     } else if (
       designationStudy === "Study Leader/Co-Study Leader" &&
       typeOfStudy &&
-      rwlFile
+      (rwlFile || researchWorkLoad?.rwlFilename)
     ) {
       designationStudyPoints = 3;
       setStudyPoints(3);
@@ -565,53 +577,92 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         rwlFile1
       });
     }
-    if (fundGenerated === "Above 1,000,000.00" && rwlFile1) {
-      setFundGeneratedPoints(3);
-    } else if (fundGenerated === "500,001.00 - 1,000,000.00" && rwlFile1) {
-      setFundGeneratedPoints(2);
-    } else if (fundGenerated === "500,000.00 and below" && rwlFile1) {
-      setFundGeneratedPoints(1);
+    if (
+      fundGenerated === "Above 1,000,000.00" &&
+      (rwlFile1 || researchWorkLoad?.rwlFilename1)
+    ) {
+      generatedPoints = 3;
+      setStudyPoints(3);
+      return setFundGeneratedPoints(generatedPoints);
+    } else if (
+      fundGenerated === "500,001.00 - 1,000,000.00" &&
+      (rwlFile1 || researchWorkLoad?.rwlFilename1)
+    ) {
+      generatedPoints = 2;
+      setStudyPoints(2);
+      return setFundGeneratedPoints(generatedPoints);
+    } else if (
+      fundGenerated === "500,000.00 and below" &&
+      (rwlFile1 || researchWorkLoad?.rwlFilename1)
+    ) {
+      generatedPoints = 1;
+      setStudyPoints(1);
+      return setFundGeneratedPoints(generatedPoints);
     }
   }, [fundGenerated, rwlFile1]);
 
   useEffect(() => {
-    if (study1?.title === "International" && study1.file) {
+    if (study1?.title === "International" && (study1.file || study1.filename)) {
       setStudy1Points(4);
-    } else if (study1?.title === "National" && study1.file) {
+    } else if (
+      study1?.title === "National" &&
+      (study1.file || study1.filename)
+    ) {
       setStudy1Points(3);
-    } else if (study1?.title === "Regional" && study1.file) {
+    } else if (
+      study1?.title === "Regional" &&
+      (study1.file || study1.filename)
+    ) {
       setStudy1Points(2);
-    } else if (study1?.title === "Local" && study1.file) {
+    } else if (study1?.title === "Local" && (study1.file || study1.filename)) {
       setStudy1Points(1);
     }
 
-    if (study2?.title === "International" && study2.file) {
+    if (study2?.title === "International" && (study2.file || study2.filename)) {
       setStudy2Points(4);
-    } else if (study2?.title === "National" && study2.file) {
+    } else if (
+      study2?.title === "National" &&
+      (study2.file || study2.filename)
+    ) {
       setStudy2Points(3);
-    } else if (study2?.title === "Regional" && study2.file) {
+    } else if (
+      study2?.title === "Regional" &&
+      (study2.file || study2.filename)
+    ) {
       setStudy2Points(2);
-    } else if (study2?.title === "Local" && study2.file) {
+    } else if (study2?.title === "Local" && (study2.file || study2.filename)) {
       setStudy2Points(1);
     }
 
-    if (study3?.title === "International" && study3.file) {
+    if (study3?.title === "International" && (study3.file || study3.filename)) {
       setStudy3Points(4);
-    } else if (study3?.title === "National" && study3.file) {
+    } else if (
+      study3?.title === "National" &&
+      (study3.file || study3.filename)
+    ) {
       setStudy3Points(3);
-    } else if (study3?.title === "Regional" && study3.file) {
+    } else if (
+      study3?.title === "Regional" &&
+      (study3.file || study3.filename)
+    ) {
       setStudy3Points(2);
-    } else if (study3?.title === "Local" && study3.file) {
+    } else if (study3?.title === "Local" && (study3.file || study3.filename)) {
       setStudy3Points(1);
     }
 
-    if (study4?.title === "International" && study4.file) {
+    if (study4?.title === "International" && (study4.file || study4.filename)) {
       setStudy4Points(4);
-    } else if (study4?.title === "National" && study4.file) {
+    } else if (
+      study4?.title === "National" &&
+      (study4.file || study4.filename)
+    ) {
       setStudy4Points(3);
-    } else if (study4?.title === "Regional" && study4.file) {
+    } else if (
+      study4?.title === "Regional" &&
+      (study4.file || study4.filename)
+    ) {
       setStudy4Points(2);
-    } else if (study4?.title === "Local" && study4.file) {
+    } else if (study4?.title === "Local" && (study4.file || study4.filename)) {
       setStudy4Points(1);
     }
   }, [study1, study2, study3, study4]);
@@ -666,16 +717,21 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     (async () => {
       const { data } = await getRwlSavedWorkload(user.id);
       setResearchWorkLoad(data);
+
+      // CVSU FUNDED
       setTitleOfStudy(data.titleOfStudy || "");
       setFundingOfStudy(data.fundingOfStudy || "");
       setFundDisplay(data.fundingOfStudy || "");
       setTypeOfStudy(data.typeOfStudy || "");
       setDesignationStudy(data.designationStudy || "");
       if (data.designationStudy === "Program Leader/Co-Program Leader") {
+        designationStudyPoints = 9;
         setStudyPoints(9);
       } else if (data.designationStudy === "Project Leader/Co-Project Leader") {
+        designationStudyPoints = 6;
         setStudyPoints(6);
       } else if (data.designationStudy === "Study Leader/Co-Study Leader") {
+        designationStudyPoints = 3;
         setStudyPoints(3);
       }
       setStudy1({
@@ -733,6 +789,27 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       } else if (data.disseminatedResearch?.[3] === "Local") {
         setStudy4Points(1);
       }
+
+      // EXTERNAL FUNDED
+      setFundGenerated(data.fundGenerated);
+      setFundGeneratedDisplay(data.fundGenerated);
+      if (data.fundGenerated === "Above 1,000,000.00" && data.rwlFilename1) {
+        generatedPoints = 3;
+        setStudyPoints(3);
+      } else if (
+        data.fundGenerated === "500,001.00 - 1,000,000.00" &&
+        data.rwlFilename1
+      ) {
+        generatedPoints = 2;
+        setStudyPoints(2);
+      } else if (
+        data.fundGenerated === "500,000.00 and below" &&
+        data.rwlFilename1
+      ) {
+        generatedPoints = 1;
+        setStudyPoints(1);
+      }
+
       setPoints(Number(data.rwlPoints));
       setIsLoading(false);
     })();
@@ -843,7 +920,9 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               fundGeneratedHandler={fundGeneratedHandler}
               rwlFile1Handler={rwlFile1Handler}
               backHandler={backHandler}
-              fundGeneratedDisplay={fundGenerated || fundGeneratedDisplay}
+              fundGeneratedDisplay={
+                researchWorkLoad?.fundGenerated || fundGeneratedDisplay
+              }
               rwlFileName1={researchWorkLoad?.rwlFilename1 || rwlFile1?.name}
               points={points}
               study1Points={study1Points}
@@ -869,6 +948,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               study4={study4?.title}
               onStudy4FileSelect={onStudy4FileSelect}
               study4FileName={study4?.filename || study4?.file?.name}
+              studyPoints={studyPoints}
             />
           )}
           {steps === 4 && (

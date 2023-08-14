@@ -158,13 +158,11 @@ const ResearchWorkload3 = ({
         <Label style={{ fontWeight: "bold" }}>
           Total Research Workload ={" "}
           {(
-            points +
             (studyPoints || 0) +
             study1Points +
             study2Points +
             study3Points +
-            study4Points +
-            (fundGeneratedPoints || 0)
+            study4Points
           ).toString()}
         </Label>
       </TotalPointsContainer>
@@ -183,7 +181,7 @@ const ResearchWorkload3 = ({
               isDisseminatedOnly
                 ? study1Points + study2Points + study3Points + study4Points ===
                   0
-                : points === 0 && fundGeneratedPoints === 0
+                : studyPoints === 0
             }
           ></FormButton>
         </ButtonContainer>
