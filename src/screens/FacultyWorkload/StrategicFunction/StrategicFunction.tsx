@@ -1702,18 +1702,11 @@ const WorkloadTextContainer = styled.div`
   align-self: flex-start;
 `;
 
-const WorkloadText = styled.text`
+const WorkloadText = styled.span`
   font-size: 19px;
   font-weight: 600;
   line-height: 20px;
   font-family: HurmeGeometricSans3;
-`;
-
-const FooterContainer = styled.div`
-  margin-top: auto;
-  align-self: flex-end;
-  width: 100%;
-  z-index: 1;
 `;
 
 export default StrategicFunction;

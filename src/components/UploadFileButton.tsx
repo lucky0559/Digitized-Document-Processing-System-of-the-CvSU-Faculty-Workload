@@ -70,7 +70,7 @@ const FileInput = styled.input`
   height: 100%;
 `;
 
-const FileName = styled.text`
+const FileName = styled.span`
   font-family: HurmeGeometricSans3Bold;
   font-size: 15px;
   line-height: 15px;

@@ -239,7 +239,8 @@ export const SaveResearchWorkload = async (
 };
 
 export const SaveExtensionWorkload = async (
-  extensionWorkload: ExtensionWorkloadType
+  extensionWorkload: ExtensionWorkloadType,
+  workloadStatus: number
 ) => {
   const userId = localStorage.getItem("userId");
   const extensionActivityS3 = new ReactS3Client(extensionActivityAwsConfig);
@@ -250,45 +251,89 @@ export const SaveExtensionWorkload = async (
     extensionSummaryHoursAwsConfig
   );
 
+  switch (workloadStatus) {
+    case WORKLOAD_STATUS.SAVE:
+      extensionWorkload.isSubmitted = false;
+      break;
+    case WORKLOAD_STATUS.SUBMITTED:
+      extensionWorkload.isSubmitted = true;
+      break;
+    default:
+      break;
+  }
+
   if (
-    extensionWorkload.certificateFile &&
-    extensionWorkload.extensionActivityFile &&
-    extensionWorkload.summaryOfHoursFile
+    (extensionWorkload.certificateFile ||
+      extensionWorkload.certificateFilenames) &&
+    (extensionWorkload.extensionActivityFile ||
+      extensionWorkload.extensionActivityFilename) &&
+    (extensionWorkload.summaryOfHoursFile ||
+      extensionWorkload.summaryOfHoursFilename)
   ) {
     try {
       let certificateFile;
+      let certificateFilename: string;
       let certificateFile1;
+      let certificateFilename1: string;
       let certificateFile2;
-      if (extensionWorkload.certificateFile[0]) {
+      let certificateFilename2: string;
+
+      if (extensionWorkload.certificateFile?.[0]) {
         certificateFile = await extensionActivityS3.uploadFile(
           extensionWorkload.certificateFile[0]
         );
+        certificateFilename = extensionWorkload.certificateFile[0].name;
       }
-      if (extensionWorkload.certificateFile[1]) {
+      if (extensionWorkload.certificateFile?.[1]) {
         certificateFile1 = await extensionActivityS3.uploadFile(
           extensionWorkload.certificateFile[1]
         );
+        certificateFilename1 = extensionWorkload.certificateFile[0].name;
       }
-      if (extensionWorkload.certificateFile[2]) {
+      if (extensionWorkload.certificateFile?.[2]) {
         certificateFile2 = await extensionActivityS3.uploadFile(
           extensionWorkload.certificateFile[2]
         );
+        certificateFilename2 = extensionWorkload.certificateFile[0].name;
+      }
+      if (extensionWorkload.extensionActivityFile) {
+        const extensionActivityFile =
+          await extensionCertificateFileS3.uploadFile(
+            extensionWorkload.extensionActivityFile
+          );
+        extensionWorkload.extensionActivityFilename =
+          extensionWorkload.extensionActivityFile.name;
+        extensionWorkload.extensionActivityFilePath =
+          extensionActivityFile.location;
+        extensionWorkload.extensionActivityFilename =
+          extensionWorkload.extensionActivityFile.name;
       }
 
-      const extensionActivityFile = await extensionCertificateFileS3.uploadFile(
-        extensionWorkload.extensionActivityFile
-      );
-      const summaryOfHoursFile = await extensionSummaryHoursS3.uploadFile(
-        extensionWorkload.summaryOfHoursFile
-      );
+      if (extensionWorkload.summaryOfHoursFile) {
+        const summaryOfHoursFile = await extensionSummaryHoursS3.uploadFile(
+          extensionWorkload.summaryOfHoursFile
+        );
+        extensionWorkload.summaryOfHoursFilename =
+          extensionWorkload.summaryOfHoursFile.name;
+        extensionWorkload.summaryOfHoursFilePath = summaryOfHoursFile.location;
+        extensionWorkload.summaryOfHoursFilename =
+          extensionWorkload.summaryOfHoursFile.name;
+      }
+
       extensionWorkload.certificateFilePath = [
         certificateFile?.location!,
         certificateFile1?.location!,
         certificateFile2?.location!
       ].filter(Boolean);
-      extensionWorkload.extensionActivityFilePath =
-        extensionActivityFile.location;
-      extensionWorkload.summaryOfHoursFilePath = summaryOfHoursFile.location;
+
+      if (!!extensionWorkload.certificateFile?.length) {
+        extensionWorkload.certificateFilenames = [
+          certificateFilename!,
+          certificateFilename1!,
+          certificateFilename2!
+        ].filter(Boolean);
+      }
+
       const { data } = await axios.post(
         `extension-workload/${userId}/save`,
         extensionWorkload

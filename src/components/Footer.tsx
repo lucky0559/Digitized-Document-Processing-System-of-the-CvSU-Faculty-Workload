@@ -28,7 +28,7 @@ const FooterTextContainer = styled.div`
   padding: 15px;
 `;
 
-const FooterText = styled.text`
+const FooterText = styled.span`
   color: ${Colors.white};
   font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;

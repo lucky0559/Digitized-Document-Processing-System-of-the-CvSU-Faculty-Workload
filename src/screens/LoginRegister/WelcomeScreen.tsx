@@ -15,8 +15,6 @@ type WelcomeScreenProps = {
 
 const WelcomeScreen = ({ UseLogin, user }: WelcomeScreenProps) => {
   const [activeScreen, setActiveScreen] = useState("login");
-  const userId = localStorage.getItem("userId");
-  const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
 
   useEffect(() => {

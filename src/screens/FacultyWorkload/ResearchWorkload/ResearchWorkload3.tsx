@@ -236,7 +236,7 @@ const AddStudyContainer = styled.div`
   margin-right: 30px;
 `;
 
-const AddStudyText = styled.text`
+const AddStudyText = styled.span`
   font-family: HurmeGeometricSans3SemiBold;
   font-size: 17px;
   line-height: 18px;

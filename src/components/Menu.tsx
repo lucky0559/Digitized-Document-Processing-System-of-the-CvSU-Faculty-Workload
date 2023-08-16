@@ -191,7 +191,7 @@ const NavButtonContainer = styled.div`
   padding: 0 20px;
 `;
 
-const NavButtonText = styled.text<{ isActive: boolean }>`
+const NavButtonText = styled.span<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
   font-size: 19px;
@@ -222,7 +222,7 @@ const SubMenuContainer = styled.div<{ disabled?: boolean }>`
   padding: 0 50px;
 `;
 
-const SubMenuText = styled.text<{ isActive: boolean; disabled?: boolean }>`
+const SubMenuText = styled.span<{ isActive: boolean; disabled?: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
   font-size: 14px;
