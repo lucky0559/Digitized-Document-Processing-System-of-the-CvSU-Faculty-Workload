@@ -47,7 +47,7 @@ const Container = styled.div<{ disabled?: boolean }>`
   margin-bottom: 15px;
 `;
 
-const ButtonText = styled.text<{ disabled?: boolean }>`
+const ButtonText = styled.span<{ disabled?: boolean }>`
   color: ${Colors.primary};
   font-size: 23px;
   font-family: HurmeGeometricSans3;

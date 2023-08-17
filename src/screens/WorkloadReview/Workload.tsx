@@ -348,7 +348,7 @@ const Table = styled.table`
   margin: 20px 0;
 `;
 
-const TdText = styled.text`
+const TdText = styled.span`
   font-family: HurmeGeometricSans3;
 `;
 

@@ -65,14 +65,14 @@ const BodyContainer = styled.div`
   margin-top: 10%;
 `;
 
-const VerifiedText = styled.text`
+const VerifiedText = styled.span`
   text-transform: uppercase;
   font-family: HurmeGeometricSans3SemiBold;
   font-size: 18px;
   color: green;
 `;
 
-const LoginLinkText = styled.text`
+const LoginLinkText = styled.span`
   text-transform: uppercase;
   font-family: HurmeGeometricSans3;
   font-size: 18px;

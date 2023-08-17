@@ -485,7 +485,7 @@ const FieldGroup = styled.div`
 
 const ErrorMessageContainer = styled.div``;
 
-const ErrorMessageText = styled.text`
+const ErrorMessageText = styled.span`
   font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
@@ -493,7 +493,7 @@ const ErrorMessageText = styled.text`
   color: red;
 `;
 
-const SuccessMessageText = styled.text`
+const SuccessMessageText = styled.span`
   font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;

@@ -301,7 +301,7 @@ const DepartmentLevelContainer = styled.div`
   margin: 20px 0;
 `;
 
-const LevelLabel = styled.text`
+const LevelLabel = styled.span`
   font-size: 20px;
   line-height: 18px;
   font-family: HurmeGeometricSans3SemiBold;

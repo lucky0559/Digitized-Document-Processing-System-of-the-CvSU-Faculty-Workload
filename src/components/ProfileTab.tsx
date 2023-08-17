@@ -77,7 +77,7 @@ const NavButtonContainer = styled.div`
   }
 `;
 
-const NavButtonText = styled.text<{ isActive: boolean }>`
+const NavButtonText = styled.span<{ isActive: boolean }>`
   font-family: HurmeGeometricSans3;
   font-weight: 600;
   font-size: 19px;

@@ -70,7 +70,7 @@ const ButtonContainer = styled.button<{
   border: 3px solid ${p => (p.borderColor ? p.borderColor : "transparent")};
 `;
 
-const ButtonText = styled.text<{ textColor?: string; disabled?: boolean }>`
+const ButtonText = styled.span<{ textColor?: string; disabled?: boolean }>`
   color: ${p => (p.textColor ? p.textColor : Colors.white)};
   font-size: 23px;
   font-family: HurmeGeometricSans3;

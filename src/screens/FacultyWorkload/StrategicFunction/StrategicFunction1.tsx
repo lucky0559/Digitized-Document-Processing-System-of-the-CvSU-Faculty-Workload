@@ -194,7 +194,7 @@ const CollegeCampusLevelContainer = styled.div`
   padding: 15px;
 `;
 
-const LevelLabel = styled.text`
+const LevelLabel = styled.span`
   font-size: 20px;
   line-height: 18px;
   font-family: HurmeGeometricSans3SemiBold;

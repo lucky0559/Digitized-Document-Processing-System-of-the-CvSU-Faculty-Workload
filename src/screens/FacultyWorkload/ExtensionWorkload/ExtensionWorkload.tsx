@@ -18,6 +18,10 @@ import Footer from "../../../components/Footer";
 import { useNavigate } from "react-router-dom";
 import DesignationExtensionActivity from "./DesignationExtensionActivity";
 import { UserContext } from "../../../App";
+import { WORKLOAD_STATUS } from "../../../enums/workloadEnums";
+import { getEwlSavedWorkload } from "../../../lib/ewl.hooks";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import Colors from "../../../constants/Colors";
 
 type ExtensionWorkloadProps = {
   UseLogout: () => void;
@@ -52,8 +56,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
 
-  const [points, setPoints] = useState(0);
-
   const [designationActivityPoints, setDesignationActivityPoints] = useState(0);
   const [resourcePersonActivityPoints, setResourcePersonActivityPoints] =
     useState(0);
@@ -63,10 +65,14 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   const [isConfirming, setIsConfirming] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { user, actions } = useContext(UserContext);
 
   const extensionWorkloadHandler = async () => {
+    // if (resourcePerson || resourcePerson1 || resourcePerson2) {
     setExtensionWorkload({
+      ...extensionWorkload,
       designationExtensionActivity: [
         leader,
         coordinator,
@@ -74,17 +80,49 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         assistants
       ].filter(Boolean),
       extensionActivityFile,
-      resourcePerson: [resourcePerson, resourcePerson1, resourcePerson2].filter(
-        Boolean
-      ),
-      certificateFile: [
-        certificateFile!,
-        certificateFile1!,
-        certificateFile2!
-      ].filter(Boolean),
+      resourcePerson:
+        (resourcePerson &&
+          (extensionWorkload?.certificateFilenames?.[0] || certificateFile)) ||
+        (resourcePerson1 &&
+          (extensionWorkload?.certificateFilenames?.[1] || certificateFile1)) ||
+        (resourcePerson2 &&
+          (extensionWorkload?.certificateFilenames?.[2] || certificateFile2))
+          ? [
+              resourcePerson
+                ? resourcePerson
+                : extensionWorkload?.resourcePerson?.[0]!,
+              resourcePerson1
+                ? resourcePerson1
+                : extensionWorkload?.resourcePerson?.[1]!,
+              resourcePerson2
+                ? resourcePerson2
+                : extensionWorkload?.resourcePerson?.[2]!
+            ].filter(Boolean)
+          : extensionWorkload?.resourcePerson,
+      certificateFile: [certificateFile!, certificateFile1!, certificateFile2!],
       totalNumberHours,
       summaryOfHoursFile
     });
+    // } else {
+    //   setExtensionWorkload({
+    //     ...extensionWorkload,
+    //     designationExtensionActivity: [
+    //       leader,
+    //       coordinator,
+    //       facilitator,
+    //       assistants
+    //     ].filter(Boolean),
+    //     extensionActivityFile,
+    //     certificateFile: [
+    //       certificateFile!,
+    //       certificateFile1!,
+    //       certificateFile2!
+    //     ].filter(Boolean),
+    //     totalNumberHours,
+    //     summaryOfHoursFile
+    //   });
+    // }
+
     setIsSubmitting(true);
     setIsConfirming(false);
   };
@@ -92,13 +130,17 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
+        console.log(extensionWorkload);
         if (
           extensionWorkload?.designationExtensionActivity &&
-          extensionWorkload.extensionActivityFile &&
+          (extensionWorkload.extensionActivityFile ||
+            extensionWorkload.extensionActivityFilename) &&
           extensionWorkload.resourcePerson &&
-          extensionWorkload.certificateFile &&
+          (extensionWorkload.certificateFile ||
+            extensionWorkload.certificateFilenames) &&
           extensionWorkload.totalNumberHours &&
-          extensionWorkload.summaryOfHoursFile
+          (extensionWorkload.summaryOfHoursFile ||
+            extensionWorkload.summaryOfHoursFilename)
         ) {
           let designationExtensionActivityPoints;
           let resourcePersonPoints;
@@ -156,7 +198,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           }
 
           extensionWorkload.ewlPoints =
-            points +
             designationActivityPoints +
             resourcePersonActivityPoints +
             (!summaryOfHoursFile
@@ -164,7 +205,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               : Number(totalNumberHours) * 0.05556 >= 3
               ? 3
               : Number((Number(totalNumberHours) * 0.05556).toFixed(2)));
-          await SaveExtensionWorkload(extensionWorkload);
+          await SaveExtensionWorkload(extensionWorkload, WORKLOAD_STATUS.SAVE);
           const {
             teachingWorkloads,
             extensionWorkloads,
@@ -270,65 +311,74 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
     summaryOfHoursFileHandler(file);
   };
 
-  // useEffect(() => {
-  //   if (
-  //     designationExtensionActivity?.includes("Project Leader") &&
-  //     extensionActivityFile
-  //   ) {
-  //     setDesignationActivityPoints(designationActivityPoints + 3);
-  //   }
-  //   if (
-  //     designationExtensionActivity?.includes("Project Coordinator") &&
-  //     extensionActivityFile
-  //   ) {
-  //     setDesignationActivityPoints(designationActivityPoints + 2.5);
-  //   }
-  //   if (
-  //     designationExtensionActivity?.includes("Project Facilitator") &&
-  //     extensionActivityFile
-  //   ) {
-  //     setDesignationActivityPoints(designationActivityPoints + 2);
-  //   }
-  //   if (
-  //     designationExtensionActivity?.includes("Project Assistants") &&
-  //     extensionActivityFile
-  //   ) {
-  //     setDesignationActivityPoints(designationActivityPoints + 1);
-  //   }
-  // }, [designationExtensionActivity, extensionActivityFile]);
-
   useEffect(() => {
-    if (resourcePerson === "International" && certificateFile) {
+    if (
+      resourcePerson === "International" &&
+      (certificateFile || extensionWorkload?.certificateFilenames?.[0])
+    ) {
       setResourcePersonPoints(4);
-    } else if (resourcePerson === "National" && certificateFile) {
+    } else if (
+      resourcePerson === "National" &&
+      (certificateFile || extensionWorkload?.certificateFilenames?.[0])
+    ) {
       setResourcePersonPoints(3);
-    } else if (resourcePerson === "Regional" && certificateFile) {
+    } else if (
+      resourcePerson === "Regional" &&
+      (certificateFile || extensionWorkload?.certificateFilenames?.[0])
+    ) {
       setResourcePersonPoints(2);
-    } else if (resourcePerson === "Local" && certificateFile) {
+    } else if (
+      resourcePerson === "Local" &&
+      (certificateFile || extensionWorkload?.certificateFilenames?.[0])
+    ) {
       setResourcePersonPoints(1);
     }
   }, [resourcePerson, certificateFile]);
 
   useEffect(() => {
-    if (resourcePerson1 === "International" && certificateFile1) {
+    if (
+      resourcePerson1 === "International" &&
+      (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
+    ) {
       setResourcePersonPoints1(4);
-    } else if (resourcePerson1 === "National" && certificateFile1) {
+    } else if (
+      resourcePerson1 === "National" &&
+      (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
+    ) {
       setResourcePersonPoints1(3);
-    } else if (resourcePerson1 === "Regional" && certificateFile1) {
+    } else if (
+      resourcePerson1 === "Regional" &&
+      (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
+    ) {
       setResourcePersonPoints1(2);
-    } else if (resourcePerson1 === "Local" && certificateFile1) {
+    } else if (
+      resourcePerson1 === "Local" &&
+      (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
+    ) {
       setResourcePersonPoints1(1);
     }
   }, [resourcePerson1, certificateFile1]);
 
   useEffect(() => {
-    if (resourcePerson2 === "International" && certificateFile2) {
+    if (
+      resourcePerson2 === "International" &&
+      (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
+    ) {
       setResourcePersonPoints2(4);
-    } else if (resourcePerson2 === "National" && certificateFile2) {
+    } else if (
+      resourcePerson2 === "National" &&
+      (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
+    ) {
       setResourcePersonPoints2(3);
-    } else if (resourcePerson2 === "Regional" && certificateFile2) {
+    } else if (
+      resourcePerson2 === "Regional" &&
+      (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
+    ) {
       setResourcePersonPoints2(2);
-    } else if (resourcePerson2 === "Local" && certificateFile2) {
+    } else if (
+      resourcePerson2 === "Local" &&
+      (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
+    ) {
       setResourcePersonPoints2(1);
     }
   }, [resourcePerson2, certificateFile2]);
@@ -343,44 +393,68 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
     if (isChecked) {
       if (value === "Project Leader") {
         setLeader("Project Leader");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints + 3);
         }
       } else if (value === "Project Coordinator") {
         setCoordinator("Project Coordinator");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints + 2.5);
         }
       } else if (value === "Project Facilitator") {
         setFacilitator("Project Facilitator");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints + 2);
         }
       } else {
         setAssistants("Project Assistants");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints + 1);
         }
       }
     } else {
       if (value === "Project Leader") {
         setLeader("");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints - 3);
         }
       } else if (value === "Project Coordinator") {
         setCoordinator("");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints - 2.5);
         }
       } else if (value === "Project Facilitator") {
         setFacilitator("");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints - 2);
         }
       } else {
         setAssistants("");
-        if (extensionActivityFile) {
+        if (
+          extensionActivityFile ||
+          extensionWorkload?.extensionActivityFilename
+        ) {
           setDesignationActivityPoints(designationActivityPoints - 1);
         }
       }
@@ -389,19 +463,31 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   useEffect(() => {
     if (leader) {
-      if (extensionActivityFile) {
+      if (
+        extensionActivityFile ||
+        extensionWorkload?.extensionActivityFilename
+      ) {
         setDesignationActivityPoints(designationActivityPoints + 3);
       }
     } else if (coordinator) {
-      if (extensionActivityFile) {
+      if (
+        extensionActivityFile ||
+        extensionWorkload?.extensionActivityFilename
+      ) {
         setDesignationActivityPoints(designationActivityPoints + 2.5);
       }
     } else if (facilitator) {
-      if (extensionActivityFile) {
+      if (
+        extensionActivityFile ||
+        extensionWorkload?.extensionActivityFilename
+      ) {
         setDesignationActivityPoints(designationActivityPoints + 2);
       }
     } else if (assistants) {
-      if (extensionActivityFile) {
+      if (
+        extensionActivityFile ||
+        extensionWorkload?.extensionActivityFilename
+      ) {
         setDesignationActivityPoints(designationActivityPoints + 1);
       }
     }
@@ -414,6 +500,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   }, [leader, coordinator, facilitator, assistants]);
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
       const {
         teachingWorkloads,
@@ -434,8 +521,79 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         !!strategicFunctionWorkloads.length &&
           strategicFunctionWorkloads[0].isSubmitted
       );
+      const { data } = await getEwlSavedWorkload(user.id);
+      setExtensionWorkload(data);
+      setDesignationExtensionActivity(data.designationExtensionActivity);
+      if (data.designationExtensionActivity) {
+        let designationPoints = 0;
+        if (data.designationExtensionActivity?.includes("Project Leader")) {
+          setLeader("Project Leader");
+          designationPoints += 3;
+        }
+        if (
+          data.designationExtensionActivity?.includes("Project Coordinator")
+        ) {
+          setCoordinator("Project Coordinator");
+          designationPoints += 2.5;
+        }
+        if (
+          data.designationExtensionActivity?.includes("Project Facilitator")
+        ) {
+          setFacilitator("Project Facilitator");
+          designationPoints += 2;
+        }
+        if (data.designationExtensionActivity?.includes("Project Assistants")) {
+          setAssistants("Project Assistants");
+          designationPoints += 1;
+        }
+        setDesignationActivityPoints(designationPoints);
+      }
+
+      setTotalNumberHours(data.totalNumberHours);
+
+      if (data.resourcePerson) {
+        // setResourcePerson(data.resourcePerson[0]);
+        // setResourcePerson1(data.resourcePerson[1]);
+        // setResourcePerson2(data.resourcePerson[2]);
+        for (let a = 0; a < data.resourcePerson.length!; a++) {
+          if (data.resourcePerson[a] === "International") {
+            if (a === 0) {
+              setResourcePersonPoints(4);
+            } else if (a === 1) {
+              setResourcePersonPoints1(4);
+            } else if (a === 2) {
+              setResourcePersonPoints2(4);
+            }
+          } else if (data.resourcePerson[a] === "National") {
+            if (a === 0) {
+              setResourcePersonPoints(3);
+            } else if (a === 1) {
+              setResourcePersonPoints1(3);
+            } else if (a === 2) {
+              setResourcePersonPoints2(3);
+            }
+          } else if (data.resourcePerson[a] === "Regional") {
+            if (a === 0) {
+              setResourcePersonPoints(2);
+            } else if (a === 1) {
+              setResourcePersonPoints1(2);
+            } else if (a === 2) {
+              setResourcePersonPoints2(2);
+            }
+          } else if (data.resourcePerson[a] === "Local") {
+            if (a === 0) {
+              setResourcePersonPoints(1);
+            } else if (a === 1) {
+              setResourcePersonPoints1(1);
+            } else if (a === 2) {
+              setResourcePersonPoints2(1);
+            }
+          }
+        }
+      }
+      setIsLoading(false);
     })();
-  }, []);
+  }, [actions, user.email, user.id]);
 
   return (
     <MainContainer>
@@ -443,13 +601,14 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
         onConfirm={extensionWorkloadHandler}
-        content="Confirm submission?"
+        content="Confirm saving of workload?"
         size="large"
       />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <div>
+        <div style={{ minHeight: "100vh" }}>
           <Menu
             isFacultySubmenuOpen={isFacultySubmenuOpen}
             facultySubMenuHandler={() =>
@@ -458,205 +617,248 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             position="relative"
           />
         </div>
-        <BodyContainer>
-          <ScreenTitle title="Faculty Workload" />
-          <Container>
-            <SubContainer>
-              <WorkloadTextContainer>
-                <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
-              </WorkloadTextContainer>
-              <div
-                style={{
-                  padding: 50,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "column"
-                }}
-              >
-                <InputsContainer style={{ width: "100%" }}>
-                  {/* <Dropdown
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              marginTop: 500,
+              marginLeft: "auto",
+              marginRight: "auto"
+            }}
+          >
+            <LoadingSpinner color={Colors.primary} />
+          </div>
+        ) : (
+          <BodyContainer>
+            <ScreenTitle title="Faculty Workload" />
+            <Container>
+              <SubContainer>
+                <WorkloadTextContainer>
+                  <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
+                </WorkloadTextContainer>
+                <div
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column"
+                  }}
+                >
+                  <InputsContainer style={{ width: "100%" }}>
+                    {/* <Dropdown
                 option={DROPDOWN_LISTS.DESIGNATION_EXTENSION_ACTIVITY}
                 label="Designation in Extension Activity"
                 onSelect={designationExtensionActivityHandler}
                 val={designationExtensionActivity}
               /> */}
-                  <DesignationExtensionActivity
-                    onChangeValueCheckbox={onChangeValueCheckbox}
-                  />
-                </InputsContainer>
-                <div
-                  style={{
-                    width: "100%",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    display: "flex",
-                    marginTop: 50
-                  }}
-                >
+                    <DesignationExtensionActivity
+                      onChangeValueCheckbox={onChangeValueCheckbox}
+                      designationExtensionActivity={
+                        designationExtensionActivity
+                      }
+                    />
+                  </InputsContainer>
                   <div
                     style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                       display: "flex",
-                      flexDirection: "column"
+                      marginTop: 50
                     }}
                   >
                     <div
                       style={{
                         display: "flex",
-                        flexDirection: "row",
-                        marginBottom: 40
+                        flexDirection: "column"
                       }}
                     >
                       <div
                         style={{
-                          justifyContent: "space-between",
                           display: "flex",
-                          width: "100%"
+                          flexDirection: "row",
+                          marginBottom: 40
                         }}
                       >
-                        <InputsContainer
+                        <div
                           style={{
-                            alignSelf: "end",
-                            alignItems: "flex-start",
-                            justifyContent: "flex-start",
-                            flexDirection: "row",
-                            marginTop: 80
+                            justifyContent: "space-between",
+                            display: "flex",
+                            width: "100%"
                           }}
                         >
-                          <Label>
-                            Total Number of Hours Rendered in Extension
-                            Activities
-                          </Label>
-                          <TextInput
-                            type="number"
-                            onChange={e =>
-                              totalNumberHoursHandler(e.target.value)
+                          <InputsContainer
+                            style={{
+                              alignSelf: "end",
+                              alignItems: "flex-start",
+                              justifyContent: "flex-start",
+                              flexDirection: "row",
+                              marginTop: 80
+                            }}
+                          >
+                            <Label>
+                              Total Number of Hours Rendered in Extension
+                              Activities
+                            </Label>
+                            <TextInput
+                              type="number"
+                              onChange={e =>
+                                totalNumberHoursHandler(e.target.value)
+                              }
+                              value={totalNumberHours}
+                              min={0}
+                            />
+                          </InputsContainer>
+                        </div>
+                        <div style={{ width: "100%" }}>
+                          <UploadContainer>
+                            <UploadTextDescription>
+                              Upload Extension Activity Accomplishment Report
+                              here:
+                            </UploadTextDescription>
+                            <UploadFileContainer>
+                              <UploadFileButton
+                                fileHandler={setExtensionActivityFileHandler}
+                                workloadFileName={
+                                  extensionActivityFile?.name ||
+                                  extensionWorkload?.extensionActivityFilename
+                                }
+                              />
+                            </UploadFileContainer>
+                          </UploadContainer>
+                          <UploadContainer style={{ marginTop: 30 }}>
+                            <UploadTextDescription>
+                              Upload Summary of hours rendered in extension
+                              activities:
+                            </UploadTextDescription>
+                            <UploadFileContainer>
+                              <UploadFileButton
+                                fileHandler={setSummaryOfHoursFileHandler}
+                                workloadFileName={
+                                  summaryOfHoursFile?.name ||
+                                  extensionWorkload?.summaryOfHoursFilename
+                                }
+                              />
+                            </UploadFileContainer>
+                          </UploadContainer>
+                        </div>
+                      </div>
+
+                      <ResourcePersonContainer>
+                        <InputsContainer>
+                          <Dropdown
+                            option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                            label="Resource Person in an Extension Activity"
+                            onSelect={resourcePersonHandler}
+                            val={
+                              resourcePerson ||
+                              extensionWorkload?.resourcePerson?.[0]
                             }
-                            value={totalNumberHours}
-                            min={0}
                           />
                         </InputsContainer>
-                      </div>
-                      <div style={{ width: "100%" }}>
                         <UploadContainer>
                           <UploadTextDescription>
-                            Upload Extension Activity Accomplishment Report
-                            here:
+                            Upload certificate of presentation here:
                           </UploadTextDescription>
                           <UploadFileContainer>
                             <UploadFileButton
-                              fileHandler={setExtensionActivityFileHandler}
-                              workloadFileName={extensionActivityFile?.name}
+                              fileHandler={setCertificateFileHandler}
+                              workloadFileName={
+                                certificateFile?.name ||
+                                extensionWorkload?.certificateFilenames?.[0]
+                              }
                             />
                           </UploadFileContainer>
                         </UploadContainer>
-                        <UploadContainer style={{ marginTop: 30 }}>
-                          <UploadTextDescription>
-                            Upload Summary of hours rendered in extension
-                            activities:
-                          </UploadTextDescription>
+                      </ResourcePersonContainer>
+                      <ResourcePersonContainer>
+                        <InputsContainer>
+                          <Dropdown
+                            option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                            onSelect={resourcePersonHandler1}
+                            val={
+                              resourcePerson1 ||
+                              extensionWorkload?.resourcePerson?.[1]
+                            }
+                          />
+                        </InputsContainer>
+                        <UploadContainer>
                           <UploadFileContainer>
                             <UploadFileButton
-                              fileHandler={setSummaryOfHoursFileHandler}
-                              workloadFileName={summaryOfHoursFile?.name}
+                              fileHandler={setCertificateFileHandler1}
+                              workloadFileName={
+                                certificateFile1?.name ||
+                                extensionWorkload?.certificateFilenames?.[1]
+                              }
                             />
                           </UploadFileContainer>
                         </UploadContainer>
-                      </div>
+                      </ResourcePersonContainer>
+                      <ResourcePersonContainer>
+                        <InputsContainer>
+                          <Dropdown
+                            option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                            onSelect={resourcePersonHandler2}
+                            val={
+                              resourcePerson2 ||
+                              extensionWorkload?.resourcePerson?.[2]
+                            }
+                          />
+                        </InputsContainer>
+                        <UploadContainer>
+                          <UploadFileContainer>
+                            <UploadFileButton
+                              fileHandler={setCertificateFileHandler2}
+                              workloadFileName={
+                                certificateFile2?.name ||
+                                extensionWorkload?.certificateFilenames?.[2]
+                              }
+                            />
+                          </UploadFileContainer>
+                        </UploadContainer>
+                      </ResourcePersonContainer>
                     </div>
-
-                    <ResourcePersonContainer>
-                      <InputsContainer>
-                        <Dropdown
-                          option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                          label="Resource Person in an Extension Activity"
-                          onSelect={resourcePersonHandler}
-                          val={resourcePerson}
-                        />
-                      </InputsContainer>
-                      <UploadContainer>
-                        <UploadTextDescription>
-                          Upload certificate of presentation here:
-                        </UploadTextDescription>
-                        <UploadFileContainer>
-                          <UploadFileButton
-                            fileHandler={setCertificateFileHandler}
-                            workloadFileName={certificateFile?.name}
-                          />
-                        </UploadFileContainer>
-                      </UploadContainer>
-                    </ResourcePersonContainer>
-                    <ResourcePersonContainer>
-                      <InputsContainer>
-                        <Dropdown
-                          option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                          onSelect={resourcePersonHandler1}
-                          val={resourcePerson1}
-                        />
-                      </InputsContainer>
-                      <UploadContainer>
-                        <UploadFileContainer>
-                          <UploadFileButton
-                            fileHandler={setCertificateFileHandler1}
-                            workloadFileName={certificateFile1?.name}
-                          />
-                        </UploadFileContainer>
-                      </UploadContainer>
-                    </ResourcePersonContainer>
-                    <ResourcePersonContainer>
-                      <InputsContainer>
-                        <Dropdown
-                          option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                          onSelect={resourcePersonHandler2}
-                          val={resourcePerson2}
-                        />
-                      </InputsContainer>
-                      <UploadContainer>
-                        <UploadFileContainer>
-                          <UploadFileButton
-                            fileHandler={setCertificateFileHandler2}
-                            workloadFileName={certificateFile2?.name}
-                          />
-                        </UploadFileContainer>
-                      </UploadContainer>
-                    </ResourcePersonContainer>
                   </div>
                 </div>
-              </div>
-            </SubContainer>
+              </SubContainer>
 
-            <ButtonContainer>
-              <div>
-                <Label style={{ fontWeight: "bold" }}>
-                  Total Extension Workload ={" "}
-                  {(
-                    points +
-                    designationActivityPoints +
-                    resourcePersonActivityPoints +
-                    (!summaryOfHoursFile
-                      ? 0
-                      : Number(totalNumberHours) * 0.05556 >= 3
-                      ? 3
-                      : Number((Number(totalNumberHours) * 0.05556).toFixed(2)))
-                  ).toString()}
-                </Label>
-              </div>
-              <FormButton
-                text="Submit"
-                onClicked={() => setIsConfirming(true)}
-                isSubmitting={isSubmitting}
-                disabled={
-                  !designationExtensionActivity &&
-                  !extensionActivityFile?.name &&
-                  !resourcePerson &&
-                  !certificateFile &&
-                  !totalNumberHours &&
-                  !summaryOfHoursFile?.name
-                }
-              ></FormButton>
-            </ButtonContainer>
-          </Container>
-        </BodyContainer>
+              <ButtonContainer>
+                <div>
+                  <Label style={{ fontWeight: "bold" }}>
+                    Total Extension Workload ={" "}
+                    {(
+                      designationActivityPoints +
+                      resourcePersonActivityPoints +
+                      (!summaryOfHoursFile &&
+                      !extensionWorkload?.summaryOfHoursFilename
+                        ? 0
+                        : Number(totalNumberHours) * 0.05556 >= 3
+                        ? 3
+                        : Number(
+                            (Number(totalNumberHours) * 0.05556).toFixed(2)
+                          ))
+                    ).toString()}
+                  </Label>
+                </div>
+                <FormButton
+                  text="Save"
+                  onClicked={() => setIsConfirming(true)}
+                  isSubmitting={isSubmitting}
+                  disabled={
+                    (!designationExtensionActivity &&
+                      !extensionActivityFile?.name &&
+                      !resourcePerson &&
+                      !certificateFile &&
+                      !totalNumberHours &&
+                      !summaryOfHoursFile?.name) ||
+                    isSubmitting
+                  }
+                ></FormButton>
+              </ButtonContainer>
+            </Container>
+          </BodyContainer>
+        )}
       </div>
 
       <FooterContainer>
@@ -705,7 +907,7 @@ const WorkloadTextContainer = styled.div`
   align-self: flex-start;
 `;
 
-const WorkloadText = styled.text`
+const WorkloadText = styled.span`
   font-size: 19px;
   font-weight: 600;
   line-height: 20px;

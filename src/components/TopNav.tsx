@@ -52,21 +52,12 @@ const CvsuLogo = styled.img`
   height: 45px;
 `;
 
-const TopNavTitleText = styled.text`
+const TopNavTitleText = styled.span`
   font-size: 15px;
   margin-left: 20px;
   color: ${Colors.primaryHeaderText};
   font-family: HurmeGeometricSans3Bold;
   font-weight: 700;
-`;
-
-const BurgerContainer = styled.div`
-  margin: 0px 20px 0px 10px;
-  cursor: pointer;
-  transition: opacity 0.2s ease-in-out;
-  &:hover {
-    opacity: 0.5;
-  }
 `;
 
 const TopNavRightContent = styled.div`

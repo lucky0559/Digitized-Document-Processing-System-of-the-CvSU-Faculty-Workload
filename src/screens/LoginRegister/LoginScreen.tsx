@@ -8,7 +8,6 @@ import CvsuDroneShot from "../../assets/cvsu_logo/cvsu_droneShot.jpg";
 import CvsuLogo from "../../assets/cvsu_logo/cvsu_logo.png";
 import Button from "../../components/Button";
 import { ErrorMessages } from "../../constants/Strings";
-import { useNavigate } from "react-router-dom";
 import { LoginDTO, SendResetPasswordLink } from "../../lib/user.hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { User } from "../../types/User";
@@ -277,7 +276,7 @@ const ForgotPasswordContainer = styled.div`
   margin: 15px 0px 20px 0px;
 `;
 
-const ForgotPasswordText = styled.text`
+const ForgotPasswordText = styled.span`
   font-size: 14px;
   font-weight: 600;
   font-family: HurmeGeometricSans3SemiBold;
@@ -343,7 +342,7 @@ const ErrorMessageContainer = styled.div`
   margin: 10px 0px 0px 17px;
 `;
 
-const ErrorMessageText = styled.text`
+const ErrorMessageText = styled.span`
   font-size: 15px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;

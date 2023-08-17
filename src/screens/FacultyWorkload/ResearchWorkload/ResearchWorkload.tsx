@@ -1044,7 +1044,7 @@ const WorkloadTextContainer = styled.div`
   align-self: flex-start;
 `;
 
-const WorkloadText = styled.text`
+const WorkloadText = styled.span`
   font-size: 19px;
   font-weight: 600;
   line-height: 20px;

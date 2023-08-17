@@ -220,7 +220,7 @@ const ErrorMessageContainer = styled.div`
   margin: 10px 0px 0px 17px;
 `;
 
-const ErrorMessageText = styled.text`
+const ErrorMessageText = styled.span`
   font-size: 12px;
   font-family: HurmeGeometricSans3SemiBold;
   align-self: flex-start;
@@ -228,14 +228,14 @@ const ErrorMessageText = styled.text`
   color: red;
 `;
 
-const VerifiedText = styled.text`
+const VerifiedText = styled.span`
   text-transform: uppercase;
   font-family: HurmeGeometricSans3SemiBold;
   font-size: 18px;
   color: green;
 `;
 
-const LoginLinkText = styled.text`
+const LoginLinkText = styled.span`
   text-transform: uppercase;
   font-family: HurmeGeometricSans3;
   font-size: 18px;

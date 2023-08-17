@@ -3,10 +3,12 @@ import styled from "styled-components";
 
 type DesignationExtensionActivityProps = {
   onChangeValueCheckbox: (checked: boolean, value: string) => void;
+  designationExtensionActivity?: string[];
 };
 
 const DesignationExtensionActivity = ({
-  onChangeValueCheckbox
+  onChangeValueCheckbox,
+  designationExtensionActivity
 }: DesignationExtensionActivityProps) => {
   return (
     <Container>
@@ -25,6 +27,7 @@ const DesignationExtensionActivity = ({
               onChange={e =>
                 onChangeValueCheckbox(e.target.checked, "Project Leader")
               }
+              checked={designationExtensionActivity?.includes("Project Leader")}
             />
             Project Leader
           </Td>
@@ -46,6 +49,9 @@ const DesignationExtensionActivity = ({
               onChange={e =>
                 onChangeValueCheckbox(e.target.checked, "Project Coordinator")
               }
+              checked={designationExtensionActivity?.includes(
+                "Project Coordinator"
+              )}
             />
             Project Coordinator
           </Td>
@@ -73,6 +79,9 @@ const DesignationExtensionActivity = ({
               onChange={e =>
                 onChangeValueCheckbox(e.target.checked, "Project Facilitator")
               }
+              checked={designationExtensionActivity?.includes(
+                "Project Facilitator"
+              )}
             />
             Project Facilitator
           </Td>
@@ -95,6 +104,9 @@ const DesignationExtensionActivity = ({
               onChange={e =>
                 onChangeValueCheckbox(e.target.checked, "Project Assistants")
               }
+              checked={designationExtensionActivity?.includes(
+                "Project Assistants"
+              )}
             />
             Project Assistants
           </Td>

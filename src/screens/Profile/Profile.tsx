@@ -501,7 +501,7 @@ const ProfileContainer = styled.div`
   position: relative;
 `;
 
-const ProfileText = styled.text`
+const ProfileText = styled.span`
   text-transform: uppercase;
   font-size: 23px;
   font-family: HurmeGeometricSans3Bold;
@@ -516,14 +516,14 @@ const DetailContainer = styled.div`
   margin-bottom: 13px;
 `;
 
-const DetailLabel = styled.text`
+const DetailLabel = styled.span`
   text-transform: uppercase;
   font-family: HurmeGeometricSans3Bold;
   font-size: 15px;
   line-height: 15.26px;
 `;
 
-const DetailData = styled.text`
+const DetailData = styled.span`
   text-transform: capitalize;
   font-family: HurmeGeometricSans3;
   font-size: 15px;
@@ -643,7 +643,7 @@ const FieldIconContainer = styled.div`
   padding: 0 5px 0 5px;
 `;
 
-const ResponseMessage = styled.text<{ type: string }>`
+const ResponseMessage = styled.span<{ type: string }>`
   color: ${p => (p.type === "success" ? "#008000" : "red")};
   font-size: 15px;
   font-family: HurmeGeometricSans3Bold;
