@@ -272,11 +272,11 @@ export const SaveExtensionWorkload = async (
   ) {
     try {
       let certificateFile;
-      let certificateFilename: string;
+      let certificateFilename = "";
       let certificateFile1;
-      let certificateFilename1: string;
+      let certificateFilename1 = "";
       let certificateFile2;
-      let certificateFilename2: string;
+      let certificateFilename2 = "";
 
       if (extensionWorkload.certificateFile?.[0]) {
         certificateFile = await extensionActivityS3.uploadFile(
@@ -288,13 +288,13 @@ export const SaveExtensionWorkload = async (
         certificateFile1 = await extensionActivityS3.uploadFile(
           extensionWorkload.certificateFile[1]
         );
-        certificateFilename1 = extensionWorkload.certificateFile[0].name;
+        certificateFilename1 = extensionWorkload.certificateFile[1].name;
       }
       if (extensionWorkload.certificateFile?.[2]) {
         certificateFile2 = await extensionActivityS3.uploadFile(
           extensionWorkload.certificateFile[2]
         );
-        certificateFilename2 = extensionWorkload.certificateFile[0].name;
+        certificateFilename2 = extensionWorkload.certificateFile[2].name;
       }
       if (extensionWorkload.extensionActivityFile) {
         const extensionActivityFile =
@@ -321,16 +321,28 @@ export const SaveExtensionWorkload = async (
       }
 
       extensionWorkload.certificateFilePath = [
-        certificateFile?.location!,
-        certificateFile1?.location!,
-        certificateFile2?.location!
+        certificateFile
+          ? certificateFile?.location!
+          : extensionWorkload.certificateFilePath?.[0]!,
+        certificateFile1
+          ? certificateFile1?.location!
+          : extensionWorkload.certificateFilePath?.[1]!,
+        certificateFile2
+          ? certificateFile2?.location!
+          : extensionWorkload.certificateFilePath?.[2]!
       ].filter(Boolean);
 
       if (!!extensionWorkload.certificateFile?.length) {
         extensionWorkload.certificateFilenames = [
-          certificateFilename!,
-          certificateFilename1!,
-          certificateFilename2!
+          certificateFilename
+            ? certificateFilename!
+            : extensionWorkload.certificateFilenames?.[0]!,
+          certificateFilename1
+            ? certificateFilename1!
+            : extensionWorkload.certificateFilenames?.[1]!,
+          certificateFilename2
+            ? certificateFilename2!
+            : extensionWorkload.certificateFilenames?.[2]!
         ].filter(Boolean);
       }
 

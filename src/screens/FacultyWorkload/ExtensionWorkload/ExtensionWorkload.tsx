@@ -99,11 +99,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                 : extensionWorkload?.resourcePerson?.[2]!
             ].filter(Boolean)
           : extensionWorkload?.resourcePerson,
-      certificateFile: [
-        certificateFile!,
-        certificateFile1!,
-        certificateFile2!
-      ].filter(Boolean),
+      certificateFile: [certificateFile!, certificateFile1!, certificateFile2!],
       totalNumberHours,
       summaryOfHoursFile
     });
@@ -561,13 +557,37 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         // setResourcePerson2(data.resourcePerson[2]);
         for (let a = 0; a < data.resourcePerson.length!; a++) {
           if (data.resourcePerson[a] === "International") {
-            setResourcePersonPoints(4);
+            if (a === 0) {
+              setResourcePersonPoints(4);
+            } else if (a === 1) {
+              setResourcePersonPoints1(4);
+            } else if (a === 2) {
+              setResourcePersonPoints2(4);
+            }
           } else if (data.resourcePerson[a] === "National") {
-            setResourcePersonPoints(3);
+            if (a === 0) {
+              setResourcePersonPoints(3);
+            } else if (a === 1) {
+              setResourcePersonPoints1(3);
+            } else if (a === 2) {
+              setResourcePersonPoints2(3);
+            }
           } else if (data.resourcePerson[a] === "Regional") {
-            setResourcePersonPoints(2);
+            if (a === 0) {
+              setResourcePersonPoints(2);
+            } else if (a === 1) {
+              setResourcePersonPoints1(2);
+            } else if (a === 2) {
+              setResourcePersonPoints2(2);
+            }
           } else if (data.resourcePerson[a] === "Local") {
-            setResourcePersonPoints(1);
+            if (a === 0) {
+              setResourcePersonPoints(1);
+            } else if (a === 1) {
+              setResourcePersonPoints1(1);
+            } else if (a === 2) {
+              setResourcePersonPoints2(1);
+            }
           }
         }
       }
