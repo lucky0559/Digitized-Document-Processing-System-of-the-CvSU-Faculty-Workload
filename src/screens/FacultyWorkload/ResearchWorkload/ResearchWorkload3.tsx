@@ -37,6 +37,10 @@ type ResearchWorkload3Props = {
   fundGeneratedPoints?: number;
   isDisseminatedOnly?: boolean;
   studyPoints?: number;
+  onRemoveStudy1File: () => void;
+  onRemoveStudy2File: () => void;
+  onRemoveStudy3File: () => void;
+  onRemoveStudy4File: () => void;
 };
 
 const ResearchWorkload3 = ({
@@ -68,7 +72,11 @@ const ResearchWorkload3 = ({
   researchWorkLoadHandler2,
   researchWorkLoadHandler1,
   isDisseminatedOnly,
-  studyPoints
+  studyPoints,
+  onRemoveStudy1File,
+  onRemoveStudy2File,
+  onRemoveStudy3File,
+  onRemoveStudy4File
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -126,6 +134,7 @@ const ResearchWorkload3 = ({
             val={study1}
             onFileSelect={onStudy1FileSelectHandler}
             fileName={study1FileName}
+            onRemoveStudyFile={onRemoveStudy1File}
           />
           <DropdownWithUpload
             inputLabel="Study 2"
@@ -134,6 +143,7 @@ const ResearchWorkload3 = ({
             val={study2}
             onFileSelect={onStudy2FileSelectHandler}
             fileName={study2FileName}
+            onRemoveStudyFile={onRemoveStudy2File}
           />
           <DropdownWithUpload
             inputLabel="Study 3"
@@ -142,6 +152,7 @@ const ResearchWorkload3 = ({
             val={study3}
             onFileSelect={onStudy3FileSelectHandler}
             fileName={study3FileName}
+            onRemoveStudyFile={onRemoveStudy3File}
           />
           <DropdownWithUpload
             inputLabel="Study 4"
@@ -150,6 +161,7 @@ const ResearchWorkload3 = ({
             val={study4}
             onFileSelect={onStudy4FileSelectHandler}
             fileName={study4FileName}
+            onRemoveStudyFile={onRemoveStudy4File}
           />
         </div>
       </SubContainer>

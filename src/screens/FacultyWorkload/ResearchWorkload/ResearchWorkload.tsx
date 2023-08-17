@@ -566,8 +566,12 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       designationStudyPoints = 3;
       setStudyPoints(3);
       return setPoints(designationStudyPoints);
+    } else {
+      designationStudyPoints = 0;
+      setStudyPoints(0);
+      return setPoints(designationStudyPoints);
     }
-  }, [designationStudy, rwlFile, fundGenerated]);
+  }, [designationStudy, rwlFile, fundGenerated, typeOfStudy]);
 
   useEffect(() => {
     if (fundGenerated && rwlFile1) {
@@ -616,6 +620,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       setStudy1Points(2);
     } else if (study1?.title === "Local" && (study1.file || study1.filename)) {
       setStudy1Points(1);
+    } else {
+      setStudy1Points(0);
     }
 
     if (study2?.title === "International" && (study2.file || study2.filename)) {
@@ -632,6 +638,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       setStudy2Points(2);
     } else if (study2?.title === "Local" && (study2.file || study2.filename)) {
       setStudy2Points(1);
+    } else {
+      setStudy2Points(0);
     }
 
     if (study3?.title === "International" && (study3.file || study3.filename)) {
@@ -648,6 +656,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       setStudy3Points(2);
     } else if (study3?.title === "Local" && (study3.file || study3.filename)) {
       setStudy3Points(1);
+    } else {
+      setStudy3Points(0);
     }
 
     if (study4?.title === "International" && (study4.file || study4.filename)) {
@@ -664,6 +674,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       setStudy4Points(2);
     } else if (study4?.title === "Local" && (study4.file || study4.filename)) {
       setStudy4Points(1);
+    } else {
+      setStudy4Points(0);
     }
   }, [study1, study2, study3, study4]);
 
@@ -815,6 +827,54 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     })();
   }, [user.id]);
 
+  const onRemoveRwlFile = () => {
+    setRwlFile(undefined);
+    setResearchWorkLoad({
+      ...researchWorkLoad,
+      rwlFilename: undefined
+    });
+  };
+
+  const onRemoveRwl1File = () => {
+    setRwlFile1(undefined);
+    setResearchWorkLoad({
+      ...researchWorkLoad,
+      rwlFilename1: undefined
+    });
+  };
+
+  const onRemoveStudy1File = () => {
+    setStudy1({
+      ...study1,
+      file: undefined,
+      filename: undefined
+    });
+  };
+
+  const onRemoveStudy2File = () => {
+    setStudy2({
+      ...study2,
+      file: undefined,
+      filename: undefined
+    });
+  };
+
+  const onRemoveStudy3File = () => {
+    setStudy3({
+      ...study3,
+      file: undefined,
+      filename: undefined
+    });
+  };
+
+  const onRemoveStudy4File = () => {
+    setStudy4({
+      ...study4,
+      file: undefined,
+      filename: undefined
+    });
+  };
+
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -912,6 +972,11 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               fundGeneratedPoints={fundGeneratedPoints}
               researchWorkLoadHandler3={researchWorkLoadHandler3}
               studyPoints={studyPoints}
+              onRemoveRwlFile={onRemoveRwlFile}
+              onRemoveStudy1File={onRemoveStudy1File}
+              onRemoveStudy2File={onRemoveStudy2File}
+              onRemoveStudy3File={onRemoveStudy3File}
+              onRemoveStudy4File={onRemoveStudy4File}
             />
           )}
           {steps === 3 && (
@@ -949,6 +1014,11 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               onStudy4FileSelect={onStudy4FileSelect}
               study4FileName={study4?.filename || study4?.file?.name}
               studyPoints={studyPoints}
+              onRemoveRwl1File={onRemoveRwl1File}
+              onRemoveStudy1File={onRemoveStudy1File}
+              onRemoveStudy2File={onRemoveStudy2File}
+              onRemoveStudy3File={onRemoveStudy3File}
+              onRemoveStudy4File={onRemoveStudy4File}
             />
           )}
           {steps === 4 && (
@@ -981,6 +1051,10 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               fundGeneratedPoints={fundGeneratedPoints}
               isDisseminatedOnly={true}
               studyPoints={studyPoints}
+              onRemoveStudy1File={onRemoveStudy1File}
+              onRemoveStudy2File={onRemoveStudy2File}
+              onRemoveStudy3File={onRemoveStudy3File}
+              onRemoveStudy4File={onRemoveStudy4File}
             />
           )}
           {steps === 1 && !isLoading && (

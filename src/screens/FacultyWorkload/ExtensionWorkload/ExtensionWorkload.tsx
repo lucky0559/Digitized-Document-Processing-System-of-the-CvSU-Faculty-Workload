@@ -103,25 +103,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       totalNumberHours,
       summaryOfHoursFile
     });
-    // } else {
-    //   setExtensionWorkload({
-    //     ...extensionWorkload,
-    //     designationExtensionActivity: [
-    //       leader,
-    //       coordinator,
-    //       facilitator,
-    //       assistants
-    //     ].filter(Boolean),
-    //     extensionActivityFile,
-    //     certificateFile: [
-    //       certificateFile!,
-    //       certificateFile1!,
-    //       certificateFile2!
-    //     ].filter(Boolean),
-    //     totalNumberHours,
-    //     summaryOfHoursFile
-    //   });
-    // }
 
     setIsSubmitting(true);
     setIsConfirming(false);
@@ -130,7 +111,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        console.log(extensionWorkload);
         if (
           extensionWorkload?.designationExtensionActivity &&
           (extensionWorkload.extensionActivityFile ||
@@ -468,6 +448,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 3);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 3);
       }
     } else if (coordinator) {
       if (
@@ -475,6 +457,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 2.5);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 2.5);
       }
     } else if (facilitator) {
       if (
@@ -482,6 +466,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 2);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 2);
       }
     } else if (assistants) {
       if (
@@ -489,9 +475,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 1);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 1);
       }
     }
-  }, [extensionActivityFile]);
+  }, [extensionActivityFile, extensionWorkload?.extensionActivityFilename]);
 
   useEffect(() => {
     setDesignationExtensionActivity(
@@ -594,6 +582,52 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       setIsLoading(false);
     })();
   }, [actions, user.email, user.id]);
+
+  const onRemoveExtensionFile = () => {
+    setExtensionActivityFile(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      extensionActivityFilename: undefined
+    });
+  };
+
+  const onRemoveSummaryFile = () => {
+    setSummaryOfHoursFile(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      summaryOfHoursFilename: undefined
+    });
+  };
+
+  const onRemoveCertificateFile = () => {
+    const arr = extensionWorkload?.certificateFilenames;
+    arr![0] = "";
+    setCertificateFile(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      certificateFilenames: arr
+    });
+  };
+
+  const onRemoveCertificateFile1 = () => {
+    const arr = extensionWorkload?.certificateFilenames;
+    arr![1] = "";
+    setCertificateFile1(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      certificateFilenames: arr
+    });
+  };
+
+  const onRemoveCertificateFile2 = () => {
+    const arr = extensionWorkload?.certificateFilenames;
+    arr![2] = "";
+    setCertificateFile2(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      certificateFilenames: arr
+    });
+  };
 
   return (
     <MainContainer>
@@ -724,6 +758,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                   extensionActivityFile?.name ||
                                   extensionWorkload?.extensionActivityFilename
                                 }
+                                onRemoveFile={onRemoveExtensionFile}
                               />
                             </UploadFileContainer>
                           </UploadContainer>
@@ -739,6 +774,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                   summaryOfHoursFile?.name ||
                                   extensionWorkload?.summaryOfHoursFilename
                                 }
+                                onRemoveFile={onRemoveSummaryFile}
                               />
                             </UploadFileContainer>
                           </UploadContainer>
@@ -768,6 +804,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                 certificateFile?.name ||
                                 extensionWorkload?.certificateFilenames?.[0]
                               }
+                              onRemoveFile={onRemoveCertificateFile}
                             />
                           </UploadFileContainer>
                         </UploadContainer>
@@ -791,6 +828,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                 certificateFile1?.name ||
                                 extensionWorkload?.certificateFilenames?.[1]
                               }
+                              onRemoveFile={onRemoveCertificateFile1}
                             />
                           </UploadFileContainer>
                         </UploadContainer>
@@ -814,6 +852,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                 certificateFile2?.name ||
                                 extensionWorkload?.certificateFilenames?.[2]
                               }
+                              onRemoveFile={onRemoveCertificateFile2}
                             />
                           </UploadFileContainer>
                         </UploadContainer>

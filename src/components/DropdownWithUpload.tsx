@@ -12,6 +12,7 @@ type DropdownWithUploadProps = {
   val?: string;
   selected?: string[];
   fileName?: string;
+  onRemoveStudyFile?: () => void;
 };
 
 function DropdownWithUpload({
@@ -22,7 +23,8 @@ function DropdownWithUpload({
   selected,
   fileName,
   onSelect,
-  onFileSelect
+  onFileSelect,
+  onRemoveStudyFile
 }: DropdownWithUploadProps) {
   return (
     <Container>
@@ -40,6 +42,7 @@ function DropdownWithUpload({
         <UploadFileButton
           fileHandler={onFileSelect}
           workloadFileName={fileName}
+          onRemoveFile={onRemoveStudyFile}
         />
       </UploadContainer>
     </Container>

@@ -50,8 +50,6 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
 
   const { user, actions } = useContext(UserContext);
 
-  const [workloadStatus, setWorkloadStatus] = useState<number>();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const onSave = async () => {
@@ -63,7 +61,6 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
       totalNoOfStudents,
       twlFile
     }));
-    setWorkloadStatus(WORKLOAD_STATUS.SAVE);
     setIsSubmitting(true);
   };
 
@@ -74,8 +71,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           teachingWorkLoad?.contactHours &&
           teachingWorkLoad.numberOfPreparations &&
           teachingWorkLoad.totalNoOfStudents &&
-          (teachingWorkLoad.twlFile || teachingWorkLoad?.filename) &&
-          workloadStatus
+          (teachingWorkLoad.twlFile || teachingWorkLoad?.filename)
         ) {
           const totalNoOfStudents =
             parseFloat(teachingWorkLoad.numberOfPreparations) +
@@ -84,7 +80,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           teachingWorkLoad.totalTeachingWorkload = Number(
             totalNoOfStudents.toFixed(2)
           );
-          await SaveTeachingWorkload(teachingWorkLoad, workloadStatus);
+          await SaveTeachingWorkload(teachingWorkLoad, WORKLOAD_STATUS.SAVE);
           const {
             extensionWorkloads,
             researchWorkloads,
@@ -142,7 +138,12 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
   };
 
   useEffect(() => {
-    if (numberOfPreparations && contactHours && totalNoOfStudents && twlFile) {
+    if (
+      numberOfPreparations &&
+      contactHours &&
+      totalNoOfStudents &&
+      (twlFile || teachingWorkLoad?.filename)
+    ) {
       const totalNoOfStudentsPoints = Number(totalNoOfStudents) * 0.023;
       return setPoints(
         Number(numberOfPreparations) +
@@ -151,7 +152,13 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
       );
     }
     setPoints(0);
-  }, [numberOfPreparations, contactHours, totalNoOfStudents, twlFile]);
+  }, [
+    numberOfPreparations,
+    contactHours,
+    totalNoOfStudents,
+    twlFile,
+    teachingWorkLoad?.filename
+  ]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -161,10 +168,32 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
       setNumberOfPreparations(data.numberOfPreparations || "");
       setContactHours(data.contactHours || "");
       setTotalNoOfStudents(data.totalNoOfStudents || "");
+
+      if (
+        data.numberOfPreparations &&
+        data.contactHours &&
+        data.totalNoOfStudents
+      ) {
+        const totalNoOfStudentsPoints = Number(data.totalNoOfStudents) * 0.023;
+        setPoints(
+          Number(numberOfPreparations) +
+            Number(contactHours) +
+            totalNoOfStudentsPoints
+        );
+      }
+
       setPoints(Number(data.totalTeachingWorkload));
       setIsLoading(false);
     })();
   }, [user.id]);
+
+  const onRemoveFile = () => {
+    setTwlFile(undefined);
+    setTeachingWorkLoad({
+      ...teachingWorkLoad,
+      filename: undefined
+    });
+  };
 
   return (
     <MainContainer>
@@ -248,6 +277,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
                           ? twlFile?.name
                           : ""
                       }
+                      onRemoveFile={onRemoveFile}
                     />
                   </UploadFileButtonContainer>
                 </UploadFileContainer>
@@ -255,9 +285,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             </SubContainer>
             <ButtonContainer>
               <Label style={{ fontWeight: "bold" }}>
-                Total Teaching Workload ={" "}
-                {teachingWorkLoad?.totalTeachingWorkload ||
-                  points.toFixed(2).toString()}
+                Total Teaching Workload = {points.toFixed(2).toString()}
               </Label>
               <div>
                 <FormButton
@@ -265,13 +293,15 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
                   onClicked={() => setIsSaving(true)}
                   isSubmitting={isSubmitting}
                   disabled={
-                    (numberOfPreparations.length <= 0 ||
-                      contactHours.length <= 0 ||
-                      totalNoOfStudents.length <= 0 ||
-                      twlFile?.name.length! <= 0 ||
-                      twlFile?.name === undefined ||
-                      isSubmitting) &&
-                    !teachingWorkLoad
+                    numberOfPreparations.length <= 0 ||
+                    contactHours.length <= 0 ||
+                    totalNoOfStudents.length <= 0 ||
+                    twlFile
+                      ? twlFile?.name.length! <= 0 ||
+                        twlFile?.name === undefined
+                      : teachingWorkLoad?.filename?.length! <= 0 ||
+                        teachingWorkLoad?.filename === undefined ||
+                        isSubmitting
                   }
                 ></FormButton>
               </div>
