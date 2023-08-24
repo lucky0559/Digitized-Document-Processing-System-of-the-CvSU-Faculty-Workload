@@ -103,25 +103,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       totalNumberHours,
       summaryOfHoursFile
     });
-    // } else {
-    //   setExtensionWorkload({
-    //     ...extensionWorkload,
-    //     designationExtensionActivity: [
-    //       leader,
-    //       coordinator,
-    //       facilitator,
-    //       assistants
-    //     ].filter(Boolean),
-    //     extensionActivityFile,
-    //     certificateFile: [
-    //       certificateFile!,
-    //       certificateFile1!,
-    //       certificateFile2!
-    //     ].filter(Boolean),
-    //     totalNumberHours,
-    //     summaryOfHoursFile
-    //   });
-    // }
 
     setIsSubmitting(true);
     setIsConfirming(false);
@@ -130,7 +111,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        console.log(extensionWorkload);
         if (
           extensionWorkload?.designationExtensionActivity &&
           (extensionWorkload.extensionActivityFile ||
@@ -313,75 +293,111 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   useEffect(() => {
     if (
-      resourcePerson === "International" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) ===
+        "International" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(4);
     } else if (
-      resourcePerson === "National" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) ===
+        "National" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(3);
     } else if (
-      resourcePerson === "Regional" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) ===
+        "Regional" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(2);
     } else if (
-      resourcePerson === "Local" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) === "Local" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(1);
+    } else {
+      setResourcePersonPoints(0);
     }
-  }, [resourcePerson, certificateFile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    resourcePerson,
+    certificateFile,
+    extensionWorkload?.resourcePerson,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    extensionWorkload?.certificateFilenames?.[0]
+  ]);
 
   useEffect(() => {
     if (
-      resourcePerson1 === "International" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) ===
+        "International" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(4);
     } else if (
-      resourcePerson1 === "National" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) ===
+        "National" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(3);
     } else if (
-      resourcePerson1 === "Regional" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) ===
+        "Regional" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(2);
     } else if (
-      resourcePerson1 === "Local" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) === "Local" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(1);
+    } else {
+      setResourcePersonPoints1(0);
     }
-  }, [resourcePerson1, certificateFile1]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    resourcePerson1,
+    certificateFile1,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    extensionWorkload?.certificateFilenames?.[1],
+    extensionWorkload?.resourcePerson
+  ]);
 
   useEffect(() => {
     if (
-      resourcePerson2 === "International" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) ===
+        "International" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(4);
     } else if (
-      resourcePerson2 === "National" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) ===
+        "National" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(3);
     } else if (
-      resourcePerson2 === "Regional" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) ===
+        "Regional" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(2);
     } else if (
-      resourcePerson2 === "Local" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) === "Local" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(1);
+    } else {
+      setResourcePersonPoints2(0);
     }
-  }, [resourcePerson2, certificateFile2]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    resourcePerson2,
+    certificateFile2,
+    extensionWorkload?.resourcePerson,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    extensionWorkload?.certificateFilenames?.[2]
+  ]);
 
   useEffect(() => {
     setResourcePersonActivityPoints(
@@ -468,6 +484,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 3);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 3);
       }
     } else if (coordinator) {
       if (
@@ -475,6 +493,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 2.5);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 2.5);
       }
     } else if (facilitator) {
       if (
@@ -482,6 +502,8 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 2);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 2);
       }
     } else if (assistants) {
       if (
@@ -489,9 +511,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         extensionWorkload?.extensionActivityFilename
       ) {
         setDesignationActivityPoints(designationActivityPoints + 1);
+      } else {
+        setDesignationActivityPoints(designationActivityPoints - 1);
       }
     }
-  }, [extensionActivityFile]);
+  }, [extensionActivityFile, extensionWorkload?.extensionActivityFilename]);
 
   useEffect(() => {
     setDesignationExtensionActivity(
@@ -594,6 +618,52 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       setIsLoading(false);
     })();
   }, [actions, user.email, user.id]);
+
+  const onRemoveExtensionFile = () => {
+    setExtensionActivityFile(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      extensionActivityFilename: undefined
+    });
+  };
+
+  const onRemoveSummaryFile = () => {
+    setSummaryOfHoursFile(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      summaryOfHoursFilename: undefined
+    });
+  };
+
+  const onRemoveCertificateFile = () => {
+    const arr = extensionWorkload?.certificateFilenames;
+    arr![0] = "";
+    setCertificateFile(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      certificateFilenames: arr
+    });
+  };
+
+  const onRemoveCertificateFile1 = () => {
+    const arr = extensionWorkload?.certificateFilenames;
+    arr![1] = "";
+    setCertificateFile1(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      certificateFilenames: arr
+    });
+  };
+
+  const onRemoveCertificateFile2 = () => {
+    const arr = extensionWorkload?.certificateFilenames;
+    arr![2] = "";
+    setCertificateFile2(undefined);
+    setExtensionWorkload({
+      ...extensionWorkload,
+      certificateFilenames: arr
+    });
+  };
 
   return (
     <MainContainer>
@@ -724,6 +794,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                   extensionActivityFile?.name ||
                                   extensionWorkload?.extensionActivityFilename
                                 }
+                                onRemoveFile={onRemoveExtensionFile}
                               />
                             </UploadFileContainer>
                           </UploadContainer>
@@ -739,6 +810,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                   summaryOfHoursFile?.name ||
                                   extensionWorkload?.summaryOfHoursFilename
                                 }
+                                onRemoveFile={onRemoveSummaryFile}
                               />
                             </UploadFileContainer>
                           </UploadContainer>
@@ -768,6 +840,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                 certificateFile?.name ||
                                 extensionWorkload?.certificateFilenames?.[0]
                               }
+                              onRemoveFile={onRemoveCertificateFile}
                             />
                           </UploadFileContainer>
                         </UploadContainer>
@@ -791,6 +864,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                 certificateFile1?.name ||
                                 extensionWorkload?.certificateFilenames?.[1]
                               }
+                              onRemoveFile={onRemoveCertificateFile1}
                             />
                           </UploadFileContainer>
                         </UploadContainer>
@@ -814,6 +888,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                                 certificateFile2?.name ||
                                 extensionWorkload?.certificateFilenames?.[2]
                               }
+                              onRemoveFile={onRemoveCertificateFile2}
                             />
                           </UploadFileContainer>
                         </UploadContainer>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CVSU_LOGO from "../assets/cvsu_logo/cvsu_logo.png";
 import Colors from "../constants/Colors";
 import "../index.css";
-import { FaBars, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 
 type TopNavProps = {
   profileHandler?: () => void;

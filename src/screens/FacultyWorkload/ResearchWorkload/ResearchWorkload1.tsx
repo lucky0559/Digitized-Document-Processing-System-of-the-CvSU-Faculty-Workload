@@ -42,6 +42,11 @@ type ResearchWorkload1Props = {
   fundGeneratedPoints: number;
   researchWorkLoadHandler3: (value: boolean) => void;
   studyPoints: number;
+  onRemoveRwlFile: () => void;
+  onRemoveStudy1File: () => void;
+  onRemoveStudy2File: () => void;
+  onRemoveStudy3File: () => void;
+  onRemoveStudy4File: () => void;
 };
 
 const ResearchWorkload1 = ({
@@ -77,7 +82,12 @@ const ResearchWorkload1 = ({
   fundGeneratedPoints,
   researchWorkLoadHandler3,
   studyPoints,
-  researchWorkLoadHandler1
+  researchWorkLoadHandler1,
+  onRemoveRwlFile,
+  onRemoveStudy1File,
+  onRemoveStudy2File,
+  onRemoveStudy3File,
+  onRemoveStudy4File
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -134,6 +144,7 @@ const ResearchWorkload1 = ({
               <UploadFileButton
                 fileHandler={fileHandler}
                 workloadFileName={rwlFileName}
+                onRemoveFile={onRemoveRwlFile}
               />
             </UploadFileContainer>
           </UploadContainer>
@@ -172,6 +183,10 @@ const ResearchWorkload1 = ({
         study3Points={study3Points}
         study4Points={study4Points}
         studyPoints={studyPoints}
+        onRemoveStudy1File={onRemoveStudy1File}
+        onRemoveStudy2File={onRemoveStudy2File}
+        onRemoveStudy3File={onRemoveStudy3File}
+        onRemoveStudy4File={onRemoveStudy4File}
       />
     </>
   );
