@@ -293,75 +293,111 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
 
   useEffect(() => {
     if (
-      resourcePerson === "International" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) ===
+        "International" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(4);
     } else if (
-      resourcePerson === "National" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) ===
+        "National" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(3);
     } else if (
-      resourcePerson === "Regional" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) ===
+        "Regional" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(2);
     } else if (
-      resourcePerson === "Local" &&
+      (resourcePerson || extensionWorkload?.resourcePerson?.[0]) === "Local" &&
       (certificateFile || extensionWorkload?.certificateFilenames?.[0])
     ) {
       setResourcePersonPoints(1);
+    } else {
+      setResourcePersonPoints(0);
     }
-  }, [resourcePerson, certificateFile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    resourcePerson,
+    certificateFile,
+    extensionWorkload?.resourcePerson,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    extensionWorkload?.certificateFilenames?.[0]
+  ]);
 
   useEffect(() => {
     if (
-      resourcePerson1 === "International" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) ===
+        "International" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(4);
     } else if (
-      resourcePerson1 === "National" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) ===
+        "National" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(3);
     } else if (
-      resourcePerson1 === "Regional" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) ===
+        "Regional" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(2);
     } else if (
-      resourcePerson1 === "Local" &&
+      (resourcePerson1 || extensionWorkload?.resourcePerson?.[1]) === "Local" &&
       (certificateFile1 || extensionWorkload?.certificateFilenames?.[1])
     ) {
       setResourcePersonPoints1(1);
+    } else {
+      setResourcePersonPoints1(0);
     }
-  }, [resourcePerson1, certificateFile1]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    resourcePerson1,
+    certificateFile1,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    extensionWorkload?.certificateFilenames?.[1],
+    extensionWorkload?.resourcePerson
+  ]);
 
   useEffect(() => {
     if (
-      resourcePerson2 === "International" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) ===
+        "International" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(4);
     } else if (
-      resourcePerson2 === "National" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) ===
+        "National" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(3);
     } else if (
-      resourcePerson2 === "Regional" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) ===
+        "Regional" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(2);
     } else if (
-      resourcePerson2 === "Local" &&
+      (resourcePerson2 || extensionWorkload?.resourcePerson?.[2]) === "Local" &&
       (certificateFile2 || extensionWorkload?.certificateFilenames?.[2])
     ) {
       setResourcePersonPoints2(1);
+    } else {
+      setResourcePersonPoints2(0);
     }
-  }, [resourcePerson2, certificateFile2]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    resourcePerson2,
+    certificateFile2,
+    extensionWorkload?.resourcePerson,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    extensionWorkload?.certificateFilenames?.[2]
+  ]);
 
   useEffect(() => {
     setResourcePersonActivityPoints(
