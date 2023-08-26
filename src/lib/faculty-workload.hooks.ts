@@ -358,7 +358,8 @@ export const SaveExtensionWorkload = async (
 };
 
 export const SaveStrategicFunctionWorkload = async (
-  strategicFunctionWorkload?: StrategicFunctionType
+  strategicFunctionWorkload: StrategicFunctionType,
+  workloadStatus: number
 ) => {
   const userId = localStorage.getItem("userId");
   const approvedUniversityDesignationS3 = new ReactS3Client(
@@ -376,6 +377,17 @@ export const SaveStrategicFunctionWorkload = async (
   const memberAdhocS3 = new ReactS3Client(strategicMemberAdhocAwsConfig);
   const listAdviseesS3 = new ReactS3Client(strategicListOfAdviseesAwsConfig);
 
+  switch (workloadStatus) {
+    case WORKLOAD_STATUS.SAVE:
+      strategicFunctionWorkload!.isSubmitted = false;
+      break;
+    case WORKLOAD_STATUS.SUBMITTED:
+      strategicFunctionWorkload!.isSubmitted = true;
+      break;
+    default:
+      break;
+  }
+
   if (
     strategicFunctionWorkload?.designationUniversityLevel?.length! > 0 ||
     strategicFunctionWorkload?.designationCollegeCampusLevel?.length! > 0 ||
@@ -389,25 +401,43 @@ export const SaveStrategicFunctionWorkload = async (
     strategicFunctionWorkload?.academicAdvisees
   ) {
     let approvedUniversityDesignationFile1;
+    let approvedUniversityDesignationFilename1 = "";
     let approvedUniversityDesignationFile2;
+    let approvedUniversityDesignationFilename2 = "";
     let approvedUniversityDesignationFile3;
+    let approvedUniversityDesignationFilename3 = "";
     let approvedUniversityDesignationFile4;
+    let approvedUniversityDesignationFilename4 = "";
     let approvedCollegeCampusDesignationFile1;
+    let approvedCollegeCampusDesignationFilename1 = "";
     let approvedCollegeCampusDesignationFile2;
+    let approvedCollegeCampusDesignationFilename2 = "";
     let approvedCollegeCampusDesignationFile3;
+    let approvedCollegeCampusDesignationFilename3 = "";
     let approvedCollegeCampusDesignationFile4;
+    let approvedCollegeCampusDesignationFilename4 = "";
     let approvedDepartmentDesignationFile1;
+    let approvedDepartmentDesignationFilename1 = "";
     let approvedDepartmentDesignationFile2;
+    let approvedDepartmentDesignationFilename2 = "";
     let approvedDepartmentDesignationFile3;
+    let approvedDepartmentDesignationFilename3 = "";
     let approvedDepartmentDesignationFile4;
+    let approvedDepartmentDesignationFilename4 = "";
 
     let sportsTrainorAcademicFile;
+    let sportsTrainorAcademicFilename = "";
     let sportsTrainorAcademicFile1;
+    let sportsTrainorAcademicFilename1 = "";
     let sportsTrainorAcademicFile2;
+    let sportsTrainorAcademicFilename2 = "";
 
     let memberAdhocFile;
+    let memberAdhocFilename = "";
     let memberAdhocFile1;
+    let memberAdhocFilename1 = "";
     let memberAdhocFile2;
+    let memberAdhocFilename2 = "";
 
     let academicAdviseesFile;
 
@@ -430,6 +460,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedUniversityDesignationS3.uploadFile(
             strategicFunctionWorkload?.designationUniversityLevelFiles[0]
           );
+        approvedUniversityDesignationFilename1 =
+          strategicFunctionWorkload?.designationUniversityLevelFiles[0].name;
         strategicFunctionWorkload.approvedUniversityDesignationFilePath = [
           approvedUniversityDesignationFile1?.location
         ];
@@ -443,6 +475,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedUniversityDesignationS3.uploadFile(
             strategicFunctionWorkload.designationUniversityLevelFiles[1]
           );
+        approvedUniversityDesignationFilename2 =
+          strategicFunctionWorkload?.designationUniversityLevelFiles[1].name;
         strategicFunctionWorkload.approvedUniversityDesignationFilePath?.push(
           approvedUniversityDesignationFile2?.location
         );
@@ -456,6 +490,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedUniversityDesignationS3.uploadFile(
             strategicFunctionWorkload.designationUniversityLevelFiles[2]
           );
+        approvedUniversityDesignationFilename3 =
+          strategicFunctionWorkload?.designationUniversityLevelFiles[2].name;
         strategicFunctionWorkload.approvedUniversityDesignationFilePath?.push(
           approvedUniversityDesignationFile3?.location
         );
@@ -469,6 +505,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedUniversityDesignationS3.uploadFile(
             strategicFunctionWorkload.designationUniversityLevelFiles[3]
           );
+        approvedUniversityDesignationFilename4 =
+          strategicFunctionWorkload?.designationUniversityLevelFiles[3].name;
         strategicFunctionWorkload.approvedUniversityDesignationFilePath?.push(
           approvedUniversityDesignationFile4?.location
         );
@@ -483,6 +521,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedCollegeCampusDesignationS3.uploadFile(
             strategicFunctionWorkload?.designationCollegeCampusLevelFiles[0]
           );
+        approvedCollegeCampusDesignationFilename1 =
+          strategicFunctionWorkload?.designationCollegeCampusLevelFiles[0].name;
         strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath = [
           approvedCollegeCampusDesignationFile1?.location
         ];
@@ -496,6 +536,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedCollegeCampusDesignationS3.uploadFile(
             strategicFunctionWorkload.designationCollegeCampusLevelFiles[1]
           );
+        approvedCollegeCampusDesignationFilename2 =
+          strategicFunctionWorkload?.designationCollegeCampusLevelFiles[1].name;
         strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath?.push(
           approvedCollegeCampusDesignationFile2?.location
         );
@@ -509,6 +551,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedCollegeCampusDesignationS3.uploadFile(
             strategicFunctionWorkload.designationCollegeCampusLevelFiles[2]
           );
+        approvedCollegeCampusDesignationFilename3 =
+          strategicFunctionWorkload?.designationCollegeCampusLevelFiles[2].name;
         strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath?.push(
           approvedCollegeCampusDesignationFile3?.location
         );
@@ -522,6 +566,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedCollegeCampusDesignationS3.uploadFile(
             strategicFunctionWorkload.designationCollegeCampusLevelFiles[3]
           );
+        approvedCollegeCampusDesignationFilename4 =
+          strategicFunctionWorkload?.designationCollegeCampusLevelFiles[3].name;
         strategicFunctionWorkload.approvedCollegeCampusDesignationFilePath?.push(
           approvedCollegeCampusDesignationFile4?.location
         );
@@ -537,6 +583,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedDepartmentDesignationS3.uploadFile(
             strategicFunctionWorkload?.designationDepartmentLevelFiles[0]
           );
+        approvedDepartmentDesignationFilename1 =
+          strategicFunctionWorkload?.designationDepartmentLevelFiles[0].name;
         strategicFunctionWorkload.approvedDepartmentDesignationFilePath = [
           approvedDepartmentDesignationFile1?.location
         ];
@@ -550,6 +598,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedDepartmentDesignationS3.uploadFile(
             strategicFunctionWorkload.designationDepartmentLevelFiles[1]
           );
+        approvedDepartmentDesignationFilename2 =
+          strategicFunctionWorkload?.designationDepartmentLevelFiles[1].name;
         strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
           approvedDepartmentDesignationFile2?.location
         );
@@ -563,6 +613,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedDepartmentDesignationS3.uploadFile(
             strategicFunctionWorkload.designationDepartmentLevelFiles[2]
           );
+        approvedDepartmentDesignationFilename3 =
+          strategicFunctionWorkload?.designationDepartmentLevelFiles[2].name;
         strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
           approvedDepartmentDesignationFile3?.location
         );
@@ -576,6 +628,8 @@ export const SaveStrategicFunctionWorkload = async (
           await approvedDepartmentDesignationS3.uploadFile(
             strategicFunctionWorkload.designationDepartmentLevelFiles[3]
           );
+        approvedDepartmentDesignationFilename4 =
+          strategicFunctionWorkload?.designationDepartmentLevelFiles[3].name;
         strategicFunctionWorkload.approvedDepartmentDesignationFilePath?.push(
           approvedDepartmentDesignationFile4?.location
         );
@@ -593,6 +647,8 @@ export const SaveStrategicFunctionWorkload = async (
         sportsTrainorAcademicFile = await strategicSportsTrainorS3.uploadFile(
           strategicFunctionWorkload?.designationAsSportTrainorAcademicFile!
         );
+        strategicFunctionWorkload.designationAsSportTrainorAcademicFilename =
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile.name;
         strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath =
           sportsTrainorAcademicFile?.location;
         sportsTrainorPoints =
@@ -611,6 +667,8 @@ export const SaveStrategicFunctionWorkload = async (
         sportsTrainorAcademicFile1 = await strategicSportsTrainorS3.uploadFile(
           strategicFunctionWorkload?.designationAsSportTrainorAcademicFile1!
         );
+        strategicFunctionWorkload.designationAsSportTrainorAcademicFilename1 =
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile1.name;
         strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath1 =
           sportsTrainorAcademicFile1?.location;
         sportsTrainorPoints =
@@ -629,6 +687,8 @@ export const SaveStrategicFunctionWorkload = async (
         sportsTrainorAcademicFile2 = await strategicSportsTrainorS3.uploadFile(
           strategicFunctionWorkload?.designationAsSportTrainorAcademicFile2!
         );
+        strategicFunctionWorkload.designationAsSportTrainorAcademicFilename2 =
+          strategicFunctionWorkload?.designationAsSportTrainorAcademicFile2.name;
         strategicFunctionWorkload.designationAsSportTrainorAcademicFilePath2 =
           sportsTrainorAcademicFile2?.location;
         sportsTrainorPoints =
@@ -646,6 +706,8 @@ export const SaveStrategicFunctionWorkload = async (
         memberAdhocFile = await memberAdhocS3.uploadFile(
           strategicFunctionWorkload?.designationAsMemberOfAdhocFile
         );
+        strategicFunctionWorkload.designationAsMemberOfAdhocFilename =
+          strategicFunctionWorkload?.designationAsMemberOfAdhocFile.name;
         strategicFunctionWorkload.designationAsMemberOfAdhocFilePath =
           memberAdhocFile?.location;
         memberOfAdhocPoints =
@@ -663,6 +725,8 @@ export const SaveStrategicFunctionWorkload = async (
         memberAdhocFile1 = await memberAdhocS3.uploadFile(
           strategicFunctionWorkload?.designationAsMemberOfAdhocFile1
         );
+        strategicFunctionWorkload.designationAsMemberOfAdhocFilename1 =
+          strategicFunctionWorkload?.designationAsMemberOfAdhocFile1.name;
         strategicFunctionWorkload.designationAsMemberOfAdhocFilePath1 =
           memberAdhocFile1?.location;
         memberOfAdhocPoints =
@@ -680,6 +744,8 @@ export const SaveStrategicFunctionWorkload = async (
         memberAdhocFile2 = await memberAdhocS3.uploadFile(
           strategicFunctionWorkload?.designationAsMemberOfAdhocFile2
         );
+        strategicFunctionWorkload.designationAsMemberOfAdhocFilename2 =
+          strategicFunctionWorkload?.designationAsMemberOfAdhocFile2.name;
         strategicFunctionWorkload.designationAsMemberOfAdhocFilePath2 =
           memberAdhocFile2?.location;
         memberOfAdhocPoints =
@@ -697,6 +763,8 @@ export const SaveStrategicFunctionWorkload = async (
         academicAdviseesFile = await listAdviseesS3.uploadFile(
           strategicFunctionWorkload?.academicAdviseesFile
         );
+        strategicFunctionWorkload.academicAdviseesFilename =
+          strategicFunctionWorkload?.academicAdviseesFile.name;
         strategicFunctionWorkload.academicAdviseesFilePath =
           academicAdviseesFile?.location;
         academicAdviseesPoints =
@@ -716,6 +784,27 @@ export const SaveStrategicFunctionWorkload = async (
         sportsTrainorPoints +
         memberOfAdhocPoints +
         academicAdviseesPoints;
+
+      strategicFunctionWorkload.approvedUniversityDesignationFilenames = [
+        approvedUniversityDesignationFilename1!,
+        approvedUniversityDesignationFilename2!,
+        approvedUniversityDesignationFilename3!,
+        approvedUniversityDesignationFilename4!
+      ].filter(Boolean);
+
+      strategicFunctionWorkload.approvedDepartmentDesignationFilenames = [
+        approvedDepartmentDesignationFilename1!,
+        approvedDepartmentDesignationFilename2!,
+        approvedDepartmentDesignationFilename3!,
+        approvedDepartmentDesignationFilename4!
+      ].filter(Boolean);
+
+      strategicFunctionWorkload.approvedCollegeCampusDesignationFilenames = [
+        approvedCollegeCampusDesignationFilename1!,
+        approvedCollegeCampusDesignationFilename2!,
+        approvedCollegeCampusDesignationFilename3!,
+        approvedCollegeCampusDesignationFilename4!
+      ].filter(Boolean);
 
       const { data } = await axios.post(
         `strategic-function-workload/${userId}/save`,
