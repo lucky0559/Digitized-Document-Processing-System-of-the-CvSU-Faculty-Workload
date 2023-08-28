@@ -20,6 +20,7 @@ import { WORKLOAD_STATUS } from "../../../enums/workloadEnums";
 import { getSfwSavedWorkload } from "../../../lib/sfw.hooks";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import Colors from "../../../constants/Colors";
+import { SFW_FILE } from "../../../enums/fileEnums";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -413,8 +414,10 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
         points: designationPoints
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    sportsSocio,
+    sportsSocio?.title,
+    sportsSocio?.file,
     strategicFunctionWorkload?.designationAsSportTrainorAcademicFilename
   ]);
 
@@ -529,8 +532,10 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
         points: "0.05"
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    memberUniversity,
+    memberUniversity?.title,
+    memberUniversity?.file,
     strategicFunctionWorkload?.designationAsMemberOfAdhocFilename
   ]);
 
@@ -590,10 +595,22 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
       if (isSubmitting) {
         setStrategicFunctionWorkload({
           designationUniversityLevel: [
-            designationUniversity1?.file! && designationUniversity1?.title!,
-            designationUniversity2?.file! && designationUniversity2?.title!,
-            designationUniversity3?.file! && designationUniversity3?.title!,
-            designationUniversity4?.file! && designationUniversity4?.title!
+            (designationUniversity1?.file! ||
+              strategicFunctionWorkload
+                ?.designationUniversityLevelFilesFilenames?.[0]) &&
+              designationUniversity1?.title!,
+            (designationUniversity2?.file! ||
+              strategicFunctionWorkload
+                ?.designationUniversityLevelFilesFilenames?.[1]) &&
+              designationUniversity2?.title!,
+            (designationUniversity3?.file! ||
+              strategicFunctionWorkload
+                ?.designationUniversityLevelFilesFilenames?.[2]) &&
+              designationUniversity3?.title!,
+            (designationUniversity4?.file! ||
+              strategicFunctionWorkload
+                ?.designationUniversityLevelFilesFilenames?.[3]) &&
+              designationUniversity4?.title!
           ].filter(Boolean),
           designationUniversityLevelFiles: [
             designationUniversity1?.file!,
@@ -602,13 +619,21 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
             designationUniversity4?.file!
           ],
           designationCollegeCampusLevel: [
-            collegeCampusDesignation1?.file! &&
+            (collegeCampusDesignation1?.file! ||
+              strategicFunctionWorkload
+                ?.approvedCollegeCampusDesignationFilenames?.[0]) &&
               collegeCampusDesignation1?.title!,
-            collegeCampusDesignation2?.file! &&
+            (collegeCampusDesignation2?.file! ||
+              strategicFunctionWorkload
+                ?.approvedCollegeCampusDesignationFilenames?.[1]) &&
               collegeCampusDesignation2?.title!,
-            collegeCampusDesignation3?.file! &&
+            (collegeCampusDesignation3?.file! ||
+              strategicFunctionWorkload
+                ?.approvedCollegeCampusDesignationFilenames?.[2]) &&
               collegeCampusDesignation3?.title!,
-            collegeCampusDesignation4?.file! &&
+            (collegeCampusDesignation4?.file! ||
+              strategicFunctionWorkload
+                ?.approvedCollegeCampusDesignationFilenames?.[3]) &&
               collegeCampusDesignation4?.title!
           ].filter(Boolean),
           designationCollegeCampusLevelFiles: [
@@ -618,10 +643,22 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
             collegeCampusDesignation4?.file!
           ],
           designationDepartmentLevel: [
-            departmentDesignation1?.file! && departmentDesignation1?.title!,
-            departmentDesignation2?.file! && departmentDesignation2?.title!,
-            departmentDesignation3?.file! && departmentDesignation3?.title!,
-            departmentDesignation4?.file! && departmentDesignation4?.title!
+            (departmentDesignation1?.file! ||
+              strategicFunctionWorkload
+                ?.approvedDepartmentDesignationFilenames?.[0]) &&
+              departmentDesignation1?.title!,
+            (departmentDesignation2?.file! ||
+              strategicFunctionWorkload
+                ?.approvedDepartmentDesignationFilenames?.[1]) &&
+              departmentDesignation2?.title!,
+            (departmentDesignation3?.file! ||
+              strategicFunctionWorkload
+                ?.approvedDepartmentDesignationFilenames?.[2]) &&
+              departmentDesignation3?.title!,
+            (departmentDesignation4?.file! ||
+              strategicFunctionWorkload
+                ?.approvedDepartmentDesignationFilenames?.[3]) &&
+              departmentDesignation4?.title!
           ].filter(Boolean),
           designationDepartmentLevelFiles: [
             departmentDesignation1?.file!,
@@ -651,14 +688,18 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationAsMemberOfAdhocPoints: Number(memberUniversity?.points),
           designationAsMemberOfAdhocPoints1: Number(memberUniversity1?.points),
           designationAsMemberOfAdhocPoints2: Number(memberUniversity2?.points),
-          academicAdvisees: academicAdviser?.file
-            ? academicAdviser?.numberOfStudents
-            : undefined,
+          academicAdvisees:
+            academicAdviser?.file ||
+            strategicFunctionWorkload?.academicAdviseesFilename
+              ? academicAdviser?.numberOfStudents
+              : undefined,
           academicAdviseesFile: academicAdviser?.numberOfStudents
             ? academicAdviser?.file
             : undefined,
           academicAdviseesPoints:
-            academicAdviser?.numberOfStudents && academicAdviser?.file
+            academicAdviser?.numberOfStudents &&
+            (academicAdviser?.file ||
+              strategicFunctionWorkload?.academicAdviseesFilename)
               ? Number(academicAdviser?.numberOfStudents) * 0.023
               : undefined
         });
@@ -736,7 +777,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   useEffect(() => {
     if (
       designationUniversity1?.title &&
-      designationUniversity1.file &&
+      (designationUniversity1.file || designationUniversity1.filename) &&
       !isDesignationUniversity1Fullfill
     ) {
       setIsDesignationUniversity1Fullfill(true);
@@ -744,7 +785,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       designationUniversity2?.title &&
-      designationUniversity2.file &&
+      (designationUniversity2.file || designationUniversity2.filename) &&
       !isDesignationUniversity2Fullfill
     ) {
       setIsDesignationUniversity2Fullfill(true);
@@ -752,7 +793,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       designationUniversity3?.title &&
-      designationUniversity3.file &&
+      (designationUniversity3.file || designationUniversity3.filename) &&
       !isDesignationUniversity3Fullfill
     ) {
       setIsDesignationUniversity3Fullfill(true);
@@ -760,7 +801,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       designationUniversity4?.title &&
-      designationUniversity4.file &&
+      (designationUniversity4.file || designationUniversity4.filename) &&
       !isDesignationUniversity4Fullfill
     ) {
       setIsDesignationUniversity4Fullfill(true);
@@ -768,6 +809,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     } else if (
       !designationUniversity4?.title &&
       designationUniversity4?.file &&
+      designationUniversity4.filename &&
       isDesignationUniversity4Fullfill
     ) {
       setIsDesignationUniversity4Fullfill(false);
@@ -785,7 +827,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   useEffect(() => {
     if (
       collegeCampusDesignation1?.title &&
-      collegeCampusDesignation1.file &&
+      (collegeCampusDesignation1.file || collegeCampusDesignation1.filename) &&
       !isDesignationCollegeCampus1Fullfill
     ) {
       setIsDesignationCollegeCampus1Fullfill(true);
@@ -793,7 +835,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       collegeCampusDesignation2?.title &&
-      collegeCampusDesignation2.file &&
+      (collegeCampusDesignation2.file || collegeCampusDesignation2.filename) &&
       !isDesignationCollegeCampus2Fullfill
     ) {
       setIsDesignationCollegeCampus2Fullfill(true);
@@ -801,7 +843,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       collegeCampusDesignation3?.title &&
-      collegeCampusDesignation3.file &&
+      (collegeCampusDesignation3.file || collegeCampusDesignation3.filename) &&
       !isDesignationCollegeCampus3Fullfill
     ) {
       setIsDesignationCollegeCampus3Fullfill(true);
@@ -809,7 +851,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       collegeCampusDesignation4?.title &&
-      collegeCampusDesignation4.file &&
+      (collegeCampusDesignation4.file || collegeCampusDesignation4.filename) &&
       !isDesignationCollegeCampus4Fullfill
     ) {
       setIsDesignationCollegeCampus4Fullfill(true);
@@ -817,6 +859,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     } else if (
       !collegeCampusDesignation4?.title &&
       collegeCampusDesignation4?.file &&
+      collegeCampusDesignation4.filename &&
       isDesignationCollegeCampus4Fullfill
     ) {
       setIsDesignationCollegeCampus4Fullfill(false);
@@ -834,7 +877,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   useEffect(() => {
     if (
       departmentDesignation1?.title &&
-      departmentDesignation1.file &&
+      (departmentDesignation1.file || departmentDesignation1.filename) &&
       !isDesignationDepartment1Fullfill
     ) {
       setIsDesignationDepartment1Fullfill(true);
@@ -842,7 +885,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       departmentDesignation2?.title &&
-      departmentDesignation2.file &&
+      (departmentDesignation2.file || departmentDesignation2.filename) &&
       !isDesignationDepartment2Fullfill
     ) {
       setIsDesignationDepartment2Fullfill(true);
@@ -850,7 +893,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       departmentDesignation3?.title &&
-      departmentDesignation3.file &&
+      (departmentDesignation3.file || departmentDesignation3.filename) &&
       !isDesignationDepartment3Fullfill
     ) {
       setIsDesignationDepartment3Fullfill(true);
@@ -858,7 +901,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     }
     if (
       departmentDesignation4?.title &&
-      departmentDesignation4.file &&
+      (departmentDesignation4.file || departmentDesignation4.filename) &&
       !isDesignationDepartment4Fullfill
     ) {
       setIsDesignationDepartment4Fullfill(true);
@@ -866,6 +909,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     } else if (
       !departmentDesignation4?.title &&
       departmentDesignation4?.file &&
+      departmentDesignation4.filename &&
       isDesignationDepartment4Fullfill
     ) {
       setIsDesignationDepartment4Fullfill(false);
@@ -880,31 +924,52 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   ]);
 
   const hasSportsSocio =
-    sportsSocio?.points && sportsSocio?.file && sportsSocio?.title;
+    sportsSocio?.points &&
+    (sportsSocio?.file ||
+      sportsSocio.filename ||
+      strategicFunctionWorkload?.designationAsSportTrainorAcademicFilename) &&
+    sportsSocio?.title;
 
   const hasSportsSocio1 =
-    sportsSocio1?.points && sportsSocio1?.file && sportsSocio1?.title;
+    sportsSocio1?.points &&
+    (sportsSocio1?.file ||
+      sportsSocio1.filename ||
+      strategicFunctionWorkload?.designationAsSportTrainorAcademicFilename1) &&
+    sportsSocio1?.title;
 
   const hasSportsSocio2 =
-    sportsSocio2?.points && sportsSocio2?.file && sportsSocio2?.title;
+    sportsSocio2?.points &&
+    (sportsSocio2?.file ||
+      sportsSocio2.filename ||
+      strategicFunctionWorkload?.designationAsSportTrainorAcademicFilename2) &&
+    sportsSocio2?.title;
 
   const hasMemberUniversity =
     memberUniversity?.points &&
-    memberUniversity?.file &&
+    (memberUniversity?.file ||
+      memberUniversity.filename ||
+      strategicFunctionWorkload?.designationAsMemberOfAdhocFilename) &&
     memberUniversity?.title;
 
   const hasMemberUniversity1 =
     memberUniversity1?.points &&
-    memberUniversity1?.file &&
+    (memberUniversity1?.file ||
+      memberUniversity1.filename ||
+      strategicFunctionWorkload?.designationAsMemberOfAdhocFilename1) &&
     memberUniversity1?.title;
 
   const hasMemberUniversity2 =
     memberUniversity2?.points &&
-    memberUniversity2?.file &&
+    (memberUniversity2?.file ||
+      memberUniversity2.filename ||
+      strategicFunctionWorkload?.designationAsMemberOfAdhocFilename2) &&
     memberUniversity2?.title;
 
   const hasAcademicAdviser =
-    academicAdviser?.numberOfStudents && academicAdviser?.file;
+    academicAdviser?.numberOfStudents &&
+    (academicAdviser?.file ||
+      academicAdviser.filename ||
+      strategicFunctionWorkload?.academicAdviseesFilename);
 
   useEffect(() => {
     (async () => {
@@ -1017,6 +1082,68 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   }, [user.id]);
 
   // TODO REMOVE FILE ONCLICK
+  const onRemoveFile = (val: number) => {
+    switch (val) {
+      case SFW_FILE.UNIVERSITY1:
+        setDesignationUniversity1({
+          ...designationUniversity1,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.UNIVERSITY2:
+        setDesignationUniversity2({
+          ...designationUniversity2,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.UNIVERSITY3:
+        setDesignationUniversity3({
+          ...designationUniversity3,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.UNIVERSITY4:
+        setDesignationUniversity4({
+          ...designationUniversity4,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.COLLEGE_CAMPUS1:
+        setCollegeCampusDesignation1({
+          ...collegeCampusDesignation1,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.COLLEGE_CAMPUS2:
+        setCollegeCampusDesignation2({
+          ...collegeCampusDesignation2,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.COLLEGE_CAMPUS3:
+        setCollegeCampusDesignation3({
+          ...collegeCampusDesignation3,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      case SFW_FILE.COLLEGE_CAMPUS4:
+        setCollegeCampusDesignation4({
+          ...collegeCampusDesignation4,
+          file: undefined,
+          filename: undefined
+        });
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <MainContainer>
@@ -1147,6 +1274,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                     collegeCampusDesignation4?.file?.name ||
                     collegeCampusDesignation4?.filename
                   }
+                  onRemoveFile={onRemoveFile}
                 />
                 <StrategicFunction2
                   onSelectDepartmentDesignation1={

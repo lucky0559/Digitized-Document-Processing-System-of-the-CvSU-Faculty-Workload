@@ -9,6 +9,7 @@ type TextInputWithUploadProps = {
   val?: string;
   onFileSelect: (file?: File) => void;
   fileName?: string;
+  onRemoveFile?: () => void;
 };
 
 function TextInputWithUpload({
@@ -17,7 +18,8 @@ function TextInputWithUpload({
   val,
   onChangeTextInput,
   onFileSelect,
-  fileName
+  fileName,
+  onRemoveFile
 }: TextInputWithUploadProps) {
   return (
     <Container>
@@ -30,6 +32,7 @@ function TextInputWithUpload({
         <UploadFileButton
           fileHandler={onFileSelect}
           workloadFileName={fileName}
+          onRemoveFile={onRemoveFile}
         />
       </UploadContainer>
     </Container>
