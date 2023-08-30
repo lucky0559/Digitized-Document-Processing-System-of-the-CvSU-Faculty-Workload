@@ -4,6 +4,7 @@ import DropdownWithUpload from "../../../components/DropdownWithUpload";
 import TextInputWithTitlePointUpload from "../../../components/TextInputWithTitlePointsUpload";
 import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
+import { SFW_FILE } from "../../../enums/fileEnums";
 
 type StrategicFunction2Props = {
   onSelectDepartmentDesignation1: (value: string) => void;
@@ -65,6 +66,7 @@ type StrategicFunction2Props = {
   universityWidePoints?: string;
   universityWidePoints1?: string;
   universityWidePoints2?: string;
+  onRemoveFile: (val: number) => void;
 };
 
 function StrategicFunction2({
@@ -126,8 +128,53 @@ function StrategicFunction2({
   memberUniversityTitle2,
   memberUniversityPoints2,
   fileHandlerMemberUniversity2,
-  fileNameMemberUniversity2
+  fileNameMemberUniversity2,
+  onRemoveFile
 }: StrategicFunction2Props) {
+  const onRemoveFile1Handler = () => {
+    onRemoveFile(SFW_FILE.DEPARTMENT1);
+  };
+
+  const onRemoveFile2Handler = () => {
+    onRemoveFile(SFW_FILE.DEPARTMENT2);
+  };
+
+  const onRemoveFile3Handler = () => {
+    onRemoveFile(SFW_FILE.DEPARTMENT3);
+  };
+
+  const onRemoveFile4Handler = () => {
+    onRemoveFile(SFW_FILE.DEPARTMENT4);
+  };
+
+  const onRemoveFile5Handler = () => {
+    onRemoveFile(SFW_FILE.SPORTS_SOCIO1);
+  };
+
+  const onRemoveFile6Handler = () => {
+    onRemoveFile(SFW_FILE.SPORTS_SOCIO2);
+  };
+
+  const onRemoveFile7Handler = () => {
+    onRemoveFile(SFW_FILE.SPORTS_SOCIO3);
+  };
+
+  const onRemoveFile8Handler = () => {
+    onRemoveFile(SFW_FILE.MEMBER_ADHOC1);
+  };
+
+  const onRemoveFile9Handler = () => {
+    onRemoveFile(SFW_FILE.MEMBER_ADHOC2);
+  };
+
+  const onRemoveFile10Handler = () => {
+    onRemoveFile(SFW_FILE.MEMBER_ADHOC3);
+  };
+
+  const onRemoveFile11Handler = () => {
+    onRemoveFile(SFW_FILE.ACADEMIC);
+  };
+
   return (
     <>
       <DepartmentLevelContainer>
@@ -145,6 +192,7 @@ function StrategicFunction2({
             ]}
             onFileSelect={onFileDepartmentLevelSelect1}
             fileName={departmentLevelFileName1}
+            onRemoveStudyFile={onRemoveFile1Handler}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
@@ -157,6 +205,7 @@ function StrategicFunction2({
             ]}
             onFileSelect={onFileDepartmentLevelSelect2}
             fileName={departmentLevelFileName2}
+            onRemoveStudyFile={onRemoveFile2Handler}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
@@ -169,6 +218,7 @@ function StrategicFunction2({
             ]}
             onFileSelect={onFileDepartmentLevelSelect3}
             fileName={departmentLevelFileName3}
+            onRemoveStudyFile={onRemoveFile3Handler}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
@@ -176,6 +226,7 @@ function StrategicFunction2({
             val={departmentLevelInputDesignation}
             onFileSelect={onFileCustomDepartmentLevelSelect}
             fileName={customDepartmentFileName}
+            onRemoveFile={onRemoveFile4Handler}
           />
         </div>
       </DepartmentLevelContainer>
@@ -194,6 +245,7 @@ function StrategicFunction2({
               val={sportsSocioTitle}
               onFileSelect={fileHandlerSportsSocio}
               fileName={fileNameSportsSocio}
+              onRemoveStudyFile={onRemoveFile5Handler}
             />
             <PointsContainer>
               <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
@@ -211,6 +263,7 @@ function StrategicFunction2({
               val={sportsSocioTitle1}
               onFileSelect={fileHandlerSportsSocio1}
               fileName={fileNameSportsSocio1}
+              onRemoveStudyFile={onRemoveFile6Handler}
             />
             <PointsContainer>
               <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
@@ -228,6 +281,7 @@ function StrategicFunction2({
               val={sportsSocioTitle2}
               onFileSelect={fileHandlerSportsSocio2}
               fileName={fileNameSportsSocio2}
+              onRemoveStudyFile={onRemoveFile7Handler}
             />
             <PointsContainer>
               <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
@@ -252,6 +306,7 @@ function StrategicFunction2({
             pointsVal={memberUniversityPoints}
             fileHandler={fileHandlerMemberUniversity}
             fileName={fileNameMemberUniversity}
+            onRemoveFile={onRemoveFile8Handler}
           />
           <TextInputWithTitlePointUpload
             universityWidePoints={universityWidePoints1}
@@ -262,6 +317,7 @@ function StrategicFunction2({
             pointsVal={memberUniversityPoints1}
             fileHandler={fileHandlerMemberUniversity1}
             fileName={fileNameMemberUniversity1}
+            onRemoveFile={onRemoveFile9Handler}
           />
           <TextInputWithTitlePointUpload
             universityWidePoints={universityWidePoints2}
@@ -272,6 +328,7 @@ function StrategicFunction2({
             pointsVal={memberUniversityPoints2}
             fileHandler={fileHandlerMemberUniversity2}
             fileName={fileNameMemberUniversity2}
+            onRemoveFile={onRemoveFile10Handler}
           />
           <TextInputWithTitlePointUpload
             inputLabel="Designation as Academic Adviser"
@@ -285,6 +342,7 @@ function StrategicFunction2({
             textField={true}
             customize={true}
             customLabel="Number of Advisee"
+            onRemoveFile={onRemoveFile11Handler}
           />
         </div>
       </DepartmentLevelContainer>

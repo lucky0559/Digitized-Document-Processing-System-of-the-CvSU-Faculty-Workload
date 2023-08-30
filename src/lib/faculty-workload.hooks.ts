@@ -781,7 +781,6 @@ export const SaveStrategicFunctionWorkload = async (
         numberOfCollegeCampus +
         numberOfDepartmentLevel +
         sportsTrainorPoints +
-        sportsTrainorPoints +
         memberOfAdhocPoints +
         academicAdviseesPoints;
 
