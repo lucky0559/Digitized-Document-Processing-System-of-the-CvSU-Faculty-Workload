@@ -16,6 +16,7 @@ type TextInputWithTitlePointUploadProps = {
   customize?: boolean;
   customLabel?: string;
   universityWidePoints?: string;
+  onRemoveFile?: () => void;
 };
 
 function TextInputWithTitlePointUpload({
@@ -30,7 +31,8 @@ function TextInputWithTitlePointUpload({
   textField,
   customize,
   customLabel,
-  universityWidePoints
+  universityWidePoints,
+  onRemoveFile
 }: TextInputWithTitlePointUploadProps) {
   return (
     <Container textField={textField}>
@@ -81,6 +83,7 @@ function TextInputWithTitlePointUpload({
         <UploadFileButton
           fileHandler={fileHandler}
           workloadFileName={fileName}
+          onRemoveFile={onRemoveFile}
         />
       </UploadContainer>
       {!textField && (

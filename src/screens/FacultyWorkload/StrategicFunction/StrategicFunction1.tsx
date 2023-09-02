@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
 import TextInputWithUpload from "../../../components/TextInputWithUpload";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
+import { SFW_FILE } from "../../../enums/fileEnums";
 
 type StrategicFunction1Props = {
   onUniversityLevelSelect1: (value: string) => void;
@@ -37,6 +38,7 @@ type StrategicFunction1Props = {
   collegeCampusLevelFileName2?: string;
   collegeCampusLevelFileName3?: string;
   customcollegeCampusLevelFileName?: string;
+  onRemoveFile: (val: number) => void;
 };
 
 function StrategicFunction1({
@@ -71,8 +73,41 @@ function StrategicFunction1({
   collegeCampusLevelFileName1,
   collegeCampusLevelFileName2,
   collegeCampusLevelFileName3,
-  customcollegeCampusLevelFileName
+  customcollegeCampusLevelFileName,
+  onRemoveFile
 }: StrategicFunction1Props) {
+  const onRemoveFile1Handler = () => {
+    onRemoveFile(SFW_FILE.UNIVERSITY1);
+  };
+
+  const onRemoveFile2Handler = () => {
+    onRemoveFile(SFW_FILE.UNIVERSITY2);
+  };
+
+  const onRemoveFile3Handler = () => {
+    onRemoveFile(SFW_FILE.UNIVERSITY3);
+  };
+
+  const onRemoveFile4Handler = () => {
+    onRemoveFile(SFW_FILE.UNIVERSITY4);
+  };
+
+  const onRemoveFile5Handler = () => {
+    onRemoveFile(SFW_FILE.COLLEGE_CAMPUS1);
+  };
+
+  const onRemoveFile6Handler = () => {
+    onRemoveFile(SFW_FILE.COLLEGE_CAMPUS2);
+  };
+
+  const onRemoveFile7Handler = () => {
+    onRemoveFile(SFW_FILE.COLLEGE_CAMPUS3);
+  };
+
+  const onRemoveFile8Handler = () => {
+    onRemoveFile(SFW_FILE.COLLEGE_CAMPUS4);
+  };
+
   return (
     <>
       <UniversityLevelContainer>
@@ -90,6 +125,7 @@ function StrategicFunction1({
             ]}
             onFileSelect={onFileUniversityLevelSelect1}
             fileName={universityLevelFileName1}
+            onRemoveStudyFile={onRemoveFile1Handler}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
@@ -102,6 +138,7 @@ function StrategicFunction1({
             ]}
             onFileSelect={onFileUniversityLevelSelect2}
             fileName={universityLevelFileName2}
+            onRemoveStudyFile={onRemoveFile2Handler}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
@@ -114,13 +151,15 @@ function StrategicFunction1({
             ]}
             onFileSelect={onFileUniversityLevelSelect3}
             fileName={universityLevelFileName3}
+            onRemoveStudyFile={onRemoveFile3Handler}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
             onChangeTextInput={textInputUniversityLevel4}
-            val={universityLevelInputDesignation}
+            val={universityLevelInputDesignation || ""}
             onFileSelect={onFileCustomUniversityLevelSelect}
             fileName={customUniversityFileName}
+            onRemoveFile={onRemoveFile4Handler}
           />
         </div>
       </UniversityLevelContainer>
@@ -139,6 +178,7 @@ function StrategicFunction1({
             ]}
             onFileSelect={onFileCollegeCampusLevelSelect1}
             fileName={collegeCampusLevelFileName1}
+            onRemoveStudyFile={onRemoveFile5Handler}
           />
           <DropdownWithUpload
             inputLabel="Designation 2"
@@ -151,6 +191,7 @@ function StrategicFunction1({
             ]}
             onFileSelect={onFileCollegeCampusLevelSelect2}
             fileName={collegeCampusLevelFileName2}
+            onRemoveStudyFile={onRemoveFile6Handler}
           />
           <DropdownWithUpload
             inputLabel="Designation 3"
@@ -163,13 +204,15 @@ function StrategicFunction1({
             ]}
             onFileSelect={onFileCollegeCampusLevelSelect3}
             fileName={collegeCampusLevelFileName3}
+            onRemoveStudyFile={onRemoveFile7Handler}
           />
           <TextInputWithUpload
             inputLabel="Other Designation"
             onChangeTextInput={textInputCollegeCampusLevel4}
-            val={collegeCampusLevelInputDesignation}
+            val={collegeCampusLevelInputDesignation || ""}
             onFileSelect={onFileCustomCollegeCampusLevelSelect}
             fileName={customcollegeCampusLevelFileName}
+            onRemoveFile={onRemoveFile8Handler}
           />
         </div>
       </CollegeCampusLevelContainer>

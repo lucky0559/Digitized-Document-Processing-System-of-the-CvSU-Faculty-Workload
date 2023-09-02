@@ -679,13 +679,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ minHeight: "100vh" }}>
-          <Menu
-            isFacultySubmenuOpen={isFacultySubmenuOpen}
-            facultySubMenuHandler={() =>
-              setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-            }
-            position="relative"
-          />
+          <Menu position="relative" />
         </div>
         {isLoading ? (
           <div

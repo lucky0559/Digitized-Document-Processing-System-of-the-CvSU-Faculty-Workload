@@ -145,11 +145,7 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
       <div
         style={{ display: "flex", flexDirection: "row", position: "relative" }}
       >
-        <Menu
-          isFacultySubmenuOpen={false}
-          facultySubMenuHandler={() => {}}
-          position="relative"
-        />
+        <Menu position="relative" />
         <ProfileTab
           isProfileOpen={isProfileOpen}
           UseLogout={UseLogout}

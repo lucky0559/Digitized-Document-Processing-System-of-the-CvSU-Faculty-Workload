@@ -167,12 +167,7 @@ const WorkloadSummary = ({ UseLogout }: WorkloadReviewScreenProps) => {
       </div>
       <div style={{ flexDirection: "row", marginTop: 54, display: "flex" }}>
         <div style={{ width: 248 }}>
-          <Menu
-            isFacultySubmenuOpen={isFacultySubmenuOpen}
-            facultySubMenuHandler={() =>
-              setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-            }
-          />
+          <Menu />
         </div>
         <BodyContainer>
           <ScreenTitleContainer>
