@@ -205,12 +205,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
         size="large"
       />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-      <Menu
-        isFacultySubmenuOpen={isFacultySubmenuOpen}
-        facultySubMenuHandler={() =>
-          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-        }
-      />
+      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       {isLoading ? (
         <div

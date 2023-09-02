@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Menu from "../components/Menu";
 import TopNav from "../components/TopNav";
 
 const UnauthorizedPage = () => {

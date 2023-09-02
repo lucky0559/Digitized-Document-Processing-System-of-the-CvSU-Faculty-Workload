@@ -1,24 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Colors from "../constants/Colors";
 import { UserContext } from "../App";
-import { User } from "../types/User";
-import { GetAllUserPendingWorkloads } from "../lib/faculty-workload.hooks";
 
 type MenuProps = {
-  isFacultySubmenuOpen: boolean;
-  facultySubMenuHandler: () => void;
   position?: string;
 };
 
-const Menu = ({
-  isFacultySubmenuOpen,
-  facultySubMenuHandler,
-  position
-}: MenuProps) => {
+const Menu = ({ position }: MenuProps) => {
   const navigate = useNavigate();
-  const userRole = localStorage.getItem("role");
   const location = window.location.pathname;
   const {
     user,
@@ -44,7 +35,7 @@ const Menu = ({
         user.role !== "OVPAA" &&
         user.role !== "Dean" && (
           <>
-            <NavButtonContainer onClick={facultySubMenuHandler}>
+            <NavContainer>
               <NavButtonText
                 isActive={
                   location === "/teaching-workload" ||
@@ -55,7 +46,7 @@ const Menu = ({
               >
                 Faculty Workload
               </NavButtonText>
-            </NavButtonContainer>
+            </NavContainer>
 
             <SubMenuContainer disabled={hasPendingTeachingWorkload}>
               <SubMenuText
@@ -188,6 +179,17 @@ const NavButtonContainer = styled.div`
   &:hover {
     opacity: 0.6;
   }
+  padding: 0 20px;
+`;
+
+const NavContainer = styled.div`
+  border-bottom: 1px solid ${Colors.primary};
+  height: 50px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
   padding: 0 20px;
 `;
 

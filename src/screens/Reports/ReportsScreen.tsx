@@ -29,12 +29,7 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
   return (
     <Container>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-      <Menu
-        isFacultySubmenuOpen={isFacultySubmenuOpen}
-        facultySubMenuHandler={() =>
-          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-        }
-      />
+      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
         <ScreenTitle title="Reports" />

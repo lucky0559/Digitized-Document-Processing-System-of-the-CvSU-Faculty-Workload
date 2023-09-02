@@ -626,19 +626,23 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationUniversityLevel: [
             (designationUniversity1?.file! ||
               strategicFunctionWorkload
-                ?.designationUniversityLevelFilesFilenames?.[0]) &&
+                ?.designationUniversityLevelFilesFilenames?.[0] ||
+              designationUniversity1?.filename) &&
               designationUniversity1?.title!,
             (designationUniversity2?.file! ||
               strategicFunctionWorkload
-                ?.designationUniversityLevelFilesFilenames?.[1]) &&
+                ?.designationUniversityLevelFilesFilenames?.[1] ||
+              designationUniversity2?.filename) &&
               designationUniversity2?.title!,
             (designationUniversity3?.file! ||
               strategicFunctionWorkload
-                ?.designationUniversityLevelFilesFilenames?.[2]) &&
+                ?.designationUniversityLevelFilesFilenames?.[2] ||
+              designationUniversity3?.filename) &&
               designationUniversity3?.title!,
             (designationUniversity4?.file! ||
               strategicFunctionWorkload
-                ?.designationUniversityLevelFilesFilenames?.[3]) &&
+                ?.designationUniversityLevelFilesFilenames?.[3] ||
+              designationUniversity4?.filename) &&
               designationUniversity4?.title!
           ].filter(Boolean),
           designationUniversityLevelFiles: [
@@ -650,19 +654,23 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationCollegeCampusLevel: [
             (collegeCampusDesignation1?.file! ||
               strategicFunctionWorkload
-                ?.approvedCollegeCampusDesignationFilenames?.[0]) &&
+                ?.approvedCollegeCampusDesignationFilenames?.[0] ||
+              collegeCampusDesignation1?.filename) &&
               collegeCampusDesignation1?.title!,
             (collegeCampusDesignation2?.file! ||
               strategicFunctionWorkload
-                ?.approvedCollegeCampusDesignationFilenames?.[1]) &&
+                ?.approvedCollegeCampusDesignationFilenames?.[1] ||
+              collegeCampusDesignation2?.filename) &&
               collegeCampusDesignation2?.title!,
             (collegeCampusDesignation3?.file! ||
               strategicFunctionWorkload
-                ?.approvedCollegeCampusDesignationFilenames?.[2]) &&
+                ?.approvedCollegeCampusDesignationFilenames?.[2] ||
+              collegeCampusDesignation3?.filename) &&
               collegeCampusDesignation3?.title!,
             (collegeCampusDesignation4?.file! ||
               strategicFunctionWorkload
-                ?.approvedCollegeCampusDesignationFilenames?.[3]) &&
+                ?.approvedCollegeCampusDesignationFilenames?.[3] ||
+              collegeCampusDesignation4?.filename) &&
               collegeCampusDesignation4?.title!
           ].filter(Boolean),
           designationCollegeCampusLevelFiles: [
@@ -674,19 +682,23 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationDepartmentLevel: [
             (departmentDesignation1?.file! ||
               strategicFunctionWorkload
-                ?.approvedDepartmentDesignationFilenames?.[0]) &&
+                ?.approvedDepartmentDesignationFilenames?.[0] ||
+              departmentDesignation1?.filename) &&
               departmentDesignation1?.title!,
             (departmentDesignation2?.file! ||
               strategicFunctionWorkload
-                ?.approvedDepartmentDesignationFilenames?.[1]) &&
+                ?.approvedDepartmentDesignationFilenames?.[1] ||
+              departmentDesignation2?.filename) &&
               departmentDesignation2?.title!,
             (departmentDesignation3?.file! ||
               strategicFunctionWorkload
-                ?.approvedDepartmentDesignationFilenames?.[2]) &&
+                ?.approvedDepartmentDesignationFilenames?.[2] ||
+              departmentDesignation3?.filename) &&
               departmentDesignation3?.title!,
             (departmentDesignation4?.file! ||
               strategicFunctionWorkload
-                ?.approvedDepartmentDesignationFilenames?.[3]) &&
+                ?.approvedDepartmentDesignationFilenames?.[3] ||
+              departmentDesignation4?.filename) &&
               departmentDesignation4?.title!
           ].filter(Boolean),
           designationDepartmentLevelFiles: [
@@ -719,7 +731,8 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           designationAsMemberOfAdhocPoints2: Number(memberUniversity2?.points),
           academicAdvisees:
             academicAdviser?.file ||
-            strategicFunctionWorkload?.academicAdviseesFilename
+            strategicFunctionWorkload?.academicAdviseesFilename ||
+            academicAdviser?.filename
               ? academicAdviser?.numberOfStudents
               : undefined,
           academicAdviseesFile: academicAdviser?.numberOfStudents
@@ -728,7 +741,8 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           academicAdviseesPoints:
             academicAdviser?.numberOfStudents &&
             (academicAdviser?.file ||
-              strategicFunctionWorkload?.academicAdviseesFilename)
+              strategicFunctionWorkload?.academicAdviseesFilename ||
+              academicAdviser.filename)
               ? Number(academicAdviser?.numberOfStudents) * 0.023
               : undefined
         });
@@ -780,10 +794,12 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     (async () => {
       if (isSubmitting) {
         try {
-          await SaveStrategicFunctionWorkload(
-            strategicFunctionWorkload!,
-            WORKLOAD_STATUS.SAVE
-          );
+          if (strategicFunctionWorkload) {
+            await SaveStrategicFunctionWorkload(
+              strategicFunctionWorkload,
+              WORKLOAD_STATUS.SAVE
+            );
+          }
           // window.location.reload();
           const { strategicFunctionWorkloads } =
             await GetAllUserPendingWorkloads(user.email);
@@ -1266,7 +1282,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     })();
   }, [user.id]);
 
-  // TODO REMOVE FILE ONCLICK
   const onRemoveFile = (val: number) => {
     switch (val) {
       case SFW_FILE.UNIVERSITY1:
@@ -1418,12 +1433,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
       />
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
       <Content>
-        <Menu
-          isFacultySubmenuOpen={isFacultySubmenuOpen}
-          facultySubMenuHandler={() =>
-            setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-          }
-        />
+        <Menu />
         <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
         {isLoading ? (
           <div
@@ -2240,6 +2250,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
                       text="Save"
                       onClicked={() => setIsConfirming(true)}
                       isSubmitting={isSubmitting}
+                      disabled={isSubmitting}
                     ></FormButton>
                   </ButtonContainer>
                 </Buttons>

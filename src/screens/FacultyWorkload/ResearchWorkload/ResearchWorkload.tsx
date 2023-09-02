@@ -878,12 +878,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-      <Menu
-        isFacultySubmenuOpen={isFacultySubmenuOpen}
-        facultySubMenuHandler={() =>
-          setIsFacultySubmenuOpen(!isFacultySubmenuOpen)
-        }
-      />
+      <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
 
       {isLoading ? (
