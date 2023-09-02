@@ -925,9 +925,6 @@ export const SaveStrategicFunctionWorkload = async (
         cleanedData
       );
       return { data };
-      // console.log(strategicFunctionWorkload);
-      // console.log(cleanedData);
-      // return;
     } catch (exception) {
       console.log(exception);
     }
