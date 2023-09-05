@@ -42,6 +42,7 @@ type ResearchWorkload2Props = {
   onRemoveStudy2File: () => void;
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
+  rwlCount: number;
 };
 
 const ResearchWorkload2 = ({
@@ -80,7 +81,8 @@ const ResearchWorkload2 = ({
   onRemoveStudy1File,
   onRemoveStudy2File,
   onRemoveStudy3File,
-  onRemoveStudy4File
+  onRemoveStudy4File,
+  rwlCount
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
     rwlFile1Handler(file);
@@ -157,6 +159,7 @@ const ResearchWorkload2 = ({
         onRemoveStudy2File={onRemoveStudy2File}
         onRemoveStudy3File={onRemoveStudy3File}
         onRemoveStudy4File={onRemoveStudy4File}
+        rwlCount={rwlCount}
       />
     </>
   );

@@ -41,6 +41,7 @@ type ResearchWorkload3Props = {
   onRemoveStudy2File: () => void;
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
+  rwlCount: number;
 };
 
 const ResearchWorkload3 = ({
@@ -76,7 +77,8 @@ const ResearchWorkload3 = ({
   onRemoveStudy1File,
   onRemoveStudy2File,
   onRemoveStudy3File,
-  onRemoveStudy4File
+  onRemoveStudy4File,
+  rwlCount
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -113,7 +115,7 @@ const ResearchWorkload3 = ({
       />
       {(points !== 0 || fundGeneratedPoints !== 0) && (
         <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
-          {isSubmitting ? (
+          {rwlCount >= 1 && rwlCount <= 3 ? null : isSubmitting ? (
             <LoadingSpinner color={Colors.primary} />
           ) : (
             <AddStudyText>Add another study</AddStudyText>
@@ -193,7 +195,7 @@ const ResearchWorkload3 = ({
               isDisseminatedOnly
                 ? study1Points + study2Points + study3Points + study4Points ===
                   0
-                : studyPoints === 0
+                : studyPoints === 0 || isSubmitting
             }
           ></FormButton>
         </ButtonContainer>

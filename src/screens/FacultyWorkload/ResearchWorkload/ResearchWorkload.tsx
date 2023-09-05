@@ -28,9 +28,21 @@ type ResearchWorkLoadProps = {
   UseLogout: () => void;
 };
 
+enum REDIRECT {
+  EWL = 1,
+  SFW,
+  WS
+}
+
 const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const [researchWorkLoad, setResearchWorkLoad] =
     useState<ResearchWorkLoadType>();
+
+  const [rwl1, setRwl1] = useState<ResearchWorkLoadType>();
+  const [rwl2, setRwl2] = useState<ResearchWorkLoadType>();
+  const [rwl3, setRwl3] = useState<ResearchWorkLoadType>();
+  const [rwl4, setRwl4] = useState<ResearchWorkLoadType>();
+  const [rwl5, setRwl5] = useState<ResearchWorkLoadType>();
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,8 +64,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     string | undefined
   >("");
 
-  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
-
   const [steps, setSteps] = useState(1);
 
   const [points, setPoints] = useState(0);
@@ -73,6 +83,13 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const { user, actions } = useContext(UserContext);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [rwlCount, setRwlCount] = useState(0);
+
+  const [isTriggerSaveWorkloadHandler, setIsTriggerSaveWorkloadHandler] =
+    useState(false);
+
+  const [redirectPage, setRedirectPage] = useState<number>();
 
   const researchWorkLoadHandler = () => {
     if (!!fundingOfStudy?.length || fundDisplay) {
@@ -182,6 +199,30 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         rwlFile: rwlFile,
         ...researchWorkLoad
       });
+    }
+  };
+
+  const saveWorkloadHandler = async () => {
+    if (rwl1) {
+      console.log(rwl1);
+
+      await SaveResearchWorkload(rwl1, WORKLOAD_STATUS.SAVE);
+    }
+    if (rwl2) {
+      console.log(rwl2);
+      await SaveResearchWorkload(rwl2, WORKLOAD_STATUS.SAVE);
+    }
+    if (rwl3) {
+      console.log(rwl3);
+      await SaveResearchWorkload(rwl3, WORKLOAD_STATUS.SAVE);
+    }
+    if (rwl4) {
+      console.log(rwl4);
+      await SaveResearchWorkload(rwl4, WORKLOAD_STATUS.SAVE);
+    }
+    if (rwl5) {
+      console.log(rwl5);
+      await SaveResearchWorkload(rwl5, WORKLOAD_STATUS.SAVE);
     }
   };
 
@@ -338,7 +379,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study2Points +
             study3Points +
             study4Points;
-          await SaveResearchWorkload(researchWorkLoad!, WORKLOAD_STATUS.SAVE);
 
           const {
             teachingWorkloads,
@@ -359,15 +399,32 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             !!strategicFunctionWorkloads.length &&
               strategicFunctionWorkloads[0].isSubmitted
           );
+
+          if (rwlCount + 1 === 1) {
+            setRwl1(researchWorkLoad);
+          } else if (rwlCount + 1 === 2) {
+            setRwl2(researchWorkLoad);
+          } else if (rwlCount + 1 === 3) {
+            setRwl3(researchWorkLoad);
+          } else if (rwlCount + 1 === 4) {
+            setRwl4(researchWorkLoad);
+          } else if (rwlCount + 1 === 5) {
+            setRwl5(researchWorkLoad);
+          }
           clearStates();
+          setRwlCount(rwlCount + 1);
+
           if (isAddStudy) {
-            navigate("/research-workload", { replace: true });
+            clearStates();
           } else if (!!!extensionWorkloads.length) {
-            navigate("/extension-workload", { replace: true });
+            setIsTriggerSaveWorkloadHandler(true);
+            setRedirectPage(REDIRECT.EWL);
           } else if (!!!strategicFunctionWorkloads.length) {
-            navigate("/strategic-function-workload", { replace: true });
+            setRedirectPage(REDIRECT.SFW);
+            setIsTriggerSaveWorkloadHandler(true);
           } else {
-            navigate("/workload-summary", { replace: true });
+            setRedirectPage(REDIRECT.WS);
+            setIsTriggerSaveWorkloadHandler(true);
           }
         } else if (
           researchWorkLoad?.rwlFile1 ||
@@ -397,7 +454,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               study4Points
             ).toFixed(2)
           );
-          await SaveResearchWorkload(researchWorkLoad!, WORKLOAD_STATUS.SAVE);
 
           const {
             teachingWorkloads,
@@ -418,15 +474,32 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             !!strategicFunctionWorkloads.length &&
               strategicFunctionWorkloads[0].isSubmitted
           );
+
+          if (rwlCount + 1 === 1) {
+            setRwl1(researchWorkLoad);
+          } else if (rwlCount + 1 === 2) {
+            setRwl2(researchWorkLoad);
+          } else if (rwlCount + 1 === 3) {
+            setRwl3(researchWorkLoad);
+          } else if (rwlCount + 1 === 4) {
+            setRwl4(researchWorkLoad);
+          } else if (rwlCount + 1 === 5) {
+            setRwl5(researchWorkLoad);
+          }
+          setRwlCount(rwlCount + 1);
           clearStates();
+
           if (isAddStudy) {
-            navigate("/research-workload", { replace: true });
+            clearStates();
           } else if (!!!extensionWorkloads.length) {
-            navigate("/extension-workload", { replace: true });
+            setRedirectPage(REDIRECT.EWL);
+            setIsTriggerSaveWorkloadHandler(true);
           } else if (!!!strategicFunctionWorkloads.length) {
-            navigate("/strategic-function-workload", { replace: true });
+            setRedirectPage(REDIRECT.SFW);
+            setIsTriggerSaveWorkloadHandler(true);
           } else {
-            navigate("/workload-summary", { replace: true });
+            setRedirectPage(REDIRECT.WS);
+            setIsTriggerSaveWorkloadHandler(true);
           }
         }
       }
@@ -449,7 +522,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     setRwlFile1(undefined);
     setFundGenerated("");
     setFundGeneratedDisplay("");
-    setIsFacultySubmenuOpen(false);
     setSteps(1);
     setPoints(0);
     setStudy1(undefined);
@@ -875,6 +947,26 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     });
   };
 
+  useEffect(() => {
+    if (isTriggerSaveWorkloadHandler) {
+      (async () => {
+        await saveWorkloadHandler();
+      })();
+      setIsTriggerSaveWorkloadHandler(false);
+      switch (redirectPage) {
+        case REDIRECT.EWL:
+          return navigate("/extension-workload", { replace: true });
+        case REDIRECT.SFW:
+          return navigate("/strategic-function-workload", { replace: true });
+        case REDIRECT.WS:
+          return navigate("/workload-summary", { replace: true });
+        default:
+          break;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTriggerSaveWorkloadHandler]);
+
   return (
     <MainContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
@@ -972,6 +1064,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               onRemoveStudy2File={onRemoveStudy2File}
               onRemoveStudy3File={onRemoveStudy3File}
               onRemoveStudy4File={onRemoveStudy4File}
+              rwlCount={rwlCount}
             />
           )}
           {steps === 3 && (
@@ -1014,6 +1107,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               onRemoveStudy2File={onRemoveStudy2File}
               onRemoveStudy3File={onRemoveStudy3File}
               onRemoveStudy4File={onRemoveStudy4File}
+              rwlCount={rwlCount}
             />
           )}
           {steps === 4 && (
@@ -1050,6 +1144,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               onRemoveStudy2File={onRemoveStudy2File}
               onRemoveStudy3File={onRemoveStudy3File}
               onRemoveStudy4File={onRemoveStudy4File}
+              rwlCount={rwlCount}
             />
           )}
           {steps === 1 && !isLoading && (
