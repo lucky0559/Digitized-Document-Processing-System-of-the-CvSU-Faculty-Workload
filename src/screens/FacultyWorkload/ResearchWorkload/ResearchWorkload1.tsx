@@ -1,19 +1,15 @@
-import React from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
 import Colors from "../../../constants/Colors";
-import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
-import { VscCircleLargeOutline, VscCircleLargeFilled } from "react-icons/vsc";
+import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
-import ResearchWorkload3 from "./ResearchWorkload3";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
 
 type ResearchWorkload1Props = {
-  researchWorkLoadHandler1: () => void;
   typeOfStudyHandler: (value: string) => void;
   designationStudyHandler: (value?: string) => void;
-  backHandler: () => void;
   rwlFileHandler: (value?: File) => void;
-  typeOfStudy: string;
+  typeOfStudy?: string;
   designationStudy?: string;
   rwlFileName?: string;
   rwlFileNameDisplay?: string;
@@ -47,49 +43,22 @@ type ResearchWorkload1Props = {
   onRemoveStudy2File: () => void;
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
-  rwlCount: number;
+  titleOfStudy: string;
+  titleOfStudyHandler: (val: string) => void;
 };
 
 const ResearchWorkload1 = ({
   typeOfStudyHandler,
   designationStudyHandler,
-  backHandler,
   rwlFileHandler,
-  typeOfStudy,
   designationStudy,
   rwlFileName,
-  isSubmitting,
-  points,
-  onSelectStudy1,
-  study1,
-  onStudy1FileSelect,
-  study1FileName,
-  onSelectStudy2,
-  study2,
-  onStudy2FileSelect,
-  study2FileName,
-  onSelectStudy3,
-  study3,
-  onStudy3FileSelect,
-  study3FileName,
-  onSelectStudy4,
-  study4,
-  onStudy4FileSelect,
-  study4FileName,
-  study1Points,
-  study2Points,
-  study3Points,
-  study4Points,
-  fundGeneratedPoints,
-  researchWorkLoadHandler3,
   studyPoints,
-  researchWorkLoadHandler1,
   onRemoveRwlFile,
-  onRemoveStudy1File,
-  onRemoveStudy2File,
-  onRemoveStudy3File,
-  onRemoveStudy4File,
-  rwlCount
+  titleOfStudy,
+  titleOfStudyHandler,
+  typeOfStudy,
+  isSubmitting
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -104,31 +73,24 @@ const ResearchWorkload1 = ({
       <Container>
         <SubContainer>
           <WorkloadTextContainer>
-            <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
+            <WorkloadText>CvSU Funded Research</WorkloadText>
           </WorkloadTextContainer>
           <InputsContainer>
             <TextInputContainer>
-              <Label>Type of Study:</Label>
-              <RadioInputContainer>
-                {typeOfStudy === "Approved Proposal" ? (
-                  <VscCircleLargeFilled color={Colors.active} />
-                ) : (
-                  <VscCircleLargeOutline
-                    onClick={() => typeOfStudyHandler("Approved Proposal")}
-                  />
-                )}
-                <Label>Approved Proposal</Label>
-              </RadioInputContainer>
-              <RadioInputContainer>
-                {typeOfStudy === "On-going Study" ? (
-                  <VscCircleLargeFilled color={Colors.active} />
-                ) : (
-                  <VscCircleLargeOutline
-                    onClick={() => typeOfStudyHandler("On-going Study")}
-                  />
-                )}
-                <Label>On-going Study</Label>
-              </RadioInputContainer>
+              <Label>Title of the Study</Label>
+              <TextInput
+                type="text"
+                value={titleOfStudy}
+                onChange={e => titleOfStudyHandler(e.target.value)}
+              />
+            </TextInputContainer>
+            <TextInputContainer>
+              <Dropdown
+                option={DROPDOWN_LISTS.STUDY_STATUS}
+                label="Status of the Study"
+                onSelect={typeOfStudyHandler}
+                val={typeOfStudy}
+              />
             </TextInputContainer>
             <Dropdown
               option={DROPDOWN_LISTS.DESIGNATION_IN_THE_STUDY}
@@ -156,41 +118,17 @@ const ResearchWorkload1 = ({
               Study Points = {studyPoints.toString()}
             </Label>
           </TotalPointsContainer>
+          {studyPoints !== 0 && (
+            <AddStudyContainer onClick={() => {}}>
+              {isSubmitting ? (
+                <LoadingSpinner color={Colors.primary} />
+              ) : (
+                <AddStudyText>Add another study</AddStudyText>
+              )}
+            </AddStudyContainer>
+          )}
         </SubContainer>
       </Container>
-      <ResearchWorkload3
-        researchWorkLoadHandler3={researchWorkLoadHandler3}
-        researchWorkLoadHandler1={researchWorkLoadHandler1}
-        backHandler={backHandler}
-        isSubmitting={isSubmitting}
-        onSelectStudy1={onSelectStudy1}
-        study1={study1}
-        onStudy1FileSelect={onStudy1FileSelect}
-        study1FileName={study1FileName}
-        onSelectStudy2={onSelectStudy2}
-        study2={study2}
-        onStudy2FileSelect={onStudy2FileSelect}
-        study2FileName={study2FileName}
-        onSelectStudy3={onSelectStudy3}
-        study3={study3}
-        onStudy3FileSelect={onStudy3FileSelect}
-        study3FileName={study3FileName}
-        onSelectStudy4={onSelectStudy4}
-        study4={study4}
-        onStudy4FileSelect={onStudy4FileSelect}
-        study4FileName={study4FileName}
-        points={points}
-        study1Points={study1Points}
-        study2Points={study2Points}
-        study3Points={study3Points}
-        study4Points={study4Points}
-        studyPoints={studyPoints}
-        onRemoveStudy1File={onRemoveStudy1File}
-        onRemoveStudy2File={onRemoveStudy2File}
-        onRemoveStudy3File={onRemoveStudy3File}
-        onRemoveStudy4File={onRemoveStudy4File}
-        rwlCount={rwlCount}
-      />
     </>
   );
 };
@@ -247,12 +185,6 @@ const Label = styled.label`
   font-family: HurmeGeometricSans3;
 `;
 
-const RadioInputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 15px 15px 0px 0px;
-`;
-
 const UploadContainer = styled.div`
   width: 80%;
   max-width: 500px;
@@ -279,6 +211,33 @@ const TotalPointsContainer = styled.div`
 
 const UploadFileContainer = styled.div`
   max-width: 100px;
+`;
+
+const TextInput = styled.input`
+  background-color: ${Colors.textFieldBackground};
+  border-width: 1px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const AddStudyContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  max-width: 400px;
+  margin-bottom: 50px;
+  margin-right: 30px;
+`;
+
+const AddStudyText = styled.span`
+  font-family: HurmeGeometricSans3SemiBold;
+  font-size: 17px;
+  line-height: 18px;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 export default ResearchWorkload1;

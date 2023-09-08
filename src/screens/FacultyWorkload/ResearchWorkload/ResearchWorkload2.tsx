@@ -1,15 +1,12 @@
-import React from "react";
 import styled from "styled-components";
 import Dropdown from "../../../components/Dropdown";
-import { DROPDOWN_LISTS, WorkloadType } from "../../../constants/Strings";
+import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
-import ResearchWorkload3 from "./ResearchWorkload3";
+import Colors from "../../../constants/Colors";
 
 type ResearchWorkload2Props = {
-  researchWorkLoadHandler2: () => void;
   fundGeneratedHandler: (value?: string) => void;
   rwlFile1Handler: (value?: File) => void;
-  backHandler: () => void;
   fundGeneratedDisplay?: string;
   rwlFileName1?: string;
   points: number;
@@ -42,47 +39,19 @@ type ResearchWorkload2Props = {
   onRemoveStudy2File: () => void;
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
-  rwlCount: number;
+  titleOfStudy: string;
+  titleOfStudyHandler: (val: string) => void;
 };
 
 const ResearchWorkload2 = ({
-  researchWorkLoadHandler2,
   fundGeneratedHandler,
   rwlFile1Handler,
-  backHandler,
   fundGeneratedDisplay,
   rwlFileName1,
-  points,
-  study1Points,
-  study2Points,
-  study3Points,
-  study4Points,
-  fundGeneratedPoints,
-  researchWorkLoadHandler3,
-  isSubmitting,
-  onSelectStudy1,
-  study1,
-  onStudy1FileSelect,
-  study1FileName,
-  onSelectStudy2,
-  study2,
-  onStudy2FileSelect,
-  study2FileName,
-  onSelectStudy3,
-  study3,
-  onStudy3FileSelect,
-  study3FileName,
-  onSelectStudy4,
-  study4,
-  onStudy4FileSelect,
-  study4FileName,
   studyPoints,
   onRemoveRwl1File,
-  onRemoveStudy1File,
-  onRemoveStudy2File,
-  onRemoveStudy3File,
-  onRemoveStudy4File,
-  rwlCount
+  titleOfStudy,
+  titleOfStudyHandler
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
     rwlFile1Handler(file);
@@ -97,9 +66,17 @@ const ResearchWorkload2 = ({
       <Container>
         <SubContainer>
           <WorkloadTextContainer>
-            <WorkloadText>{WorkloadType.RESEARCH_WORKLOAD}</WorkloadText>
+            <WorkloadText>Externally Funded Research</WorkloadText>
           </WorkloadTextContainer>
           <InputsContainer>
+            <TextInputContainer>
+              <Label>Title of the Study</Label>
+              <TextInput
+                type="text"
+                value={titleOfStudy}
+                onChange={e => titleOfStudyHandler(e.target.value)}
+              />
+            </TextInputContainer>
             <Dropdown
               option={DROPDOWN_LISTS.FUND_GENERATED_PER_SEMESTER}
               label="Fund Generated per Semester (in peso)"
@@ -127,7 +104,7 @@ const ResearchWorkload2 = ({
           </TotalPointsContainer>
         </SubContainer>
       </Container>
-      <ResearchWorkload3
+      {/* <ResearchWorkload3
         researchWorkLoadHandler3={researchWorkLoadHandler3}
         researchWorkLoadHandler2={researchWorkLoadHandler2}
         backHandler={backHandler}
@@ -160,7 +137,7 @@ const ResearchWorkload2 = ({
         onRemoveStudy3File={onRemoveStudy3File}
         onRemoveStudy4File={onRemoveStudy4File}
         rwlCount={rwlCount}
-      />
+      /> */}
     </>
   );
 };
@@ -236,6 +213,19 @@ const TotalPointsContainer = styled.div`
   margin-top: 50px;
   width: 100%;
   padding-left: 40px;
+`;
+
+const TextInput = styled.input`
+  background-color: ${Colors.textFieldBackground};
+  border-width: 1px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const TextInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
 `;
 
 export default ResearchWorkload2;

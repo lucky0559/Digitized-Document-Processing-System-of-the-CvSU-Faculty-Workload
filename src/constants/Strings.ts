@@ -245,7 +245,8 @@ export const DROPDOWN_LISTS = {
     "-----",
     "University  Level",
     "College/Campus Level"
-  ]
+  ],
+  STUDY_STATUS: ["-----", "Approved Proposal", "Ongoing Study"]
 };
 
 export enum WorkloadType {
