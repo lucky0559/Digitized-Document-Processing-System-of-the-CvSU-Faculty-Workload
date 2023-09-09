@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -14,23 +14,24 @@ const UploadFileButton = ({
   onRemoveFile,
   workloadFileName
 }: fileHandlerProps) => {
-  const [fileName, setFileName] = useState("");
-
   const onRemoveFileHandler = () => {
     onRemoveFile && onRemoveFile();
-    setFileName("");
   };
+
+  const filename = useMemo(() => {
+    return workloadFileName;
+  }, [workloadFileName]);
 
   return (
     <>
-      {!workloadFileName && !fileName ? (
+      {!workloadFileName && !filename ? (
         <Container>
           <ButtonText>
             <FileInput
               type="file"
               onChange={e => {
                 fileHandler?.(e.target.files![0]);
-                setFileName(e.target.files![0].name);
+                // setFileName(e.target.files![0].name);
               }}
             />
             Upload
@@ -47,7 +48,7 @@ const UploadFileButton = ({
           <FileName>
             {" "}
             {workloadFileName?.substring(0, 7) + "..." ||
-              fileName.substring(0, 7) + "..."}{" "}
+              filename!.substring(0, 7) + "..."}{" "}
           </FileName>
           <ReplaceIcon size={20} onClick={onRemoveFileHandler} />
         </div>

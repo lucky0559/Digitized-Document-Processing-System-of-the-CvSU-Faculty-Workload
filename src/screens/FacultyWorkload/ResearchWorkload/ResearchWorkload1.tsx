@@ -3,7 +3,6 @@ import Dropdown from "../../../components/Dropdown";
 import Colors from "../../../constants/Colors";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import UploadFileButton from "../../../components/UploadFileButton";
-import { LoadingSpinner } from "../../../components/LoadingSpinner";
 
 type ResearchWorkload1Props = {
   typeOfStudyHandler: (value: string) => void;
@@ -12,39 +11,12 @@ type ResearchWorkload1Props = {
   typeOfStudy?: string;
   designationStudy?: string;
   rwlFileName?: string;
-  rwlFileNameDisplay?: string;
-  isSubmitting: boolean;
   points: number;
-  onSelectStudy1: (value: string) => void;
-  study1?: string;
-  onStudy1FileSelect: (value?: File) => void;
-  study1FileName?: string;
-  onSelectStudy2: (value: string) => void;
-  study2?: string;
-  onStudy2FileSelect: (value?: File) => void;
-  study2FileName?: string;
-  onSelectStudy3: (value: string) => void;
-  study3?: string;
-  onStudy3FileSelect: (value?: File) => void;
-  study3FileName?: string;
-  onSelectStudy4: (value: string) => void;
-  study4?: string;
-  onStudy4FileSelect: (value?: File) => void;
-  study4FileName?: string;
-  study1Points: number;
-  study2Points: number;
-  study3Points: number;
-  study4Points: number;
-  fundGeneratedPoints: number;
-  researchWorkLoadHandler3: (value: boolean) => void;
   studyPoints: number;
   onRemoveRwlFile: () => void;
-  onRemoveStudy1File: () => void;
-  onRemoveStudy2File: () => void;
-  onRemoveStudy3File: () => void;
-  onRemoveStudy4File: () => void;
   titleOfStudy: string;
   titleOfStudyHandler: (val: string) => void;
+  addStudyHandler: () => void;
 };
 
 const ResearchWorkload1 = ({
@@ -58,7 +30,7 @@ const ResearchWorkload1 = ({
   titleOfStudy,
   titleOfStudyHandler,
   typeOfStudy,
-  isSubmitting
+  addStudyHandler
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -98,20 +70,22 @@ const ResearchWorkload1 = ({
               onSelect={setDesignationStudy}
               val={designationStudy}
             />
+            <TextInputContainer>
+              <UploadContainer>
+                <UploadTextDescription>
+                  Upload Proposal (for Approved Externally Funded Proposal) or
+                  Progress Report (for On-going Externally Funded Study) here:
+                </UploadTextDescription>
+                <UploadFileContainer>
+                  <UploadFileButton
+                    fileHandler={fileHandler}
+                    workloadFileName={rwlFileName}
+                    onRemoveFile={onRemoveRwlFile}
+                  />
+                </UploadFileContainer>
+              </UploadContainer>
+            </TextInputContainer>
           </InputsContainer>
-          <UploadContainer>
-            <UploadTextDescription>
-              Upload Proposal (for Approved Proposal) or Progress Report (for
-              On-going Study) here:
-            </UploadTextDescription>
-            <UploadFileContainer>
-              <UploadFileButton
-                fileHandler={fileHandler}
-                workloadFileName={rwlFileName}
-                onRemoveFile={onRemoveRwlFile}
-              />
-            </UploadFileContainer>
-          </UploadContainer>
 
           <TotalPointsContainer>
             <Label style={{ fontWeight: "bold" }}>
@@ -119,12 +93,8 @@ const ResearchWorkload1 = ({
             </Label>
           </TotalPointsContainer>
           {studyPoints !== 0 && (
-            <AddStudyContainer onClick={() => {}}>
-              {isSubmitting ? (
-                <LoadingSpinner color={Colors.primary} />
-              ) : (
-                <AddStudyText>Add another study</AddStudyText>
-              )}
+            <AddStudyContainer onClick={addStudyHandler}>
+              <AddStudyText>Add another study</AddStudyText>
             </AddStudyContainer>
           )}
         </SubContainer>
@@ -192,12 +162,12 @@ const UploadContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 20px;
 `;
 
 const UploadTextDescription = styled.label`
-  font-weight: 400;
+  font-weight: 600;
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
@@ -221,10 +191,10 @@ const TextInput = styled.input`
 
 const AddStudyContainer = styled.div`
   display: flex;
-  align-self: flex-end;
-  max-width: 400px;
   margin-bottom: 50px;
   margin-right: 30px;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 const AddStudyText = styled.span`

@@ -9,38 +9,11 @@ type ResearchWorkload2Props = {
   rwlFile1Handler: (value?: File) => void;
   fundGeneratedDisplay?: string;
   rwlFileName1?: string;
-  points: number;
-  study1Points: number;
-  study2Points: number;
-  study3Points: number;
-  study4Points: number;
-  fundGeneratedPoints: number;
-  researchWorkLoadHandler3: (value: boolean) => void;
-  isSubmitting: boolean;
-  onSelectStudy1: (value: string) => void;
-  study1?: string;
-  onStudy1FileSelect: (value?: File) => void;
-  study1FileName?: string;
-  onSelectStudy2: (value: string) => void;
-  study2?: string;
-  onStudy2FileSelect: (value?: File) => void;
-  study2FileName?: string;
-  onSelectStudy3: (value: string) => void;
-  study3?: string;
-  onStudy3FileSelect: (value?: File) => void;
-  study3FileName?: string;
-  onSelectStudy4: (value: string) => void;
-  study4?: string;
-  onStudy4FileSelect: (value?: File) => void;
-  study4FileName?: string;
   studyPoints: number;
   onRemoveRwl1File: () => void;
-  onRemoveStudy1File: () => void;
-  onRemoveStudy2File: () => void;
-  onRemoveStudy3File: () => void;
-  onRemoveStudy4File: () => void;
   titleOfStudy: string;
   titleOfStudyHandler: (val: string) => void;
+  addStudyHandler: () => void;
 };
 
 const ResearchWorkload2 = ({
@@ -51,7 +24,8 @@ const ResearchWorkload2 = ({
   studyPoints,
   onRemoveRwl1File,
   titleOfStudy,
-  titleOfStudyHandler
+  titleOfStudyHandler,
+  addStudyHandler
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
     rwlFile1Handler(file);
@@ -83,25 +57,33 @@ const ResearchWorkload2 = ({
               onSelect={setFundGenerated}
               val={fundGeneratedDisplay}
             />
+            <TextInputContainer>
+              <UploadContainer>
+                <UploadTextDescription>
+                  Upload Proposal (for Approved Externally Funded Proposal) or
+                  Progress Report (for On-going Externally Funded Study) here:
+                </UploadTextDescription>
+                <UploadFileContainer>
+                  <UploadFileButton
+                    fileHandler={fileHandler}
+                    workloadFileName={rwlFileName1}
+                    onRemoveFile={onRemoveRwl1File}
+                  />
+                </UploadFileContainer>
+              </UploadContainer>
+            </TextInputContainer>
           </InputsContainer>
-          <UploadContainer>
-            <UploadTextDescription>
-              Upload Proposal (for Approved Externally Funded Proposal) or
-              Progress Report (for On-going Externally Funded Study) here:
-            </UploadTextDescription>
-            <UploadFileContainer>
-              <UploadFileButton
-                fileHandler={fileHandler}
-                workloadFileName={rwlFileName1}
-                onRemoveFile={onRemoveRwl1File}
-              />
-            </UploadFileContainer>
-          </UploadContainer>
+
           <TotalPointsContainer>
             <Label style={{ fontWeight: "bold" }}>
               Study Points = {studyPoints.toString()}
             </Label>
           </TotalPointsContainer>
+          {studyPoints !== 0 && (
+            <AddStudyContainer onClick={addStudyHandler}>
+              <AddStudyText>Add another study</AddStudyText>
+            </AddStudyContainer>
+          )}
         </SubContainer>
       </Container>
       {/* <ResearchWorkload3
@@ -181,21 +163,21 @@ const InputsContainer = styled.div`
 `;
 
 const UploadContainer = styled.div`
-  width: 95%;
-  max-width: 50rem;
+  width: 80%;
+  max-width: 500px;
   flex-direction: row;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const UploadTextDescription = styled.label`
-  font-weight: 400;
+  font-weight: 600;
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
-  padding: 20px;
 `;
 
 const Label = styled.label`
@@ -226,6 +208,27 @@ const TextInputContainer = styled.div`
   flex-direction: column;
   margin-bottom: 20px;
   width: 100%;
+`;
+
+const AddStudyContainer = styled.div`
+  display: flex;
+  margin-bottom: 50px;
+  margin-right: 30px;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const AddStudyText = styled.span`
+  font-family: HurmeGeometricSans3SemiBold;
+  font-size: 17px;
+  line-height: 18px;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 export default ResearchWorkload2;

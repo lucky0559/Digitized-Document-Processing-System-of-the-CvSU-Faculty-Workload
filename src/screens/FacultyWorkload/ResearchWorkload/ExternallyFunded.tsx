@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { ExternallyFunded } from "../../../types/Fund";
 
-type CvsuFundedProps = {
+type ExternallyFundedProps = {
   externallyFunded: ExternallyFunded;
 };
 
-const FundedExternally = ({ externallyFunded }: CvsuFundedProps) => {
+const FundedExternally = ({ externallyFunded }: ExternallyFundedProps) => {
   return (
     <>
       <Container>
@@ -23,11 +23,17 @@ const FundedExternally = ({ externallyFunded }: CvsuFundedProps) => {
               <Label>{externallyFunded.fundGenerated}</Label>
             </TextInputContainer>
             <TextInputContainer>
-              <Label>
-                Upload Proposal (for Approved Externally Funded Proposal) or
-                Progress Report (for On-going Externally Funded Study) here:
-              </Label>
-              <Label>{externallyFunded.file?.name}</Label>
+              <UploadContainer>
+                <UploadTextDescription>
+                  Upload Proposal (for Approved Externally Funded Proposal) or
+                  Progress Report (for On-going Externally Funded Study) here:
+                </UploadTextDescription>
+                <UploadFileContainer>
+                  <Label>
+                    {externallyFunded.file?.name.substring(0, 7) + "..."}
+                  </Label>
+                </UploadFileContainer>
+              </UploadContainer>
             </TextInputContainer>
           </InputsContainer>
           <TotalPointsContainer>
@@ -93,6 +99,12 @@ const Label = styled.label`
   font-family: HurmeGeometricSans3;
 `;
 
+const TotalPointsContainer = styled.div`
+  margin-top: 50px;
+  width: 100%;
+  padding-left: 40px;
+`;
+
 const UploadContainer = styled.div`
   width: 80%;
   max-width: 500px;
@@ -100,21 +112,15 @@ const UploadContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 20px;
 `;
 
 const UploadTextDescription = styled.label`
-  font-weight: 400;
+  font-weight: 600;
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
-`;
-
-const TotalPointsContainer = styled.div`
-  margin-top: 50px;
-  width: 100%;
-  padding-left: 40px;
 `;
 
 const UploadFileContainer = styled.div`

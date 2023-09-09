@@ -15,27 +15,29 @@ const FundedCvsu = ({ cvsuFunded }: CvsuFundedProps) => {
           </WorkloadTextContainer>
           <InputsContainer>
             <TextInputContainer>
-              <Label>Title of the Study</Label>
+              <LabelBold>Title of the Study</LabelBold>
               <Label>{cvsuFunded.title}</Label>
             </TextInputContainer>
             <TextInputContainer>
-              <Label>Status of the Study</Label>
+              <LabelBold>Status of the Study</LabelBold>
               <Label>{cvsuFunded.typeOfStudy}</Label>
             </TextInputContainer>
             <TextInputContainer>
-              <Label>Designation in the Study</Label>
+              <LabelBold>Designation in the Study</LabelBold>
               <Label>{cvsuFunded.designationStudy}</Label>
             </TextInputContainer>
+            <TextInputContainer>
+              <UploadContainer>
+                <UploadTextDescription>
+                  Upload Proposal (for Approved Externally Funded Proposal) or
+                  Progress Report (for On-going Externally Funded Study) here:
+                </UploadTextDescription>
+                <UploadFileContainer>
+                  <Label>{cvsuFunded.file?.name.substring(0, 7) + "..."}</Label>
+                </UploadFileContainer>
+              </UploadContainer>
+            </TextInputContainer>
           </InputsContainer>
-          <UploadContainer>
-            <UploadTextDescription>
-              Upload Proposal (for Approved Proposal) or Progress Report (for
-              On-going Study) here:
-            </UploadTextDescription>
-            <UploadFileContainer>
-              <Label>{cvsuFunded.file?.name}</Label>
-            </UploadFileContainer>
-          </UploadContainer>
 
           <TotalPointsContainer>
             <Label style={{ fontWeight: "bold" }}>
@@ -93,8 +95,15 @@ const TextInputContainer = styled.div`
   width: 100%;
 `;
 
-const Label = styled.label`
+const Label = styled.span`
   font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  font-family: HurmeGeometricSans3;
+`;
+
+const LabelBold = styled.label`
+  font-weight: 600;
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
@@ -112,7 +121,7 @@ const UploadContainer = styled.div`
 `;
 
 const UploadTextDescription = styled.label`
-  font-weight: 400;
+  font-weight: 600;
   font-size: 17px;
   line-height: 18px;
   font-family: HurmeGeometricSans3;
@@ -126,6 +135,7 @@ const TotalPointsContainer = styled.div`
 
 const UploadFileContainer = styled.div`
   max-width: 100px;
+  margin-left: 20px;
 `;
 
 export default FundedCvsu;
