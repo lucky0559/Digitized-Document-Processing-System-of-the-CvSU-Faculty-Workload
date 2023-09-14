@@ -99,17 +99,17 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [redirectPage, setRedirectPage] = useState<number>();
+  const [isAdding, setIsAdding] = useState(false);
 
-  const researchWorkLoadHandler = () => {
-    // if (!!fundingOfStudy?.length || fundDisplay) {
-    //   setResearchWorkLoad({
-    //     ...researchWorkLoad,
-    //     titleOfStudy,
-    //     fundingOfStudy: fundingOfStudy || fundDisplay
-    //   });
-    // }
-  };
+  // const researchWorkLoadHandler = () => {
+  // if (!!fundingOfStudy?.length || fundDisplay) {
+  //   setResearchWorkLoad({
+  //     ...researchWorkLoad,
+  //     titleOfStudy,
+  //     fundingOfStudy: fundingOfStudy || fundDisplay
+  //   });
+  // }
+  // };
 
   // useEffect(() => {
   //   if (fundDisplay !== researchWorkLoad?.fundingOfStudy) {
@@ -326,168 +326,258 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   //   }
   // }, [fundGenerated, fundGeneratedDisplay]);
 
-  const researchWorkLoadHandler3 = (isAddStudy: boolean) => {
-    setIsAddStudy(isAddStudy);
-    setResearchWorkLoad({
-      ...researchWorkLoad,
-      disseminatedResearch: [
-        (study1?.filename || study1?.file!) && study1?.title!,
-        (study2?.filename || study2?.file!) && study2?.title!,
-        (study3?.filename || study3?.file!) && study3?.title!,
-        (study4?.filename || study4?.file!) && study4?.title!
-      ].filter(Boolean),
-      disseminatedResearchFiles: [
-        study1?.file!,
-        study2?.file!,
-        study3?.file!,
-        study4?.file!
-      ],
-      cvsuFunded: [
-        cvsuFunded1!,
-        cvsuFunded2!,
-        cvsuFunded3!,
-        cvsuFunded4!,
-        cvsuFunded5!
-      ].filter(Boolean),
-      externallyFunded: [
-        externalFunded1!,
-        externalFunded2!,
-        externalFunded3!,
-        externalFunded4!,
-        externalFunded5!
-      ].filter(Boolean)
-    });
-    onSubmit();
+  const researchWorkLoadHandler = () => {
+    // setIsAddStudy(isAddStudy);
+
+    if (!cvsuFunded1) {
+      setCvsuFunded1({
+        title: titleOfStudyCvsu,
+        typeOfStudy: typeOfStudy,
+        designationStudy: designationStudy!,
+        file: rwlFile,
+        points: studyCvsuPoints
+      });
+    } else if (!cvsuFunded2) {
+      setCvsuFunded2({
+        title: titleOfStudyCvsu,
+        typeOfStudy: typeOfStudy,
+        designationStudy: designationStudy!,
+        file: rwlFile,
+        points: studyCvsuPoints
+      });
+    } else if (!cvsuFunded3) {
+      setCvsuFunded3({
+        title: titleOfStudyCvsu,
+        typeOfStudy: typeOfStudy,
+        designationStudy: designationStudy!,
+        file: rwlFile,
+        points: studyCvsuPoints
+      });
+    } else if (!cvsuFunded4) {
+      setCvsuFunded4({
+        title: titleOfStudyCvsu,
+        typeOfStudy: typeOfStudy,
+        designationStudy: designationStudy!,
+        file: rwlFile,
+        points: studyCvsuPoints
+      });
+    } else if (!cvsuFunded5) {
+      setCvsuFunded5({
+        title: titleOfStudyCvsu,
+        typeOfStudy: typeOfStudy,
+        designationStudy: designationStudy!,
+        file: rwlFile,
+        points: studyCvsuPoints
+      });
+    }
   };
 
-  const onSubmit = async () => {
-    setIsSubmitting(true);
-  };
+  useEffect(() => {
+    if (!isAdding) {
+      setResearchWorkLoad({
+        ...researchWorkLoad,
+        disseminatedResearch: [
+          (study1?.filename || study1?.file!) && study1?.title!,
+          (study2?.filename || study2?.file!) && study2?.title!,
+          (study3?.filename || study3?.file!) && study3?.title!,
+          (study4?.filename || study4?.file!) && study4?.title!
+        ].filter(Boolean),
+        disseminatedResearchFiles: [
+          study1?.file!,
+          study2?.file!,
+          study3?.file!,
+          study4?.file!
+        ],
+        cvsuFunded: [
+          cvsuFunded1!,
+          cvsuFunded2!,
+          cvsuFunded3!,
+          cvsuFunded4!,
+          cvsuFunded5!
+        ].filter(Boolean),
+        externallyFunded: [
+          externalFunded1!,
+          externalFunded2!,
+          externalFunded3!,
+          externalFunded4!,
+          externalFunded5!
+        ].filter(Boolean)
+      });
+      setIsSubmitting(true);
+    }
+    setIsAdding(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    cvsuFunded1,
+    cvsuFunded2,
+    cvsuFunded3,
+    cvsuFunded4,
+    cvsuFunded5,
+    externalFunded1,
+    externalFunded2,
+    externalFunded3,
+    externalFunded4,
+    externalFunded5
+  ]);
 
   useEffect(() => {
     (async () => {
       if (isSubmitting) {
-        if (
-          !!titleOfStudyCvsu.length &&
-          fundingOfStudy &&
-          typeOfStudy &&
-          (designationStudy || designationStudyDisplay)
-        ) {
-          let designationStudyPoints;
+        // if (
+        //   !!titleOfStudyCvsu.length &&
+        //   fundingOfStudy &&
+        //   typeOfStudy &&
+        //   (designationStudy || designationStudyDisplay)
+        // ) {
+        //   let designationStudyPoints;
 
-          if (
-            designationStudy === "Program Leader/Co-Program Leader" ||
-            designationStudyDisplay === "Program Leader/Co-Program Leader"
-          ) {
-            designationStudyPoints = 9;
-          } else if (
-            designationStudy === "Project Leader/Co-Project Leader" ||
-            designationStudyDisplay === "Project Leader/Co-Project Leader"
-          ) {
-            designationStudyPoints = 6;
-          } else {
-            designationStudyPoints = 3;
-          }
-          researchWorkLoad!.rwlPoints =
-            designationStudyPoints +
-            study1Points +
-            study2Points +
-            study3Points +
-            study4Points;
+        //   if (
+        //     designationStudy === "Program Leader/Co-Program Leader" ||
+        //     designationStudyDisplay === "Program Leader/Co-Program Leader"
+        //   ) {
+        //     designationStudyPoints = 9;
+        //   } else if (
+        //     designationStudy === "Project Leader/Co-Project Leader" ||
+        //     designationStudyDisplay === "Project Leader/Co-Project Leader"
+        //   ) {
+        //     designationStudyPoints = 6;
+        //   } else {
+        //     designationStudyPoints = 3;
+        //   }
+        //   researchWorkLoad!.rwlPoints =
+        //     designationStudyPoints +
+        //     study1Points +
+        //     study2Points +
+        //     study3Points +
+        //     study4Points;
 
-          const {
-            teachingWorkloads,
-            extensionWorkloads,
-            researchWorkloads,
-            strategicFunctionWorkloads
-          } = await GetAllUserPendingWorkloads(user.email);
-          actions.setHasPendingTeachingWorkload(
-            !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
-          );
-          actions.setHasPendingExtensionWorkload(
-            !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
-          );
-          actions.setHasPendingResearchWorkload(
-            !!researchWorkloads.length && researchWorkloads[0].isSubmitted
-          );
-          actions.setHasPendingStrategicWorkload(
-            !!strategicFunctionWorkloads.length &&
-              strategicFunctionWorkloads[0].isSubmitted
-          );
+        //   const {
+        //     teachingWorkloads,
+        //     extensionWorkloads,
+        //     researchWorkloads,
+        //     strategicFunctionWorkloads
+        //   } = await GetAllUserPendingWorkloads(user.email);
+        //   actions.setHasPendingTeachingWorkload(
+        //     !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+        //   );
+        //   actions.setHasPendingExtensionWorkload(
+        //     !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+        //   );
+        //   actions.setHasPendingResearchWorkload(
+        //     !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+        //   );
+        //   actions.setHasPendingStrategicWorkload(
+        //     !!strategicFunctionWorkloads.length &&
+        //       strategicFunctionWorkloads[0].isSubmitted
+        //   );
 
-          clearStates();
+        //   clearStates();
 
-          // if (isAddStudy) {
-          //   clearStates();
-          // } else if (!!!extensionWorkloads.length) {
-          //   setIsTriggerSaveWorkloadHandler(true);
-          //   setRedirectPage(REDIRECT.EWL);
-          // } else if (!!!strategicFunctionWorkloads.length) {
-          //   setRedirectPage(REDIRECT.SFW);
-          //   setIsTriggerSaveWorkloadHandler(true);
-          // } else {
-          //   setRedirectPage(REDIRECT.WS);
-          //   setIsTriggerSaveWorkloadHandler(true);
-          // }
-        } else {
-          // for external funded
+        //   // if (isAddStudy) {
+        //   //   clearStates();
+        //   // } else if (!!!extensionWorkloads.length) {
+        //   //   setIsTriggerSaveWorkloadHandler(true);
+        //   //   setRedirectPage(REDIRECT.EWL);
+        //   // } else if (!!!strategicFunctionWorkloads.length) {
+        //   //   setRedirectPage(REDIRECT.SFW);
+        //   //   setIsTriggerSaveWorkloadHandler(true);
+        //   // } else {
+        //   //   setRedirectPage(REDIRECT.WS);
+        //   //   setIsTriggerSaveWorkloadHandler(true);
+        //   // }
+        // } else {
+        //   // for external funded
 
-          if (fundGenerated === "Above 1,000,000.00") {
-            setStudyExternallyPoints(3);
-          } else if (fundGenerated === "500,001.00 - 1,000,000.00") {
-            setStudyExternallyPoints(2);
-          } else {
-            setStudyExternallyPoints(1);
-          }
-          researchWorkLoad!.rwlPoints = Number(
-            (
-              studyExternallyPoints +
-              study1Points +
-              study2Points +
-              study3Points +
-              study4Points
-            ).toFixed(2)
-          );
+        //   if (fundGenerated === "Above 1,000,000.00") {
+        //     setStudyExternallyPoints(3);
+        //   } else if (fundGenerated === "500,001.00 - 1,000,000.00") {
+        //     setStudyExternallyPoints(2);
+        //   } else {
+        //     setStudyExternallyPoints(1);
+        //   }
+        //   researchWorkLoad!.rwlPoints = Number(
+        //     (
+        //       studyExternallyPoints +
+        //       study1Points +
+        //       study2Points +
+        //       study3Points +
+        //       study4Points
+        //     ).toFixed(2)
+        //   );
 
-          const {
-            teachingWorkloads,
-            extensionWorkloads,
-            researchWorkloads,
-            strategicFunctionWorkloads
-          } = await GetAllUserPendingWorkloads(user.email);
-          actions.setHasPendingTeachingWorkload(
-            !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
-          );
-          actions.setHasPendingExtensionWorkload(
-            !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
-          );
-          actions.setHasPendingResearchWorkload(
-            !!researchWorkloads.length && researchWorkloads[0].isSubmitted
-          );
-          actions.setHasPendingStrategicWorkload(
-            !!strategicFunctionWorkloads.length &&
-              strategicFunctionWorkloads[0].isSubmitted
-          );
+        researchWorkLoad!.rwlPoints = Number(
+          (cvsuFunded1?.points!
+            ? cvsuFunded1?.points!
+            : 0 + cvsuFunded2?.points!
+            ? cvsuFunded2?.points!
+            : 0 + cvsuFunded3?.points!
+            ? cvsuFunded3?.points!
+            : 0 + cvsuFunded4?.points!
+            ? cvsuFunded4?.points!
+            : 0 + cvsuFunded5?.points!
+            ? cvsuFunded5?.points!
+            : 0 + externalFunded1?.points!
+            ? externalFunded1?.points!
+            : 0 + externalFunded2?.points!
+            ? externalFunded2?.points!
+            : 0 + externalFunded3?.points!
+            ? externalFunded3?.points!
+            : 0 + externalFunded4?.points!
+            ? externalFunded4?.points!
+            : 0 + externalFunded5?.points!
+            ? externalFunded5?.points!
+            : 0 + study1Points + study2Points + study3Points + study4Points
+          ).toFixed(2)
+        );
 
-          clearStates();
-
-          // if (isAddStudy) {
-          //   clearStates();
-          // } else if (!!!extensionWorkloads.length) {
-          //   setRedirectPage(REDIRECT.EWL);
-          //   setIsTriggerSaveWorkloadHandler(true);
-          // } else if (!!!strategicFunctionWorkloads.length) {
-          //   setRedirectPage(REDIRECT.SFW);
-          //   setIsTriggerSaveWorkloadHandler(true);
-          // } else {
-          //   setRedirectPage(REDIRECT.WS);
-          //   setIsTriggerSaveWorkloadHandler(true);
-          // }
+        if (researchWorkLoad) {
+          await SaveResearchWorkload(researchWorkLoad, WORKLOAD_STATUS.SAVE);
         }
+
+        const {
+          extensionWorkloads,
+          researchWorkloads,
+          strategicFunctionWorkloads
+        } = await GetAllUserPendingWorkloads(user.email);
+        actions.setHasPendingExtensionWorkload(
+          !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+        );
+        actions.setHasPendingResearchWorkload(
+          !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+        );
+        actions.setHasPendingStrategicWorkload(
+          !!strategicFunctionWorkloads.length &&
+            strategicFunctionWorkloads[0].isSubmitted
+        );
+
+        clearStates();
+
+        if (!!!extensionWorkloads.length) {
+          navigate("/extension-workload", { replace: true });
+        } else if (!!!strategicFunctionWorkloads.length) {
+          navigate("/strategic-function-workload", { replace: true });
+        } else {
+          navigate("/workload-summary", { replace: true });
+        }
+
+        //   // if (isAddStudy) {
+        //   //   clearStates();
+        //   // } else if (!!!extensionWorkloads.length) {
+        //   //   setRedirectPage(REDIRECT.EWL);
+        //   //   setIsTriggerSaveWorkloadHandler(true);
+        //   // } else if (!!!strategicFunctionWorkloads.length) {
+        //   //   setRedirectPage(REDIRECT.SFW);
+        //   //   setIsTriggerSaveWorkloadHandler(true);
+        //   // } else {
+        //   //   setRedirectPage(REDIRECT.WS);
+        //   //   setIsTriggerSaveWorkloadHandler(true);
+        //   // }
+        // }
       }
 
       setIsSubmitting(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting]);
 
   const clearStates = () => {
@@ -997,6 +1087,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   }, []);
 
   const onAddCvsuStudy = () => {
+    setIsAdding(true);
     if (!cvsuFunded1) {
       setCvsuFunded1({
         title: titleOfStudyCvsu,
@@ -1043,7 +1134,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const onAddExternallyStudy = () => {
     if (!externalFunded1) {
       setExternalFunded1({
-        title: titleOfStudyCvsu,
+        title: titleOfStudyExternally,
         fundGenerated: fundGenerated!,
         file: rwlFile1,
         points: studyExternallyPoints
@@ -1231,18 +1322,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           {cvsuFunded2 && <FundedCvsu cvsuFunded={cvsuFunded2} />}
           {cvsuFunded3 && <FundedCvsu cvsuFunded={cvsuFunded3} />}
           {cvsuFunded4 && <FundedCvsu cvsuFunded={cvsuFunded4} />}
-          {externalFunded1 && (
-            <FundedExternally externallyFunded={externalFunded1} />
-          )}
-          {externalFunded2 && (
-            <FundedExternally externallyFunded={externalFunded2} />
-          )}
-          {externalFunded3 && (
-            <FundedExternally externallyFunded={externalFunded3} />
-          )}
-          {externalFunded4 && (
-            <FundedExternally externallyFunded={externalFunded4} />
-          )}
           <ResearchWorkload1
             typeOfStudyHandler={typeOfStudyHandler}
             designationStudyHandler={designationStudyHandler}
@@ -1259,6 +1338,18 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           />
           {/* )} */}
           {/* {steps === 3 && ( */}
+          {externalFunded1 && (
+            <FundedExternally externallyFunded={externalFunded1} />
+          )}
+          {externalFunded2 && (
+            <FundedExternally externallyFunded={externalFunded2} />
+          )}
+          {externalFunded3 && (
+            <FundedExternally externallyFunded={externalFunded3} />
+          )}
+          {externalFunded4 && (
+            <FundedExternally externallyFunded={externalFunded4} />
+          )}
           <ResearchWorkload2
             fundGeneratedHandler={fundGeneratedHandler}
             rwlFile1Handler={rwlFile1Handler}
@@ -1302,6 +1393,15 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             onRemoveStudy2File={onRemoveStudy2File}
             onRemoveStudy3File={onRemoveStudy3File}
             onRemoveStudy4File={onRemoveStudy4File}
+            canSubmit={
+              !!cvsuFunded1?.points ||
+              (!!titleOfStudyCvsu &&
+                !!typeOfStudy &&
+                !!designationStudy &&
+                !!rwlFile) ||
+              !!externalFunded1?.points ||
+              (!!titleOfStudyExternally && !!fundGenerated && !!rwlFile1)
+            }
           />
           {/* )} */}
           {steps === 1 && !isLoading && (

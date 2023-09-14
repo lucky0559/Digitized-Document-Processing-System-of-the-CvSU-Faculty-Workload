@@ -15,11 +15,13 @@ const FundedExternally = ({ externallyFunded }: ExternallyFundedProps) => {
           </WorkloadTextContainer>
           <InputsContainer>
             <TextInputContainer>
-              <Label>Title of the Study</Label>
+              <UploadTextDescription>Title of the Study</UploadTextDescription>
               <Label>{externallyFunded.title}</Label>
             </TextInputContainer>
             <TextInputContainer>
-              <Label>Fund Generated per Semester (in peso)</Label>
+              <UploadTextDescription>
+                Fund Generated per Semester (in peso)
+              </UploadTextDescription>
               <Label>{externallyFunded.fundGenerated}</Label>
             </TextInputContainer>
             <TextInputContainer>
@@ -125,6 +127,7 @@ const UploadTextDescription = styled.label`
 
 const UploadFileContainer = styled.div`
   max-width: 100px;
+  margin-left: 20px;
 `;
 
 export default FundedExternally;

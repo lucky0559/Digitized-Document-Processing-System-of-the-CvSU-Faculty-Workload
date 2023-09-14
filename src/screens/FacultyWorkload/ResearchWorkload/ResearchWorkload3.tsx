@@ -36,6 +36,7 @@ type ResearchWorkload3Props = {
   onRemoveStudy2File: () => void;
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
+  canSubmit: boolean;
 };
 
 const ResearchWorkload3 = ({
@@ -68,7 +69,8 @@ const ResearchWorkload3 = ({
   onRemoveStudy2File,
   onRemoveStudy3File,
   onRemoveStudy4File,
-  researchWorkLoadHandler
+  researchWorkLoadHandler,
+  canSubmit
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -181,7 +183,7 @@ const ResearchWorkload3 = ({
               isDisseminatedOnly
                 ? study1Points + study2Points + study3Points + study4Points ===
                   0
-                : studyPoints === 0 || isSubmitting
+                : !canSubmit || isSubmitting
             }
           ></FormButton>
         </ButtonContainer>
