@@ -209,36 +209,36 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                     <BoldText>Research Work Load (RWL)</BoldText>
                     <ColumnParentContainer>
                       <ColumnContainer>
-                        {workload.titleOfStudy && (
-                          <ThinText>Title of the Study:</ThinText>
-                        )}
-                        {workload.fundingOfStudy && (
-                          <ThinText>Funding of the Study:</ThinText>
-                        )}
-                        {workload.typeOfStudy && (
-                          <ThinText>Type of Study:</ThinText>
-                        )}
-                        {workload.designationStudy && (
-                          <ThinText>Designation in the Study:</ThinText>
-                        )}
-                        {workload.fundGenerated && (
-                          <ThinText>
-                            Fund Generated per Semester (in peso):
-                          </ThinText>
-                        )}
-                        {workload.status && (
-                          <ThinText>Status of the Study:</ThinText>
-                        )}
+                        {workload.cvsuFunded.map(() => (
+                          <>
+                            <ThinText>Title of the Study:</ThinText>
+                            <ThinText>Type of Study:</ThinText>
+                            <ThinText>Designation in the Study:</ThinText>
+                          </>
+                        ))}
+                        {workload.externallyFunded.map(() => (
+                          <>
+                            <ThinText>Title of the Study:</ThinText>
+                            <ThinText>
+                              Fund Generated per Semester (in peso):
+                            </ThinText>
+                          </>
+                        ))}
                       </ColumnContainer>
                       <ColumnContainer>
-                        <BoldText>{workload.titleOfStudy}</BoldText>
-                        <BoldText>{workload.fundingOfStudy}</BoldText>
-                        <BoldText>{workload.typeOfStudy}</BoldText>
-                        <BoldText>{workload.designationStudy}</BoldText>
-                        <BoldText>{workload.fundGenerated}</BoldText>
-                        <BoldText style={{ textTransform: "capitalize" }}>
-                          {workload.status}
-                        </BoldText>
+                        {workload.cvsuFunded.map(funded => (
+                          <>
+                            <BoldText>{funded.title}</BoldText>
+                            <BoldText>{funded.typeOfStudy}</BoldText>
+                            <BoldText>{funded.designationStudy}</BoldText>
+                          </>
+                        ))}
+                        {workload.externallyFunded.map(funded => (
+                          <>
+                            <BoldText>{funded.title}</BoldText>
+                            <BoldText>{funded.fundGenerated}</BoldText>
+                          </>
+                        ))}
                       </ColumnContainer>
                     </ColumnParentContainer>
                     <div

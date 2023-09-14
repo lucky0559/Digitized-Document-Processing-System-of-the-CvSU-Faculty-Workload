@@ -1,21 +1,17 @@
 import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
+import { CvsuFunded, ExternallyFunded } from "./Fund";
 
 export type ResearchWorkLoadType = {
   id?: string;
-  titleOfStudy?: string;
-  fundingOfStudy?: string;
-  typeOfStudy?: string;
-  designationStudy?: string;
-  fundGenerated?: string;
+  cvsuFunded: CvsuFunded[];
+  cvsuFundedFilenames?: string[];
+  cvsuFundedFilePath?: string[];
+  externallyFunded: ExternallyFunded[];
+  externallyFundedFilenames?: string[];
+  externallyFundedFilePath?: string[];
   disseminatedResearch?: string[];
   disseminatedResearchFiles?: File[];
   disseminatedResearchFilenames?: string[];
-  rwlFile?: File;
-  rwlFilename?: string;
-  rwlFilePath?: string;
-  rwlFile1?: File;
-  rwlFilename1?: string;
-  rwlFilePath1?: string;
   disseminatedResearchFilesPath?: string[];
   rwlPoints?: number;
   remarks?: PointsAndRemarks;
