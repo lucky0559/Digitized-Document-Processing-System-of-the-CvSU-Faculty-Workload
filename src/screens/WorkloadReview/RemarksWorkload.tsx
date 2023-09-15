@@ -274,120 +274,133 @@ function RemarksWorkload({
               </WorkloadHeaderContainer>
               <ColumnParentContainer>
                 <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                  <ThinText>Title of the Study:</ThinText>
-                  <ThinText>Funding of the Study:</ThinText>
-                  <ThinText>Designation in the Study:</ThinText>
-                  <ThinText>Status of the Study:</ThinText>
-                  {workload.rwlFilePath && (
-                    <ThinText style={{ maxWidth: 350 }}>
-                      Proposal(for Approved Proposal) or Progress Report(for
-                      On-Going Study) Attachment:
-                    </ThinText>
-                  )}
+                  {workload.cvsuFunded &&
+                    workload.cvsuFunded.map(() => (
+                      <>
+                        <ThinText>Title of the Study:</ThinText>
+                        <ThinText>Status of the Study:</ThinText>
+                        <ThinText>Designation in the Study:</ThinText>
+                        <ThinText style={{ maxWidth: 350 }}>
+                          Proposal(for Approved Proposal) or Progress Report(for
+                          On-Going Study) Attachment:
+                        </ThinText>
+                      </>
+                    ))}
                   {workload.disseminatedResearchFilesPath && (
                     <ThinText>Certificate of Presentation:</ThinText>
                   )}
-                  {workload.rwlFilePath1 && (
-                    <ThinText style={{ maxWidth: 350 }}>
-                      Proposal(for Approved Externally Funded Proposal) or
-                      Progress Report(for On-Going Externally Funded Study)
-                      Attachment:
-                    </ThinText>
-                  )}
+                  {workload.externallyFunded &&
+                    workload.externallyFunded.map(() => (
+                      <>
+                        <ThinText>Title of the Study:</ThinText>
+                        <ThinText>
+                          Fund Generated per Semester (in peso):
+                        </ThinText>
+                        <ThinText style={{ maxWidth: 350 }}>
+                          Proposal(for Approved Externally Funded Proposal) or
+                          Progress Report(for On-Going Externally Funded Study)
+                          Attachment:
+                        </ThinText>
+                      </>
+                    ))}
                 </ColumnContainer>
                 <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                  <BoldText>{workload.titleOfStudy}</BoldText>
-                  <BoldText>{workload.fundingOfStudy}</BoldText>
-                  <BoldText>{workload.designationStudy}</BoldText>
-                  <BoldText style={{ textTransform: "capitalize" }}>
-                    {workload.status}
-                  </BoldText>
-                  {workload.rwlFilePath && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <a
-                        href={workload.rwlFilePath}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  {workload.cvsuFunded &&
+                    workload.cvsuFunded.map(funded => (
+                      <>
+                        <BoldText>{funded.title}</BoldText>
+                        <ThinText>{funded.typeOfStudy}</ThinText>
+                        <ThinText>{funded.designationStudy}</ThinText>
+                      </>
+                    ))}
+                  {workload.cvsuFunded &&
+                    workload.cvsuFunded.map(funded => (
+                      <div
                         style={{
-                          textDecoration: "none",
-                          alignItems: "flex-start",
-                          display: "flex"
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "100%",
+                          justifyContent: "space-between"
                         }}
                       >
-                        <ThinText
+                        <a
+                          href={funded.filePath}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           style={{
-                            color: "white",
-                            fontSize: 12,
-                            backgroundColor: Colors.buttonPrimary,
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                            cursor: "pointer"
-                          }}
-                          onClick={() => {}}
-                        >
-                          Attachment
-                        </ThinText>
-                      </a>
-                      {userContext.role === "OVPAA" && (
-                        <div
-                          style={{
-                            width: 170,
-                            display: "flex",
-                            marginRight: 15
+                            textDecoration: "none",
+                            alignItems: "flex-start",
+                            display: "flex"
                           }}
                         >
-                          <InputPoints
-                            type="number"
-                            min={0}
-                            onChange={e => {
-                              points = e.target.value;
-                              if (Number(points) > 0) {
-                                const hasData = rwlPointsRemarksInitial?.filter(
-                                  item => item.key === workload.rwlFilePath
-                                );
-                                if (hasData) {
-                                  const filtered =
+                          <ThinText
+                            style={{
+                              color: "white",
+                              fontSize: 12,
+                              backgroundColor: Colors.buttonPrimary,
+                              paddingLeft: 5,
+                              paddingRight: 5,
+                              cursor: "pointer"
+                            }}
+                            onClick={() => {}}
+                          >
+                            Attachment
+                          </ThinText>
+                        </a>
+                        {userContext.role === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 170,
+                              display: "flex",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints
+                              type="number"
+                              min={0}
+                              onChange={e => {
+                                points = e.target.value;
+                                if (Number(points) > 0) {
+                                  const hasData =
                                     rwlPointsRemarksInitial?.filter(
-                                      item => item.key !== workload.rwlFilePath
+                                      item => item.key === funded.filePath
                                     );
-                                  setRwlPointsRemarksInitial(filtered);
-                                  if (Number(points) > 0) {
+                                  if (hasData) {
+                                    const filtered =
+                                      rwlPointsRemarksInitial?.filter(
+                                        item => item.key !== funded.filePath
+                                      );
+                                    setRwlPointsRemarksInitial(filtered);
+                                    if (Number(points) > 0) {
+                                      setRwlPointsRemarksInitial([
+                                        ...filtered!,
+                                        {
+                                          key: funded.filePath!,
+                                          points: points
+                                        }
+                                      ]);
+                                    }
+                                  } else {
                                     setRwlPointsRemarksInitial([
-                                      ...filtered!,
                                       {
-                                        key: workload.rwlFilePath!,
+                                        key: funded.filePath!,
                                         points: points
                                       }
                                     ]);
                                   }
                                 } else {
-                                  setRwlPointsRemarksInitial([
-                                    {
-                                      key: workload.rwlFilePath!,
-                                      points: points
-                                    }
-                                  ]);
+                                  setRwlPointsRemarksInitial(
+                                    rwlPointsRemarksInitial?.filter(
+                                      item => item.key !== funded.filePath
+                                    )
+                                  );
                                 }
-                              } else {
-                                setRwlPointsRemarksInitial(
-                                  rwlPointsRemarksInitial?.filter(
-                                    item => item.key !== workload.rwlFilePath
-                                  )
-                                );
-                              }
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   {workload.disseminatedResearchFilesPath &&
                     workload.disseminatedResearchFilesPath.map(attachment => {
                       return (
@@ -479,93 +492,95 @@ function RemarksWorkload({
                         </div>
                       );
                     })}
-                  {workload.rwlFilePath1 && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <a
-                        href={workload.rwlFilePath1}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  {workload.externallyFunded &&
+                    workload.externallyFunded.map(funded => (
+                      <div
                         style={{
-                          textDecoration: "none",
-                          alignItems: "flex-start",
-                          display: "flex"
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "100%",
+                          justifyContent: "space-between"
                         }}
                       >
-                        <ThinText
+                        <a
+                          href={funded.filePath}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           style={{
-                            color: "white",
-                            fontSize: 12,
-                            backgroundColor: Colors.buttonPrimary,
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                            cursor: "pointer"
-                          }}
-                          onClick={() => {}}
-                        >
-                          Attachment
-                        </ThinText>
-                      </a>
-                      {userContext.role === "OVPAA" && (
-                        <div
-                          style={{
-                            width: 170,
-                            display: "flex",
-                            marginRight: 15
+                            textDecoration: "none",
+                            alignItems: "flex-start",
+                            display: "flex"
                           }}
                         >
-                          <InputPoints
-                            type="number"
-                            min={0}
-                            onChange={e => {
-                              points = e.target.value;
-                              if (Number(points) > 0) {
-                                const hasData = rwlPointsRemarksInitial?.filter(
-                                  item => item.key === workload.rwlFilePath1
-                                );
-                                if (hasData) {
-                                  const filtered =
+                          <ThinText
+                            style={{
+                              color: "white",
+                              fontSize: 12,
+                              backgroundColor: Colors.buttonPrimary,
+                              paddingLeft: 5,
+                              paddingRight: 5,
+                              cursor: "pointer"
+                            }}
+                            onClick={() => {}}
+                          >
+                            Attachment
+                          </ThinText>
+                        </a>
+                        {userContext.role === "OVPAA" && (
+                          <div
+                            style={{
+                              width: 170,
+                              display: "flex",
+                              marginRight: 15
+                            }}
+                          >
+                            <InputPoints
+                              type="number"
+                              min={0}
+                              onChange={e => {
+                                points = e.target.value;
+                                if (Number(points) > 0) {
+                                  const hasData =
                                     rwlPointsRemarksInitial?.filter(
-                                      item => item.key !== workload.rwlFilePath1
+                                      item => item.key === funded.filePath
                                     );
-                                  setRwlPointsRemarksInitial(filtered);
-                                  if (Number(points) > 0) {
+                                  if (hasData) {
+                                    const filtered =
+                                      rwlPointsRemarksInitial?.filter(
+                                        item => item.key !== funded.filePath
+                                      );
+                                    setRwlPointsRemarksInitial(filtered);
+                                    if (Number(points) > 0) {
+                                      setRwlPointsRemarksInitial([
+                                        ...filtered!,
+                                        {
+                                          key: funded.filePath!,
+                                          points: points
+                                        }
+                                      ]);
+                                    }
+                                  } else {
                                     setRwlPointsRemarksInitial([
-                                      ...filtered!,
                                       {
-                                        key: workload.rwlFilePath1!,
+                                        key: funded.filePath!,
                                         points: points
                                       }
                                     ]);
                                   }
-                                } else {
-                                  setRwlPointsRemarksInitial([
-                                    {
-                                      key: workload.rwlFilePath1!,
-                                      points: points
-                                    }
-                                  ]);
                                 }
-                              }
-                              // else {
-                              //   rwlPointsRemarks = rwlPointsRemarks.filter(
-                              //     item => item.key !== workload.rwlFilePath1
-                              //   );
-                              //   setRwlPointsRemarks(rwlPointsRemarks);
-                              //   console.log(rwlPointsRemarks);
-                              // }
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
+                                // else {
+                                //   rwlPointsRemarks = rwlPointsRemarks.filter(
+                                //     item => item.key !== workload.rwlFilePath1
+                                //   );
+                                //   setRwlPointsRemarks(rwlPointsRemarks);
+                                //   console.log(rwlPointsRemarks);
+                                // }
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </ColumnContainer>
               </ColumnParentContainer>
               <div

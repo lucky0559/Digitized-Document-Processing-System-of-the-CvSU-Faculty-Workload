@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { Confirm } from "semantic-ui-react";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
 import FormButton from "../../../components/FormButton";
 import DropdownWithUpload from "../../../components/DropdownWithUpload";
-import { LoadingSpinner } from "../../../components/LoadingSpinner";
-import Colors from "../../../constants/Colors";
 
 type ResearchWorkload3Props = {
-  researchWorkLoadHandler3: (value: boolean) => void;
-  researchWorkLoadHandler2?: () => void;
-  researchWorkLoadHandler1?: () => void;
-  backHandler: () => void;
+  researchWorkLoadHandler: () => void;
   isSubmitting: boolean;
   onSelectStudy1: (value: string) => void;
   study1?: string;
@@ -41,11 +36,10 @@ type ResearchWorkload3Props = {
   onRemoveStudy2File: () => void;
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
+  canSubmit: boolean;
 };
 
 const ResearchWorkload3 = ({
-  researchWorkLoadHandler3,
-  backHandler,
   isSubmitting,
   onSelectStudy1,
   study1,
@@ -69,14 +63,14 @@ const ResearchWorkload3 = ({
   study3Points,
   study4Points,
   fundGeneratedPoints,
-  researchWorkLoadHandler2,
-  researchWorkLoadHandler1,
   isDisseminatedOnly,
   studyPoints,
   onRemoveStudy1File,
   onRemoveStudy2File,
   onRemoveStudy3File,
-  onRemoveStudy4File
+  onRemoveStudy4File,
+  researchWorkLoadHandler,
+  canSubmit
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -102,24 +96,23 @@ const ResearchWorkload3 = ({
         open={isConfirming}
         onCancel={() => setIsConfirming(false)}
         onConfirm={() => {
-          researchWorkLoadHandler2 && researchWorkLoadHandler2();
-          researchWorkLoadHandler1 && researchWorkLoadHandler1();
+          researchWorkLoadHandler();
           setIsConfirming(false);
 
-          researchWorkLoadHandler3(false);
+          // researchWorkLoadHandler3(false);
         }}
         content="Confirm saving of workload?"
         size="large"
       />
-      {(points !== 0 || fundGeneratedPoints !== 0) && (
+      {/* {(points !== 0 || fundGeneratedPoints !== 0) && (
         <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
-          {isSubmitting ? (
+          {rwlCount >= 1 && rwlCount <= 3 ? null : isSubmitting ? (
             <LoadingSpinner color={Colors.primary} />
           ) : (
             <AddStudyText>Add another study</AddStudyText>
           )}
         </AddStudyContainer>
-      )}
+      )} */}
       <SubContainer>
         <span style={{ fontSize: 19 }}>
           Disseminated research output in College or University In-House
@@ -179,9 +172,6 @@ const ResearchWorkload3 = ({
         </Label>
       </TotalPointsContainer>
       <Buttons>
-        <ButtonContainer>
-          <FormButton text="Back" onClicked={backHandler}></FormButton>
-        </ButtonContainer>
         <ButtonContainer
           style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
         >
@@ -193,7 +183,7 @@ const ResearchWorkload3 = ({
               isDisseminatedOnly
                 ? study1Points + study2Points + study3Points + study4Points ===
                   0
-                : studyPoints === 0
+                : !canSubmit || isSubmitting
             }
           ></FormButton>
         </ButtonContainer>
@@ -238,27 +228,6 @@ const TotalPointsContainer = styled.div`
   margin-top: 50px;
   width: 100%;
   padding-left: 40px;
-`;
-
-const AddStudyContainer = styled.div`
-  display: flex;
-  align-self: flex-end;
-  max-width: 400px;
-  margin-bottom: 50px;
-  margin-right: 30px;
-`;
-
-const AddStudyText = styled.span`
-  font-family: HurmeGeometricSans3SemiBold;
-  font-size: 17px;
-  line-height: 18px;
-  text-decoration: underline;
-  cursor: pointer;
-  text-align: center;
-  transition: opacity 0.2s ease-in-out;
-  &:hover {
-    opacity: 0.5;
-  }
 `;
 
 const Buttons = styled.div`
