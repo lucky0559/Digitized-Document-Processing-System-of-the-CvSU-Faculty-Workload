@@ -26,6 +26,8 @@ import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { CvsuFunded, ExternallyFunded } from "../../../types/Fund";
 import FundedCvsu from "./CvsuFunded";
 import FundedExternally from "./ExternallyFunded";
+import CvsuFundedLists from "./CvsuFundedLists";
+import ExternallyFundedLists from "./ExternallyFundedLists";
 
 type ResearchWorkLoadProps = {
   UseLogout: () => void;
@@ -87,6 +89,38 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const navigate = useNavigate();
 
+  const [cvsuFundedInitialFilename1, setCvsuFundedInitialFilename1] =
+    useState<string>();
+  const [cvsuFundedInitialFilename2, setCvsuFundedInitialFilename2] =
+    useState<string>();
+  const [cvsuFundedInitialFilename3, setCvsuFundedInitialFilename3] =
+    useState<string>();
+  const [cvsuFundedInitialFilename4, setCvsuFundedInitialFilename4] =
+    useState<string>();
+  const [cvsuFundedInitialFilename5, setCvsuFundedInitialFilename5] =
+    useState<string>();
+
+  const [
+    externallyFundedInitialFilename1,
+    setExternallyFundedInitialFilename1
+  ] = useState<string>();
+  const [
+    externallyFundedInitialFilename2,
+    setExternallyFundedInitialFilename2
+  ] = useState<string>();
+  const [
+    externallyFundedInitialFilename3,
+    setExternallyFundedInitialFilename3
+  ] = useState<string>();
+  const [
+    externallyFundedInitialFilename4,
+    setExternallyFundedInitialFilename4
+  ] = useState<string>();
+  const [
+    externallyFundedInitialFilename5,
+    setExternallyFundedInitialFilename5
+  ] = useState<string>();
+
   const [isAddStudy, setIsAddStudy] = useState(false);
 
   const [studyCvsuPoints, setStudyCvsuPoints] = useState(0);
@@ -100,6 +134,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [isAdding, setIsAdding] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   // const researchWorkLoadHandler = () => {
   // if (!!fundingOfStudy?.length || fundDisplay) {
@@ -412,7 +448,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   useEffect(() => {
-    if (!isAdding) {
+    if (!isAdding && !isEditing) {
       setResearchWorkLoad({
         ...researchWorkLoad,
         disseminatedResearch: [
@@ -937,6 +973,20 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
       const { data } = await getRwlSavedWorkload(user.id);
       setResearchWorkLoad(data);
 
+      if (!!data.cvsuFunded || !!data.externallyFunded) setIsEditing(true);
+
+      setCvsuFundedInitialFilename1(data.cvsuFundedFilenames?.[0]);
+      setCvsuFundedInitialFilename2(data.cvsuFundedFilenames?.[1]);
+      setCvsuFundedInitialFilename3(data.cvsuFundedFilenames?.[2]);
+      setCvsuFundedInitialFilename4(data.cvsuFundedFilenames?.[3]);
+      setCvsuFundedInitialFilename5(data.cvsuFundedFilenames?.[4]);
+
+      setExternallyFundedInitialFilename1(data.externallyFundedFilenames?.[0]);
+      setExternallyFundedInitialFilename2(data.externallyFundedFilenames?.[1]);
+      setExternallyFundedInitialFilename3(data.externallyFundedFilenames?.[2]);
+      setExternallyFundedInitialFilename4(data.externallyFundedFilenames?.[3]);
+      setExternallyFundedInitialFilename5(data.externallyFundedFilenames?.[4]);
+
       // CVSU FUNDED
       if (data.cvsuFunded) {
         for (let i = 0; i < data.cvsuFunded.length; i++) {
@@ -952,6 +1002,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             setCvsuFunded5(data.cvsuFunded[i]);
           }
         }
+        setIsEditing(true);
       }
       // if (data[0]?.designationStudy === "Program Leader/Co-Program Leader") {
       //   designationStudyPoints = 9;
@@ -1365,49 +1416,320 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
              />
             )
           } */}
-          {cvsuFunded1 && <FundedCvsu cvsuFunded={cvsuFunded1} />}
-          {cvsuFunded2 && <FundedCvsu cvsuFunded={cvsuFunded2} />}
-          {cvsuFunded3 && <FundedCvsu cvsuFunded={cvsuFunded3} />}
-          {cvsuFunded4 && <FundedCvsu cvsuFunded={cvsuFunded4} />}
-          <ResearchWorkload1
-            typeOfStudyHandler={typeOfStudyHandler}
-            designationStudyHandler={designationStudyHandler}
-            rwlFileHandler={rwlFileHandler}
-            designationStudy={designationStudyDisplay}
-            typeOfStudy={typeOfStudyDisplay}
-            rwlFileName={rwlFile?.name}
-            points={points}
-            studyPoints={studyCvsuPoints}
-            onRemoveRwlFile={onRemoveRwlFile}
-            titleOfStudy={titleOfStudyCvsu}
-            titleOfStudyHandler={titleOfStudyCvsuHandler}
-            addStudyHandler={onAddCvsuStudy}
-          />
-          {/* )} */}
-          {/* {steps === 3 && ( */}
-          {externalFunded1 && (
-            <FundedExternally externallyFunded={externalFunded1} />
+          {isEditing ? (
+            <>
+              {cvsuFunded1 && (
+                <CvsuFundedLists
+                  // FUNDED 1
+                  typeOfStudyHandler1={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        typeOfStudy: e
+                      });
+                    }
+                  }}
+                  designationStudyHandler1={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        designationStudy: e
+                      });
+                    }
+                  }}
+                  rwlFileHandler1={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        file: e
+                      });
+                    }
+                  }}
+                  designationStudy1={cvsuFunded1.designationStudy}
+                  typeOfStudy1={cvsuFunded1.typeOfStudy}
+                  rwlFileName1={
+                    cvsuFunded1.file?.name || cvsuFundedInitialFilename1
+                  }
+                  points1={points}
+                  studyPoints1={studyCvsuPoints || cvsuFunded1.points}
+                  onRemoveRwlFile1={() => {
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      file: undefined
+                    });
+                    setCvsuFundedInitialFilename1(undefined);
+                  }}
+                  titleOfStudy1={cvsuFunded1.title}
+                  titleOfStudyHandler1={e =>
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      title: e
+                    })
+                  }
+                  addStudyHandler1={onAddCvsuStudy}
+                  // FUNDED 2
+                  typeOfStudyHandler2={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        typeOfStudy: e
+                      });
+                    }
+                  }}
+                  designationStudyHandler2={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        designationStudy: e
+                      });
+                    }
+                  }}
+                  rwlFileHandler2={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        file: e
+                      });
+                    }
+                  }}
+                  designationStudy2={cvsuFunded2?.designationStudy}
+                  typeOfStudy2={cvsuFunded2?.typeOfStudy}
+                  rwlFileName2={
+                    cvsuFunded2?.file?.name || cvsuFundedInitialFilename2
+                  }
+                  points2={points}
+                  studyPoints2={studyCvsuPoints || cvsuFunded2!.points}
+                  onRemoveRwlFile2={() => {
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      file: undefined
+                    });
+                    setCvsuFundedInitialFilename1(undefined);
+                  }}
+                  titleOfStudy2={cvsuFunded2!.title}
+                  titleOfStudyHandler2={e =>
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      title: e
+                    })
+                  }
+                  addStudyHandler2={onAddCvsuStudy}
+                  // FUNDED 3
+                  typeOfStudyHandler3={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        typeOfStudy: e
+                      });
+                    }
+                  }}
+                  designationStudyHandler3={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        designationStudy: e
+                      });
+                    }
+                  }}
+                  rwlFileHandler3={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        file: e
+                      });
+                    }
+                  }}
+                  designationStudy3={cvsuFunded1.designationStudy}
+                  typeOfStudy3={cvsuFunded1.typeOfStudy}
+                  rwlFileName3={
+                    cvsuFunded1.file?.name || cvsuFundedInitialFilename1
+                  }
+                  points3={points}
+                  studyPoints3={studyCvsuPoints || cvsuFunded1.points}
+                  onRemoveRwlFile3={() => {
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      file: undefined
+                    });
+                    setCvsuFundedInitialFilename1(undefined);
+                  }}
+                  titleOfStudy3={cvsuFunded1.title}
+                  titleOfStudyHandler3={e =>
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      title: e
+                    })
+                  }
+                  addStudyHandler3={onAddCvsuStudy}
+                  // FUNDED 4
+                  typeOfStudyHandler4={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        typeOfStudy: e
+                      });
+                    }
+                  }}
+                  designationStudyHandler4={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        designationStudy: e
+                      });
+                    }
+                  }}
+                  rwlFileHandler4={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        file: e
+                      });
+                    }
+                  }}
+                  designationStudy4={cvsuFunded1.designationStudy}
+                  typeOfStudy4={cvsuFunded1.typeOfStudy}
+                  rwlFileName4={
+                    cvsuFunded1.file?.name || cvsuFundedInitialFilename1
+                  }
+                  points4={points}
+                  studyPoints4={studyCvsuPoints || cvsuFunded1.points}
+                  onRemoveRwlFile4={() => {
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      file: undefined
+                    });
+                    setCvsuFundedInitialFilename1(undefined);
+                  }}
+                  titleOfStudy4={cvsuFunded1.title}
+                  titleOfStudyHandler4={e =>
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      title: e
+                    })
+                  }
+                  addStudyHandler4={onAddCvsuStudy}
+                  // FUNDED 5
+                  typeOfStudyHandler5={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        typeOfStudy: e
+                      });
+                    }
+                  }}
+                  designationStudyHandler5={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        designationStudy: e
+                      });
+                    }
+                  }}
+                  rwlFileHandler5={e => {
+                    if (e) {
+                      setCvsuFunded1({
+                        ...cvsuFunded1,
+                        file: e
+                      });
+                    }
+                  }}
+                  designationStudy5={cvsuFunded1.designationStudy}
+                  typeOfStudy5={cvsuFunded1.typeOfStudy}
+                  rwlFileName5={
+                    cvsuFunded1.file?.name || cvsuFundedInitialFilename1
+                  }
+                  points5={points}
+                  studyPoints5={studyCvsuPoints || cvsuFunded1.points}
+                  onRemoveRwlFile5={() => {
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      file: undefined
+                    });
+                    setCvsuFundedInitialFilename1(undefined);
+                  }}
+                  titleOfStudy5={cvsuFunded1.title}
+                  titleOfStudyHandler5={e =>
+                    setCvsuFunded1({
+                      ...cvsuFunded1,
+                      title: e
+                    })
+                  }
+                  addStudyHandler5={onAddCvsuStudy}
+                  cvsuFunded1={cvsuFunded1}
+                  cvsuFunded2={cvsuFunded2}
+                  cvsuFunded3={cvsuFunded3}
+                  cvsuFunded4={cvsuFunded4}
+                  cvsuFunded5={cvsuFunded5}
+                />
+              )}
+              {externalFunded1 && (
+                <ExternallyFundedLists
+                  // FUNDED 1
+                  fundGeneratedHandler1={() => {}}
+                  rwlFile1Handler1={() => {}}
+                  fundGeneratedDisplay1={externalFunded1.fundGenerated}
+                  rwlFileName11={externallyFundedInitialFilename1}
+                  studyPoints1={externalFunded1.points}
+                  onRemoveRwl1File1={() => {}}
+                  titleOfStudy1={externalFunded1.title}
+                  titleOfStudyHandler1={() => {}}
+                  addStudyHandler1={() => {}}
+                  externalFunded1={externalFunded1}
+                  externalFunded2={externalFunded2}
+                  externalFunded3={externalFunded3}
+                  externalFunded4={externalFunded4}
+                  externalFunded5={externalFunded5}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {cvsuFunded1 && <FundedCvsu cvsuFunded={cvsuFunded1} />}
+              {cvsuFunded2 && <FundedCvsu cvsuFunded={cvsuFunded2} />}
+              {cvsuFunded3 && <FundedCvsu cvsuFunded={cvsuFunded3} />}
+              {cvsuFunded4 && <FundedCvsu cvsuFunded={cvsuFunded4} />}
+              <ResearchWorkload1
+                typeOfStudyHandler={typeOfStudyHandler}
+                designationStudyHandler={designationStudyHandler}
+                rwlFileHandler={rwlFileHandler}
+                designationStudy={designationStudyDisplay}
+                typeOfStudy={typeOfStudyDisplay}
+                rwlFileName={rwlFile?.name}
+                points={points}
+                studyPoints={studyCvsuPoints}
+                onRemoveRwlFile={onRemoveRwlFile}
+                titleOfStudy={titleOfStudyCvsu}
+                titleOfStudyHandler={titleOfStudyCvsuHandler}
+                addStudyHandler={onAddCvsuStudy}
+              />
+              {/* )} */}
+              {/* {steps === 3 && ( */}
+              {externalFunded1 && (
+                <FundedExternally externallyFunded={externalFunded1} />
+              )}
+              {externalFunded2 && (
+                <FundedExternally externallyFunded={externalFunded2} />
+              )}
+              {externalFunded3 && (
+                <FundedExternally externallyFunded={externalFunded3} />
+              )}
+              {externalFunded4 && (
+                <FundedExternally externallyFunded={externalFunded4} />
+              )}
+              <ResearchWorkload2
+                fundGeneratedHandler={fundGeneratedHandler}
+                rwlFile1Handler={rwlFile1Handler}
+                fundGeneratedDisplay={fundGenerated || fundGeneratedDisplay}
+                rwlFileName1={rwlFile1?.name}
+                studyPoints={studyExternallyPoints}
+                onRemoveRwl1File={onRemoveRwl1File}
+                titleOfStudy={titleOfStudyExternally}
+                titleOfStudyHandler={titleOfStudyExternallyHandler}
+                addStudyHandler={onAddExternallyStudy}
+              />
+            </>
           )}
-          {externalFunded2 && (
-            <FundedExternally externallyFunded={externalFunded2} />
-          )}
-          {externalFunded3 && (
-            <FundedExternally externallyFunded={externalFunded3} />
-          )}
-          {externalFunded4 && (
-            <FundedExternally externallyFunded={externalFunded4} />
-          )}
-          <ResearchWorkload2
-            fundGeneratedHandler={fundGeneratedHandler}
-            rwlFile1Handler={rwlFile1Handler}
-            fundGeneratedDisplay={fundGenerated || fundGeneratedDisplay}
-            rwlFileName1={rwlFile1?.name}
-            studyPoints={studyExternallyPoints}
-            onRemoveRwl1File={onRemoveRwl1File}
-            titleOfStudy={titleOfStudyExternally}
-            titleOfStudyHandler={titleOfStudyExternallyHandler}
-            addStudyHandler={onAddExternallyStudy}
-          />
+
           {/* // )} */}
           {/* {steps === 4 && ( */}
           <ResearchWorkload3
@@ -1450,20 +1772,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               (!!titleOfStudyExternally && !!fundGenerated && !!rwlFile1)
             }
           />
-          {/* )} */}
-          {steps === 1 && !isLoading && (
-            <DisseminatedButtonContainer>
-              <DisseminatedTextLink
-                onClick={() => {
-                  setResearchWorkLoad(undefined);
-                  setSteps(4);
-                }}
-              >
-                Disseminated research output in College or University In-House
-                Review/Conferences
-              </DisseminatedTextLink>
-            </DisseminatedButtonContainer>
-          )}
         </BodyContainer>
       )}
       <FooterContainer>
