@@ -94,48 +94,28 @@ export const SaveResearchWorkload = async (
 
   if (!!researchWorkload.cvsuFunded.length) {
     for (let i = 0; i < researchWorkload.cvsuFunded.length; i++) {
+      const cvsuFundedFilePaths = [];
       if (researchWorkload.cvsuFunded[i].file) {
         const file = await rwlAwsConfigS3.uploadFile(
           researchWorkload.cvsuFunded[i].file!
         );
-        // researchWorkload.rwlFilename = researchWorkload.rwlFile.name;
-        researchWorkload.cvsuFundedFilenames?.splice(
-          i,
-          0,
-          researchWorkload.cvsuFunded[i].file?.name!
-        );
-        // researchWorkload.rwlFilePath = file.location;
-        researchWorkload.cvsuFundedFilePath?.splice(i, 0, file.location);
+        cvsuFundedFilePaths.push(file.location);
       }
+      researchWorkload.cvsuFundedFilePath = cvsuFundedFilePaths;
     }
-    // if (researchWorkload.rwlFile) {
-    //   const file = await rwlAwsConfigS3.uploadFile(researchWorkload.rwlFile);
-    //   researchWorkload.rwlFilename = researchWorkload.rwlFile.name;
-    //   researchWorkload.rwlFilePath = file.location;
-    // }
   }
 
   if (!!researchWorkload.externallyFunded.length) {
     for (let i = 0; i < researchWorkload.externallyFunded.length; i++) {
+      const externallyFundedFilePaths = [];
       if (researchWorkload.externallyFunded[i].file) {
         const file = await rwl1AwsConfigS3.uploadFile(
           researchWorkload.externallyFunded[i].file!
         );
-        // researchWorkload.rwlFilename = researchWorkload.rwlFile.name;
-        researchWorkload.externallyFundedFilenames?.splice(
-          i,
-          0,
-          researchWorkload.externallyFunded[i].file?.name!
-        );
-        // researchWorkload.rwlFilePath = file.location;
-        researchWorkload.externallyFundedFilePath?.splice(i, 0, file.location);
+        externallyFundedFilePaths.push(file.location);
       }
+      researchWorkload.externallyFundedFilePath = externallyFundedFilePaths;
     }
-    // if (researchWorkload.rwlFile1) {
-    //   const file1 = await rwl1AwsConfigS3.uploadFile(researchWorkload.rwlFile1);
-    //   researchWorkload.rwlFilename1 = researchWorkload.rwlFile1.name;
-    //   researchWorkload.rwlFilePath1 = file1.location;
-    // }
   }
 
   if (

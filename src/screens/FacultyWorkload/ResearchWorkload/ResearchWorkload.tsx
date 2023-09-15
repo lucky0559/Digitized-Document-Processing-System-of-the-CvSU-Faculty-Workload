@@ -329,6 +329,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const researchWorkLoadHandler = () => {
     // setIsAddStudy(isAddStudy);
 
+    // CVSU FUNDED
     if (!cvsuFunded1) {
       setCvsuFunded1({
         title: titleOfStudyCvsu,
@@ -370,6 +371,44 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         points: studyCvsuPoints
       });
     }
+
+    // EXTERNALLY FUNDED
+    if (!externalFunded1) {
+      setExternalFunded1({
+        title: titleOfStudyExternally,
+        fundGenerated: fundGenerated!,
+        file: rwlFile1,
+        points: studyExternallyPoints
+      });
+    } else if (!externalFunded2) {
+      setExternalFunded2({
+        title: titleOfStudyExternally,
+        fundGenerated: fundGenerated!,
+        file: rwlFile1,
+        points: studyExternallyPoints
+      });
+    } else if (!externalFunded3) {
+      setExternalFunded3({
+        title: titleOfStudyExternally,
+        fundGenerated: fundGenerated!,
+        file: rwlFile1,
+        points: studyExternallyPoints
+      });
+    } else if (!externalFunded4) {
+      setExternalFunded4({
+        title: titleOfStudyExternally,
+        fundGenerated: fundGenerated!,
+        file: rwlFile1,
+        points: studyExternallyPoints
+      });
+    } else if (!externalFunded5) {
+      setExternalFunded5({
+        title: titleOfStudyExternally,
+        fundGenerated: fundGenerated!,
+        file: rwlFile1,
+        points: studyExternallyPoints
+      });
+    }
   };
 
   useEffect(() => {
@@ -401,6 +440,20 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           externalFunded3!,
           externalFunded4!,
           externalFunded5!
+        ].filter(Boolean),
+        cvsuFundedFilenames: [
+          cvsuFunded1?.file?.name!,
+          cvsuFunded2?.file?.name!,
+          cvsuFunded3?.file?.name!,
+          cvsuFunded4?.file?.name!,
+          cvsuFunded5?.file?.name!
+        ].filter(Boolean),
+        externallyFundedFilenames: [
+          externalFunded1?.file?.name!,
+          externalFunded2?.file?.name!,
+          externalFunded3?.file?.name!,
+          externalFunded4?.file?.name!,
+          externalFunded5?.file?.name!
         ].filter(Boolean)
       });
       setIsSubmitting(true);
@@ -506,27 +559,21 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
         //   );
 
         researchWorkLoad!.rwlPoints = Number(
-          (cvsuFunded1?.points!
-            ? cvsuFunded1?.points!
-            : 0 + cvsuFunded2?.points!
-            ? cvsuFunded2?.points!
-            : 0 + cvsuFunded3?.points!
-            ? cvsuFunded3?.points!
-            : 0 + cvsuFunded4?.points!
-            ? cvsuFunded4?.points!
-            : 0 + cvsuFunded5?.points!
-            ? cvsuFunded5?.points!
-            : 0 + externalFunded1?.points!
-            ? externalFunded1?.points!
-            : 0 + externalFunded2?.points!
-            ? externalFunded2?.points!
-            : 0 + externalFunded3?.points!
-            ? externalFunded3?.points!
-            : 0 + externalFunded4?.points!
-            ? externalFunded4?.points!
-            : 0 + externalFunded5?.points!
-            ? externalFunded5?.points!
-            : 0 + study1Points + study2Points + study3Points + study4Points
+          (
+            (cvsuFunded1?.points! ? cvsuFunded1?.points! : 0) +
+            (cvsuFunded2?.points! ? cvsuFunded2?.points! : 0) +
+            (cvsuFunded3?.points! ? cvsuFunded3?.points! : 0) +
+            (cvsuFunded4?.points! ? cvsuFunded4?.points! : 0) +
+            (cvsuFunded5?.points! ? cvsuFunded5?.points! : 0) +
+            (externalFunded1?.points! ? externalFunded1?.points! : 0) +
+            (externalFunded2?.points! ? externalFunded2?.points! : 0) +
+            (externalFunded3?.points! ? externalFunded3?.points! : 0) +
+            (externalFunded4?.points! ? externalFunded4?.points! : 0) +
+            (externalFunded5?.points! ? externalFunded5?.points! : 0) +
+            study1Points +
+            study2Points +
+            study3Points +
+            study4Points
           ).toFixed(2)
         );
 
