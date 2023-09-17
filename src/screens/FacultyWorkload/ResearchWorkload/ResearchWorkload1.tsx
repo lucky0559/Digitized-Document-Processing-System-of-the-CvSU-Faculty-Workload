@@ -17,6 +17,7 @@ type ResearchWorkload1Props = {
   titleOfStudy: string;
   titleOfStudyHandler: (val: string) => void;
   addStudyHandler: () => void;
+  isSaved?: boolean;
 };
 
 const ResearchWorkload1 = ({
@@ -30,7 +31,8 @@ const ResearchWorkload1 = ({
   titleOfStudy,
   titleOfStudyHandler,
   typeOfStudy,
-  addStudyHandler
+  addStudyHandler,
+  isSaved
 }: ResearchWorkload1Props) => {
   const fileHandler = (file?: File) => {
     rwlFileHandler(file);
@@ -92,7 +94,7 @@ const ResearchWorkload1 = ({
               Study Points = {studyPoints.toString()}
             </Label>
           </TotalPointsContainer>
-          {studyPoints !== 0 && (
+          {studyPoints !== 0 && !isSaved && (
             <AddStudyContainer onClick={addStudyHandler}>
               <AddStudyText>Add another study</AddStudyText>
             </AddStudyContainer>
