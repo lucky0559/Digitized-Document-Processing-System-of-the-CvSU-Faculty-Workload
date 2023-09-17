@@ -1,4 +1,3 @@
-import React from "react";
 import { CvsuFunded } from "../../../types/Fund";
 import ResearchWorkload1 from "./ResearchWorkload1";
 
@@ -19,7 +18,6 @@ type CvsuFundedListsProps = {
   onRemoveRwlFile1: () => void;
   titleOfStudy1: string;
   titleOfStudyHandler1: (val: string) => void;
-  addStudyHandler1: () => void;
   typeOfStudyHandler2: (val: string) => void;
   designationStudyHandler2: (val: string) => void;
   rwlFileHandler2: (val: File) => void;
@@ -31,7 +29,6 @@ type CvsuFundedListsProps = {
   onRemoveRwlFile2: () => void;
   titleOfStudy2: string;
   titleOfStudyHandler2: (val: string) => void;
-  addStudyHandler2: () => void;
   typeOfStudyHandler3: (val: string) => void;
   designationStudyHandler3: (val: string) => void;
   rwlFileHandler3: (val: File) => void;
@@ -43,7 +40,6 @@ type CvsuFundedListsProps = {
   onRemoveRwlFile3: () => void;
   titleOfStudy3: string;
   titleOfStudyHandler3: (val: string) => void;
-  addStudyHandler3: () => void;
   typeOfStudyHandler4: (val: string) => void;
   designationStudyHandler4: (val: string) => void;
   rwlFileHandler4: (val: File) => void;
@@ -55,7 +51,6 @@ type CvsuFundedListsProps = {
   onRemoveRwlFile4: () => void;
   titleOfStudy4: string;
   titleOfStudyHandler4: (val: string) => void;
-  addStudyHandler4: () => void;
   typeOfStudyHandler5: (val: string) => void;
   designationStudyHandler5: (val: string) => void;
   rwlFileHandler5: (val: File) => void;
@@ -67,7 +62,6 @@ type CvsuFundedListsProps = {
   onRemoveRwlFile5: () => void;
   titleOfStudy5: string;
   titleOfStudyHandler5: (val: string) => void;
-  addStudyHandler5: () => void;
 };
 
 const CvsuFundedLists = ({
@@ -87,7 +81,6 @@ const CvsuFundedLists = ({
   onRemoveRwlFile1,
   titleOfStudy1,
   titleOfStudyHandler1,
-  addStudyHandler1,
   typeOfStudyHandler2,
   designationStudyHandler2,
   rwlFileHandler2,
@@ -99,7 +92,6 @@ const CvsuFundedLists = ({
   onRemoveRwlFile2,
   titleOfStudy2,
   titleOfStudyHandler2,
-  addStudyHandler2,
   typeOfStudyHandler3,
   designationStudyHandler3,
   rwlFileHandler3,
@@ -111,7 +103,6 @@ const CvsuFundedLists = ({
   onRemoveRwlFile3,
   titleOfStudy3,
   titleOfStudyHandler3,
-  addStudyHandler3,
   typeOfStudyHandler4,
   designationStudyHandler4,
   rwlFileHandler4,
@@ -123,7 +114,6 @@ const CvsuFundedLists = ({
   onRemoveRwlFile4,
   titleOfStudy4,
   titleOfStudyHandler4,
-  addStudyHandler4,
   typeOfStudyHandler5,
   designationStudyHandler5,
   rwlFileHandler5,
@@ -134,8 +124,7 @@ const CvsuFundedLists = ({
   studyPoints5,
   onRemoveRwlFile5,
   titleOfStudy5,
-  titleOfStudyHandler5,
-  addStudyHandler5
+  titleOfStudyHandler5
 }: CvsuFundedListsProps) => {
   return (
     <>
@@ -164,7 +153,8 @@ const CvsuFundedLists = ({
           onRemoveRwlFile={onRemoveRwlFile1}
           titleOfStudy={titleOfStudy1}
           titleOfStudyHandler={e => titleOfStudyHandler1(e)}
-          addStudyHandler={addStudyHandler1}
+          addStudyHandler={() => {}}
+          isSaved
         />
       )}
       {cvsuFunded2 && (
@@ -192,7 +182,8 @@ const CvsuFundedLists = ({
           onRemoveRwlFile={onRemoveRwlFile2}
           titleOfStudy={titleOfStudy2}
           titleOfStudyHandler={e => titleOfStudyHandler2(e)}
-          addStudyHandler={addStudyHandler2}
+          addStudyHandler={() => {}}
+          isSaved
         />
       )}
       {cvsuFunded3 && (
@@ -220,7 +211,8 @@ const CvsuFundedLists = ({
           onRemoveRwlFile={onRemoveRwlFile3}
           titleOfStudy={titleOfStudy3}
           titleOfStudyHandler={e => titleOfStudyHandler3(e)}
-          addStudyHandler={addStudyHandler3}
+          addStudyHandler={() => {}}
+          isSaved
         />
       )}
       {cvsuFunded4 && (
@@ -248,7 +240,8 @@ const CvsuFundedLists = ({
           onRemoveRwlFile={onRemoveRwlFile4}
           titleOfStudy={titleOfStudy4}
           titleOfStudyHandler={e => titleOfStudyHandler4(e)}
-          addStudyHandler={addStudyHandler4}
+          addStudyHandler={() => {}}
+          isSaved
         />
       )}
       {cvsuFunded5 && (
@@ -276,7 +269,8 @@ const CvsuFundedLists = ({
           onRemoveRwlFile={onRemoveRwlFile5}
           titleOfStudy={titleOfStudy5}
           titleOfStudyHandler={e => titleOfStudyHandler5(e)}
-          addStudyHandler={addStudyHandler5}
+          addStudyHandler={() => {}}
+          isSaved
         />
       )}
     </>

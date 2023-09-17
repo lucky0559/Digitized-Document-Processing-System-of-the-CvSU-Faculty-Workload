@@ -14,6 +14,7 @@ type ResearchWorkload2Props = {
   titleOfStudy: string;
   titleOfStudyHandler: (val: string) => void;
   addStudyHandler: () => void;
+  isSaved?: boolean;
 };
 
 const ResearchWorkload2 = ({
@@ -25,7 +26,8 @@ const ResearchWorkload2 = ({
   onRemoveRwl1File,
   titleOfStudy,
   titleOfStudyHandler,
-  addStudyHandler
+  addStudyHandler,
+  isSaved
 }: ResearchWorkload2Props) => {
   const fileHandler = (file?: File) => {
     rwlFile1Handler(file);
@@ -79,47 +81,13 @@ const ResearchWorkload2 = ({
               Study Points = {studyPoints.toString()}
             </Label>
           </TotalPointsContainer>
-          {studyPoints !== 0 && (
+          {studyPoints !== 0 && !isSaved && (
             <AddStudyContainer onClick={addStudyHandler}>
               <AddStudyText>Add another study</AddStudyText>
             </AddStudyContainer>
           )}
         </SubContainer>
       </Container>
-      {/* <ResearchWorkload3
-        researchWorkLoadHandler3={researchWorkLoadHandler3}
-        researchWorkLoadHandler2={researchWorkLoadHandler2}
-        backHandler={backHandler}
-        isSubmitting={isSubmitting}
-        onSelectStudy1={onSelectStudy1}
-        study1={study1}
-        onStudy1FileSelect={onStudy1FileSelect}
-        study1FileName={study1FileName}
-        onSelectStudy2={onSelectStudy2}
-        study2={study2}
-        onStudy2FileSelect={onStudy2FileSelect}
-        study2FileName={study2FileName}
-        onSelectStudy3={onSelectStudy3}
-        study3={study3}
-        onStudy3FileSelect={onStudy3FileSelect}
-        study3FileName={study3FileName}
-        onSelectStudy4={onSelectStudy4}
-        study4={study4}
-        onStudy4FileSelect={onStudy4FileSelect}
-        study4FileName={study4FileName}
-        points={points}
-        study1Points={study1Points}
-        study2Points={study2Points}
-        study3Points={study3Points}
-        study4Points={study4Points}
-        fundGeneratedPoints={fundGeneratedPoints}
-        studyPoints={studyPoints}
-        onRemoveStudy1File={onRemoveStudy1File}
-        onRemoveStudy2File={onRemoveStudy2File}
-        onRemoveStudy3File={onRemoveStudy3File}
-        onRemoveStudy4File={onRemoveStudy4File}
-        rwlCount={rwlCount}
-      /> */}
     </>
   );
 };

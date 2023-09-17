@@ -101,7 +101,8 @@ export const SaveResearchWorkload = async (
         );
         cvsuFundedFilePaths.push(file.location);
       }
-      researchWorkload.cvsuFundedFilePath = cvsuFundedFilePaths;
+      if (!!cvsuFundedFilePaths.length)
+        researchWorkload.cvsuFundedFilePath = cvsuFundedFilePaths;
     }
   }
 
@@ -114,7 +115,8 @@ export const SaveResearchWorkload = async (
         );
         externallyFundedFilePaths.push(file.location);
       }
-      researchWorkload.externallyFundedFilePath = externallyFundedFilePaths;
+      if (!!externallyFundedFilePaths.length)
+        researchWorkload.externallyFundedFilePath = externallyFundedFilePaths;
     }
   }
 
