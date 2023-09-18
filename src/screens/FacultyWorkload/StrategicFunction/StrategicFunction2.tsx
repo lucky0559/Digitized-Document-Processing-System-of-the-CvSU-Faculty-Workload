@@ -231,120 +231,118 @@ function StrategicFunction2({
         </div>
       </DepartmentLevelContainer>
       <DepartmentLevelContainer>
-        <div>
-          <SportsSocioTitleText style={{ textAlign: "center" }}>
-            Designation as Sports/Socio-Cultural Coach or Trainor and Academic
-            Organization Adviser
-          </SportsSocioTitleText>
-        </div>
-        <div>
-          <DropdownUploadContainer>
-            <DropdownWithUpload
-              options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
-              onSelect={onTextInputSportsSocioDesignationTitle}
-              val={sportsSocioTitle}
-              onFileSelect={fileHandlerSportsSocio}
-              fileName={fileNameSportsSocio}
-              onRemoveStudyFile={onRemoveFile5Handler}
-            />
-            <PointsContainer>
-              <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
-                Points:{" "}
-              </PointsText>
-              <PointsText>
-                {sportsSocioPoints ? sportsSocioPoints : "0"}
-              </PointsText>
-            </PointsContainer>
-          </DropdownUploadContainer>
-          <DropdownUploadContainer>
-            <DropdownWithUpload
-              options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
-              onSelect={onTextInputSportsSocioDesignationTitle1}
-              val={sportsSocioTitle1}
-              onFileSelect={fileHandlerSportsSocio1}
-              fileName={fileNameSportsSocio1}
-              onRemoveStudyFile={onRemoveFile6Handler}
-            />
-            <PointsContainer>
-              <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
-                Points:{" "}
-              </PointsText>
-              <PointsText>
-                {sportsSocioPoints1 ? sportsSocioPoints1 : "0"}
-              </PointsText>
-            </PointsContainer>
-          </DropdownUploadContainer>
-          <DropdownUploadContainer>
-            <DropdownWithUpload
-              options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
-              onSelect={onTextInputSportsSocioDesignationTitle2}
-              val={sportsSocioTitle2}
-              onFileSelect={fileHandlerSportsSocio2}
-              fileName={fileNameSportsSocio2}
-              onRemoveStudyFile={onRemoveFile7Handler}
-            />
-            <PointsContainer>
-              <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
-                Points:{" "}
-              </PointsText>
-              <PointsText>
-                {sportsSocioPoints2 ? sportsSocioPoints2 : "0"}
-              </PointsText>
-            </PointsContainer>
-          </DropdownUploadContainer>
-          <div style={{ marginTop: 40 }}>
-            <SportsSocioTitleText style={{ textAlign: "center" }}>
-              Designation as Member of University-Wide AdHoc Committee
-            </SportsSocioTitleText>
-          </div>
-          <TextInputWithTitlePointUpload
-            universityWidePoints={universityWidePoints}
-            onChangeTextInputTitle={
-              onTextInputMemberUniversityWideDesignationTitle
-            }
-            titleVal={memberUniversityTitle}
-            pointsVal={memberUniversityPoints}
-            fileHandler={fileHandlerMemberUniversity}
-            fileName={fileNameMemberUniversity}
-            onRemoveFile={onRemoveFile8Handler}
+        <LevelLabel>
+          Designation as Sports/Socio-Cultural Coach or Trainor and Academic
+          Organization Adviser
+        </LevelLabel>
+        <DropdownUploadContainer>
+          <DropdownWithUpload
+            options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
+            onSelect={onTextInputSportsSocioDesignationTitle}
+            val={sportsSocioTitle}
+            onFileSelect={fileHandlerSportsSocio}
+            fileName={fileNameSportsSocio}
+            onRemoveStudyFile={onRemoveFile5Handler}
           />
-          <TextInputWithTitlePointUpload
-            universityWidePoints={universityWidePoints1}
-            onChangeTextInputTitle={
-              onTextInputMemberUniversityWideDesignationTitle1
-            }
-            titleVal={memberUniversityTitle1}
-            pointsVal={memberUniversityPoints1}
-            fileHandler={fileHandlerMemberUniversity1}
-            fileName={fileNameMemberUniversity1}
-            onRemoveFile={onRemoveFile9Handler}
+          <PointsContainer>
+            <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+              Points:{" "}
+            </PointsText>
+            <PointsText>
+              {sportsSocioPoints ? sportsSocioPoints : "0"}
+            </PointsText>
+          </PointsContainer>
+        </DropdownUploadContainer>
+        <DropdownUploadContainer>
+          <DropdownWithUpload
+            options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
+            onSelect={onTextInputSportsSocioDesignationTitle1}
+            val={sportsSocioTitle1}
+            onFileSelect={fileHandlerSportsSocio1}
+            fileName={fileNameSportsSocio1}
+            onRemoveStudyFile={onRemoveFile6Handler}
           />
-          <TextInputWithTitlePointUpload
-            universityWidePoints={universityWidePoints2}
-            onChangeTextInputTitle={
-              onTextInputMemberUniversityWideDesignationTitle2
-            }
-            titleVal={memberUniversityTitle2}
-            pointsVal={memberUniversityPoints2}
-            fileHandler={fileHandlerMemberUniversity2}
-            fileName={fileNameMemberUniversity2}
-            onRemoveFile={onRemoveFile10Handler}
+          <PointsContainer>
+            <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+              Points:{" "}
+            </PointsText>
+            <PointsText>
+              {sportsSocioPoints1 ? sportsSocioPoints1 : "0"}
+            </PointsText>
+          </PointsContainer>
+        </DropdownUploadContainer>
+        <DropdownUploadContainer>
+          <DropdownWithUpload
+            options={DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR}
+            onSelect={onTextInputSportsSocioDesignationTitle2}
+            val={sportsSocioTitle2}
+            onFileSelect={fileHandlerSportsSocio2}
+            fileName={fileNameSportsSocio2}
+            onRemoveStudyFile={onRemoveFile7Handler}
           />
-          <TextInputWithTitlePointUpload
-            inputLabel="Designation as Academic Adviser"
-            uploadLabel="Upload list of advisees here:"
-            onChangeTextInputTitle={onTextInputAcademicAdviserDesignationTitle}
-            titleVal={academicAdviserTitle}
-            pointsVal={academicAdviserPoints}
-            fileHandler={fileHandlerAcademicAdviser}
-            fileName={fileNameAcademicAdviser}
-            pointsLabel="0.023 per Advisee"
-            textField={true}
-            customize={true}
-            customLabel="Number of Advisee"
-            onRemoveFile={onRemoveFile11Handler}
-          />
-        </div>
+          <PointsContainer>
+            <PointsText style={{ fontWeight: "bold", marginRight: 5 }}>
+              Points:{" "}
+            </PointsText>
+            <PointsText>
+              {sportsSocioPoints2 ? sportsSocioPoints2 : "0"}
+            </PointsText>
+          </PointsContainer>
+        </DropdownUploadContainer>
+      </DepartmentLevelContainer>
+      <DepartmentLevelContainer>
+        <LevelLabel>
+          Designation as Member of University-Wide AdHoc Committee
+        </LevelLabel>
+        <TextInputWithTitlePointUpload
+          universityWidePoints={universityWidePoints}
+          onChangeTextInputTitle={
+            onTextInputMemberUniversityWideDesignationTitle
+          }
+          titleVal={memberUniversityTitle}
+          pointsVal={memberUniversityPoints}
+          fileHandler={fileHandlerMemberUniversity}
+          fileName={fileNameMemberUniversity}
+          onRemoveFile={onRemoveFile8Handler}
+        />
+        <TextInputWithTitlePointUpload
+          universityWidePoints={universityWidePoints1}
+          onChangeTextInputTitle={
+            onTextInputMemberUniversityWideDesignationTitle1
+          }
+          titleVal={memberUniversityTitle1}
+          pointsVal={memberUniversityPoints1}
+          fileHandler={fileHandlerMemberUniversity1}
+          fileName={fileNameMemberUniversity1}
+          onRemoveFile={onRemoveFile9Handler}
+        />
+        <TextInputWithTitlePointUpload
+          universityWidePoints={universityWidePoints2}
+          onChangeTextInputTitle={
+            onTextInputMemberUniversityWideDesignationTitle2
+          }
+          titleVal={memberUniversityTitle2}
+          pointsVal={memberUniversityPoints2}
+          fileHandler={fileHandlerMemberUniversity2}
+          fileName={fileNameMemberUniversity2}
+          onRemoveFile={onRemoveFile10Handler}
+        />
+      </DepartmentLevelContainer>
+      <DepartmentLevelContainer>
+        <LevelLabel>Designation as Academic Adviser</LevelLabel>
+        <TextInputWithTitlePointUpload
+          uploadLabel="Upload list of advisees here:"
+          onChangeTextInputTitle={onTextInputAcademicAdviserDesignationTitle}
+          titleVal={academicAdviserTitle}
+          pointsVal={academicAdviserPoints}
+          fileHandler={fileHandlerAcademicAdviser}
+          fileName={fileNameAcademicAdviser}
+          pointsLabel="0.023 per Advisee"
+          textField={true}
+          customize={true}
+          customLabel="Number of Advisee"
+          onRemoveFile={onRemoveFile11Handler}
+        />
       </DepartmentLevelContainer>
     </>
   );
