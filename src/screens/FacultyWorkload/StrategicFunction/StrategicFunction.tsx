@@ -1074,29 +1074,29 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
     academicAdviser?.numberOfStudents &&
     (academicAdviser?.file || academicAdviser.filename);
 
-  useEffect(() => {
-    (async () => {
-      const {
-        teachingWorkloads,
-        extensionWorkloads,
-        researchWorkloads,
-        strategicFunctionWorkloads
-      } = await GetAllUserPendingWorkloads(user.email);
-      actions.setHasPendingTeachingWorkload(
-        !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
-      );
-      actions.setHasPendingExtensionWorkload(
-        !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
-      );
-      actions.setHasPendingResearchWorkload(
-        !!researchWorkloads.length && researchWorkloads[0].isSubmitted
-      );
-      actions.setHasPendingStrategicWorkload(
-        !!strategicFunctionWorkloads.length &&
-          strategicFunctionWorkloads[0].isSubmitted
-      );
-    })();
-  }, [actions, user.email]);
+  // useEffect(() => {
+  //   (async () => {
+  //     const {
+  //       teachingWorkloads,
+  //       extensionWorkloads,
+  //       researchWorkloads,
+  //       strategicFunctionWorkloads
+  //     } = await GetAllUserPendingWorkloads(user.email);
+  //     actions.setHasPendingTeachingWorkload(
+  //       !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+  //     );
+  //     actions.setHasPendingExtensionWorkload(
+  //       !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+  //     );
+  //     actions.setHasPendingResearchWorkload(
+  //       !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+  //     );
+  //     actions.setHasPendingStrategicWorkload(
+  //       !!strategicFunctionWorkloads.length &&
+  //         strategicFunctionWorkloads[0].isSubmitted
+  //     );
+  //   })();
+  // }, [actions, user.email]);
 
   useEffect(() => {
     setIsLoading(true);

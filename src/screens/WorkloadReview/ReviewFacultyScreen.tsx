@@ -206,56 +206,95 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 );
                 return (
                   <>
-                    <BoldText>Research Work Load (RWL)</BoldText>
-                    <ColumnParentContainer>
-                      <ColumnContainer>
-                        {workload.cvsuFunded.map(() => (
-                          <>
+                    <BoldText style={{ marginBottom: 20 }}>
+                      Research Work Load (RWL)
+                    </BoldText>
+                    {workload.cvsuFunded.map(funded => (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            borderBottom: "1px solid black"
+                          }}
+                        >
+                          <ColumnContainer>
+                            <BoldText style={{ marginBottom: 10 }}>
+                              CvSU Funded Research
+                            </BoldText>
                             <ThinText>Title of the Study:</ThinText>
                             <ThinText>Type of Study:</ThinText>
                             <ThinText>Designation in the Study:</ThinText>
-                          </>
-                        ))}
-                        {workload.externallyFunded.map(() => (
-                          <>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            <BoldText style={{ marginBottom: 10 }}>
+                              &nbsp;
+                            </BoldText>
+                            <BoldText>{funded.title}</BoldText>
+                            <BoldText>{funded.typeOfStudy}</BoldText>
+                            <BoldText>{funded.designationStudy}</BoldText>
+                          </ColumnContainer>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginBottom: 25
+                          }}
+                        >
+                          <ColumnContainer>
+                            <BoldText>TOTAL:</BoldText>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            <BoldText>{funded.points}</BoldText>
+                          </ColumnContainer>
+                        </div>
+                      </>
+                    ))}
+                    {workload.externallyFunded.map(funded => (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            borderBottom: "1px solid black"
+                          }}
+                        >
+                          <ColumnContainer>
+                            <BoldText style={{ marginBottom: 10 }}>
+                              Externally Funded Research
+                            </BoldText>
                             <ThinText>Title of the Study:</ThinText>
                             <ThinText>
                               Fund Generated per Semester (in peso):
                             </ThinText>
-                          </>
-                        ))}
-                      </ColumnContainer>
-                      <ColumnContainer>
-                        {workload.cvsuFunded.map(funded => (
-                          <>
-                            <BoldText>{funded.title}</BoldText>
-                            <BoldText>{funded.typeOfStudy}</BoldText>
-                            <BoldText>{funded.designationStudy}</BoldText>
-                          </>
-                        ))}
-                        {workload.externallyFunded.map(funded => (
-                          <>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            <BoldText style={{ marginBottom: 10 }}>
+                              &nbsp;
+                            </BoldText>
                             <BoldText>{funded.title}</BoldText>
                             <BoldText>{funded.fundGenerated}</BoldText>
-                          </>
-                        ))}
-                      </ColumnContainer>
-                    </ColumnParentContainer>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        marginBottom: 25
-                      }}
-                    >
-                      <ColumnContainer style={{ paddingLeft: 90 }}>
-                        <BoldText>TOTAL:</BoldText>
-                      </ColumnContainer>
-                      <ColumnContainer>
-                        <BoldText>{workload.rwlPoints}</BoldText>
-                      </ColumnContainer>
-                    </div>
+                          </ColumnContainer>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginBottom: 25
+                          }}
+                        >
+                          <ColumnContainer>
+                            <BoldText>TOTAL:</BoldText>
+                          </ColumnContainer>
+                          <ColumnContainer>
+                            <BoldText>{funded.points}</BoldText>
+                          </ColumnContainer>
+                        </div>
+                      </>
+                    ))}
                   </>
                 );
               })}
