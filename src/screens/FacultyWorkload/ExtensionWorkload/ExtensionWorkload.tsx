@@ -54,8 +54,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   );
   const [summaryOfHoursFile, setSummaryOfHoursFile] = useState<File>();
 
-  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
-
   const [designationActivityPoints, setDesignationActivityPoints] = useState(0);
   const [resourcePersonActivityPoints, setResourcePersonActivityPoints] =
     useState(0);
@@ -70,7 +68,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
   const { user, actions } = useContext(UserContext);
 
   const extensionWorkloadHandler = async () => {
-    // if (resourcePerson || resourcePerson1 || resourcePerson2) {
     setExtensionWorkload({
       ...extensionWorkload,
       designationExtensionActivity: [
@@ -155,6 +152,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             )
           ) {
             designationExtensionActivityPoints =
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               Number(designationExtensionActivityPoints) + 1;
           }
 
@@ -173,6 +171,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           if (Number(extensionWorkload.totalNumberHours) * 0.05556 >= 3) {
             totalNumberHoursPoints = 3;
           } else {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             totalNumberHoursPoints =
               parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
           }
@@ -515,6 +514,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         setDesignationActivityPoints(designationActivityPoints - 1);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [extensionActivityFile, extensionWorkload?.extensionActivityFilename]);
 
   useEffect(() => {
@@ -576,9 +576,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
       setTotalNumberHours(data.totalNumberHours);
 
       if (data.resourcePerson) {
-        // setResourcePerson(data.resourcePerson[0]);
-        // setResourcePerson1(data.resourcePerson[1]);
-        // setResourcePerson2(data.resourcePerson[2]);
         for (let a = 0; a < data.resourcePerson.length!; a++) {
           if (data.resourcePerson[a] === "International") {
             if (a === 0) {
@@ -695,10 +692,78 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
         ) : (
           <BodyContainer>
             <ScreenTitle title="Faculty Workload" />
+            <WorkloadTextContainer>
+              <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
+            </WorkloadTextContainer>
             <Container>
               <SubContainer>
-                <WorkloadTextContainer>
-                  <WorkloadText>{WorkloadType.EXTENSION_WORKLOAD}</WorkloadText>
+                <WorkloadTextContainer style={{ marginTop: 10 }}>
+                  <WorkloadText>
+                    Hours Rendered In Extension Activities
+                  </WorkloadText>
+                </WorkloadTextContainer>
+                <div style={{ display: "flex", padding: 20, paddingTop: 0 }}>
+                  <InputsContainer
+                    style={{
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      marginTop: 40,
+                      marginRight: 15
+                    }}
+                  >
+                    <Label>
+                      Total Number of Hours Rendered in Extension Activities
+                    </Label>
+                    <TextInput
+                      type="number"
+                      onChange={e => totalNumberHoursHandler(e.target.value)}
+                      value={totalNumberHours}
+                      min={0}
+                    />
+                  </InputsContainer>
+                  <InputsContainer
+                    style={{
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      marginTop: 40,
+                      marginLeft: 15
+                    }}
+                  >
+                    <UploadTextDescription>
+                      Upload Summary of hours rendered in extension activities:
+                    </UploadTextDescription>
+                    <UploadFileButton
+                      fileHandler={setSummaryOfHoursFileHandler}
+                      workloadFileName={
+                        summaryOfHoursFile?.name ||
+                        extensionWorkload?.summaryOfHoursFilename
+                      }
+                      onRemoveFile={onRemoveSummaryFile}
+                    />
+                  </InputsContainer>
+                </div>
+                <Label style={{ fontWeight: "bold", marginLeft: 15 }}>
+                  Points:{" "}
+                </Label>
+                <span>
+                  {(!summaryOfHoursFile &&
+                    !extensionWorkload?.summaryOfHoursFilename) ||
+                  !totalNumberHours
+                    ? 0
+                    : Number(totalNumberHours) * 0.05556 >= 3
+                    ? 3
+                    : Number((Number(totalNumberHours) * 0.05556).toFixed(2))}
+                </span>
+              </SubContainer>
+            </Container>
+            <Container>
+              <SubContainer>
+                <WorkloadTextContainer style={{ marginTop: 10 }}>
+                  <WorkloadText>
+                    Additional Workload Points for Extension
+                  </WorkloadText>
                 </WorkloadTextContainer>
                 <div
                   style={{
@@ -710,12 +775,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                   }}
                 >
                   <InputsContainer style={{ width: "100%" }}>
-                    {/* <Dropdown
-                option={DROPDOWN_LISTS.DESIGNATION_EXTENSION_ACTIVITY}
-                label="Designation in Extension Activity"
-                onSelect={designationExtensionActivityHandler}
-                val={designationExtensionActivity}
-              /> */}
                     <DesignationExtensionActivity
                       onChangeValueCheckbox={onChangeValueCheckbox}
                       designationExtensionActivity={
@@ -725,173 +784,133 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                   </InputsContainer>
                   <div
                     style={{
-                      width: "100%",
-                      justifyContent: "space-between",
-                      alignItems: "center",
                       display: "flex",
-                      marginTop: 50
+                      alignSelf: "flex-start",
+                      width: "100%"
                     }}
                   >
-                    <div
+                    <InputsContainer
                       style={{
-                        display: "flex",
-                        flexDirection: "column"
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                        marginTop: 40
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          marginBottom: 40
-                        }}
-                      >
-                        <div
-                          style={{
-                            justifyContent: "space-between",
-                            display: "flex",
-                            width: "100%"
-                          }}
-                        >
-                          <InputsContainer
-                            style={{
-                              alignSelf: "end",
-                              alignItems: "flex-start",
-                              justifyContent: "flex-start",
-                              flexDirection: "row",
-                              marginTop: 80
-                            }}
-                          >
-                            <Label>
-                              Total Number of Hours Rendered in Extension
-                              Activities
-                            </Label>
-                            <TextInput
-                              type="number"
-                              onChange={e =>
-                                totalNumberHoursHandler(e.target.value)
-                              }
-                              value={totalNumberHours}
-                              min={0}
-                            />
-                          </InputsContainer>
-                        </div>
-                        <div style={{ width: "100%" }}>
-                          <UploadContainer>
-                            <UploadTextDescription>
-                              Upload Extension Activity Accomplishment Report
-                              here:
-                            </UploadTextDescription>
-                            <UploadFileContainer>
-                              <UploadFileButton
-                                fileHandler={setExtensionActivityFileHandler}
-                                workloadFileName={
-                                  extensionActivityFile?.name ||
-                                  extensionWorkload?.extensionActivityFilename
-                                }
-                                onRemoveFile={onRemoveExtensionFile}
-                              />
-                            </UploadFileContainer>
-                          </UploadContainer>
-                          <UploadContainer style={{ marginTop: 30 }}>
-                            <UploadTextDescription>
-                              Upload Summary of hours rendered in extension
-                              activities:
-                            </UploadTextDescription>
-                            <UploadFileContainer>
-                              <UploadFileButton
-                                fileHandler={setSummaryOfHoursFileHandler}
-                                workloadFileName={
-                                  summaryOfHoursFile?.name ||
-                                  extensionWorkload?.summaryOfHoursFilename
-                                }
-                                onRemoveFile={onRemoveSummaryFile}
-                              />
-                            </UploadFileContainer>
-                          </UploadContainer>
-                        </div>
-                      </div>
-
-                      <ResourcePersonContainer>
-                        <InputsContainer>
-                          <Dropdown
-                            option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                            label="Resource Person in an Extension Activity"
-                            onSelect={resourcePersonHandler}
-                            val={
-                              resourcePerson ||
-                              extensionWorkload?.resourcePerson?.[0]
-                            }
-                          />
-                        </InputsContainer>
-                        <UploadContainer>
-                          <UploadTextDescription>
-                            Upload certificate of presentation here:
-                          </UploadTextDescription>
-                          <UploadFileContainer>
-                            <UploadFileButton
-                              fileHandler={setCertificateFileHandler}
-                              workloadFileName={
-                                certificateFile?.name ||
-                                extensionWorkload?.certificateFilenames?.[0]
-                              }
-                              onRemoveFile={onRemoveCertificateFile}
-                            />
-                          </UploadFileContainer>
-                        </UploadContainer>
-                      </ResourcePersonContainer>
-                      <ResourcePersonContainer>
-                        <InputsContainer>
-                          <Dropdown
-                            option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                            onSelect={resourcePersonHandler1}
-                            val={
-                              resourcePerson1 ||
-                              extensionWorkload?.resourcePerson?.[1]
-                            }
-                          />
-                        </InputsContainer>
-                        <UploadContainer>
-                          <UploadFileContainer>
-                            <UploadFileButton
-                              fileHandler={setCertificateFileHandler1}
-                              workloadFileName={
-                                certificateFile1?.name ||
-                                extensionWorkload?.certificateFilenames?.[1]
-                              }
-                              onRemoveFile={onRemoveCertificateFile1}
-                            />
-                          </UploadFileContainer>
-                        </UploadContainer>
-                      </ResourcePersonContainer>
-                      <ResourcePersonContainer>
-                        <InputsContainer>
-                          <Dropdown
-                            option={DROPDOWN_LISTS.RESOURCE_PERSON}
-                            onSelect={resourcePersonHandler2}
-                            val={
-                              resourcePerson2 ||
-                              extensionWorkload?.resourcePerson?.[2]
-                            }
-                          />
-                        </InputsContainer>
-                        <UploadContainer>
-                          <UploadFileContainer>
-                            <UploadFileButton
-                              fileHandler={setCertificateFileHandler2}
-                              workloadFileName={
-                                certificateFile2?.name ||
-                                extensionWorkload?.certificateFilenames?.[2]
-                              }
-                              onRemoveFile={onRemoveCertificateFile2}
-                            />
-                          </UploadFileContainer>
-                        </UploadContainer>
-                      </ResourcePersonContainer>
-                    </div>
+                      <UploadTextDescription>
+                        Upload Extension Activity Accomplishment Report here:
+                      </UploadTextDescription>
+                      <UploadFileButton
+                        fileHandler={setExtensionActivityFileHandler}
+                        workloadFileName={
+                          extensionActivityFile?.name ||
+                          extensionWorkload?.extensionActivityFilename
+                        }
+                        onRemoveFile={onRemoveExtensionFile}
+                      />
+                    </InputsContainer>
                   </div>
                 </div>
+                <Label style={{ fontWeight: "bold", marginLeft: 15 }}>
+                  Points:{" "}
+                </Label>
+                <span>{designationActivityPoints || 0}</span>
               </SubContainer>
-
+              <SubContainer style={{ marginTop: 60 }}>
+                <WorkloadTextContainer style={{ marginTop: 10 }}>
+                  <WorkloadText>
+                    Resource Person in Extension Activities
+                  </WorkloadText>
+                </WorkloadTextContainer>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: 20
+                  }}
+                >
+                  <ResourcePersonContainer>
+                    <InputsContainer>
+                      <Dropdown
+                        option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                        label="Resource Person in an Extension Activity"
+                        onSelect={resourcePersonHandler}
+                        val={
+                          resourcePerson ||
+                          extensionWorkload?.resourcePerson?.[0]
+                        }
+                      />
+                    </InputsContainer>
+                    <UploadContainer>
+                      <UploadTextDescription>
+                        Upload certificate of presentation here:
+                      </UploadTextDescription>
+                      <UploadFileContainer>
+                        <UploadFileButton
+                          fileHandler={setCertificateFileHandler}
+                          workloadFileName={
+                            certificateFile?.name ||
+                            extensionWorkload?.certificateFilenames?.[0]
+                          }
+                          onRemoveFile={onRemoveCertificateFile}
+                        />
+                      </UploadFileContainer>
+                    </UploadContainer>
+                  </ResourcePersonContainer>
+                  <ResourcePersonContainer>
+                    <InputsContainer>
+                      <Dropdown
+                        option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                        onSelect={resourcePersonHandler1}
+                        val={
+                          resourcePerson1 ||
+                          extensionWorkload?.resourcePerson?.[1]
+                        }
+                      />
+                    </InputsContainer>
+                    <UploadContainer>
+                      <UploadFileContainer>
+                        <UploadFileButton
+                          fileHandler={setCertificateFileHandler1}
+                          workloadFileName={
+                            certificateFile1?.name ||
+                            extensionWorkload?.certificateFilenames?.[1]
+                          }
+                          onRemoveFile={onRemoveCertificateFile1}
+                        />
+                      </UploadFileContainer>
+                    </UploadContainer>
+                  </ResourcePersonContainer>
+                  <ResourcePersonContainer>
+                    <InputsContainer>
+                      <Dropdown
+                        option={DROPDOWN_LISTS.RESOURCE_PERSON}
+                        onSelect={resourcePersonHandler2}
+                        val={
+                          resourcePerson2 ||
+                          extensionWorkload?.resourcePerson?.[2]
+                        }
+                      />
+                    </InputsContainer>
+                    <UploadContainer>
+                      <UploadFileContainer>
+                        <UploadFileButton
+                          fileHandler={setCertificateFileHandler2}
+                          workloadFileName={
+                            certificateFile2?.name ||
+                            extensionWorkload?.certificateFilenames?.[2]
+                          }
+                          onRemoveFile={onRemoveCertificateFile2}
+                        />
+                      </UploadFileContainer>
+                    </UploadContainer>
+                  </ResourcePersonContainer>
+                </div>
+                <Label style={{ fontWeight: "bold", marginLeft: 15 }}>
+                  Points:{" "}
+                </Label>
+                <span>{resourcePersonActivityPoints || 0}</span>
+              </SubContainer>
               <ButtonContainer>
                 <div>
                   <Label style={{ fontWeight: "bold" }}>
@@ -899,8 +918,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                     {(
                       designationActivityPoints +
                       resourcePersonActivityPoints +
-                      (!summaryOfHoursFile &&
-                      !extensionWorkload?.summaryOfHoursFilename
+                      ((!summaryOfHoursFile &&
+                        !extensionWorkload?.summaryOfHoursFilename) ||
+                      !totalNumberHours
                         ? 0
                         : Number(totalNumberHours) * 0.05556 >= 3
                         ? 3
@@ -974,6 +994,7 @@ const SubContainer = styled.div`
 const WorkloadTextContainer = styled.div`
   display: flex;
   align-self: flex-start;
+  margin-left: 20px;
 `;
 
 const WorkloadText = styled.span`
