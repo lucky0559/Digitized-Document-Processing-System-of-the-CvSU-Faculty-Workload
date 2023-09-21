@@ -9,4 +9,8 @@ const getRwlSavedWorkload = async (userId: string) => {
   return { data };
 };
 
-export { getRwlSavedWorkload };
+const submitRwlWorkload = async (id: string) => {
+  return await axios.patch(`research-workload/${id}/submit-workload`);
+};
+
+export { getRwlSavedWorkload, submitRwlWorkload };

@@ -9,4 +9,8 @@ const getTwlSavedWorkload = async (userId: string) => {
   return { data };
 };
 
-export { getTwlSavedWorkload };
+const submitTwlWorkload = async (id: string) => {
+  return await axios.patch(`teaching-workload/${id}/submit-workload`);
+};
+
+export { getTwlSavedWorkload, submitTwlWorkload };
