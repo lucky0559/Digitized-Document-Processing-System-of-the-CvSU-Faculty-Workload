@@ -9,4 +9,8 @@ const getEwlSavedWorkload = async (userId: string) => {
   return { data };
 };
 
-export { getEwlSavedWorkload };
+const submitEwlWorkload = async (id: string) => {
+  return await axios.patch(`extension-workload/${id}/submit-workload`);
+};
+
+export { getEwlSavedWorkload, submitEwlWorkload };

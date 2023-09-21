@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../types/TeachingWorkload";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
 import { ResearchWorkLoadType } from "../../types/ResearchWorkLoad";
 import { StrategicFunctionType } from "../../types/StrategicFunction";
 import styled from "styled-components";
-import { GetUser } from "../../lib/user.hooks";
-import { User } from "../../types/User";
 import Colors from "../../constants/Colors";
 import FormButton from "../../components/FormButton";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { submitTwlWorkload } from "../../lib/teaching-workload.hooks";
+import { submitRwlWorkload } from "../../lib/rwl.hooks";
+import { submitEwlWorkload } from "../../lib/ewl.hooks";
+import { submitSfWorkload } from "../../lib/sfw.hooks";
+import { Confirm } from "semantic-ui-react";
+import { UserContext } from "../../App";
 
 type ReviewFacultyScreenProps = {
   userEmail?: string;
@@ -27,10 +31,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
 
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const userId = localStorage.getItem("userId");
-
-  const [user, setUser] = useState<User>();
-
   const [ovpaaTotalTwlPoints, setOvpaaTotalTwlPoints] = useState(0);
   const [ovpaaTotalRwlPoints, setOvpaaTotalRwlPoints] = useState(0);
   const [ovpaaTotalEwlPoints, setOvpaaTotalEwlPoints] = useState(0);
@@ -38,30 +38,37 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
 
   const [ovpaaRemarks, setOvpaaRemarks] = useState("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [isConfirming, setIsConfirming] = useState(false);
+
+  const { user, actions } = useContext(UserContext);
+
   useEffect(() => {
-    (async () => {
-      const user = await GetUser(userId!);
-      setUser(user);
-      const {
-        teachingWorkloads,
-        extensionWorkloads,
-        researchWorkloads,
-        strategicFunctionWorkloads
-      } = await GetAllUserPendingWorkloads(userEmail!);
-      setAllTeachingWorkloads(teachingWorkloads);
-      setAllExtensionWorkloads(extensionWorkloads);
-      setAllResearchWorkloads(researchWorkloads);
-      setAllStrategicFunctionWorkloads(strategicFunctionWorkloads);
-      setIsDataLoading(false);
-    })();
-  }, []);
+    if (!isSubmitting) {
+      (async () => {
+        setIsDataLoading(true);
+        const {
+          teachingWorkloads,
+          extensionWorkloads,
+          researchWorkloads,
+          strategicFunctionWorkloads
+        } = await GetAllUserPendingWorkloads(user.email);
+        setAllTeachingWorkloads(teachingWorkloads);
+        setAllExtensionWorkloads(extensionWorkloads);
+        setAllResearchWorkloads(researchWorkloads);
+        setAllStrategicFunctionWorkloads(strategicFunctionWorkloads);
+        setIsDataLoading(false);
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitting]);
 
   useEffect(() => {
     if (allTeachingWorkloads?.length! > 0) {
       setOvpaaTotalTwlPoints(
         Number(allTeachingWorkloads?.[0].remarks?.points) || 0
       );
-      // setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
       if (allTeachingWorkloads?.[0].remarks?.remarks?.length! > 0)
         setOvpaaRemarks(allTeachingWorkloads?.[0].remarks?.remarks!);
     }
@@ -72,7 +79,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
       const total = allResearchWorkloads?.reduce((accumulator, object) => {
         return accumulator + Number(object.remarks?.points);
       }, 0);
-      console.log(allResearchWorkloads);
       setOvpaaTotalRwlPoints(total || 0);
       if (allResearchWorkloads?.[0].remarks?.remarks?.length! > 0)
         setOvpaaRemarks(allResearchWorkloads?.[0].remarks?.remarks!);
@@ -113,6 +119,44 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
     window.print();
   };
 
+  const onSubmitWorkloads = async () => {
+    setIsSubmitting(true);
+    try {
+      if (!!allTeachingWorkloads?.length)
+        await submitTwlWorkload(allTeachingWorkloads[0].id!);
+      if (!!allResearchWorkloads?.length)
+        await submitRwlWorkload(allResearchWorkloads[0].id!);
+      if (!!allExtensionWorkloads?.length)
+        await submitEwlWorkload(allExtensionWorkloads[0].id!);
+      if (!!allStrategicFunctionWorkloads?.length)
+        await submitSfWorkload(allStrategicFunctionWorkloads[0].id!);
+      if (user) {
+        const {
+          teachingWorkloads,
+          extensionWorkloads,
+          researchWorkloads,
+          strategicFunctionWorkloads
+        } = await GetAllUserPendingWorkloads(user.email);
+        actions.setHasPendingTeachingWorkload(
+          !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
+        );
+        actions.setHasPendingExtensionWorkload(
+          !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
+        );
+        actions.setHasPendingResearchWorkload(
+          !!researchWorkloads.length && researchWorkloads[0].isSubmitted
+        );
+        actions.setHasPendingStrategicWorkload(
+          !!strategicFunctionWorkloads.length &&
+            strategicFunctionWorkloads[0].isSubmitted
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsSubmitting(false);
+  };
+
   return (
     <>
       {!allTeachingWorkloads &&
@@ -131,6 +175,16 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
         </div>
       ) : (
         <Container>
+          <Confirm
+            open={isConfirming}
+            onCancel={() => setIsConfirming(false)}
+            onConfirm={() => {
+              setIsConfirming(false);
+              onSubmitWorkloads();
+            }}
+            content="Confirm submission?"
+            size="large"
+          />
           <div id="printable">
             <HeaderText>{user?.firstName + " " + user?.surname}</HeaderText>
             <UserInfoContainer>
@@ -509,7 +563,26 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
             </ComputationContainer>
           </div>
           <ButtonContainer>
-            <FormButton text="Print" onClicked={onPrint} />
+            <FormButton
+              text="Print"
+              onClicked={onPrint}
+              disabled={isSubmitting}
+            />
+            {((!!allTeachingWorkloads?.length &&
+              !allTeachingWorkloads[0].isSubmitted) ||
+              (!!allResearchWorkloads?.length &&
+                !allResearchWorkloads[0].isSubmitted) ||
+              (!!allExtensionWorkloads?.length &&
+                !allExtensionWorkloads[0].isSubmitted) ||
+              (!!allStrategicFunctionWorkloads?.length &&
+                !allStrategicFunctionWorkloads[0].isSubmitted)) && (
+              <FormButton
+                text="Submit"
+                onClicked={() => setIsConfirming(true)}
+                isSubmitting={isSubmitting || isDataLoading}
+                disabled={isSubmitting}
+              />
+            )}
           </ButtonContainer>
         </Container>
       )}

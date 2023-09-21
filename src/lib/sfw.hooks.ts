@@ -9,4 +9,8 @@ const getSfwSavedWorkload = async (userId: string) => {
   return { data };
 };
 
-export { getSfwSavedWorkload };
+const submitSfWorkload = async (id: string) => {
+  return await axios.patch(`strategic-function-workload/${id}/submit-workload`);
+};
+
+export { getSfwSavedWorkload, submitSfWorkload };
