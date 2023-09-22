@@ -39,7 +39,7 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
                 <TdStyled>{item.ewlPoints ? item.ewlPoints : 0}</TdStyled>
                 <TdStyled>{item.sfwPoints ? item.sfwPoints : 0}</TdStyled>
                 <TdStyled>
-                  {item.rwlPoints
+                  {item.twlPoints!
                     ? +item.twlPoints!
                     : 0 + item.rwlPoints!
                     ? +item.rwlPoints!
