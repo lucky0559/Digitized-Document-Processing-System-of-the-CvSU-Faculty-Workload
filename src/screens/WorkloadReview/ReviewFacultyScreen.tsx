@@ -659,12 +659,20 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                   </BoldText>
                   <ThinText>{ovpaaTotalSfPoints}</ThinText>
                 </PointsContainer>
-                {isQualifyOverload && (
-                  <BoldText style={{ color: "green" }}>
-                    You're qualified for an overload pay amounting to{" "}
-                    {totalOverload}.
-                  </BoldText>
-                )}
+                {ovpaaTotalTwlPoints ||
+                ovpaaTotalRwlPoints ||
+                ovpaaTotalEwlPoints ? (
+                  isQualifyOverload ? (
+                    <BoldText style={{ color: "green" }}>
+                      You're qualified for an overload pay amounting to{" "}
+                      {totalOverload}.
+                    </BoldText>
+                  ) : (
+                    <BoldText style={{ color: "red" }}>
+                      You didn't qualify for an overload pay.
+                    </BoldText>
+                  )
+                ) : null}
               </OvpaaContainerPointsRemarks>
             </ComputationContainer>
           </div>
