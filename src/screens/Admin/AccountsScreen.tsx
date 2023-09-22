@@ -6,7 +6,9 @@ import {
   Modal,
   Select,
   SelectChangeEvent,
-  Typography
+  Typography,
+  TextField,
+  FormLabel
 } from "@mui/material";
 
 import styled from "styled-components";
@@ -15,7 +17,7 @@ import Menu from "../../components/Menu";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
 import { User } from "../../types/User";
-import { ChangeUserRole, GetAllUser } from "../../lib/user.hooks";
+import { GetAllUser, UpdateUserAdmin } from "../../lib/user.hooks";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ProfileTab from "../../components/ProfileTab";
@@ -37,6 +39,12 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
   const [onLoadingSave, setOnLoadingSave] = useState(false);
 
   const [isDataLoading, setIsDataLoading] = useState(false);
+
+  const isEditableHourlyRate =
+    userToEdit?.academicRank === "Instructor I" ||
+    userToEdit?.academicRank === "Instructor II" ||
+    userToEdit?.academicRank === "Instructor III" ||
+    userToEdit?.role === "Department Chairperson";
 
   useEffect(() => {
     (async () => {
@@ -127,10 +135,22 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
     });
   };
 
+  const onRateChangeHandler = (e: number) => {
+    setUserToEdit({
+      ...userToEdit!,
+      hourlyRate: e
+    });
+  };
+
   const onSave = async () => {
     setOnLoadingSave(true);
     try {
-      await ChangeUserRole(userToEdit?.email!, userToEdit?.role!);
+      await UpdateUserAdmin(
+        userToEdit?.email!,
+        userToEdit?.role!,
+        isEditableHourlyRate ? userToEdit?.hourlyRate || 165.71 : 165.71
+      );
+
       setUserToEdit(undefined);
     } catch (e) {
       return e;
@@ -145,7 +165,9 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
       <div
         style={{ display: "flex", flexDirection: "row", position: "relative" }}
       >
-        <Menu position="relative" />
+        <div style={{ minHeight: "100vh" }}>
+          <Menu position="relative" />
+        </div>
         <ProfileTab
           isProfileOpen={isProfileOpen}
           UseLogout={UseLogout}
@@ -179,21 +201,37 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
                 <Typography paddingBottom={2}>
                   {userToEdit?.campus.toUpperCase()}
                 </Typography>
-                <Select
-                  defaultValue={userToEdit?.role}
-                  value={userToEdit?.role}
-                  onChange={onSelectRoleChangeHandler}
-                >
-                  <MenuItem value={"Department Chairperson"}>
-                    Department Chairperson
-                  </MenuItem>
-                  <MenuItem value={"System Administrator"}>
-                    System Administrator
-                  </MenuItem>
-                  <MenuItem value={"Faculty"}>Faculty</MenuItem>
-                  <MenuItem value={"Dean"}>College Dean</MenuItem>
-                  <MenuItem value={"OVPAA"}>OVPAA</MenuItem>
-                </Select>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    defaultValue={userToEdit?.role}
+                    value={userToEdit?.role}
+                    onChange={onSelectRoleChangeHandler}
+                    style={{ marginBottom: 15 }}
+                  >
+                    <MenuItem value={"Department Chairperson"}>
+                      Department Chairperson
+                    </MenuItem>
+                    <MenuItem value={"System Administrator"}>
+                      System Administrator
+                    </MenuItem>
+                    <MenuItem value={"Faculty"}>Faculty</MenuItem>
+                    <MenuItem value={"Dean"}>College Dean</MenuItem>
+                    <MenuItem value={"OVPAA"}>OVPAA</MenuItem>
+                  </Select>
+                  {isEditableHourlyRate && (
+                    <>
+                      <FormLabel>Hourly Rate</FormLabel>
+                      <TextField
+                        value={userToEdit?.hourlyRate || ""}
+                        onChange={e =>
+                          onRateChangeHandler(Number(e.target.value))
+                        }
+                        type="number"
+                      />
+                    </>
+                  )}
+                </div>
               </Box>
 
               <Box
@@ -204,7 +242,11 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
                 <FormButton
                   text="Save"
                   onClicked={onSave}
-                  disabled={userToEdit?.role === userRecentRole}
+                  disabled={
+                    (isEditableHourlyRate
+                      ? !userToEdit.role
+                      : userToEdit?.role === userRecentRole) || onLoadingSave
+                  }
                   isSubmitting={onLoadingSave}
                 />
                 <FormButton text="Close" onClicked={onModalClose} />
