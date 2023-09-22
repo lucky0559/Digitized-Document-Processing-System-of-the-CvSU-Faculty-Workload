@@ -242,20 +242,26 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
     setIsSubmitting(false);
   };
 
-  const totalOverload = useMemo(() => {
-    const totalPoints =
+  const totalPoints = useMemo(() => {
+    const total =
       ovpaaTotalTwlPoints +
       ovpaaTotalEwlPoints +
       ovpaaTotalRwlPoints +
       ovpaaTotalSfPoints -
       25;
-    return totalPoints >= 9.84 ? 9.84 * 165 * 18 : totalPoints * 165 * 18;
+    return total;
   }, [
     ovpaaTotalEwlPoints,
     ovpaaTotalRwlPoints,
     ovpaaTotalSfPoints,
     ovpaaTotalTwlPoints
   ]);
+
+  const totalOverload = useMemo(() => {
+    const total =
+      totalPoints >= 9.84 ? 9.84 * 165 * 18 : totalPoints * 165 * 18;
+    return total;
+  }, [totalPoints]);
 
   return (
     <>
@@ -662,7 +668,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 {ovpaaTotalTwlPoints ||
                 ovpaaTotalRwlPoints ||
                 ovpaaTotalEwlPoints ? (
-                  isQualifyOverload ? (
+                  isQualifyOverload && totalPoints > 25 ? (
                     <BoldText style={{ color: "green" }}>
                       You're qualified for an overload pay amounting to{" "}
                       {totalOverload}.
