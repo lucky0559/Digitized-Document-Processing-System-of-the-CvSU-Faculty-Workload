@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { GetAllUserPendingWorkloads } from "../../lib/faculty-workload.hooks";
 import { TeachingWorkLoadType } from "../../types/TeachingWorkload";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
@@ -44,6 +44,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
 
   const { user, actions } = useContext(UserContext);
 
+  const [isQualifyOverload, setIsQualifyOverload] = useState(false);
+
   useEffect(() => {
     if (!isSubmitting) {
       (async () => {
@@ -63,6 +65,89 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting]);
+
+  useEffect(() => {
+    if (
+      user.academicRank === "Instructor I" ||
+      user.academicRank === "Instructor II" ||
+      user.academicRank === "Instructor III"
+    ) {
+      const isTwlPassed = ovpaaTotalTwlPoints
+        ? ovpaaTotalTwlPoints >= 15
+        : false;
+      const isResearchPassed = ovpaaTotalRwlPoints
+        ? ovpaaTotalRwlPoints >= 3
+        : false;
+      const isExtensionPassed = ovpaaTotalEwlPoints
+        ? ovpaaTotalEwlPoints >= 3
+        : false;
+      setIsQualifyOverload(
+        isTwlPassed && (isResearchPassed || isExtensionPassed)
+      );
+    } else if (
+      user.academicRank === "Assistant Professor I" ||
+      user.academicRank === "Assistant Professor II" ||
+      user.academicRank === "Assistant Professor III" ||
+      user.academicRank === "Assistant Professor IV"
+    ) {
+      const isTwlPassed = ovpaaTotalTwlPoints
+        ? ovpaaTotalTwlPoints >= 12
+        : false;
+      const isResearchPassed = ovpaaTotalRwlPoints
+        ? ovpaaTotalRwlPoints >= 3
+        : false;
+      const isExtensionPassed = ovpaaTotalEwlPoints
+        ? ovpaaTotalEwlPoints >= 3
+        : false;
+      setIsQualifyOverload(
+        isTwlPassed && isResearchPassed && isExtensionPassed
+      );
+    } else if (
+      user.academicRank === "Associate Professor I" ||
+      user.academicRank === "Associate Professor II" ||
+      user.academicRank === "Associate Professor III" ||
+      user.academicRank === "Associate Professor IV" ||
+      user.academicRank === "Associate Professor V"
+    ) {
+      const isTwlPassed = ovpaaTotalTwlPoints
+        ? ovpaaTotalTwlPoints >= 9
+        : false;
+      const isResearchPassed = ovpaaTotalRwlPoints
+        ? ovpaaTotalRwlPoints >= 6
+        : false;
+      const isExtensionPassed = ovpaaTotalEwlPoints
+        ? ovpaaTotalEwlPoints >= 3
+        : false;
+      setIsQualifyOverload(
+        isTwlPassed && isResearchPassed && isExtensionPassed
+      );
+    } else if (
+      user.academicRank === "Professor I" ||
+      user.academicRank === "Professor II" ||
+      user.academicRank === "Professor III" ||
+      user.academicRank === "Professor IV" ||
+      user.academicRank === "Professor V" ||
+      user.academicRank === "Professor VI"
+    ) {
+      const isTwlPassed = ovpaaTotalTwlPoints
+        ? ovpaaTotalTwlPoints >= 6
+        : false;
+      const isResearchPassed = ovpaaTotalRwlPoints
+        ? ovpaaTotalRwlPoints >= 9
+        : false;
+      const isExtensionPassed = ovpaaTotalEwlPoints
+        ? ovpaaTotalEwlPoints >= 3
+        : false;
+      setIsQualifyOverload(
+        isTwlPassed && isResearchPassed && isExtensionPassed
+      );
+    }
+  }, [
+    ovpaaTotalEwlPoints,
+    ovpaaTotalRwlPoints,
+    ovpaaTotalTwlPoints,
+    user.academicRank
+  ]);
 
   useEffect(() => {
     if (allTeachingWorkloads?.length! > 0) {
@@ -156,6 +241,21 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
     }
     setIsSubmitting(false);
   };
+
+  const totalOverload = useMemo(() => {
+    const totalPoints =
+      ovpaaTotalTwlPoints +
+      ovpaaTotalEwlPoints +
+      ovpaaTotalRwlPoints +
+      ovpaaTotalSfPoints -
+      25;
+    return totalPoints >= 9.84 ? 9.84 * 165 * 18 : totalPoints * 165 * 18;
+  }, [
+    ovpaaTotalEwlPoints,
+    ovpaaTotalRwlPoints,
+    ovpaaTotalSfPoints,
+    ovpaaTotalTwlPoints
+  ]);
 
   return (
     <>
@@ -553,12 +653,18 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                   <BoldText>Total Extension Workload Points: </BoldText>
                   <ThinText>{ovpaaTotalEwlPoints}</ThinText>
                 </PointsContainer>
-                <PointsContainer>
+                <PointsContainer style={{ marginBottom: 30 }}>
                   <BoldText>
                     Total Strategic Function Workload Points:{" "}
                   </BoldText>
                   <ThinText>{ovpaaTotalSfPoints}</ThinText>
                 </PointsContainer>
+                {isQualifyOverload && (
+                  <BoldText style={{ color: "green" }}>
+                    You're qualified for an overload pay amounting to{" "}
+                    {totalOverload}.
+                  </BoldText>
+                )}
               </OvpaaContainerPointsRemarks>
             </ComputationContainer>
           </div>
