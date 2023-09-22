@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
@@ -147,16 +147,6 @@ const Menu = ({ position }: MenuProps) => {
   );
 };
 
-// const slideInAnimation = keyframes`
-//  0% { top: -54px }
-//  100% { top: 54px; }
-//  `;
-
-// const slideOutAnimation = keyframes`
-//  0% { top: 54px }
-//  100% { top: -54px; }
-//  `;
-
 const Container = styled.div<{ position: string | undefined }>`
   width: 248px;
   background-color: ${Colors.secondary};
@@ -200,14 +190,6 @@ const NavButtonText = styled.span<{ isActive: boolean }>`
   line-height: 20px;
   color: ${p => (p.isActive ? Colors.active : Colors.white)};
 `;
-
-// const SubMenuParent = styled.div<{ isFacultySubmenuOpen: boolean }>`
-//   top: ${p => (p.isFacultySubmenuOpen ? 54 : -248)}px;
-//   animation-name: ${p =>
-//     p.isFacultySubmenuOpen ? slideInAnimation : slideOutAnimation};
-//   animation-duration: 0.5s;
-//   align-self: flex-end;
-// `;
 
 const SubMenuContainer = styled.div<{ disabled?: boolean }>`
   border-bottom: 1px solid ${Colors.primary};

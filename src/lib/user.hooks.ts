@@ -71,8 +71,14 @@ export const ChangePassword = async (
   return { data };
 };
 
-export const ChangeUserRole = async (id: string, role: string) => {
-  const { data } = await axios.patch(`user/${id}/${role}/change-role`);
+export const UpdateUserAdmin = async (
+  id: string,
+  role: string,
+  hourlyRate: number
+) => {
+  const { data } = await axios.patch(
+    `user/${id}/${role}/${hourlyRate}/update-user-admin`
+  );
   return { data };
 };
 

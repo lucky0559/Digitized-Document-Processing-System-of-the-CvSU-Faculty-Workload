@@ -242,20 +242,26 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
     setIsSubmitting(false);
   };
 
-  const totalOverload = useMemo(() => {
-    const totalPoints =
+  const totalPoints = useMemo(() => {
+    const total =
       ovpaaTotalTwlPoints +
       ovpaaTotalEwlPoints +
       ovpaaTotalRwlPoints +
       ovpaaTotalSfPoints -
       25;
-    return totalPoints >= 9.84 ? 9.84 * 165 * 18 : totalPoints * 165 * 18;
+    return total;
   }, [
     ovpaaTotalEwlPoints,
     ovpaaTotalRwlPoints,
     ovpaaTotalSfPoints,
     ovpaaTotalTwlPoints
   ]);
+
+  const totalOverload = useMemo(() => {
+    const total =
+      totalPoints >= 9.84 ? 9.84 * 165 * 18 : totalPoints * 165 * 18;
+    return total;
+  }, [totalPoints]);
 
   return (
     <>
@@ -659,12 +665,20 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                   </BoldText>
                   <ThinText>{ovpaaTotalSfPoints}</ThinText>
                 </PointsContainer>
-                {isQualifyOverload && (
-                  <BoldText style={{ color: "green" }}>
-                    You're qualified for an overload pay amounting to{" "}
-                    {totalOverload}.
-                  </BoldText>
-                )}
+                {ovpaaTotalTwlPoints ||
+                ovpaaTotalRwlPoints ||
+                ovpaaTotalEwlPoints ? (
+                  isQualifyOverload && totalPoints > 25 ? (
+                    <BoldText style={{ color: "green" }}>
+                      You're qualified for an overload pay amounting to{" "}
+                      {totalOverload}.
+                    </BoldText>
+                  ) : (
+                    <BoldText style={{ color: "red" }}>
+                      You didn't qualify for an overload pay.
+                    </BoldText>
+                  )
+                ) : null}
               </OvpaaContainerPointsRemarks>
             </ComputationContainer>
           </div>
