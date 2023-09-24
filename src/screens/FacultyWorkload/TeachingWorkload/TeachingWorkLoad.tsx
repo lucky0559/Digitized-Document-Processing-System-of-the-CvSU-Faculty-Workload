@@ -33,8 +33,6 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
-
   const [teachingWorkLoad, setTeachingWorkLoad] =
     useState<TeachingWorkLoadType>();
   const [numberOfPreparations, setNumberOfPreparations] = useState("");
@@ -185,6 +183,7 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
       setPoints(Number(data.totalTeachingWorkload));
       setIsLoading(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
   const onRemoveFile = () => {
@@ -280,7 +279,8 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             </SubContainer>
             <ButtonContainer>
               <Label style={{ fontWeight: "bold" }}>
-                Total Teaching Workload = {points.toFixed(2).toString()}
+                Total Teaching Workload ={" "}
+                {points ? points.toFixed(2).toString() : 0}
               </Label>
               <div>
                 <FormButton

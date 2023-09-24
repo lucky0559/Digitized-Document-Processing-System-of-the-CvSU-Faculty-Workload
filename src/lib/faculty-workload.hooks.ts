@@ -94,29 +94,23 @@ export const SaveResearchWorkload = async (
 
   if (!!researchWorkload.cvsuFunded.length) {
     for (let i = 0; i < researchWorkload.cvsuFunded.length; i++) {
-      const cvsuFundedFilePaths = [];
       if (researchWorkload.cvsuFunded[i].file) {
         const file = await rwlAwsConfigS3.uploadFile(
           researchWorkload.cvsuFunded[i].file!
         );
-        cvsuFundedFilePaths.push(file.location);
+        researchWorkload.cvsuFundedFilePath![i] = file.location;
       }
-      if (!!cvsuFundedFilePaths.length)
-        researchWorkload.cvsuFundedFilePath = cvsuFundedFilePaths;
     }
   }
 
   if (!!researchWorkload.externallyFunded.length) {
     for (let i = 0; i < researchWorkload.externallyFunded.length; i++) {
-      const externallyFundedFilePaths = [];
       if (researchWorkload.externallyFunded[i].file) {
         const file = await rwl1AwsConfigS3.uploadFile(
           researchWorkload.externallyFunded[i].file!
         );
-        externallyFundedFilePaths.push(file.location);
+        researchWorkload.externallyFundedFilePath![i] = file.location;
       }
-      if (!!externallyFundedFilePaths.length)
-        researchWorkload.externallyFundedFilePath = externallyFundedFilePaths;
     }
   }
 

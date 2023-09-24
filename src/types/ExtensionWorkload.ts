@@ -17,4 +17,9 @@ export type ExtensionWorkloadType = {
   ewlPoints?: number;
   remarks?: PointsAndRemarks;
   isSubmitted?: boolean;
+  hoursRenderedPoints?: number;
+  designationPoints?: number;
+  resourcePerson1Points?: number;
+  resourcePerson2Points?: number;
+  resourcePerson3Points?: number;
 };
