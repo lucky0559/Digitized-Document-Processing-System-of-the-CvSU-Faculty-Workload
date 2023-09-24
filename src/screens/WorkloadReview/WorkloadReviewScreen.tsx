@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
@@ -52,8 +52,6 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
     useState<OvpaaWorkloads>();
   const [ovpaaStrategicWorkloads, setOvpaaStrategicWorkloads] =
     useState<OvpaaWorkloads>();
-
-  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
 
   const [isDataLoading, setIsDataLoading] = useState(true);
 
@@ -157,6 +155,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
           strategicFunctionWorkloads[0].isSubmitted
       );
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -177,7 +176,11 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
             {!isDataLoading ? (
               user?.role === "Faculty" ? (
                 <ReviewFacultyScreen userEmail={user?.email} />
-              ) : user?.role === "OVPAA" ? (
+              ) : user?.role === "OVPAA" &&
+                !ovpaaTeachingWorkloads &&
+                !ovpaaResearchWorkloads &&
+                !ovpaaExtensionWorkloads &&
+                !ovpaaStrategicWorkloads ? (
                 <OvpaaWorkloadReview
                   teachingWorkload={ovpaaTeachingWorkloads}
                   researchWorkload={ovpaaResearchWorkloads}
@@ -186,6 +189,10 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
                   isDataLoading={isDataLoading}
                   setIsDataLoading={setIsDataLoading}
                 />
+              ) : user?.role === "OVPAA" ? (
+                <div>
+                  <ButtonText>No data.</ButtonText>
+                </div>
               ) : !isDataLoading &&
                 (allTeachingWorkload ||
                   allResearchWorkload ||
@@ -270,6 +277,19 @@ const ScreenTitleContainer = styled.div`
   @media print {
     display: none;
   }
+`;
+
+const ButtonText = styled.label`
+  font-family: HurmeGeometricSans3;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default WorkloadReviewScreen;

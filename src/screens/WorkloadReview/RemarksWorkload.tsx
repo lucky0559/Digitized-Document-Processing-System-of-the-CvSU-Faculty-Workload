@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
@@ -9,6 +9,7 @@ import { ResearchWorkLoadType } from "../../types/ResearchWorkLoad";
 import { ExtensionWorkloadType } from "../../types/ExtensionWorkload";
 import { StrategicFunctionType } from "../../types/StrategicFunction";
 import { UserContext } from "../../App";
+import { DROPDOWN_LISTS } from "../../constants/Strings";
 
 type WorkloadProps = {
   user: User;
@@ -76,16 +77,65 @@ function RemarksWorkload({
 
   useEffect(() => {
     setRwlPointsRemarks(rwlPointsRemarksInitial!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rwlPointsRemarksInitial]);
 
   useEffect(() => {
     setEwlPointsRemarks(ewlPointsRemarksInitial!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ewlPointsRemarksInitial]);
 
   useEffect(() => {
     setSfPointsRemarks(sfPointsRemarksInitial!);
-    console.log(sfPointsRemarksInitial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sfPointsRemarksInitial]);
+
+  useEffect(() => {
+    if (!!teachingWorkloads?.length) {
+      setTwlPointsRemarks({
+        key: teachingWorkloads?.[0].id || "",
+        points: teachingWorkloads?.[0].totalTeachingWorkload?.toString() || ""
+      });
+    }
+  }, [setTwlPointsRemarks, teachingWorkloads]);
+
+  useEffect(() => {
+    if (!!researchWorkloads?.length) {
+      setRwlPointsRemarks([
+        {
+          key: researchWorkloads?.[0].cvsuFundedFilePath?.[0] || "",
+          points: researchWorkloads?.[0].rwlPoints?.toString() || ""
+        }
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setRwlPointsRemarks, researchWorkloads]);
+
+  useEffect(() => {
+    if (!!extensionWorkloads?.length) {
+      setEwlPointsRemarks([
+        {
+          key: extensionWorkloads?.[0].extensionActivityFilePath || "",
+          points: extensionWorkloads?.[0].ewlPoints?.toString() || ""
+        }
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setEwlPointsRemarks, extensionWorkloads]);
+
+  useEffect(() => {
+    if (!!strategicFunctionWorkloads?.length) {
+      setSfPointsRemarks([
+        {
+          key:
+            strategicFunctionWorkloads?.[0]
+              .approvedUniversityDesignationFilePath?.[0] || "",
+          points: strategicFunctionWorkloads?.[0].sfwPoints?.toString() || ""
+        }
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setSfPointsRemarks, strategicFunctionWorkloads]);
 
   return (
     <Container>
@@ -144,7 +194,7 @@ function RemarksWorkload({
         </div>
       ) : (
         teachingWorkloads?.map(workload => {
-          let points = "";
+          let points = workload.totalTeachingWorkload?.toString();
           return (
             <>
               <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
@@ -206,11 +256,10 @@ function RemarksWorkload({
                             type="number"
                             min={0}
                             onChange={e => {
-                              points = e.target.value;
                               if (Number(points) > 0) {
                                 workload.remarks = {
                                   key: workload.id!,
-                                  points: points
+                                  points: e.target.value
                                 };
                                 if (Number(workload.remarks.points) > 0) {
                                   setTwlPointsRemarks(workload.remarks);
@@ -224,6 +273,7 @@ function RemarksWorkload({
                                 };
                               }
                             }}
+                            defaultValue={points}
                           />
                         </div>
                       )}
@@ -231,22 +281,6 @@ function RemarksWorkload({
                   )}
                 </ColumnContainer>
               </ColumnParentContainer>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: 25
-                }}
-              >
-                <ColumnContainer style={{ paddingLeft: 90 }}>
-                  {/* <BoldText>TOTAL:</BoldText> */}
-                </ColumnContainer>
-                <ColumnContainer>
-                  {/* <BoldText>
-                    {Number(workload.totalTeachingWorkload).toFixed(2)}
-                  </BoldText> */}
-                </ColumnContainer>
-              </div>
             </>
           );
         })
@@ -272,135 +306,300 @@ function RemarksWorkload({
               <WorkloadHeaderContainer>
                 <WorkloadHeaderText>Research Workload</WorkloadHeaderText>
               </WorkloadHeaderContainer>
-              <ColumnParentContainer>
+              <ColumnParentContainer
+                style={{ display: "flex", flexDirection: "column" }}
+              >
                 <ColumnContainer style={{ display: "flex", flex: 1 }}>
                   {workload.cvsuFunded &&
-                    workload.cvsuFunded.map(() => (
-                      <>
-                        <ThinText>Title of the Study:</ThinText>
-                        <ThinText>Status of the Study:</ThinText>
-                        <ThinText>Designation in the Study:</ThinText>
-                        <ThinText style={{ maxWidth: 350 }}>
-                          Proposal(for Approved Proposal) or Progress Report(for
-                          On-Going Study) Attachment:
-                        </ThinText>
-                      </>
-                    ))}
-                  {workload.disseminatedResearchFilesPath && (
-                    <ThinText>Certificate of Presentation:</ThinText>
-                  )}
-                  {workload.externallyFunded &&
-                    workload.externallyFunded.map(() => (
-                      <>
-                        <ThinText>Title of the Study:</ThinText>
-                        <ThinText>
-                          Fund Generated per Semester (in peso):
-                        </ThinText>
-                        <ThinText style={{ maxWidth: 350 }}>
-                          Proposal(for Approved Externally Funded Proposal) or
-                          Progress Report(for On-Going Externally Funded Study)
-                          Attachment:
-                        </ThinText>
-                      </>
-                    ))}
-                </ColumnContainer>
-                <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                  {workload.cvsuFunded &&
-                    workload.cvsuFunded.map(funded => (
-                      <>
-                        <BoldText>{funded.title}</BoldText>
-                        <ThinText>{funded.typeOfStudy}</ThinText>
-                        <ThinText>{funded.designationStudy}</ThinText>
-                      </>
-                    ))}
-                  {workload.cvsuFunded &&
-                    workload.cvsuFunded.map(funded => (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <a
-                          href={funded.filePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
-                          }}
+                    workload.cvsuFunded.map((funded, index) => {
+                      let points = funded.points.toString();
+                      return (
+                        <div
+                          style={{ display: "flex", flexDirection: "row" }}
+                          key={funded.filePath}
                         >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {userContext.role === "OVPAA" && (
                           <div
                             style={{
-                              width: 170,
                               display: "flex",
+                              flexDirection: "column",
                               marginRight: 15
                             }}
                           >
-                            <InputPoints
-                              type="number"
-                              min={0}
-                              onChange={e => {
-                                points = e.target.value;
-                                if (Number(points) > 0) {
-                                  const hasData =
-                                    rwlPointsRemarksInitial?.filter(
-                                      item => item.key === funded.filePath
-                                    );
-                                  if (hasData) {
-                                    const filtered =
-                                      rwlPointsRemarksInitial?.filter(
-                                        item => item.key !== funded.filePath
-                                      );
-                                    setRwlPointsRemarksInitial(filtered);
-                                    if (Number(points) > 0) {
-                                      setRwlPointsRemarksInitial([
-                                        ...filtered!,
-                                        {
-                                          key: funded.filePath!,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setRwlPointsRemarksInitial([
-                                      {
-                                        key: funded.filePath!,
-                                        points: points
-                                      }
-                                    ]);
-                                  }
-                                } else {
-                                  setRwlPointsRemarksInitial(
-                                    rwlPointsRemarksInitial?.filter(
-                                      item => item.key !== funded.filePath
-                                    )
-                                  );
-                                }
-                              }}
-                            />
+                            <BoldText style={{ marginBottom: 10 }}>
+                              CvSU Funded Research
+                            </BoldText>
+                            <ThinText>Title of the Study:</ThinText>
+                            <ThinText>Type of the Study:</ThinText>
+                            <ThinText>Designation in the Study:</ThinText>
+                            <ThinText
+                              style={{ maxWidth: 350, marginBottom: 10 }}
+                            >
+                              Proposal(for Approved Proposal) or Progress
+                              Report(for On-Going Study) Attachment:
+                            </ThinText>
                           </div>
-                        )}
-                      </div>
-                    ))}
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              marginLeft: 15
+                            }}
+                          >
+                            <BoldText style={{ marginBottom: 10 }}>
+                              &nbsp;
+                            </BoldText>
+                            <BoldText>{funded.title}</BoldText>
+                            <BoldText>{funded.typeOfStudy}</BoldText>
+                            <BoldText>{funded.designationStudy}</BoldText>
+                            <div
+                              style={{
+                                display: "flex",
+                                width: "100%",
+                                justifyContent: "space-between"
+                              }}
+                            >
+                              <a
+                                href={workload.cvsuFundedFilePath?.[index]}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  textDecoration: "none",
+                                  alignItems: "flex-start",
+                                  display: "flex"
+                                }}
+                              >
+                                <ThinText
+                                  style={{
+                                    color: "white",
+                                    fontSize: 12,
+                                    backgroundColor: Colors.buttonPrimary,
+                                    paddingLeft: 5,
+                                    paddingRight: 5,
+                                    cursor: "pointer"
+                                  }}
+                                  onClick={() => {}}
+                                >
+                                  Attachment
+                                </ThinText>
+                              </a>
+                              {userContext.role === "OVPAA" && (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    marginLeft: 290
+                                  }}
+                                >
+                                  <InputPoints
+                                    type="number"
+                                    min={0}
+                                    onChange={e => {
+                                      points = e.target.value;
+                                      if (Number(points) > 0) {
+                                        const hasData =
+                                          rwlPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key ===
+                                              workload.cvsuFundedFilePath?.[
+                                                index
+                                              ]
+                                          );
+                                        if (hasData) {
+                                          const filtered =
+                                            rwlPointsRemarksInitial?.filter(
+                                              item =>
+                                                item.key !==
+                                                workload.cvsuFundedFilePath?.[
+                                                  index
+                                                ]
+                                            );
+                                          setRwlPointsRemarksInitial(filtered);
+                                          if (Number(points) > 0) {
+                                            setRwlPointsRemarksInitial([
+                                              ...filtered!,
+                                              {
+                                                key: workload
+                                                  .cvsuFundedFilePath?.[index]!,
+                                                points: points
+                                              }
+                                            ]);
+                                          }
+                                        } else {
+                                          setRwlPointsRemarksInitial([
+                                            {
+                                              key: workload
+                                                .cvsuFundedFilePath?.[index]!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
+                                        setRwlPointsRemarksInitial(
+                                          rwlPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.cvsuFundedFilePath?.[
+                                                index
+                                              ]
+                                          )
+                                        );
+                                      }
+                                    }}
+                                    defaultValue={points}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  {workload.externallyFunded &&
+                    workload.externallyFunded.map((funded, index) => {
+                      let points = funded.points.toString();
+                      return (
+                        <div
+                          style={{ display: "flex", flexDirection: "row" }}
+                          key={funded.filePath}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              marginRight: 15
+                            }}
+                          >
+                            <BoldText style={{ marginBottom: 10 }}>
+                              Externally Funded Research
+                            </BoldText>
+                            <ThinText>Title of the Study:</ThinText>
+                            <ThinText>
+                              Fund Generated per Semester (in peso):
+                            </ThinText>
+                            <ThinText
+                              style={{ maxWidth: 350, marginBottom: 10 }}
+                            >
+                              Proposal(for Approved Externally Funded Proposal)
+                              or Progress Report(for On-Going Externally Funded
+                              Study) Attachment:
+                            </ThinText>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              marginLeft: 15
+                            }}
+                          >
+                            <BoldText style={{ marginBottom: 10 }}>
+                              &nbsp;
+                            </BoldText>
+                            <BoldText>{funded.title}</BoldText>
+                            <BoldText>{funded.fundGenerated}</BoldText>
+                            <div
+                              style={{
+                                display: "flex",
+                                width: "100%",
+                                justifyContent: "space-between"
+                              }}
+                            >
+                              <a
+                                href={
+                                  workload.externallyFundedFilePath?.[index]
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  textDecoration: "none",
+                                  alignItems: "flex-start",
+                                  display: "flex"
+                                }}
+                              >
+                                <ThinText
+                                  style={{
+                                    color: "white",
+                                    fontSize: 12,
+                                    backgroundColor: Colors.buttonPrimary,
+                                    paddingLeft: 5,
+                                    paddingRight: 5,
+                                    cursor: "pointer"
+                                  }}
+                                  onClick={() => {}}
+                                >
+                                  Attachment
+                                </ThinText>
+                              </a>
+                              {userContext.role === "OVPAA" && (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    marginLeft: 290
+                                  }}
+                                >
+                                  <InputPoints
+                                    type="number"
+                                    min={0}
+                                    onChange={e => {
+                                      points = e.target.value;
+                                      if (Number(points) > 0) {
+                                        const hasData =
+                                          rwlPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key ===
+                                              workload
+                                                .externallyFundedFilePath?.[
+                                                index
+                                              ]
+                                          );
+                                        if (hasData) {
+                                          const filtered =
+                                            rwlPointsRemarksInitial?.filter(
+                                              item =>
+                                                item.key !==
+                                                workload
+                                                  .externallyFundedFilePath?.[
+                                                  index
+                                                ]
+                                            );
+                                          setRwlPointsRemarksInitial(filtered);
+                                          if (Number(points) > 0) {
+                                            setRwlPointsRemarksInitial([
+                                              ...filtered!,
+                                              {
+                                                key: workload
+                                                  .externallyFundedFilePath?.[
+                                                  index
+                                                ]!,
+                                                points: points
+                                              }
+                                            ]);
+                                          }
+                                        } else {
+                                          setRwlPointsRemarksInitial([
+                                            {
+                                              key: workload
+                                                .externallyFundedFilePath?.[
+                                                index
+                                              ]!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      }
+                                    }}
+                                    defaultValue={points}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  {workload.disseminatedResearchFilesPath && (
+                    <BoldText>Certificate of Presentation:</BoldText>
+                  )}
+                </ColumnContainer>
+                <ColumnContainer style={{ display: "flex", flex: 1 }}>
                   {workload.disseminatedResearchFilesPath &&
                     workload.disseminatedResearchFilesPath.map(attachment => {
                       return (
@@ -411,6 +610,7 @@ function RemarksWorkload({
                             width: "100%",
                             justifyContent: "space-between"
                           }}
+                          key={attachment}
                         >
                           <a
                             href={attachment}
@@ -439,7 +639,6 @@ function RemarksWorkload({
                           {userContext.role === "OVPAA" && (
                             <div
                               style={{
-                                width: 170,
                                 display: "flex",
                                 marginRight: 15
                               }}
@@ -478,125 +677,16 @@ function RemarksWorkload({
                                       ]);
                                     }
                                   }
-                                  // else {
-                                  //   rwlPointsRemarks = rwlPointsRemarks.filter(
-                                  //     item => item.key !== attachment
-                                  //   );
-                                  //   setRwlPointsRemarks(rwlPointsRemarks);
-                                  //   console.log(rwlPointsRemarks);
-                                  // }
                                 }}
+                                defaultValue={points}
                               />
                             </div>
                           )}
                         </div>
                       );
                     })}
-                  {workload.externallyFunded &&
-                    workload.externallyFunded.map(funded => (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <a
-                          href={funded.filePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
-                          }}
-                        >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {userContext.role === "OVPAA" && (
-                          <div
-                            style={{
-                              width: 170,
-                              display: "flex",
-                              marginRight: 15
-                            }}
-                          >
-                            <InputPoints
-                              type="number"
-                              min={0}
-                              onChange={e => {
-                                points = e.target.value;
-                                if (Number(points) > 0) {
-                                  const hasData =
-                                    rwlPointsRemarksInitial?.filter(
-                                      item => item.key === funded.filePath
-                                    );
-                                  if (hasData) {
-                                    const filtered =
-                                      rwlPointsRemarksInitial?.filter(
-                                        item => item.key !== funded.filePath
-                                      );
-                                    setRwlPointsRemarksInitial(filtered);
-                                    if (Number(points) > 0) {
-                                      setRwlPointsRemarksInitial([
-                                        ...filtered!,
-                                        {
-                                          key: funded.filePath!,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setRwlPointsRemarksInitial([
-                                      {
-                                        key: funded.filePath!,
-                                        points: points
-                                      }
-                                    ]);
-                                  }
-                                }
-                                // else {
-                                //   rwlPointsRemarks = rwlPointsRemarks.filter(
-                                //     item => item.key !== workload.rwlFilePath1
-                                //   );
-                                //   setRwlPointsRemarks(rwlPointsRemarks);
-                                //   console.log(rwlPointsRemarks);
-                                // }
-                              }}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    ))}
                 </ColumnContainer>
               </ColumnParentContainer>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: 25
-                }}
-              >
-                <ColumnContainer style={{ paddingLeft: 90 }}>
-                  {/* <BoldText>TOTAL:</BoldText> */}
-                </ColumnContainer>
-                <ColumnContainer>
-                  {/* <BoldText>{workload.rwlPoints}</BoldText> */}
-                </ColumnContainer>
-              </div>
             </>
           );
         })
@@ -615,7 +705,7 @@ function RemarksWorkload({
         </div>
       ) : (
         extensionWorkloads?.map(workload => {
-          let points = "";
+          let points = workload.ewlPoints?.toString();
           return (
             <>
               <WorkloadHeaderContainer>
@@ -736,12 +826,13 @@ function RemarksWorkload({
                                 );
                               }
                             }}
+                            defaultValue={workload.hoursRenderedPoints}
                           />
                         </div>
                       )}
                     </div>
                   )}
-                  {workload.certificateFilePath?.map(filePath => {
+                  {workload.certificateFilePath?.map((filePath, index) => {
                     return (
                       <div
                         style={{
@@ -750,6 +841,7 @@ function RemarksWorkload({
                           width: "100%",
                           justifyContent: "space-between"
                         }}
+                        key={filePath}
                       >
                         <a
                           href={filePath}
@@ -824,13 +916,20 @@ function RemarksWorkload({
                                   );
                                 }
                               }}
+                              defaultValue={
+                                index === 0
+                                  ? workload.resourcePerson1Points
+                                  : index === 1
+                                  ? workload.resourcePerson2Points
+                                  : workload.resourcePerson3Points
+                              }
                             />
                           </div>
                         )}
                       </div>
                     );
                   })}
-                  {workload.summaryOfHoursFilePath && (
+                  {/* {workload.summaryOfHoursFilePath && (
                     <div
                       style={{
                         display: "flex",
@@ -916,27 +1015,14 @@ function RemarksWorkload({
                                 );
                               }
                             }}
+                            defaultValue={workload.hoursRenderedPoints}
                           />
                         </div>
                       )}
                     </div>
-                  )}
+                  )} */}
                 </ColumnContainer>
               </ColumnParentContainer>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: 25
-                }}
-              >
-                <ColumnContainer style={{ paddingLeft: 90 }}>
-                  {/* <BoldText>TOTAL:</BoldText> */}
-                </ColumnContainer>
-                <ColumnContainer>
-                  {/* <BoldText>{Number(workload.ewlPoints).toFixed(2)}</BoldText> */}
-                </ColumnContainer>
-              </div>
             </>
           );
         })
@@ -956,6 +1042,36 @@ function RemarksWorkload({
       ) : (
         strategicFunctionWorkloads?.map(workload => {
           let points = "";
+          let sports1Points =
+            workload.designationAsSportTrainorAcademic ===
+            DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]
+              ? "5"
+              : workload.designationAsSportTrainorAcademic ===
+                DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[0]
+              ? "3"
+              : "0";
+          let sports2Points =
+            workload.designationAsSportTrainorAcademic1 ===
+            DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]
+              ? "5"
+              : workload.designationAsSportTrainorAcademic1 ===
+                DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[0]
+              ? "3"
+              : "0";
+          let sports3Points =
+            workload.designationAsSportTrainorAcademic2 ===
+            DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]
+              ? "5"
+              : workload.designationAsSportTrainorAcademic2 ===
+                DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[0]
+              ? "3"
+              : "0";
+          let adhocPoints1 = "0.05";
+          let adhocPoints2 = "0.05";
+          let adhocPoints3 = "0.05";
+          let academicPoints = (
+            Number(workload.academicAdvisees) * 0.023
+          ).toString();
           return (
             <>
               <WorkloadHeaderContainer>
@@ -972,7 +1088,14 @@ function RemarksWorkload({
                         {workload.designationUniversityLevel?.map(
                           designationUniversityLevel => {
                             return (
-                              <BoldText>{designationUniversityLevel}</BoldText>
+                              <BoldText
+                                key={
+                                  designationUniversityLevel +
+                                  Math.floor(Math.random()).toString()
+                                }
+                              >
+                                {designationUniversityLevel}
+                              </BoldText>
                             );
                           }
                         )}
@@ -988,7 +1111,12 @@ function RemarksWorkload({
                         {workload.designationCollegeCampusLevel?.map(
                           designationCollegeCampusLevel => {
                             return (
-                              <BoldText>
+                              <BoldText
+                                key={
+                                  designationCollegeCampusLevel +
+                                  Math.floor(Math.random()).toString()
+                                }
+                              >
                                 {designationCollegeCampusLevel}
                               </BoldText>
                             );
@@ -1006,7 +1134,14 @@ function RemarksWorkload({
                         {workload.designationDepartmentLevel?.map(
                           designationDepartmentLevel => {
                             return (
-                              <BoldText>{designationDepartmentLevel}</BoldText>
+                              <BoldText
+                                key={
+                                  designationDepartmentLevel +
+                                  Math.floor(Math.random()).toString()
+                                }
+                              >
+                                {designationDepartmentLevel}
+                              </BoldText>
                             );
                           }
                         )}
@@ -1036,6 +1171,7 @@ function RemarksWorkload({
                           {workload.approvedUniversityDesignationFilePath &&
                             workload.approvedUniversityDesignationFilePath.map(
                               path => {
+                                let points = "18";
                                 return (
                                   <div
                                     style={{
@@ -1044,6 +1180,7 @@ function RemarksWorkload({
                                       width: "100%",
                                       justifyContent: "space-between"
                                     }}
+                                    key={path}
                                   >
                                     <a
                                       href={path}
@@ -1120,6 +1257,7 @@ function RemarksWorkload({
                                               );
                                             }
                                           }}
+                                          defaultValue={points}
                                         />
                                       </div>
                                     )}
@@ -1145,6 +1283,7 @@ function RemarksWorkload({
                           {workload.approvedCollegeCampusDesignationFilePath &&
                             workload.approvedCollegeCampusDesignationFilePath.map(
                               path => {
+                                let points = "15";
                                 return (
                                   <div
                                     style={{
@@ -1153,6 +1292,7 @@ function RemarksWorkload({
                                       width: "100%",
                                       justifyContent: "space-between"
                                     }}
+                                    key={path}
                                   >
                                     <a
                                       href={path}
@@ -1229,6 +1369,7 @@ function RemarksWorkload({
                                               );
                                             }
                                           }}
+                                          defaultValue={points}
                                         />
                                       </div>
                                     )}
@@ -1253,6 +1394,7 @@ function RemarksWorkload({
                           {workload.approvedDepartmentDesignationFilePath &&
                             workload.approvedDepartmentDesignationFilePath.map(
                               path => {
+                                let points = "12";
                                 return (
                                   <div
                                     style={{
@@ -1261,6 +1403,7 @@ function RemarksWorkload({
                                       width: "100%",
                                       justifyContent: "space-between"
                                     }}
+                                    key={path}
                                   >
                                     <a
                                       href={path}
@@ -1337,6 +1480,7 @@ function RemarksWorkload({
                                               );
                                             }
                                           }}
+                                          defaultValue={points}
                                         />
                                       </div>
                                     )}
@@ -1447,6 +1591,7 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
+                                  defaultValue={sports1Points}
                                 />
                               </div>
                             )}
@@ -1542,6 +1687,103 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
+                                  defaultValue={sports2Points}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {workload.designationAsSportTrainorAcademicFilePath2 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={
+                                workload.designationAsSportTrainorAcademicFilePath2
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
+                                            workload.designationAsSportTrainorAcademicFilePath2
+                                        );
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.designationAsSportTrainorAcademicFilePath2
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.designationAsSportTrainorAcademicFilePath2!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
+                                        setSfPointsRemarksInitial([
+                                          {
+                                            key: workload.designationAsSportTrainorAcademicFilePath2!,
+                                            points: points
+                                          }
+                                        ]);
+                                      }
+                                    } else {
+                                      setSfPointsRemarksInitial(
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.designationAsSportTrainorAcademicFilePath2
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  defaultValue={sports3Points}
                                 />
                               </div>
                             )}
@@ -1647,6 +1889,7 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
+                                  defaultValue={adhocPoints1}
                                 />
                               </div>
                             )}
@@ -1740,6 +1983,101 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
+                                  defaultValue={adhocPoints2}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {workload.memberAdhocFilePath2 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={workload.memberAdhocFilePath2}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {userContext.role === "OVPAA" && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
+                                            workload.memberAdhocFilePath2
+                                        );
+                                      if (hasData) {
+                                        const filtered =
+                                          sfPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.memberAdhocFilePath2
+                                          );
+                                        setSfPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setSfPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.memberAdhocFilePath2!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
+                                        setSfPointsRemarksInitial([
+                                          {
+                                            key: workload.memberAdhocFilePath2!,
+                                            points: points
+                                          }
+                                        ]);
+                                      }
+                                    } else {
+                                      setSfPointsRemarksInitial(
+                                        sfPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.memberAdhocFilePath2
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  defaultValue={adhocPoints3}
                                 />
                               </div>
                             )}
@@ -1844,6 +2182,7 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
+                                  defaultValue={academicPoints}
                                 />
                               </div>
                             )}
@@ -1854,19 +2193,6 @@ function RemarksWorkload({
                   )}
                 </ParentLevelContainer>
               </ColumnParentContainer>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row"
-                }}
-              >
-                <ColumnContainer style={{ paddingLeft: 90 }}>
-                  {/* <BoldText>TOTAL:</BoldText> */}
-                </ColumnContainer>
-                <ColumnContainer>
-                  {/* <BoldText>{workload.sfwPoints}</BoldText> */}
-                </ColumnContainer>
-              </div>
             </>
           );
         })
@@ -1875,7 +2201,7 @@ function RemarksWorkload({
         researchWorkloads ||
         extensionWorkloads ||
         strategicFunctionWorkloads) && (
-        <div style={{ display: "flex", marginLeft: 20 }}>
+        <div style={{ display: "flex", marginLeft: 20, marginTop: 20 }}>
           <BoldText>Remarks: </BoldText>
           <Remarks onChange={e => setRemarks(e.target.value)} />
         </div>
@@ -1906,7 +2232,7 @@ const ThinText = styled.span`
   font-family: HurmeGeometricSans3;
   font-size: 15px;
   line-height: 15px;
-  padding: 2px;
+  padding: 8px;
 `;
 
 const BoldText = styled.span`
@@ -1914,7 +2240,7 @@ const BoldText = styled.span`
   font-weight: bold;
   font-size: 15px;
   line-height: 15px;
-  padding: 2px;
+  padding: 8px;
 `;
 
 const WorkloadHeaderContainer = styled.div`
@@ -1945,7 +2271,7 @@ const ParentLevelContainer = styled.div`
 `;
 
 const InputPoints = styled.input`
-  width: 40px;
+  width: 60px;
 `;
 
 const Remarks = styled.textarea`

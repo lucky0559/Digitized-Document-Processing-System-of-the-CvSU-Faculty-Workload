@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../../components/Footer";
@@ -305,7 +305,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     setIsSubmitting(true);
   };
 
-  useCallback(() => {
+  useEffect(() => {
     if (!isAdding && !isEditing) {
       onRwlSet();
     }
@@ -634,30 +634,6 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     }
   }, [study1, study2, study3, study4]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const {
-  //       teachingWorkloads,
-  //       extensionWorkloads,
-  //       researchWorkloads,
-  //       strategicFunctionWorkloads
-  //     } = await GetAllUserPendingWorkloads(user.email);
-  //     actions.setHasPendingTeachingWorkload(
-  //       !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
-  //     );
-  //     actions.setHasPendingExtensionWorkload(
-  //       !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
-  //     );
-  //     actions.setHasPendingResearchWorkload(
-  //       !!researchWorkloads.length && researchWorkloads[0].isSubmitted
-  //     );
-  //     actions.setHasPendingStrategicWorkload(
-  //       !!strategicFunctionWorkloads.length &&
-  //         strategicFunctionWorkloads[0].isSubmitted
-  //     );
-  //   })();
-  // }, []);
-
   useEffect(() => {
     setIsLoading(true);
     (async () => {
@@ -909,7 +885,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
                     cvsuFunded1.file?.name || cvsuFundedInitialFilename1
                   }
                   points1={points}
-                  studyPoints1={cvsuFunded1.points}
+                  studyPoints1={cvsuFunded1.points || 0}
                   onRemoveRwlFile1={() => {
                     setCvsuFunded1({
                       ...cvsuFunded1,
@@ -986,7 +962,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
                     cvsuFunded2?.file?.name || cvsuFundedInitialFilename2
                   }
                   points2={points}
-                  studyPoints2={cvsuFunded2!.points}
+                  studyPoints2={cvsuFunded2?.points || 0}
                   onRemoveRwlFile2={() => {
                     setCvsuFunded2({
                       ...cvsuFunded2!,
@@ -994,7 +970,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
                     });
                     setCvsuFundedInitialFilename2(undefined);
                   }}
-                  titleOfStudy2={cvsuFunded2!.title}
+                  titleOfStudy2={cvsuFunded2?.title || ""}
                   titleOfStudyHandler2={e =>
                     setCvsuFunded2({
                       ...cvsuFunded2!,
@@ -1291,7 +1267,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
                   }}
                   fundGeneratedDisplay1={externalFunded1.fundGenerated}
                   rwlFileName11={externallyFundedInitialFilename1}
-                  studyPoints1={externalFunded1.points}
+                  studyPoints1={externalFunded1.points || 0}
                   onRemoveRwl1File1={() => {
                     setExternalFunded1({
                       ...externalFunded1,

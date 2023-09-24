@@ -176,6 +176,18 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
           }
 
+          extensionWorkload.hoursRenderedPoints = !summaryOfHoursFile
+            ? 0
+            : Number(totalNumberHours) * 0.05556 >= 3
+            ? 3
+            : Number((Number(totalNumberHours) * 0.05556).toFixed(2));
+
+          extensionWorkload.designationPoints = designationActivityPoints;
+
+          extensionWorkload.resourcePerson1Points = resourcePersonPoints;
+          extensionWorkload.resourcePerson2Points = resourcePersonPoints1;
+          extensionWorkload.resourcePerson3Points = resourcePersonPoints2;
+
           extensionWorkload.ewlPoints =
             designationActivityPoints +
             resourcePersonActivityPoints +

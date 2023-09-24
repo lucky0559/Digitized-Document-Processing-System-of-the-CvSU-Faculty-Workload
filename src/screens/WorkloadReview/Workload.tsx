@@ -19,6 +19,7 @@ import {
 } from "../../lib/faculty-workload.hooks";
 import RemarksWorkload, { PointsAndRemarks } from "./RemarksWorkload";
 import FormButton from "../../components/FormButton";
+import { Confirm } from "semantic-ui-react";
 
 type WorkloadProps = {
   teachingWorkload?: User[];
@@ -55,6 +56,8 @@ function Workload({
   const [reviewingId, setReviewingId] = useState("");
 
   const [remarks, setRemarks] = useState("");
+
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const [twlPointsRemarks, setTwlPointsRemarks] = useState<PointsAndRemarks>();
   const [rwlPointsRemarks, setRwlPointsRemarks] =
@@ -220,6 +223,16 @@ function Workload({
     <Container>
       {isReviewing && (
         <>
+          <Confirm
+            open={isConfirming}
+            onCancel={() => setIsConfirming(false)}
+            onConfirm={() => {
+              setIsConfirming(false);
+              onApprove();
+            }}
+            content="Approve?"
+            size="large"
+          />
           <RemarksWorkload
             user={accountReviewing!}
             setRemarks={setRemarks}
@@ -240,8 +253,9 @@ function Workload({
             <div style={{ marginRight: 100 }}>
               <FormButton
                 text="Approve"
-                onClicked={onApprove}
+                onClicked={() => setIsConfirming(true)}
                 isSubmitting={isSubmitting}
+                disabled={isSubmitting}
               />
             </div>
           </div>
