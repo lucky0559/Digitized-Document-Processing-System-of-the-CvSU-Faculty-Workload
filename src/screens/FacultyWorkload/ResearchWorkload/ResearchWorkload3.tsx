@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { Confirm } from "semantic-ui-react";
 import { DROPDOWN_LISTS } from "../../../constants/Strings";
@@ -37,6 +36,8 @@ type ResearchWorkload3Props = {
   onRemoveStudy3File: () => void;
   onRemoveStudy4File: () => void;
   canSubmit: boolean;
+  isConfirming: boolean;
+  setIsConfirming: (val: boolean) => void;
 };
 
 const ResearchWorkload3 = ({
@@ -70,7 +71,9 @@ const ResearchWorkload3 = ({
   onRemoveStudy3File,
   onRemoveStudy4File,
   researchWorkLoadHandler,
-  canSubmit
+  canSubmit,
+  isConfirming,
+  setIsConfirming
 }: ResearchWorkload3Props) => {
   const onStudy1FileSelectHandler = (value?: File) => {
     onStudy1FileSelect(value);
@@ -88,8 +91,6 @@ const ResearchWorkload3 = ({
     onStudy4FileSelect(value);
   };
 
-  const [isConfirming, setIsConfirming] = useState(false);
-
   return (
     <Container>
       <Confirm
@@ -104,15 +105,6 @@ const ResearchWorkload3 = ({
         content="Confirm saving of workload?"
         size="large"
       />
-      {/* {(points !== 0 || fundGeneratedPoints !== 0) && (
-        <AddStudyContainer onClick={() => researchWorkLoadHandler3(true)}>
-          {rwlCount >= 1 && rwlCount <= 3 ? null : isSubmitting ? (
-            <LoadingSpinner color={Colors.primary} />
-          ) : (
-            <AddStudyText>Add another study</AddStudyText>
-          )}
-        </AddStudyContainer>
-      )} */}
       <SubContainer>
         <span style={{ fontSize: 19 }}>
           Disseminated research output in College or University In-House

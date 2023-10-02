@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
   Box,
@@ -7,7 +7,6 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
-  TextField,
   FormLabel
 } from "@mui/material";
 
@@ -21,6 +20,7 @@ import { GetAllUser, UpdateUserAdmin } from "../../lib/user.hooks";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ProfileTab from "../../components/ProfileTab";
+import { UserContext } from "../../App";
 
 type AccountsScreenProps = {
   UseLogout: () => void;
@@ -40,11 +40,7 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
 
-  const isEditableHourlyRate =
-    userToEdit?.academicRank === "Instructor I" ||
-    userToEdit?.academicRank === "Instructor II" ||
-    userToEdit?.academicRank === "Instructor III" ||
-    userToEdit?.role === "Department Chairperson";
+  const { user: userContext } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -80,15 +76,16 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
         sortable: true
       },
       {
-        cell: (user: User) => (
-          <FormButton text="Edit" onClicked={() => onEdit(user)} />
-        ),
+        cell: (user: User) =>
+          userContext.role === "OVPAA" && (
+            <FormButton text="Edit" onClicked={() => onEdit(user)} />
+          ),
         ignoreRowClick: true,
         allowOverflow: true,
         button: true
       }
     ],
-    []
+    [userContext.role]
   );
 
   const tableCustomStyle = {
@@ -135,21 +132,10 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
     });
   };
 
-  const onRateChangeHandler = (e: number) => {
-    setUserToEdit({
-      ...userToEdit!,
-      hourlyRate: e
-    });
-  };
-
   const onSave = async () => {
     setOnLoadingSave(true);
     try {
-      await UpdateUserAdmin(
-        userToEdit?.email!,
-        userToEdit?.role!,
-        isEditableHourlyRate ? userToEdit?.hourlyRate || 165.71 : 165.71
-      );
+      await UpdateUserAdmin(userToEdit?.email!, userToEdit?.role!);
 
       setUserToEdit(undefined);
     } catch (e) {
@@ -219,18 +205,6 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
                     <MenuItem value={"Dean"}>College Dean</MenuItem>
                     <MenuItem value={"OVPAA"}>OVPAA</MenuItem>
                   </Select>
-                  {isEditableHourlyRate && (
-                    <>
-                      <FormLabel>Hourly Rate</FormLabel>
-                      <TextField
-                        value={userToEdit?.hourlyRate || ""}
-                        onChange={e =>
-                          onRateChangeHandler(Number(e.target.value))
-                        }
-                        type="number"
-                      />
-                    </>
-                  )}
                 </div>
               </Box>
 
@@ -243,9 +217,7 @@ const AccountsScreen = ({ UseLogout }: AccountsScreenProps) => {
                   text="Save"
                   onClicked={onSave}
                   disabled={
-                    (isEditableHourlyRate
-                      ? !userToEdit.role
-                      : userToEdit?.role === userRecentRole) || onLoadingSave
+                    userToEdit?.role === userRecentRole || onLoadingSave
                   }
                   isSubmitting={onLoadingSave}
                 />

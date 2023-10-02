@@ -121,6 +121,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const [isConfirming, setIsConfirming] = useState(false);
+
   const titleOfStudyCvsuHandler = (value: string) => {
     setTitleOfStudyCvsu(value);
   };
@@ -814,6 +816,10 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     setFundGeneratedDisplay("-----");
     onRemoveRwl1File();
     setStudyExternallyPoints(0);
+  };
+
+  const setIsConfirmingHandler = (v: boolean) => {
+    setIsConfirming(v);
   };
 
   return (
@@ -1638,16 +1644,24 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study4Points={study4Points}
             fundGeneratedPoints={fundGeneratedPoints}
             studyPoints={
-              (cvsuFunded1?.points || 0) +
-              (cvsuFunded2?.points || 0) +
-              (cvsuFunded3?.points || 0) +
-              (cvsuFunded4?.points || 0) +
-              (cvsuFunded5?.points || 0) +
-              (externalFunded1?.points || 0) +
-              (externalFunded2?.points || 0) +
-              (externalFunded3?.points || 0) +
-              (externalFunded4?.points || 0) +
-              (externalFunded5?.points || 0)
+              (cvsuFunded1?.points || studyCvsuPoints || 0) +
+              (cvsuFunded2?.points ||
+                (cvsuFunded1?.points ? studyCvsuPoints : 0)) +
+              (cvsuFunded3?.points ||
+                (cvsuFunded2?.points ? studyCvsuPoints : 0)) +
+              (cvsuFunded4?.points ||
+                (cvsuFunded3?.points ? studyCvsuPoints : 0)) +
+              (cvsuFunded5?.points ||
+                (cvsuFunded4?.points ? studyCvsuPoints : 0)) +
+              (externalFunded1?.points || studyExternallyPoints || 0) +
+              (externalFunded2?.points ||
+                (externalFunded1?.points ? studyExternallyPoints : 0)) +
+              (externalFunded3?.points ||
+                (externalFunded2?.points ? studyExternallyPoints : 0)) +
+              (externalFunded4?.points ||
+                (externalFunded3?.points ? studyExternallyPoints : 0)) +
+              (externalFunded5?.points ||
+                (externalFunded4?.points ? studyExternallyPoints : 0))
             }
             onRemoveStudy1File={onRemoveStudy1File}
             onRemoveStudy2File={onRemoveStudy2File}
@@ -1662,6 +1676,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
               !!externalFunded1?.points ||
               (!!titleOfStudyExternally && !!fundGenerated && !!rwlFile1)
             }
+            isConfirming={isConfirming}
+            setIsConfirming={setIsConfirmingHandler}
           />
         </BodyContainer>
       )}

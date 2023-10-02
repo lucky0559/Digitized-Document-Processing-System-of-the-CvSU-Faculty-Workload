@@ -249,6 +249,12 @@ export const DROPDOWN_LISTS = {
   STUDY_STATUS: ["-----", "Approved Proposal", "Ongoing Study"]
 };
 
+export const Semester = [
+  // '-----',
+  "1st",
+  "2nd"
+];
+
 export enum WorkloadType {
   TEACHING_WORKLOAD = "Teaching Work Load (TWL)",
   RESEARCH_WORKLOAD = "Research Work Load (RWL)",
