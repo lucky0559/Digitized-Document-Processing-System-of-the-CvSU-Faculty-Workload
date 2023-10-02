@@ -1,0 +1,6 @@
+export enum CONFIG {
+  SEMESTER = 1,
+  SCHOOL_YEAR,
+  DATE_RANGE,
+  HOURLY_RATE
+}

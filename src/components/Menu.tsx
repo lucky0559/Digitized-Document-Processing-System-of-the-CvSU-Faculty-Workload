@@ -21,7 +21,7 @@ const Menu = ({ position }: MenuProps) => {
 
   return (
     <Container position={position}>
-      {user.role === "System Administrator" && (
+      {(user.role === "System Administrator" || user.role === "OVPAA") && (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/accounts", { replace: true })}
@@ -116,7 +116,16 @@ const Menu = ({ position }: MenuProps) => {
           </NavButtonText>
         </NavButtonContainer>
       ) : null}
-
+      {user.role === "OVPAA" ? (
+        <NavButtonContainer>
+          <NavButtonText
+            onClick={() => navigate("/config", { replace: true })}
+            isActive={location === "/config"}
+          >
+            Configuration
+          </NavButtonText>
+        </NavButtonContainer>
+      ) : null}
       {user.role === "Dean" ||
       user.role === "Department Chairperson" ||
       user.role === "OVPAA" ? (

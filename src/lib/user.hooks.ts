@@ -74,10 +74,9 @@ export const ChangePassword = async (
 export const UpdateUserAdmin = async (
   id: string,
   role: string,
-  hourlyRate: number
 ) => {
   const { data } = await axios.patch(
-    `user/${id}/${role}/${hourlyRate}/update-user-admin`
+    `user/${id}/${role}/update-user-admin`
   );
   return { data };
 };
