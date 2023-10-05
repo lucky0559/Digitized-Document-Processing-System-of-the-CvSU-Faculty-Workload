@@ -93,23 +93,35 @@ export const SaveResearchWorkload = async (
   let disseminatedResearchFile4;
 
   if (!!researchWorkload.cvsuFunded.length) {
+    let hasPath = false;
     for (let i = 0; i < researchWorkload.cvsuFunded.length; i++) {
       if (researchWorkload.cvsuFunded[i].file) {
         const file = await rwlAwsConfigS3.uploadFile(
           researchWorkload.cvsuFunded[i].file!
         );
-        researchWorkload.cvsuFundedFilePath![i] = file.location;
+        if (!!researchWorkload.cvsuFundedFilePath?.length && hasPath) {
+          researchWorkload.cvsuFundedFilePath![i] = file.location;
+          hasPath = true;
+        } else {
+          researchWorkload.cvsuFundedFilePath?.push(file.location);
+        }
       }
     }
   }
 
   if (!!researchWorkload.externallyFunded.length) {
+    let hasPath = false;
     for (let i = 0; i < researchWorkload.externallyFunded.length; i++) {
       if (researchWorkload.externallyFunded[i].file) {
         const file = await rwl1AwsConfigS3.uploadFile(
           researchWorkload.externallyFunded[i].file!
         );
-        researchWorkload.externallyFundedFilePath![i] = file.location;
+        if (!!researchWorkload.externallyFundedFilePath?.length && hasPath) {
+          researchWorkload.externallyFundedFilePath![i] = file.location;
+          hasPath = true;
+        } else {
+          researchWorkload.externallyFundedFilePath?.push(file.location);
+        }
       }
     }
   }

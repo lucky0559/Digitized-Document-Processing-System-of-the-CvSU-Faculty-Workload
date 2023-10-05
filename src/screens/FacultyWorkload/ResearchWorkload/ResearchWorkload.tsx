@@ -123,6 +123,8 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
   const [isConfirming, setIsConfirming] = useState(false);
 
+  const [isSetting, setIsSetting] = useState(false);
+
   const titleOfStudyCvsuHandler = (value: string) => {
     setTitleOfStudyCvsu(value);
   };
@@ -154,6 +156,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   const researchWorkLoadHandler = () => {
     // CVSU FUNDED
     if (!isEditing) {
+      setIsSetting(true);
       if (!cvsuFunded1) {
         setCvsuFunded1({
           title: titleOfStudyCvsu,
@@ -233,6 +236,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           points: studyExternallyPoints
         });
       }
+      setIsSetting(false);
     } else {
       onRwlSet();
     }
@@ -308,7 +312,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   useEffect(() => {
-    if (!isAdding && !isEditing) {
+    if (!isAdding && !isEditing && !isSetting) {
       onRwlSet();
     }
     setIsAdding(false);
@@ -634,7 +638,20 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     } else {
       setStudy4Points(0);
     }
-  }, [study1, study2, study3, study4]);
+  }, [
+    study1?.file,
+    study1?.filename,
+    study1?.title,
+    study2?.file,
+    study2?.filename,
+    study2?.title,
+    study3?.file,
+    study3?.filename,
+    study3?.title,
+    study4?.file,
+    study4?.filename,
+    study4?.title
+  ]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -688,6 +705,43 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             setExternalFunded5(data.externallyFunded[i]);
           }
         }
+      }
+
+      if (
+        data.disseminatedResearchFilenames?.[0] &&
+        data.disseminatedResearch?.[0]
+      ) {
+        setStudy1({
+          filename: data.disseminatedResearchFilenames[0],
+          title: data.disseminatedResearch[0]
+        });
+      }
+      if (
+        data.disseminatedResearchFilenames?.[1] &&
+        data.disseminatedResearch?.[1]
+      ) {
+        setStudy2({
+          filename: data.disseminatedResearchFilenames[1],
+          title: data.disseminatedResearch[1]
+        });
+      }
+      if (
+        data.disseminatedResearchFilenames?.[2] &&
+        data.disseminatedResearch?.[2]
+      ) {
+        setStudy3({
+          filename: data.disseminatedResearchFilenames[2],
+          title: data.disseminatedResearch[2]
+        });
+      }
+      if (
+        data.disseminatedResearchFilenames?.[3] &&
+        data.disseminatedResearch?.[3]
+      ) {
+        setStudy4({
+          filename: data.disseminatedResearchFilenames[3],
+          title: data.disseminatedResearch[3]
+        });
       }
 
       setIsLoading(false);
@@ -780,6 +834,7 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
   };
 
   const onAddExternallyStudy = () => {
+    setIsAdding(true);
     if (!externalFunded1) {
       setExternalFunded1({
         title: titleOfStudyExternally,
