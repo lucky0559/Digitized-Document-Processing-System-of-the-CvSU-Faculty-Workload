@@ -30,4 +30,8 @@ export type User = {
   twlPoints?: number;
   status?: string;
   hourlyRate?: number;
+  initialTwlPoints?: number;
+  initialRwlPoints?: number;
+  initialEwlPoints?: number;
+  initialSfwPoints?: number;
 };

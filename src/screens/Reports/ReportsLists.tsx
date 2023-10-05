@@ -2,57 +2,111 @@ import styled from "styled-components";
 import { User } from "../../types/User";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
+import { useEffect, useState } from "react";
+import { getConfig } from "../../lib/config.hooks";
+import { Config } from "../../types/Config";
 
 type ReportListsProps = {
   usersReports?: User[];
 };
 
 const ReportsLists = ({ usersReports }: ReportListsProps) => {
-  console.log(usersReports);
+  const [config, setConfig] = useState<Config>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const { data } = await getConfig();
+      setConfig(data);
+      setIsLoading(false);
+    })();
+  }, []);
+
   return (
     <Container>
-      {!usersReports?.length ? (
-        <div style={{ marginTop: 50 }}>
+      {!config && isLoading ? (
+        <div className="mt-12">
           <LoadingSpinner color={Colors.primary} />
         </div>
       ) : (
-        <Table>
-          <TrStyled>
-            <ThStyled rowSpan={2}>Name of Faculty</ThStyled>
-            <ThStyled rowSpan={2}>Rank</ThStyled>
-            <ThStyled colSpan={5}>Evaluated Workload</ThStyled>
-          </TrStyled>
-          <TrStyled>
-            <ThStyled>TWL</ThStyled>
-            <ThStyled>RWL</ThStyled>
-            <ThStyled>EWL</ThStyled>
-            <ThStyled>SF</ThStyled>
-            <ThStyled>TECU</ThStyled>
-          </TrStyled>
-          {usersReports?.map(item => {
-            return (
-              <TrStyled>
-                <TdStyled>{item.firstName}</TdStyled>
-                <TdStyled>{item.academicRank}</TdStyled>
-                <TdStyled>{item.twlPoints ? item.twlPoints : 0}</TdStyled>
-                <TdStyled>{item.rwlPoints ? item.rwlPoints : 0}</TdStyled>
-                <TdStyled>{item.ewlPoints ? item.ewlPoints : 0}</TdStyled>
-                <TdStyled>{item.sfwPoints ? item.sfwPoints : 0}</TdStyled>
-                <TdStyled>
-                  {item.twlPoints!
-                    ? +item.twlPoints!
-                    : 0 + item.rwlPoints!
-                    ? +item.rwlPoints!
-                    : 0 + item.ewlPoints!
-                    ? +item.ewlPoints!
-                    : 0 + item.sfwPoints!
-                    ? +item.sfwPoints!
-                    : 0}
-                </TdStyled>
-              </TrStyled>
-            );
-          })}
-        </Table>
+        <>
+          <div className="flex flex-col justify-center items-center">
+            <span className="font-bold">Summary of Faculty Workload</span>
+            <span className="font-bold">
+              {config?.semester} Sem. SY {config?.schoolYearStart}-
+              {config?.schoolYearEnd}
+            </span>
+          </div>
+          <div className="mb-5">
+            <span>
+              College/Campus:{" "}
+              <span className="font-bold">{usersReports?.[0].campus}</span>
+            </span>
+          </div>
+          <Table>
+            <TrStyled>
+              <ThStyled rowSpan={2}>Name of Faculty</ThStyled>
+              <ThStyled rowSpan={2}>Rank</ThStyled>
+              <ThStyled colSpan={5}>
+                Submitted Workload from Colleges/Campuses
+              </ThStyled>
+              <ThStyled colSpan={5}>Evaluated Workload (OVPAA)</ThStyled>
+              <ThStyled rowSpan={2}>Remarks</ThStyled>
+            </TrStyled>
+            <TrStyled>
+              <ThStyled>TWL</ThStyled>
+              <ThStyled>RWL</ThStyled>
+              <ThStyled>EWL</ThStyled>
+              <ThStyled>SF</ThStyled>
+              <ThStyled>TECU</ThStyled>
+              <ThStyled>TWL</ThStyled>
+              <ThStyled>RWL</ThStyled>
+              <ThStyled>EWL</ThStyled>
+              <ThStyled>SF</ThStyled>
+              <ThStyled>TECU</ThStyled>
+            </TrStyled>
+            {usersReports?.map(item => {
+              return (
+                <TrStyled key={item.id}>
+                  <TdStyled>
+                    {item.surname}, {item.firstName} {item.middleInitial}.
+                  </TdStyled>
+                  <TdStyled>{item.academicRank}</TdStyled>
+                  <TdStyled>
+                    {item.initialTwlPoints ? item.initialTwlPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {item.initialRwlPoints ? item.initialRwlPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {item.initialEwlPoints ? item.initialEwlPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {item.initialSfwPoints ? item.initialSfwPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {(item.initialTwlPoints! ? +item.initialTwlPoints : 0) +
+                      (item.initialRwlPoints! ? +item.initialRwlPoints! : 0) +
+                      (item.initialEwlPoints! ? +item.initialEwlPoints! : 0) +
+                      (item.initialSfwPoints! ? +item.initialSfwPoints! : 0)}
+                  </TdStyled>
+                  <TdStyled>{item.twlPoints ? item.twlPoints : 0}</TdStyled>
+                  <TdStyled>{item.rwlPoints ? item.rwlPoints : 0}</TdStyled>
+                  <TdStyled>{item.ewlPoints ? item.ewlPoints : 0}</TdStyled>
+                  <TdStyled>{item.sfwPoints ? item.sfwPoints : 0}</TdStyled>
+                  <TdStyled>
+                    {(item.twlPoints! ? +item.twlPoints! : 0) +
+                      (item.rwlPoints! ? +item.rwlPoints! : 0) +
+                      (item.ewlPoints! ? +item.ewlPoints! : 0) +
+                      (item.sfwPoints! ? +item.sfwPoints! : 0)}
+                  </TdStyled>
+                  <TdStyled>{item.remarks || "No remarks"}</TdStyled>
+                </TrStyled>
+              );
+            })}
+          </Table>
+        </>
       )}
     </Container>
   );
