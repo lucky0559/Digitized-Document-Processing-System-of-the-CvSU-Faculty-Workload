@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -30,9 +30,26 @@ const UploadFileButton = ({
             <FileInput
               type="file"
               onChange={e => {
-                fileHandler?.(e.target.files![0]);
-                // setFileName(e.target.files![0].name);
+                let fileExtension = "";
+                if (e.target.files![0].name.lastIndexOf(".") > 0) {
+                  fileExtension = e.target.files![0].name.substring(
+                    e.target.files![0].name.lastIndexOf(".") + 1,
+                    e.target.files![0].name.length
+                  );
+                }
+                if (
+                  fileExtension.toLowerCase() === "jpeg" ||
+                  fileExtension.toLowerCase() === "pdf" ||
+                  fileExtension.toLowerCase() === "png"
+                ) {
+                  return fileHandler?.(e.target.files![0]);
+                } else {
+                  return alert(
+                    "You must select a JPEG/PDF/PNG file for upload"
+                  );
+                }
               }}
+              accept=".jpeg, .pdf, .png"
             />
             Upload
           </ButtonText>
