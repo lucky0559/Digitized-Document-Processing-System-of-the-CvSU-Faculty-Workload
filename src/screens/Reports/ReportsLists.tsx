@@ -52,6 +52,7 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
                 Submitted Workload from Colleges/Campuses
               </ThStyled>
               <ThStyled colSpan={5}>Evaluated Workload (OVPAA)</ThStyled>
+              <ThStyled rowSpan={2}>Remarks</ThStyled>
             </TrStyled>
             <TrStyled>
               <ThStyled>TWL</ThStyled>
@@ -72,21 +73,35 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
                     {item.surname}, {item.firstName} {item.middleInitial}.
                   </TdStyled>
                   <TdStyled>{item.academicRank}</TdStyled>
+                  <TdStyled>
+                    {item.initialTwlPoints ? item.initialTwlPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {item.initialRwlPoints ? item.initialRwlPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {item.initialEwlPoints ? item.initialEwlPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {item.initialSfwPoints ? item.initialSfwPoints : 0}
+                  </TdStyled>
+                  <TdStyled>
+                    {(item.initialTwlPoints! ? +item.initialTwlPoints : 0) +
+                      (item.initialRwlPoints! ? +item.initialRwlPoints! : 0) +
+                      (item.initialEwlPoints! ? +item.initialEwlPoints! : 0) +
+                      (item.initialSfwPoints! ? +item.initialSfwPoints! : 0)}
+                  </TdStyled>
                   <TdStyled>{item.twlPoints ? item.twlPoints : 0}</TdStyled>
                   <TdStyled>{item.rwlPoints ? item.rwlPoints : 0}</TdStyled>
                   <TdStyled>{item.ewlPoints ? item.ewlPoints : 0}</TdStyled>
                   <TdStyled>{item.sfwPoints ? item.sfwPoints : 0}</TdStyled>
                   <TdStyled>
-                    {item.twlPoints!
-                      ? +item.twlPoints!
-                      : 0 + item.rwlPoints!
-                      ? +item.rwlPoints!
-                      : 0 + item.ewlPoints!
-                      ? +item.ewlPoints!
-                      : 0 + item.sfwPoints!
-                      ? +item.sfwPoints!
-                      : 0}
+                    {(item.twlPoints! ? +item.twlPoints! : 0) +
+                      (item.rwlPoints! ? +item.rwlPoints! : 0) +
+                      (item.ewlPoints! ? +item.ewlPoints! : 0) +
+                      (item.sfwPoints! ? +item.sfwPoints! : 0)}
                   </TdStyled>
+                  <TdStyled>{item.remarks || "No remarks"}</TdStyled>
                 </TrStyled>
               );
             })}
