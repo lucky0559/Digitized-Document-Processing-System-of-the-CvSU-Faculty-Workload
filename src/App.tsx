@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import { useState, createContext } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -19,6 +19,7 @@ import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import { GetAllUserPendingWorkloads } from "./lib/faculty-workload.hooks";
 import WorkloadSummary from "./screens/WorkloadReview/WorkloadSummary";
 import Config from "./screens/SystemConfig/Config";
+import { getConfig } from "./lib/config.hooks";
 
 export const UserContext = createContext<any>(null);
 
@@ -65,6 +66,12 @@ function App() {
           researchWorkloads,
           strategicFunctionWorkloads
         } = await GetAllUserPendingWorkloads(res.data.email);
+        const { data: config } = await getConfig();
+
+        const isAbleToSubmit =
+          new Date() >= new Date(config.submissionDateStart) &&
+          new Date() <= new Date(config.submissionDateEnd);
+
         setHasPendingTeachingWorkload(
           !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
         );
@@ -82,13 +89,13 @@ function App() {
           navigate("accounts", { replace: true });
         } else if (res.data.role === "Dean" || res.data.role === "OVPAA") {
           navigate("/workload-review", { replace: true });
-        } else if (!!!teachingWorkloads.length) {
+        } else if (!!!teachingWorkloads.length && isAbleToSubmit) {
           navigate("teaching-workload", { replace: true });
-        } else if (!!!extensionWorkloads.length) {
+        } else if (!!!extensionWorkloads.length && isAbleToSubmit) {
           navigate("extension-workload", { replace: true });
-        } else if (!!!researchWorkloads.length) {
+        } else if (!!!researchWorkloads.length && isAbleToSubmit) {
           navigate("research-workload", { replace: true });
-        } else if (!!!strategicFunctionWorkloads.length) {
+        } else if (!!!strategicFunctionWorkloads.length && isAbleToSubmit) {
           navigate("strategic-function-workload", { replace: true });
         } else {
           navigate("workload-summary", { replace: true });

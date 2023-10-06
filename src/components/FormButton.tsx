@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
 import { LoadingSpinner } from "./LoadingSpinner";
@@ -20,6 +19,7 @@ const FormButton = ({
     <Container
       disabled={disabled}
       onClick={disabled ? () => {} : () => onClicked && onClicked()}
+      isSubmitting={isSubmitting}
     >
       {isSubmitting ? (
         <LoadingSpinner color={Colors.primary} />
@@ -30,7 +30,10 @@ const FormButton = ({
   );
 };
 
-const Container = styled.div<{ disabled?: boolean }>`
+const Container = styled.div<{
+  disabled?: boolean;
+  isSubmitting?: boolean;
+}>`
   border: 1px solid ${Colors.primary};
   border-radius: 10px;
   width: 128px;
@@ -38,7 +41,7 @@ const Container = styled.div<{ disabled?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: ${p => (p.disabled ? "auto" : "pointer")};
+  cursor: ${p => (p.disabled || p.isSubmitting ? "auto" : "pointer")};
   transition: opacity 0.2s ease-in-out;
   opacity: ${p => (p.disabled ? 0.7 : 1)}
   &:hover {

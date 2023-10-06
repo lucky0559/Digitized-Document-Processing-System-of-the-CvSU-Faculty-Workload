@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import FormButton from "../../../components/FormButton";
 import { StrategicFunctionType } from "../../../types/StrategicFunction";
@@ -21,6 +21,7 @@ import { getSfwSavedWorkload } from "../../../lib/sfw.hooks";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import Colors from "../../../constants/Colors";
 import { SFW_FILE } from "../../../enums/fileEnums";
+import { getConfig } from "../../../lib/config.hooks";
 
 export type DesignationWithTitleAndPoints = {
   title: string;
@@ -803,6 +804,7 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
           // window.location.reload();
           const { strategicFunctionWorkloads } =
             await GetAllUserPendingWorkloads(user.email);
+          const { data: config } = await getConfig();
           actions.setHasPendingStrategicWorkload(
             !!strategicFunctionWorkloads.length &&
               strategicFunctionWorkloads[0].isSubmitted
@@ -1073,30 +1075,6 @@ const StrategicFunction = ({ UseLogout }: StrategicFunctionProps) => {
   const hasAcademicAdviser =
     academicAdviser?.numberOfStudents &&
     (academicAdviser?.file || academicAdviser.filename);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const {
-  //       teachingWorkloads,
-  //       extensionWorkloads,
-  //       researchWorkloads,
-  //       strategicFunctionWorkloads
-  //     } = await GetAllUserPendingWorkloads(user.email);
-  //     actions.setHasPendingTeachingWorkload(
-  //       !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
-  //     );
-  //     actions.setHasPendingExtensionWorkload(
-  //       !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
-  //     );
-  //     actions.setHasPendingResearchWorkload(
-  //       !!researchWorkloads.length && researchWorkloads[0].isSubmitted
-  //     );
-  //     actions.setHasPendingStrategicWorkload(
-  //       !!strategicFunctionWorkloads.length &&
-  //         strategicFunctionWorkloads[0].isSubmitted
-  //     );
-  //   })();
-  // }, [actions, user.email]);
 
   useEffect(() => {
     setIsLoading(true);

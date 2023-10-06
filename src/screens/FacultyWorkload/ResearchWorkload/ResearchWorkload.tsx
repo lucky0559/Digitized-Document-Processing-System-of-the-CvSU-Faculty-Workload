@@ -25,6 +25,7 @@ import FundedCvsu from "./CvsuFunded";
 import FundedExternally from "./ExternallyFunded";
 import CvsuFundedLists from "./CvsuFundedLists";
 import ExternallyFundedLists from "./ExternallyFundedLists";
+import { getConfig } from "../../../lib/config.hooks";
 
 type ResearchWorkLoadProps = {
   UseLogout: () => void;
@@ -361,6 +362,11 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           researchWorkloads,
           strategicFunctionWorkloads
         } = await GetAllUserPendingWorkloads(user.email);
+        const { data: config } = await getConfig();
+        const isAbleToSubmit = !(
+          new Date() >= new Date(config.submissionDateStart) &&
+          new Date() <= new Date(config.submissionDateEnd)
+        );
         actions.setHasPendingExtensionWorkload(
           !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
         );
@@ -374,9 +380,9 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
 
         clearStates();
 
-        if (!!!extensionWorkloads.length) {
+        if (!!!extensionWorkloads.length && isAbleToSubmit) {
           navigate("/extension-workload", { replace: true });
-        } else if (!!!strategicFunctionWorkloads.length) {
+        } else if (!!!strategicFunctionWorkloads.length && isAbleToSubmit) {
           navigate("/strategic-function-workload", { replace: true });
         } else {
           navigate("/workload-summary", { replace: true });

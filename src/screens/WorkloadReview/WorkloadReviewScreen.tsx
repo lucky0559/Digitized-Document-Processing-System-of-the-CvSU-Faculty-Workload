@@ -141,6 +141,7 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
         researchWorkloads,
         strategicFunctionWorkloads
       } = await GetAllUserPendingWorkloads(user.email);
+
       actions.setHasPendingTeachingWorkload(
         !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
       );
