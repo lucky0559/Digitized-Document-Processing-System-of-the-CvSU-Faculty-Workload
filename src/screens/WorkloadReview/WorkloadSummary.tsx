@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
@@ -25,12 +25,11 @@ import {
   GetTeachingWorkloadRemarksFaculty
 } from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
-import Workload from "./Workload";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
 import ReviewFacultyScreen from "./ReviewFacultyScreen";
 import { UserContext } from "../../App";
-import OvpaaWorkloadReview, { OvpaaWorkloads } from "./OvpaaWorkloadReview";
+import { OvpaaWorkloads } from "./OvpaaWorkloadReview";
 
 type WorkloadReviewScreenProps = {
   UseLogout: () => void;
@@ -53,9 +52,9 @@ const WorkloadSummary = ({ UseLogout }: WorkloadReviewScreenProps) => {
   const [ovpaaStrategicWorkloads, setOvpaaStrategicWorkloads] =
     useState<OvpaaWorkloads>();
 
-  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
-
   const [isDataLoading, setIsDataLoading] = useState(true);
+
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const { user, actions } = useContext(UserContext);
 
@@ -156,31 +155,40 @@ const WorkloadSummary = ({ UseLogout }: WorkloadReviewScreenProps) => {
         !!strategicFunctionWorkloads.length &&
           strategicFunctionWorkloads[0].isSubmitted
       );
+      setIsLoaded(true);
     })();
   }, []);
 
   return (
     <Container>
-      <div>
-        <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-        <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
-      </div>
-      <div style={{ flexDirection: "row", marginTop: 54, display: "flex" }}>
-        <div style={{ width: 248 }}>
-          <Menu />
+      {!isLoaded ? (
+        <div className="flex justify-center items-center m-auto">
+          <LoadingSpinner color={Colors.primary} />
         </div>
-        <BodyContainer>
-          <ScreenTitleContainer>
-            <ScreenTitle title="Workload Summary" />
-          </ScreenTitleContainer>
-          <WorkloadsContainer>
-            <ReviewFacultyScreen userEmail={user?.email} />
-          </WorkloadsContainer>
-        </BodyContainer>
-      </div>
-      <FooterContainer>
-        <Footer />
-      </FooterContainer>
+      ) : (
+        <>
+          <div>
+            <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+            <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
+          </div>
+          <div style={{ flexDirection: "row", marginTop: 54, display: "flex" }}>
+            <div style={{ width: 248 }}>
+              <Menu />
+            </div>
+            <BodyContainer>
+              <ScreenTitleContainer>
+                <ScreenTitle title="Workload Summary" />
+              </ScreenTitleContainer>
+              <WorkloadsContainer>
+                <ReviewFacultyScreen userEmail={user?.email} />
+              </WorkloadsContainer>
+            </BodyContainer>
+          </div>
+          <FooterContainer>
+            <Footer />
+          </FooterContainer>
+        </>
+      )}
     </Container>
   );
 };

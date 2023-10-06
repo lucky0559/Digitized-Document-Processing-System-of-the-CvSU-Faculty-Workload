@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../../components/Footer";
@@ -20,6 +20,7 @@ import { UserContext } from "../../../App";
 import { WORKLOAD_STATUS } from "../../../enums/workloadEnums";
 import { getTwlSavedWorkload } from "../../../lib/teaching-workload.hooks";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import { getConfig } from "../../../lib/config.hooks";
 
 type TeachingWorkLoadProps = {
   UseLogout: () => void;
@@ -84,6 +85,11 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
+          const { data: config } = await getConfig();
+          const isAbleToSubmit = !(
+            new Date() >= new Date(config.submissionDateStart) &&
+            new Date() <= new Date(config.submissionDateEnd)
+          );
           actions.setHasPendingExtensionWorkload(
             !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
           );
@@ -96,11 +102,11 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           );
           setIsSubmitting(false);
           clearStates();
-          if (!!!researchWorkloads.length) {
+          if (!!!researchWorkloads.length && isAbleToSubmit) {
             navigate("/research-workload", { replace: true });
-          } else if (!!!extensionWorkloads.length) {
+          } else if (!!!extensionWorkloads.length && isAbleToSubmit) {
             navigate("/extension-workload", { replace: true });
-          } else if (!!!strategicFunctionWorkloads.length) {
+          } else if (!!!strategicFunctionWorkloads.length && isAbleToSubmit) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-summary", { replace: true });
@@ -203,9 +209,6 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
         content="Confirm saving of workload?"
         size="large"
       />
-      <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
-      <Menu />
-      <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       {isLoading ? (
         <div
           style={{
@@ -218,91 +221,98 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
           <LoadingSpinner color={Colors.primary} />
         </div>
       ) : (
-        <BodyContainer>
-          <ScreenTitle title="Faculty Workload" />
-          <Container>
-            <SubContainer>
-              <WorkloadTextContainer>
-                <WorkloadText>{WorkloadType.TEACHING_WORKLOAD}</WorkloadText>
-              </WorkloadTextContainer>
-              <InputsContainer>
-                <Label style={{ marginBottom: 40, alignSelf: "flex-start" }}>
-                  TWL = NP + CH + TNS(0.023)
-                </Label>
-                <TextInputContainer>
-                  <Label style={{ fontWeight: "bold" }}>NP</Label>
-                  <Label>Number of preparations</Label>
-                  <TextInput
-                    type="number"
-                    value={numberOfPreparations}
-                    onChange={e => numberOfPreparationsHandler(e.target.value)}
-                    min={0}
-                  />
-                </TextInputContainer>
-                <TextInputContainer>
-                  <Label style={{ fontWeight: "bold" }}>CH</Label>
-                  <Label>Contact Hours</Label>
-                  <TextInput
-                    type="number"
-                    value={contactHours}
-                    onChange={e => contactHoursHandler(e.target.value)}
-                    min={0}
-                  />
-                </TextInputContainer>
-                <TextInputContainer>
-                  <Label style={{ fontWeight: "bold" }}>TNS</Label>
-                  <Label>Total No. of Students</Label>
-                  <TextInput
-                    type="number"
-                    value={totalNoOfStudents}
-                    onChange={e => totalNoOfStudentsHandler(e.target.value)}
-                    min={0}
-                  />
-                </TextInputContainer>
-                <UploadFileContainer>
-                  <Label>Upload class schedule here:</Label>
-                  <UploadFileButtonContainer>
-                    <UploadFileButton
-                      fileHandler={fileHandler}
-                      workloadFileName={
-                        teachingWorkLoad?.filename
-                          ? teachingWorkLoad?.filename
-                          : twlFile?.name
-                          ? twlFile?.name
-                          : ""
+        <>
+          <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
+          <Menu />
+          <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
+          <BodyContainer>
+            <ScreenTitle title="Faculty Workload" />
+            <Container>
+              <SubContainer>
+                <WorkloadTextContainer>
+                  <WorkloadText>{WorkloadType.TEACHING_WORKLOAD}</WorkloadText>
+                </WorkloadTextContainer>
+                <InputsContainer>
+                  <Label style={{ marginBottom: 40, alignSelf: "flex-start" }}>
+                    TWL = NP + CH + TNS(0.023)
+                  </Label>
+                  <TextInputContainer>
+                    <Label style={{ fontWeight: "bold" }}>NP</Label>
+                    <Label>Number of preparations</Label>
+                    <TextInput
+                      type="number"
+                      value={numberOfPreparations}
+                      onChange={e =>
+                        numberOfPreparationsHandler(e.target.value)
                       }
-                      onRemoveFile={onRemoveFile}
+                      min={0}
                     />
-                  </UploadFileButtonContainer>
-                </UploadFileContainer>
-              </InputsContainer>
-            </SubContainer>
-            <ButtonContainer>
-              <Label style={{ fontWeight: "bold" }}>
-                Total Teaching Workload ={" "}
-                {points ? points.toFixed(2).toString() : 0}
-              </Label>
-              <div>
-                <FormButton
-                  text="Save"
-                  onClicked={() => setIsSaving(true)}
-                  isSubmitting={isSubmitting}
-                  disabled={
-                    numberOfPreparations.length <= 0 ||
-                    contactHours.length <= 0 ||
-                    totalNoOfStudents.length <= 0 ||
-                    twlFile
-                      ? twlFile?.name.length! <= 0 ||
-                        twlFile?.name === undefined
-                      : teachingWorkLoad?.filename?.length! <= 0 ||
-                        teachingWorkLoad?.filename === undefined ||
-                        isSubmitting
-                  }
-                ></FormButton>
-              </div>
-            </ButtonContainer>
-          </Container>
-        </BodyContainer>
+                  </TextInputContainer>
+                  <TextInputContainer>
+                    <Label style={{ fontWeight: "bold" }}>CH</Label>
+                    <Label>Contact Hours</Label>
+                    <TextInput
+                      type="number"
+                      value={contactHours}
+                      onChange={e => contactHoursHandler(e.target.value)}
+                      min={0}
+                    />
+                  </TextInputContainer>
+                  <TextInputContainer>
+                    <Label style={{ fontWeight: "bold" }}>TNS</Label>
+                    <Label>Total No. of Students</Label>
+                    <TextInput
+                      type="number"
+                      value={totalNoOfStudents}
+                      onChange={e => totalNoOfStudentsHandler(e.target.value)}
+                      min={0}
+                    />
+                  </TextInputContainer>
+                  <UploadFileContainer>
+                    <Label>Upload class schedule here:</Label>
+                    <UploadFileButtonContainer>
+                      <UploadFileButton
+                        fileHandler={fileHandler}
+                        workloadFileName={
+                          teachingWorkLoad?.filename
+                            ? teachingWorkLoad?.filename
+                            : twlFile?.name
+                            ? twlFile?.name
+                            : ""
+                        }
+                        onRemoveFile={onRemoveFile}
+                      />
+                    </UploadFileButtonContainer>
+                  </UploadFileContainer>
+                </InputsContainer>
+              </SubContainer>
+              <ButtonContainer>
+                <Label style={{ fontWeight: "bold" }}>
+                  Total Teaching Workload ={" "}
+                  {points ? points.toFixed(2).toString() : 0}
+                </Label>
+                <div>
+                  <FormButton
+                    text="Save"
+                    onClicked={() => setIsSaving(true)}
+                    isSubmitting={isSubmitting}
+                    disabled={
+                      numberOfPreparations.length <= 0 ||
+                      contactHours.length <= 0 ||
+                      totalNoOfStudents.length <= 0 ||
+                      twlFile
+                        ? twlFile?.name.length! <= 0 ||
+                          twlFile?.name === undefined
+                        : teachingWorkLoad?.filename?.length! <= 0 ||
+                          teachingWorkLoad?.filename === undefined ||
+                          isSubmitting
+                    }
+                  ></FormButton>
+                </div>
+              </ButtonContainer>
+            </Container>
+          </BodyContainer>
+        </>
       )}
       <FooterContainer>
         <Footer />

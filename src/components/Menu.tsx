@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Colors from "../constants/Colors";
 import { UserContext } from "../App";
+import { getConfig } from "../lib/config.hooks";
 
 type MenuProps = {
   position?: string;
@@ -19,6 +20,18 @@ const Menu = ({ position }: MenuProps) => {
     hasPendingStrategicWorkload
   } = useContext(UserContext);
 
+  const [isAbleToSubmit, setIsAbleToSubmit] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { data: config } = await getConfig();
+      const isAbleToSubmit =
+        new Date() >= new Date(config.submissionDateStart) &&
+        new Date() <= new Date(config.submissionDateEnd);
+      setIsAbleToSubmit(isAbleToSubmit);
+    })();
+  }, []);
+
   return (
     <Container position={position}>
       {(user.role === "System Administrator" || user.role === "OVPAA") && (
@@ -33,7 +46,8 @@ const Menu = ({ position }: MenuProps) => {
       )}
       {user.role !== "System Administrator" &&
         user.role !== "OVPAA" &&
-        user.role !== "Dean" && (
+        user.role !== "Dean" &&
+        isAbleToSubmit && (
           <>
             <NavContainer>
               <NavButtonText

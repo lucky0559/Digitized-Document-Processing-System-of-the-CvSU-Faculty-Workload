@@ -22,6 +22,7 @@ import { WORKLOAD_STATUS } from "../../../enums/workloadEnums";
 import { getEwlSavedWorkload } from "../../../lib/ewl.hooks";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import Colors from "../../../constants/Colors";
+import { getConfig } from "../../../lib/config.hooks";
 
 type ExtensionWorkloadProps = {
   UseLogout: () => void;
@@ -203,6 +204,11 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             researchWorkloads,
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
+          const { data: config } = await getConfig();
+          const isAbleToSubmit = !(
+            new Date() >= new Date(config.submissionDateStart) &&
+            new Date() <= new Date(config.submissionDateEnd)
+          );
           actions.setHasPendingTeachingWorkload(
             !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
           );
@@ -218,7 +224,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           );
           setIsSubmitting(false);
           clearStates();
-          if (!!!strategicFunctionWorkloads.length) {
+          if (!!!strategicFunctionWorkloads.length && isAbleToSubmit) {
             navigate("/strategic-function-workload", { replace: true });
           } else {
             navigate("/workload-summary", { replace: true });
