@@ -24,6 +24,7 @@ import {
   updateSubmissionRange
 } from "../../lib/config.hooks";
 import { Config } from "../../types/Config";
+import Dropdown from "../../components/Dropdown";
 
 type AccountsScreenProps = {
   UseLogout: () => void;
@@ -59,6 +60,44 @@ const ConfigScreen = ({ UseLogout }: AccountsScreenProps) => {
   const [isRefetching, setIsRefetching] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const sy = [
+    {
+      id: 0,
+      startYear: new Date().getFullYear() - 1,
+      endYear: new Date().getFullYear()
+    },
+    {
+      id: 1,
+      startYear: new Date().getFullYear(),
+      endYear: new Date().getFullYear() + 1
+    },
+    {
+      id: 2,
+      startYear: new Date().getFullYear() + 1,
+      endYear: new Date().getFullYear() + 2
+    },
+    {
+      id: 3,
+      startYear: new Date().getFullYear() + 2,
+      endYear: new Date().getFullYear() + 3
+    },
+    {
+      id: 4,
+      startYear: new Date().getFullYear() + 3,
+      endYear: new Date().getFullYear() + 4
+    },
+    {
+      id: 5,
+      startYear: new Date().getFullYear() + 4,
+      endYear: new Date().getFullYear() + 5
+    },
+    {
+      id: 6,
+      startYear: new Date().getFullYear() + 5,
+      endYear: new Date().getFullYear() + 6
+    }
+  ];
 
   const isStartEndSameDayDate =
     selectionRange.startDate.getFullYear() === new Date().getFullYear() &&
@@ -223,7 +262,7 @@ const ConfigScreen = ({ UseLogout }: AccountsScreenProps) => {
                     <>
                       <span className="font-bold">School Year: </span>
                       <div className="ml-5">
-                        <YearRangePicker
+                        {/* <YearRangePicker
                           minYear={new Date().getFullYear() - 3}
                           maxYear={new Date().getFullYear() + 3}
                           onSelect={(startYear, endYear) =>
@@ -234,7 +273,31 @@ const ConfigScreen = ({ UseLogout }: AccountsScreenProps) => {
                           }
                           startYear={schoolYear?.startYear}
                           endYear={schoolYear?.endYear}
-                        />
+                        /> */}
+                        <Select
+                          onChange={e => {
+                            setSchoolYear({
+                              startYear: sy[Number(e.target.value)].startYear,
+                              endYear: sy[Number(e.target.value)].endYear
+                            });
+                          }}
+                          style={{ width: "100%" }}
+                        >
+                          {sy.map((item, index) => {
+                            return (
+                              <option
+                                key={item.id}
+                                value={item.id.toString()}
+                                selected={
+                                  item.startYear === schoolYear?.startYear &&
+                                  item.endYear === schoolYear?.endYear
+                                }
+                              >
+                                {item.startYear} - {item.endYear}
+                              </option>
+                            );
+                          })}
+                        </Select>
                       </div>
                     </>
                   ) : editing === CONFIG.DATE_RANGE ? (
@@ -357,6 +420,11 @@ const BodyContainer = styled.div`
   border-radius: 15px;
   margin: 120px auto;
   width: 80%;
+`;
+
+const Select = styled.select`
+  width: 186px;
+  background-color: ${Colors.textFieldBackground};
 `;
 
 export default ConfigScreen;
