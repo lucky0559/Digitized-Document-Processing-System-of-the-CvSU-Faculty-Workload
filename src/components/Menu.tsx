@@ -28,6 +28,7 @@ const Menu = ({ position }: MenuProps) => {
       const isAbleToSubmit =
         new Date() >= new Date(config.submissionDateStart) &&
         new Date() <= new Date(config.submissionDateEnd);
+
       setIsAbleToSubmit(isAbleToSubmit);
     })();
   }, []);
@@ -44,81 +45,81 @@ const Menu = ({ position }: MenuProps) => {
           </NavButtonText>
         </NavButtonContainer>
       )}
-      {user.role !== "System Administrator" &&
+      {((user.role !== "System Administrator" &&
         user.role !== "OVPAA" &&
-        user.role !== "Dean" &&
-        isAbleToSubmit && (
-          <>
-            <NavContainer>
-              <NavButtonText
-                isActive={
-                  location === "/teaching-workload" ||
-                  location === "/research-workload" ||
-                  location === "/extension-workload" ||
-                  location === "/strategic-function-workload"
-                }
-              >
-                Faculty Workload
-              </NavButtonText>
-            </NavContainer>
+        user.role !== "Dean") ||
+        isAbleToSubmit) && (
+        <>
+          <NavContainer>
+            <NavButtonText
+              isActive={
+                location === "/teaching-workload" ||
+                location === "/research-workload" ||
+                location === "/extension-workload" ||
+                location === "/strategic-function-workload"
+              }
+            >
+              Faculty Workload
+            </NavButtonText>
+          </NavContainer>
 
-            <SubMenuContainer disabled={hasPendingTeachingWorkload}>
-              <SubMenuText
-                isActive={location === "/teaching-workload"}
-                onClick={
-                  hasPendingTeachingWorkload
-                    ? () => {}
-                    : () => navigate("/teaching-workload", { replace: true })
-                }
-                disabled={hasPendingTeachingWorkload}
-              >
-                Teaching Workload
-              </SubMenuText>
-            </SubMenuContainer>
-            <SubMenuContainer disabled={hasPendingResearchWorkload}>
-              <SubMenuText
-                isActive={location === "/research-workload"}
-                onClick={
-                  hasPendingResearchWorkload
-                    ? () => {}
-                    : () => navigate("/research-workload", { replace: true })
-                }
-                disabled={hasPendingResearchWorkload}
-              >
-                Research Workload
-              </SubMenuText>
-            </SubMenuContainer>
-            <SubMenuContainer disabled={hasPendingExtensionWorkload}>
-              <SubMenuText
-                isActive={location === "/extension-workload"}
-                onClick={
-                  hasPendingExtensionWorkload
-                    ? () => {}
-                    : () => navigate("/extension-workload", { replace: true })
-                }
-                disabled={hasPendingExtensionWorkload}
-              >
-                Extension Workload
-              </SubMenuText>
-            </SubMenuContainer>
-            <SubMenuContainer disabled={hasPendingStrategicWorkload}>
-              <SubMenuText
-                isActive={location === "/strategic-function-workload"}
-                onClick={
-                  hasPendingStrategicWorkload
-                    ? () => {}
-                    : () =>
-                        navigate("/strategic-function-workload", {
-                          replace: true
-                        })
-                }
-                disabled={hasPendingStrategicWorkload}
-              >
-                Strategic Function
-              </SubMenuText>
-            </SubMenuContainer>
-          </>
-        )}
+          <SubMenuContainer disabled={hasPendingTeachingWorkload}>
+            <SubMenuText
+              isActive={location === "/teaching-workload"}
+              onClick={
+                hasPendingTeachingWorkload
+                  ? () => {}
+                  : () => navigate("/teaching-workload", { replace: true })
+              }
+              disabled={hasPendingTeachingWorkload}
+            >
+              Teaching Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer disabled={hasPendingResearchWorkload}>
+            <SubMenuText
+              isActive={location === "/research-workload"}
+              onClick={
+                hasPendingResearchWorkload
+                  ? () => {}
+                  : () => navigate("/research-workload", { replace: true })
+              }
+              disabled={hasPendingResearchWorkload}
+            >
+              Research Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer disabled={hasPendingExtensionWorkload}>
+            <SubMenuText
+              isActive={location === "/extension-workload"}
+              onClick={
+                hasPendingExtensionWorkload
+                  ? () => {}
+                  : () => navigate("/extension-workload", { replace: true })
+              }
+              disabled={hasPendingExtensionWorkload}
+            >
+              Extension Workload
+            </SubMenuText>
+          </SubMenuContainer>
+          <SubMenuContainer disabled={hasPendingStrategicWorkload}>
+            <SubMenuText
+              isActive={location === "/strategic-function-workload"}
+              onClick={
+                hasPendingStrategicWorkload
+                  ? () => {}
+                  : () =>
+                      navigate("/strategic-function-workload", {
+                        replace: true
+                      })
+              }
+              disabled={hasPendingStrategicWorkload}
+            >
+              Strategic Function
+            </SubMenuText>
+          </SubMenuContainer>
+        </>
+      )}
 
       {user.role === "Department Chairperson" || user.role === "Faculty" ? (
         <NavButtonContainer>

@@ -14,6 +14,7 @@ import { submitEwlWorkload } from "../../lib/ewl.hooks";
 import { submitSfWorkload } from "../../lib/sfw.hooks";
 import { Confirm } from "semantic-ui-react";
 import { UserContext } from "../../App";
+import { DROPDOWN_LISTS } from "../../constants/Strings";
 
 type ReviewFacultyScreenProps = {
   userEmail?: string;
@@ -455,6 +456,62 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                         </div>
                       </>
                     ))}
+                    {!!workload.disseminatedResearch?.length && (
+                      <>
+                        {workload.disseminatedResearch.map(study => (
+                          <>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                borderBottom: "1px solid black"
+                              }}
+                            >
+                              <ColumnContainer>
+                                <BoldText style={{ marginBottom: 10 }}>
+                                  Disseminated Research
+                                </BoldText>
+                                <ThinText>Study:</ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                <BoldText style={{ marginBottom: 10 }}>
+                                  &nbsp;
+                                </BoldText>
+                                <BoldText>{study}</BoldText>
+                              </ColumnContainer>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                marginBottom: 25
+                              }}
+                            >
+                              <ColumnContainer>
+                                <BoldText>TOTAL:</BoldText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                <BoldText>
+                                  {study ===
+                                  DROPDOWN_LISTS.DISSEMINATED_RESEARCH_OUTPUT[1]
+                                    ? 4
+                                    : study ===
+                                      DROPDOWN_LISTS
+                                        .DISSEMINATED_RESEARCH_OUTPUT[2]
+                                    ? 3
+                                    : study ===
+                                      DROPDOWN_LISTS
+                                        .DISSEMINATED_RESEARCH_OUTPUT[3]
+                                    ? 2
+                                    : 1}
+                                </BoldText>
+                              </ColumnContainer>
+                            </div>
+                          </>
+                        ))}
+                      </>
+                    )}
                   </>
                 );
               })}
