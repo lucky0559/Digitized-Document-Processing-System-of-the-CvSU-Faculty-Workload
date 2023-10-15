@@ -237,6 +237,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
             strategicFunctionWorkloads[0].isSubmitted
         );
       }
+      alert("You have successfully submitted your workload. Thank you.");
     } catch (error) {
       console.log(error);
     }

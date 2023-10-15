@@ -47,6 +47,23 @@ function RemarksWorkload({
 
   const { user: userContext } = useContext(UserContext);
 
+  const [rwlPointsRemarksSetter, setRwlPointsRemarksSetter] = useState<
+    PointsAndRemarks[]
+  >([
+    {
+      key: "",
+      points: "0"
+    }
+  ]);
+  const [ewlPointsRemarksSetter, setEwlPointsRemarksSetter] = useState<
+    PointsAndRemarks[]
+  >([
+    {
+      key: "",
+      points: "0"
+    }
+  ]);
+
   const [rwlPointsRemarksInitial, setRwlPointsRemarksInitial] =
     useState<PointsAndRemarks[]>();
   const [ewlPointsRemarksInitial, setEwlPointsRemarksInitial] =
@@ -76,12 +93,28 @@ function RemarksWorkload({
   }, [user.id, userContext.role]);
 
   useEffect(() => {
-    setRwlPointsRemarks(rwlPointsRemarksInitial!);
+    let mock = rwlPointsRemarksSetter;
+    for (let a = 0; a < rwlPointsRemarksInitial?.length!; a++) {
+      const index = rwlPointsRemarksSetter.findIndex(
+        x => x.key === rwlPointsRemarksInitial?.[a].key
+      );
+      mock[index].points = rwlPointsRemarksInitial?.[a].points || "0";
+    }
+
+    setRwlPointsRemarks(mock);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rwlPointsRemarksInitial]);
 
   useEffect(() => {
-    setEwlPointsRemarks(ewlPointsRemarksInitial!);
+    let mock = ewlPointsRemarksSetter;
+    for (let a = 0; a < ewlPointsRemarksInitial?.length!; a++) {
+      const index = ewlPointsRemarksSetter.findIndex(
+        x => x.key === ewlPointsRemarksInitial?.[a].key
+      );
+      mock[index].points = ewlPointsRemarksInitial?.[a].points || "0";
+    }
+
+    setEwlPointsRemarks(mock);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ewlPointsRemarksInitial]);
 
@@ -99,29 +132,29 @@ function RemarksWorkload({
     }
   }, [setTwlPointsRemarks, teachingWorkloads]);
 
-  useEffect(() => {
-    if (!!researchWorkloads?.length) {
-      setRwlPointsRemarks([
-        {
-          key: researchWorkloads?.[0].cvsuFundedFilePath?.[0] || "",
-          points: researchWorkloads?.[0].rwlPoints?.toString() || ""
-        }
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setRwlPointsRemarks, researchWorkloads]);
+  // useEffect(() => {
+  //   if (!!researchWorkloads?.length) {
+  //     setRwlPointsRemarks([
+  //       {
+  //         key: researchWorkloads?.[0].cvsuFundedFilePath?.[0] || "",
+  //         points: researchWorkloads?.[0].rwlPoints?.toString() || ""
+  //       }
+  //     ]);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [setRwlPointsRemarks, researchWorkloads]);
 
-  useEffect(() => {
-    if (!!extensionWorkloads?.length) {
-      setEwlPointsRemarks([
-        {
-          key: extensionWorkloads?.[0].extensionActivityFilePath || "",
-          points: extensionWorkloads?.[0].ewlPoints?.toString() || ""
-        }
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setEwlPointsRemarks, extensionWorkloads]);
+  // useEffect(() => {
+  //   if (!!extensionWorkloads?.length) {
+  //     setEwlPointsRemarks([
+  //       {
+  //         key: extensionWorkloads?.[0].extensionActivityFilePath || "",
+  //         points: extensionWorkloads?.[0].ewlPoints?.toString() || ""
+  //       }
+  //     ]);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [setEwlPointsRemarks, extensionWorkloads]);
 
   useEffect(() => {
     if (!!strategicFunctionWorkloads?.length) {
@@ -136,6 +169,14 @@ function RemarksWorkload({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setSfPointsRemarks, strategicFunctionWorkloads]);
+
+  useEffect(() => {
+    setRwlPointsRemarks(rwlPointsRemarksSetter);
+  }, [rwlPointsRemarksSetter, setRwlPointsRemarks]);
+
+  useEffect(() => {
+    setEwlPointsRemarks(ewlPointsRemarksSetter);
+  }, [ewlPointsRemarksSetter, setEwlPointsRemarks]);
 
   return (
     <Container>
@@ -194,7 +235,17 @@ function RemarksWorkload({
         </div>
       ) : (
         teachingWorkloads?.map(workload => {
-          let points = workload.totalTeachingWorkload?.toString();
+          let points =
+            userContext.role === "Dean"
+              ? workload.totalTeachingWorkload?.toString()
+              : workload.remarks?.points;
+          workload.remarks =
+            userContext.role === "Dean"
+              ? {
+                  key: workload.id!,
+                  points: workload.totalTeachingWorkload?.toString()!
+                }
+              : { ...workload.remarks! };
           return (
             <>
               <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
@@ -244,7 +295,8 @@ function RemarksWorkload({
                           Attachment
                         </ThinText>
                       </a>
-                      {userContext.role === "OVPAA" && (
+                      {(userContext.role === "OVPAA" ||
+                        userContext.role === "Dean") && (
                         <div
                           style={{
                             width: 170,
@@ -256,7 +308,10 @@ function RemarksWorkload({
                             type="number"
                             min={0}
                             onChange={e => {
-                              if (Number(points) > 0) {
+                              if (
+                                Number(points) > 0 ||
+                                Number(e.target.value) > 0
+                              ) {
                                 workload.remarks = {
                                   key: workload.id!,
                                   points: e.target.value
@@ -299,7 +354,7 @@ function RemarksWorkload({
         </div>
       ) : (
         researchWorkloads?.map(workload => {
-          let points = "";
+          let indexDeanPoints = 0;
 
           return (
             <>
@@ -312,7 +367,36 @@ function RemarksWorkload({
                 <ColumnContainer style={{ display: "flex", flex: 1 }}>
                   {workload.cvsuFunded &&
                     workload.cvsuFunded.map((funded, index) => {
-                      let points = funded.points.toString();
+                      const item = workload.deanPoints?.find(item => {
+                        return (
+                          item.key === workload.cvsuFundedFilePath?.[index]
+                        );
+                      });
+
+                      const conditionDeanPoints = !!workload.deanPoints?.length
+                        ? item?.points
+                        : "0";
+
+                      let points =
+                        conditionDeanPoints === "0"
+                          ? funded.points.toString()
+                          : conditionDeanPoints;
+                      indexDeanPoints += 1;
+
+                      const hasData = rwlPointsRemarksSetter.filter(
+                        item =>
+                          item.key === workload.cvsuFundedFilePath?.[index]
+                      );
+                      if (!!!hasData.length) {
+                        const data: PointsAndRemarks[] = [
+                          {
+                            key: workload.cvsuFundedFilePath?.[index]!,
+                            points: points?.toString() || "0"
+                          }
+                        ];
+                        const merge = [...rwlPointsRemarksSetter, ...data];
+                        setRwlPointsRemarksSetter(merge);
+                      }
                       return (
                         <div
                           style={{ display: "flex", flexDirection: "row" }}
@@ -382,7 +466,8 @@ function RemarksWorkload({
                                   Attachment
                                 </ThinText>
                               </a>
-                              {userContext.role === "OVPAA" && (
+                              {(userContext.role === "OVPAA" ||
+                                userContext.role === "Dean") && (
                                 <div
                                   style={{
                                     display: "flex",
@@ -394,7 +479,10 @@ function RemarksWorkload({
                                     min={0}
                                     onChange={e => {
                                       points = e.target.value;
-                                      if (Number(points) > 0) {
+                                      if (
+                                        Number(points) > 0 ||
+                                        Number(e.target.value) > 0
+                                      ) {
                                         const hasData =
                                           rwlPointsRemarksInitial?.filter(
                                             item =>
@@ -413,7 +501,10 @@ function RemarksWorkload({
                                                 ]
                                             );
                                           setRwlPointsRemarksInitial(filtered);
-                                          if (Number(points) > 0) {
+                                          if (
+                                            Number(points) > 0 ||
+                                            Number(e.target.value)
+                                          ) {
                                             setRwlPointsRemarksInitial([
                                               ...filtered!,
                                               {
@@ -455,7 +546,38 @@ function RemarksWorkload({
                     })}
                   {workload.externallyFunded &&
                     workload.externallyFunded.map((funded, index) => {
-                      let points = funded.points.toString();
+                      const item = workload.deanPoints?.find(item => {
+                        return (
+                          item.key ===
+                          workload.externallyFundedFilePath?.[index]
+                        );
+                      });
+
+                      const conditionDeanPoints = !!workload.deanPoints?.length
+                        ? item?.points
+                        : "0";
+
+                      let points =
+                        conditionDeanPoints === "0"
+                          ? funded.points.toString()
+                          : conditionDeanPoints;
+                      indexDeanPoints += 1;
+
+                      const hasData = rwlPointsRemarksSetter.filter(
+                        item =>
+                          item.key ===
+                          workload.externallyFundedFilePath?.[index]
+                      );
+                      if (!!!hasData.length) {
+                        const data: PointsAndRemarks[] = [
+                          {
+                            key: workload.externallyFundedFilePath?.[index]!,
+                            points: points?.toString() || "0"
+                          }
+                        ];
+                        const merge = [...rwlPointsRemarksSetter, ...data];
+                        setRwlPointsRemarksSetter(merge);
+                      }
                       return (
                         <div
                           style={{ display: "flex", flexDirection: "row" }}
@@ -528,7 +650,8 @@ function RemarksWorkload({
                                   Attachment
                                 </ThinText>
                               </a>
-                              {userContext.role === "OVPAA" && (
+                              {(userContext.role === "OVPAA" ||
+                                userContext.role === "Dean") && (
                                 <div
                                   style={{
                                     display: "flex",
@@ -540,7 +663,10 @@ function RemarksWorkload({
                                     min={0}
                                     onChange={e => {
                                       points = e.target.value;
-                                      if (Number(points) > 0) {
+                                      if (
+                                        Number(points) > 0 ||
+                                        Number(e.target.value) > 0
+                                      ) {
                                         const hasData =
                                           rwlPointsRemarksInitial?.filter(
                                             item =>
@@ -595,97 +721,150 @@ function RemarksWorkload({
                         </div>
                       );
                     })}
-                  {workload.disseminatedResearchFilesPath && (
-                    <BoldText>Certificate of Presentation:</BoldText>
-                  )}
                 </ColumnContainer>
-                <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                  {workload.disseminatedResearchFilesPath &&
-                    workload.disseminatedResearchFilesPath.map(attachment => {
-                      return (
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            justifyContent: "space-between"
-                          }}
-                          key={attachment}
-                        >
-                          <a
-                            href={attachment}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "none",
-                              alignItems: "flex-start",
-                              display: "flex"
-                            }}
-                          >
-                            <ThinText
-                              style={{
-                                color: "white",
-                                fontSize: 12,
-                                backgroundColor: Colors.buttonPrimary,
-                                paddingLeft: 5,
-                                paddingRight: 5,
-                                cursor: "pointer"
-                              }}
-                              onClick={() => {}}
-                            >
-                              Attachment
-                            </ThinText>
-                          </a>
-                          {userContext.role === "OVPAA" && (
-                            <div
-                              style={{
-                                display: "flex",
-                                marginRight: 15
-                              }}
-                            >
-                              <InputPoints
-                                type="number"
-                                min={0}
-                                onChange={e => {
-                                  points = e.target.value;
-                                  if (Number(points) > 0) {
-                                    const hasData =
-                                      rwlPointsRemarksInitial?.filter(
-                                        item => item.key === attachment
-                                      );
-                                    if (hasData) {
-                                      const filtered =
-                                        rwlPointsRemarksInitial?.filter(
-                                          item => item.key !== attachment
-                                        );
-                                      setRwlPointsRemarksInitial(filtered);
-                                      if (Number(points) > 0) {
-                                        setRwlPointsRemarksInitial([
-                                          ...filtered!,
-                                          {
-                                            key: attachment,
-                                            points: points
-                                          }
-                                        ]);
-                                      }
-                                    } else {
-                                      setRwlPointsRemarksInitial([
-                                        {
-                                          key: attachment,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  }
+                {workload.disseminatedResearchFilesPath && (
+                  <LevelContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                      <ThinText>Certificate of Presentation:</ThinText>
+                    </ColumnContainer>
+                    <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                      {workload.disseminatedResearchFilesPath &&
+                        workload.disseminatedResearchFilesPath.map(
+                          (attachment, index) => {
+                            const deanPoints = workload.deanPoints?.find(
+                              item => {
+                                return item.key === attachment;
+                              }
+                            );
+                            const conditionPoint =
+                              index === 0 && user.role === "Dean"
+                                ? workload.disseminated1Points?.toString() || ""
+                                : index === 1 && user.role === "Dean"
+                                ? workload.disseminated2Points?.toString() || ""
+                                : index === 2 && user.role === "Dean"
+                                ? workload.disseminated3Points?.toString() || ""
+                                : workload.disseminated4Points?.toString() ||
+                                  "";
+                            const conditionDeanPoints = deanPoints
+                              ? deanPoints.points
+                              : "0";
+
+                            let points =
+                              conditionDeanPoints === "0"
+                                ? conditionPoint
+                                : conditionDeanPoints;
+                            indexDeanPoints += 1;
+
+                            const hasData = rwlPointsRemarksSetter.filter(
+                              item => item.key === attachment
+                            );
+                            if (!!!hasData.length) {
+                              const data: PointsAndRemarks[] = [
+                                {
+                                  key: attachment,
+                                  points: points?.toString() || "0"
+                                }
+                              ];
+                              const merge = [
+                                ...rwlPointsRemarksSetter,
+                                ...data
+                              ];
+                              setRwlPointsRemarksSetter(merge);
+                            }
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "space-between",
+                                  paddingLeft: 38,
+                                  paddingRight: 167
                                 }}
-                                defaultValue={points}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                </ColumnContainer>
+                                key={attachment}
+                              >
+                                <a
+                                  href={attachment}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    textDecoration: "none",
+                                    alignItems: "flex-start",
+                                    display: "flex"
+                                  }}
+                                >
+                                  <ThinText
+                                    style={{
+                                      color: "white",
+                                      fontSize: 12,
+                                      backgroundColor: Colors.buttonPrimary,
+                                      paddingLeft: 5,
+                                      paddingRight: 5,
+                                      cursor: "pointer"
+                                    }}
+                                    onClick={() => {}}
+                                  >
+                                    Attachment
+                                  </ThinText>
+                                </a>
+                                {(userContext.role === "OVPAA" ||
+                                  userContext.role === "Dean") && (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      marginRight: 15
+                                    }}
+                                  >
+                                    <InputPoints
+                                      type="number"
+                                      min={0}
+                                      onChange={e => {
+                                        points = e.target.value;
+                                        if (
+                                          Number(points) > 0 ||
+                                          Number(e.target.value) > 0
+                                        ) {
+                                          const hasData =
+                                            rwlPointsRemarksInitial?.filter(
+                                              item => item.key === attachment
+                                            );
+                                          if (hasData) {
+                                            const filtered =
+                                              rwlPointsRemarksInitial?.filter(
+                                                item => item.key !== attachment
+                                              );
+                                            setRwlPointsRemarksInitial(
+                                              filtered
+                                            );
+                                            if (Number(points) > 0) {
+                                              setRwlPointsRemarksInitial([
+                                                ...filtered!,
+                                                {
+                                                  key: attachment,
+                                                  points: points
+                                                }
+                                              ]);
+                                            }
+                                          } else {
+                                            setRwlPointsRemarksInitial([
+                                              {
+                                                key: attachment,
+                                                points: points
+                                              }
+                                            ]);
+                                          }
+                                        }
+                                      }}
+                                      defaultValue={points}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
+                    </ColumnContainer>
+                  </LevelContainer>
+                )}
               </ColumnParentContainer>
             </>
           );
@@ -706,6 +885,70 @@ function RemarksWorkload({
       ) : (
         extensionWorkloads?.map(workload => {
           let points = workload.ewlPoints?.toString();
+          const extensionActivityDeanPoints = workload.deanPoints?.find(
+            item => {
+              return item.key === workload.extensionActivityFilePath;
+            }
+          );
+          const summaryOfHoursDeanPoints = workload.deanPoints?.find(item => {
+            return item.key === workload.summaryOfHoursFilePath;
+          });
+          const extensionActivityPoints = extensionActivityDeanPoints?.points
+            ? extensionActivityDeanPoints?.points
+            : workload.designationPoints;
+
+          let summaryOfHoursPoints = summaryOfHoursDeanPoints?.points
+            ? summaryOfHoursDeanPoints?.points
+            : workload.hoursRenderedPoints;
+
+          const hasDataExtensionActivity = ewlPointsRemarksSetter.filter(
+            item => item.key === workload.extensionActivityFilePath
+          );
+          if (!!!hasDataExtensionActivity.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.extensionActivityFilePath!,
+                points: extensionActivityPoints?.toString() || "0"
+              }
+            ];
+            const merge = [...ewlPointsRemarksSetter, ...data];
+            setEwlPointsRemarksSetter(merge);
+          }
+
+          const hasDataSummaryOfHours = ewlPointsRemarksSetter.filter(
+            item => item.key === workload.summaryOfHoursFilePath
+          );
+          if (!!!hasDataSummaryOfHours.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.summaryOfHoursFilePath!,
+                points: summaryOfHoursPoints?.toString() || "0"
+              }
+            ];
+            const merge = [...ewlPointsRemarksSetter, ...data];
+            setEwlPointsRemarksSetter(merge);
+          }
+
+          const resourcePersonAllPoints = [
+            workload.resourcePerson1Points,
+            workload.resourcePerson2Points,
+            workload.resourcePerson3Points
+          ];
+
+          // let resourcePersonArrayPoints: string[] = [];
+
+          // for (let a = 0; a < workload.certificateFilePath?.length!; a++) {
+          //   const resourcePersonDeanPoints = workload.deanPoints?.find(item => {
+          //     return item.key === workload.certificateFilePath?.[a];
+          //   });
+          //   resourcePersonArrayPoints = [
+          //     ...resourcePersonArrayPoints!,
+          //     resourcePersonDeanPoints?.points!
+          //   ];
+          // }
+
+          // console.log(resourcePersonArrayPoints);
+
           return (
             <>
               <WorkloadHeaderContainer>
@@ -718,14 +961,13 @@ function RemarksWorkload({
                     Number of Hours rendered in Extension Activity:
                   </ThinText>
                   <ThinText>Resource Person in an Extension Activity:</ThinText>
-                  <ThinText>Resource Person in an Extension Activity:</ThinText>
                   {workload.extensionActivityFilePath && (
                     <ThinText style={{ maxWidth: 350 }}>
                       Extension Activity Accomplishment Report Attachment:
                     </ThinText>
                   )}
                   {workload.certificateFilePath && (
-                    <ThinText>Certificate of Presentation Attachment</ThinText>
+                    <ThinText>Certificate of Presentation Attachment:</ThinText>
                   )}
                   {workload.summaryOfHoursFilePath && (
                     <ThinText style={{ maxWidth: 350 }}>
@@ -737,7 +979,6 @@ function RemarksWorkload({
                 <ColumnContainer style={{ display: "flex", flex: 2 }}>
                   <BoldText>{workload.designationExtensionActivity}</BoldText>
                   <BoldText>{workload.totalNumberHours}</BoldText>
-                  <BoldText>{workload.resourcePerson}</BoldText>
                   <BoldText>{workload.resourcePerson}</BoldText>
                   {workload.extensionActivityFilePath && (
                     <div
@@ -772,7 +1013,8 @@ function RemarksWorkload({
                           Attachment
                         </ThinText>
                       </a>
-                      {userContext.role === "OVPAA" && (
+                      {(userContext.role === "OVPAA" ||
+                        userContext.role === "Dean") && (
                         <div
                           style={{
                             width: 170,
@@ -785,7 +1027,10 @@ function RemarksWorkload({
                             min={0}
                             onChange={e => {
                               points = e.target.value;
-                              if (Number(points) > 0) {
+                              if (
+                                Number(points) > 0 ||
+                                Number(e.target.value) > 0
+                              ) {
                                 const hasData = ewlPointsRemarksInitial?.filter(
                                   item =>
                                     item.key ===
@@ -826,13 +1071,36 @@ function RemarksWorkload({
                                 );
                               }
                             }}
-                            defaultValue={workload.hoursRenderedPoints}
+                            defaultValue={extensionActivityPoints}
                           />
                         </div>
                       )}
                     </div>
                   )}
                   {workload.certificateFilePath?.map((filePath, index) => {
+                    const resourcePersonDeanPoints = workload.deanPoints?.find(
+                      item => {
+                        return item.key === filePath;
+                      }
+                    );
+
+                    const hasDataResourcePerson = ewlPointsRemarksSetter.filter(
+                      item => item.key === filePath
+                    );
+                    if (!!!hasDataResourcePerson.length) {
+                      const data: PointsAndRemarks[] = [
+                        {
+                          key: filePath,
+                          points:
+                            resourcePersonDeanPoints?.points?.toString() ||
+                            resourcePersonAllPoints[index]?.toString() ||
+                            "0"
+                        }
+                      ];
+                      const merge = [...ewlPointsRemarksSetter, ...data];
+                      setEwlPointsRemarksSetter(merge);
+                    }
+
                     return (
                       <div
                         style={{
@@ -867,7 +1135,8 @@ function RemarksWorkload({
                             Attachment
                           </ThinText>
                         </a>
-                        {userContext.role === "OVPAA" && (
+                        {(userContext.role === "OVPAA" ||
+                          userContext.role === "Dean") && (
                           <div
                             style={{
                               width: 170,
@@ -880,7 +1149,10 @@ function RemarksWorkload({
                               min={0}
                               onChange={e => {
                                 points = e.target.value;
-                                if (Number(points) > 0) {
+                                if (
+                                  Number(points) > 0 ||
+                                  Number(e.target.value) > 0
+                                ) {
                                   const hasData =
                                     ewlPointsRemarksInitial?.filter(
                                       item => item.key === filePath
@@ -917,7 +1189,9 @@ function RemarksWorkload({
                                 }
                               }}
                               defaultValue={
-                                index === 0
+                                resourcePersonDeanPoints?.points
+                                  ? resourcePersonDeanPoints?.points
+                                  : index === 0
                                   ? workload.resourcePerson1Points
                                   : index === 1
                                   ? workload.resourcePerson2Points
@@ -929,7 +1203,7 @@ function RemarksWorkload({
                       </div>
                     );
                   })}
-                  {/* {workload.summaryOfHoursFilePath && (
+                  {workload.summaryOfHoursFilePath && (
                     <div
                       style={{
                         display: "flex",
@@ -962,7 +1236,8 @@ function RemarksWorkload({
                           Attachment
                         </ThinText>
                       </a>
-                      {userContext.role === "OVPAA" && (
+                      {(userContext.role === "OVPAA" ||
+                        userContext.role === "Dean") && (
                         <div
                           style={{
                             width: 170,
@@ -1015,12 +1290,12 @@ function RemarksWorkload({
                                 );
                               }
                             }}
-                            defaultValue={workload.hoursRenderedPoints}
+                            defaultValue={summaryOfHoursPoints}
                           />
                         </div>
                       )}
                     </div>
-                  )} */}
+                  )}
                 </ColumnContainer>
               </ColumnParentContainer>
             </>
@@ -1206,7 +1481,8 @@ function RemarksWorkload({
                                         Attachment
                                       </ThinText>
                                     </a>
-                                    {userContext.role === "OVPAA" && (
+                                    {(userContext.role === "OVPAA" ||
+                                      userContext.role === "Dean") && (
                                       <div
                                         style={{
                                           width: 170,
@@ -1219,7 +1495,10 @@ function RemarksWorkload({
                                           min={0}
                                           onChange={e => {
                                             points = e.target.value;
-                                            if (Number(points) > 0) {
+                                            if (
+                                              Number(points) > 0 ||
+                                              Number(e.target.value) > 0
+                                            ) {
                                               const hasData =
                                                 sfPointsRemarksInitial?.filter(
                                                   item => item.key === path
@@ -1318,7 +1597,8 @@ function RemarksWorkload({
                                         Attachment
                                       </ThinText>
                                     </a>
-                                    {userContext.role === "OVPAA" && (
+                                    {(userContext.role === "OVPAA" ||
+                                      userContext.role === "Dean") && (
                                       <div
                                         style={{
                                           width: 170,
@@ -1331,7 +1611,10 @@ function RemarksWorkload({
                                           min={0}
                                           onChange={e => {
                                             points = e.target.value;
-                                            if (Number(points) > 0) {
+                                            if (
+                                              Number(points) > 0 ||
+                                              Number(e.target.value) > 0
+                                            ) {
                                               const hasData =
                                                 sfPointsRemarksInitial?.filter(
                                                   item => item.key === path
@@ -1429,7 +1712,8 @@ function RemarksWorkload({
                                         Attachment
                                       </ThinText>
                                     </a>
-                                    {userContext.role === "OVPAA" && (
+                                    {(userContext.role === "OVPAA" ||
+                                      userContext.role === "Dean") && (
                                       <div
                                         style={{
                                           width: 170,
@@ -1442,7 +1726,10 @@ function RemarksWorkload({
                                           min={0}
                                           onChange={e => {
                                             points = e.target.value;
-                                            if (Number(points) > 0) {
+                                            if (
+                                              Number(points) > 0 ||
+                                              Number(e.target.value) > 0
+                                            ) {
                                               const hasData =
                                                 sfPointsRemarksInitial?.filter(
                                                   item => item.key === path
@@ -1536,7 +1823,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -1549,7 +1837,10 @@ function RemarksWorkload({
                                   min={0}
                                   onChange={e => {
                                     points = e.target.value;
-                                    if (Number(points) > 0) {
+                                    if (
+                                      Number(points) > 0 ||
+                                      Number(e.target.value) > 0
+                                    ) {
                                       const hasData =
                                         sfPointsRemarksInitial?.filter(
                                           item =>
@@ -1632,7 +1923,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -1645,7 +1937,10 @@ function RemarksWorkload({
                                   min={0}
                                   onChange={e => {
                                     points = e.target.value;
-                                    if (Number(points) > 0) {
+                                    if (
+                                      Number(points) > 0 ||
+                                      Number(e.target.value) > 0
+                                    ) {
                                       const hasData =
                                         sfPointsRemarksInitial?.filter(
                                           item =>
@@ -1728,7 +2023,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -1834,7 +2130,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -1928,7 +2225,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -2022,7 +2320,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -2127,7 +2426,8 @@ function RemarksWorkload({
                                 Attachment
                               </ThinText>
                             </a>
-                            {userContext.role === "OVPAA" && (
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
                               <div
                                 style={{
                                   width: 170,
@@ -2272,10 +2572,12 @@ const ParentLevelContainer = styled.div`
 
 const InputPoints = styled.input`
   width: 60px;
+  border: 1px solid black;
 `;
 
 const Remarks = styled.textarea`
   margin-left: 5px;
+  border: 1px solid black;
 `;
 
 export default RemarksWorkload;

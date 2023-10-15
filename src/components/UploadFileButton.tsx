@@ -38,7 +38,7 @@ const UploadFileButton = ({
                   );
                 }
                 if (
-                  fileExtension.toLowerCase() === "jpeg" ||
+                  fileExtension.toLowerCase() === "jpg" ||
                   fileExtension.toLowerCase() === "pdf" ||
                   fileExtension.toLowerCase() === "png"
                 ) {
@@ -49,7 +49,7 @@ const UploadFileButton = ({
                   );
                 }
               }}
-              accept=".jpeg, .pdf, .png"
+              accept=".jpg, .pdf, .png"
             />
             Upload
           </ButtonText>

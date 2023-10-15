@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import UploadFileButton from "./UploadFileButton";
 
@@ -71,6 +70,7 @@ const UploadContainer = styled.div`
 const Input = styled.input`
   margin-left: 42px;
   width: 100%;
+  border: 1px solid black;
 `;
 
 export default TextInputWithUpload;

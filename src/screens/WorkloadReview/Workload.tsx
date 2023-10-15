@@ -118,13 +118,13 @@ function Workload({
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
-        } else if (user?.role === "OVPAA") {
+        } else if (user?.role === "OVPAA" || user?.role === "Dean") {
           let modified = twlPointsRemarks;
           if (modified != undefined) {
             modified.remarks = remarks;
             setTwlPointsRemarks(modified);
           }
-          await OVPAAApproveTeachingWorkload(twlPointsRemarks!);
+          await OVPAAApproveTeachingWorkload(twlPointsRemarks!, user.role);
         }
         for (let i = 0; teachingWorkloads.length > i; i++) {
           isEmailSent = true;
@@ -137,12 +137,14 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         }
-        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
+
+        if (user?.role === "Department Chairperson") {
           for (let i = 0; researchWorkloads.length > i; i++) {
             await ApproveResearchWorkload(researchWorkloads[i].id);
           }
-        } else if (user?.role === "OVPAA") {
+        } else if (user?.role === "OVPAA" || user?.role === "Dean") {
           let modified = rwlPointsRemarks;
+          const deanPoints = modified?.slice(1);
           let points = 0;
           for (let i = 0; researchWorkloads.length > i; i++) {
             modified![i].key = researchWorkloads[i].id;
@@ -152,7 +154,11 @@ function Workload({
             }
             modified![i].points = points.toString();
             setRwlPointsRemarks(modified);
-            await OVPAAApproveResearchWorkload(rwlPointsRemarks?.[i]!);
+            await OVPAAApproveResearchWorkload(
+              modified?.[i]!,
+              user.role,
+              deanPoints!
+            );
           }
         }
       }
@@ -162,12 +168,13 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         }
-        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
+        if (user?.role === "Department Chairperson") {
           for (let i = 0; extensionWorkloads.length > i; i++) {
             await ApproveExtensionWorkload(extensionWorkloads[i].id);
           }
-        } else if (user?.role === "OVPAA") {
+        } else if (user?.role === "OVPAA" || user?.role === "Dean") {
           let modified = ewlPointsRemarks;
+          const deanPoints = modified?.slice(1);
           let points = 0;
           for (let i = 0; extensionWorkloads.length > i; i++) {
             if (modified != undefined) {
@@ -179,7 +186,12 @@ function Workload({
               modified![i].points = points.toString();
               setEwlPointsRemarks(modified);
             }
-            await OVPAAApproveExtensionWorkload(ewlPointsRemarks?.[i]!);
+
+            await OVPAAApproveExtensionWorkload(
+              ewlPointsRemarks?.[i]!,
+              user.role,
+              deanPoints!
+            );
           }
         }
       }
@@ -189,14 +201,15 @@ function Workload({
           isEmailSent = true;
           setRemarks("");
         }
-        if (user?.role === "Department Chairperson" || user?.role === "Dean") {
+        if (user?.role === "Department Chairperson") {
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
             await ApproveStrategicFunctionWorkload(
               strategicFunctionWorkloads[i].id
             );
           }
-        } else if (user?.role === "OVPAA") {
+        } else if (user?.role === "OVPAA" || user?.role === "Dean") {
           let modified = sfPointsRemarks;
+          const deanPoints = modified?.slice(1);
           let points = 0;
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
             if (modified != undefined) {
@@ -208,10 +221,18 @@ function Workload({
               modified![i].points = points.toString();
               setSfPointsRemarks(modified);
             }
-            await OVPAAApproveStrategicFunctionWorkload(sfPointsRemarks?.[i]!);
+            console.log(sfPointsRemarks?.[i]);
+            console.log(deanPoints);
+
+            // await OVPAAApproveStrategicFunctionWorkload(
+            //   sfPointsRemarks?.[i]!,
+            //   user.role,
+            //   deanPoints!
+            // );
           }
         }
       }
+      alert("Workload approved and endorsed");
       setReviewingId("");
       setIsDataLoading(true);
       setIsSubmitting(false);
