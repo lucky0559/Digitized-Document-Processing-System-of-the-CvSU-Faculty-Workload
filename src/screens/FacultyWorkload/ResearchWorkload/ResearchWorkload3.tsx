@@ -151,18 +151,21 @@ const ResearchWorkload3 = ({
         </div>
       </SubContainer>
 
-      <TotalPointsContainer>
-        <Label style={{ fontWeight: "bold" }}>
-          Total Research Workload ={" "}
-          {(
-            (studyPoints || 0) +
-            study1Points +
-            study2Points +
-            study3Points +
-            study4Points
-          ).toString()}
-        </Label>
-      </TotalPointsContainer>
+      {!isSubmitting && (
+        <TotalPointsContainer>
+          <Label style={{ fontWeight: "bold" }}>
+            Total Research Workload ={" "}
+            {(
+              (studyPoints || 0) +
+              study1Points +
+              study2Points +
+              study3Points +
+              study4Points
+            ).toString()}
+          </Label>
+        </TotalPointsContainer>
+      )}
+
       <Buttons>
         <ButtonContainer
           style={{ justifyContent: "flex-end", alignItems: "flex-end" }}

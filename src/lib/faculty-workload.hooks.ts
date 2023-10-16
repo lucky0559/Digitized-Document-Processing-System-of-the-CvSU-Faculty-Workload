@@ -977,11 +977,12 @@ export const ApproveTeachingWorkload = async (workloadId?: string) => {
 
 export const OVPAAApproveTeachingWorkload = async (
   remarks: PointsAndRemarks,
-  role: string
+  role: string,
+  deanPoints: PointsAndRemarks[]
 ) => {
   const { data } = await axios.patch(
     `teaching-workload/${role}/ovpaa-approve-workload`,
-    remarks
+    { remarks, deanPoints }
   );
 
   return { data };

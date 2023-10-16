@@ -725,7 +725,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 </PointsContainer>
                 {ovpaaTotalTwlPoints ||
                 ovpaaTotalRwlPoints ||
-                ovpaaTotalEwlPoints ? (
+                ovpaaTotalEwlPoints ||
+                ovpaaTotalSfPoints ? (
                   isQualifyOverload && totalPoints > 25 ? (
                     <BoldText style={{ color: "green" }}>
                       You're qualified for an overload pay amounting to{" "}

@@ -59,7 +59,8 @@ function Workload({
 
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const [twlPointsRemarks, setTwlPointsRemarks] = useState<PointsAndRemarks>();
+  const [twlPointsRemarks, setTwlPointsRemarks] =
+    useState<PointsAndRemarks[]>();
   const [rwlPointsRemarks, setRwlPointsRemarks] =
     useState<PointsAndRemarks[]>();
   const [ewlPointsRemarks, setEwlPointsRemarks] =
@@ -111,29 +112,42 @@ function Workload({
         user?.role!
       );
       if (teachingWorkloads.length > 0) {
-        if (
-          !isEmailSent &&
-          (user?.role === "Department Chairperson" || user?.role === "Dean")
-        ) {
+        if (!isEmailSent) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
+        }
+        if (user?.role === "Department Chairperson") {
+          for (let i = 0; teachingWorkloads.length > i; i++) {
+            isEmailSent = true;
+            await ApproveTeachingWorkload(teachingWorkloads[i].id);
+          }
         } else if (user?.role === "OVPAA" || user?.role === "Dean") {
           let modified = twlPointsRemarks;
-          if (modified != undefined) {
-            modified.remarks = remarks;
-            setTwlPointsRemarks(modified);
+          const deanPoints = modified?.slice(1);
+          let points = 0;
+          for (let i = 0; teachingWorkloads.length > i; i++) {
+            if (modified != undefined) {
+              modified![i].key = teachingWorkloads[i].id;
+              modified![i].remarks = remarks;
+              for (let a = 0; modified?.length! > a; a++) {
+                points = points + Number(modified![a].points);
+              }
+              modified![i].points = points.toString();
+              setTwlPointsRemarks(modified);
+            }
+
+            await OVPAAApproveTeachingWorkload(
+              twlPointsRemarks?.[i]!,
+              user.role,
+              deanPoints!
+            );
           }
-          await OVPAAApproveTeachingWorkload(twlPointsRemarks!, user.role);
-        }
-        for (let i = 0; teachingWorkloads.length > i; i++) {
-          isEmailSent = true;
-          await ApproveTeachingWorkload(teachingWorkloads[i].id);
         }
       }
       if (researchWorkloads.length > 0) {
         if (!isEmailSent) {
-          // await SendRemarks(user?.role, reviewingId, remarks);
+          await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
         }
@@ -209,6 +223,10 @@ function Workload({
           }
         } else if (user?.role === "OVPAA" || user?.role === "Dean") {
           let modified = sfPointsRemarks;
+          modified = modified?.filter(item => {
+            return item.key !== null;
+          });
+
           const deanPoints = modified?.slice(1);
           let points = 0;
           for (let i = 0; strategicFunctionWorkloads.length > i; i++) {
@@ -221,14 +239,11 @@ function Workload({
               modified![i].points = points.toString();
               setSfPointsRemarks(modified);
             }
-            console.log(sfPointsRemarks?.[i]);
-            console.log(deanPoints);
-
-            // await OVPAAApproveStrategicFunctionWorkload(
-            //   sfPointsRemarks?.[i]!,
-            //   user.role,
-            //   deanPoints!
-            // );
+            await OVPAAApproveStrategicFunctionWorkload(
+              sfPointsRemarks?.[i]!,
+              user.role,
+              deanPoints!
+            );
           }
         }
       }

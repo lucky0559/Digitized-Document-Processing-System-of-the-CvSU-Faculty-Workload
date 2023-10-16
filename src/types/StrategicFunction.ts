@@ -60,4 +60,5 @@ export type StrategicFunctionType = {
   sfwPoints?: number;
   remarks?: PointsAndRemarks;
   isSubmitted?: boolean;
+  deanPoints?: PointsAndRemarks[];
 };

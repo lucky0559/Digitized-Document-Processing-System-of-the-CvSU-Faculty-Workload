@@ -14,7 +14,7 @@ import { DROPDOWN_LISTS } from "../../constants/Strings";
 type WorkloadProps = {
   user: User;
   setRemarks: (value: string) => void;
-  setTwlPointsRemarks: (value?: PointsAndRemarks) => void;
+  setTwlPointsRemarks: (value?: PointsAndRemarks[]) => void;
   setRwlPointsRemarks: (value: PointsAndRemarks[]) => void;
   setEwlPointsRemarks: (value: PointsAndRemarks[]) => void;
   setSfPointsRemarks: (value: PointsAndRemarks[]) => void;
@@ -47,6 +47,14 @@ function RemarksWorkload({
 
   const { user: userContext } = useContext(UserContext);
 
+  const [twlPointsRemarksSetter, setTwlPointsRemarksSetter] = useState<
+    PointsAndRemarks[]
+  >([
+    {
+      key: "",
+      points: "0"
+    }
+  ]);
   const [rwlPointsRemarksSetter, setRwlPointsRemarksSetter] = useState<
     PointsAndRemarks[]
   >([
@@ -63,7 +71,17 @@ function RemarksWorkload({
       points: "0"
     }
   ]);
+  const [sfwPointsRemarksSetter, setSfwPointsRemarksSetter] = useState<
+    PointsAndRemarks[]
+  >([
+    {
+      key: "",
+      points: "0"
+    }
+  ]);
 
+  const [twlPointsRemarksInitial, setTwlPointsRemarksInitial] =
+    useState<PointsAndRemarks[]>();
   const [rwlPointsRemarksInitial, setRwlPointsRemarksInitial] =
     useState<PointsAndRemarks[]>();
   const [ewlPointsRemarksInitial, setEwlPointsRemarksInitial] =
@@ -93,6 +111,19 @@ function RemarksWorkload({
   }, [user.id, userContext.role]);
 
   useEffect(() => {
+    let mock = twlPointsRemarksSetter;
+    for (let a = 0; a < twlPointsRemarksInitial?.length!; a++) {
+      const index = twlPointsRemarksSetter.findIndex(
+        x => x.key === twlPointsRemarksInitial?.[a].key
+      );
+      mock[index].points = twlPointsRemarksInitial?.[a].points || "0";
+    }
+
+    setTwlPointsRemarks(mock);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [twlPointsRemarksInitial]);
+
+  useEffect(() => {
     let mock = rwlPointsRemarksSetter;
     for (let a = 0; a < rwlPointsRemarksInitial?.length!; a++) {
       const index = rwlPointsRemarksSetter.findIndex(
@@ -119,56 +150,21 @@ function RemarksWorkload({
   }, [ewlPointsRemarksInitial]);
 
   useEffect(() => {
-    setSfPointsRemarks(sfPointsRemarksInitial!);
+    let mock = sfwPointsRemarksSetter;
+    for (let a = 0; a < sfPointsRemarksInitial?.length!; a++) {
+      const index = sfwPointsRemarksSetter.findIndex(
+        x => x.key === sfPointsRemarksInitial?.[a].key
+      );
+      mock[index].points = sfPointsRemarksInitial?.[a].points || "0";
+    }
+
+    setSfPointsRemarks(mock);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sfPointsRemarksInitial]);
 
   useEffect(() => {
-    if (!!teachingWorkloads?.length) {
-      setTwlPointsRemarks({
-        key: teachingWorkloads?.[0].id || "",
-        points: teachingWorkloads?.[0].totalTeachingWorkload?.toString() || ""
-      });
-    }
-  }, [setTwlPointsRemarks, teachingWorkloads]);
-
-  // useEffect(() => {
-  //   if (!!researchWorkloads?.length) {
-  //     setRwlPointsRemarks([
-  //       {
-  //         key: researchWorkloads?.[0].cvsuFundedFilePath?.[0] || "",
-  //         points: researchWorkloads?.[0].rwlPoints?.toString() || ""
-  //       }
-  //     ]);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [setRwlPointsRemarks, researchWorkloads]);
-
-  // useEffect(() => {
-  //   if (!!extensionWorkloads?.length) {
-  //     setEwlPointsRemarks([
-  //       {
-  //         key: extensionWorkloads?.[0].extensionActivityFilePath || "",
-  //         points: extensionWorkloads?.[0].ewlPoints?.toString() || ""
-  //       }
-  //     ]);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [setEwlPointsRemarks, extensionWorkloads]);
-
-  useEffect(() => {
-    if (!!strategicFunctionWorkloads?.length) {
-      setSfPointsRemarks([
-        {
-          key:
-            strategicFunctionWorkloads?.[0]
-              .approvedUniversityDesignationFilePath?.[0] || "",
-          points: strategicFunctionWorkloads?.[0].sfwPoints?.toString() || ""
-        }
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setSfPointsRemarks, strategicFunctionWorkloads]);
+    setTwlPointsRemarks(twlPointsRemarksSetter);
+  }, [twlPointsRemarksSetter, setTwlPointsRemarks]);
 
   useEffect(() => {
     setRwlPointsRemarks(rwlPointsRemarksSetter);
@@ -177,6 +173,10 @@ function RemarksWorkload({
   useEffect(() => {
     setEwlPointsRemarks(ewlPointsRemarksSetter);
   }, [ewlPointsRemarksSetter, setEwlPointsRemarks]);
+
+  useEffect(() => {
+    setSfPointsRemarks(sfwPointsRemarksSetter);
+  }, [sfwPointsRemarksSetter, setSfPointsRemarks]);
 
   return (
     <Container>
@@ -235,106 +235,169 @@ function RemarksWorkload({
         </div>
       ) : (
         teachingWorkloads?.map(workload => {
+          const deanPoints = workload.deanPoints?.find(item => {
+            return item.key === workload.twlFilePath;
+          });
           let points =
             userContext.role === "Dean"
               ? workload.totalTeachingWorkload?.toString()
-              : workload.remarks?.points;
-          workload.remarks =
-            userContext.role === "Dean"
-              ? {
-                  key: workload.id!,
-                  points: workload.totalTeachingWorkload?.toString()!
-                }
-              : { ...workload.remarks! };
+              : deanPoints?.points || "0";
+
+          const hasData = twlPointsRemarksSetter.filter(
+            item => item.key === workload.twlFilePath
+          );
+
+          if (!!!hasData.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.twlFilePath!,
+                points: points || "0"
+              }
+            ];
+            const merge = [...twlPointsRemarksSetter, ...data];
+            setTwlPointsRemarksSetter(merge);
+          }
+
           return (
             <>
               <WorkloadHeaderText>Teaching Workload</WorkloadHeaderText>
               <ColumnParentContainer>
-                <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                  <ThinText>Number of Preparation:</ThinText>
-                  <ThinText>Number of Contact Hours:</ThinText>
-                  <ThinText>Number of Students:</ThinText>
-                  {workload.twlFilePath && (
-                    <ThinText>Class Schedule Attachment:</ThinText>
+                <ParentLevelContainer>
+                  {workload.numberOfPreparations && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Number of Preparation:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        <BoldText>{workload.numberOfPreparations}</BoldText>
+                      </ColumnContainer>
+                    </LevelContainer>
                   )}
-                </ColumnContainer>
-                <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                  <BoldText>{workload.numberOfPreparations}</BoldText>
-                  <BoldText>{workload.contactHours}</BoldText>
-                  <BoldText>{workload.totalNoOfStudents}</BoldText>
+                  {workload.contactHours && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Number of Contact Hours:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        <BoldText>{workload.contactHours}</BoldText>
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.totalNoOfStudents && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Number of Students:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        <BoldText>{workload.totalNoOfStudents}</BoldText>
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
                   {workload.twlFilePath && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <a
-                        href={workload.twlFilePath}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          textDecoration: "none",
-                          alignItems: "flex-start",
-                          display: "flex"
-                        }}
-                      >
-                        <ThinText
-                          style={{
-                            color: "white",
-                            fontSize: 12,
-                            backgroundColor: Colors.buttonPrimary,
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                            cursor: "pointer"
-                          }}
-                          onClick={() => {}}
-                        >
-                          Attachment
-                        </ThinText>
-                      </a>
-                      {(userContext.role === "OVPAA" ||
-                        userContext.role === "Dean") && (
-                        <div
-                          style={{
-                            width: 170,
-                            display: "flex",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints
-                            type="number"
-                            min={0}
-                            onChange={e => {
-                              if (
-                                Number(points) > 0 ||
-                                Number(e.target.value) > 0
-                              ) {
-                                workload.remarks = {
-                                  key: workload.id!,
-                                  points: e.target.value
-                                };
-                                if (Number(workload.remarks.points) > 0) {
-                                  setTwlPointsRemarks(workload.remarks);
-                                } else {
-                                  setTwlPointsRemarks(undefined);
-                                }
-                              } else {
-                                workload.remarks = {
-                                  key: workload.id!,
-                                  points: ""
-                                };
-                              }
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Class Schedule Attachment:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.twlFilePath && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
                             }}
-                            defaultValue={points}
-                          />
-                        </div>
-                      )}
-                    </div>
+                          >
+                            <a
+                              href={workload.twlFilePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (
+                                      Number(points) > 0 ||
+                                      Number(e.target.value) > 0
+                                    ) {
+                                      const hasData =
+                                        twlPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key === workload.twlFilePath
+                                        );
+                                      if (hasData) {
+                                        const filtered =
+                                          twlPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !== workload.twlFilePath
+                                          );
+                                        setTwlPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setTwlPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.twlFilePath!,
+                                              points: points || "0"
+                                            }
+                                          ]);
+                                        }
+                                      } else {
+                                        setTwlPointsRemarksInitial([
+                                          {
+                                            key: workload.twlFilePath!,
+                                            points: points || "0"
+                                          }
+                                        ]);
+                                      }
+                                    } else {
+                                      setTwlPointsRemarksInitial(
+                                        twlPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !== workload.twlFilePath
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  defaultValue={points}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
                   )}
-                </ColumnContainer>
+                </ParentLevelContainer>
               </ColumnParentContainer>
             </>
           );
@@ -737,11 +800,11 @@ function RemarksWorkload({
                               }
                             );
                             const conditionPoint =
-                              index === 0 && user.role === "Dean"
+                              index === 0 && userContext.role === "Dean"
                                 ? workload.disseminated1Points?.toString() || ""
-                                : index === 1 && user.role === "Dean"
+                                : index === 1 && userContext.role === "Dean"
                                 ? workload.disseminated2Points?.toString() || ""
-                                : index === 2 && user.role === "Dean"
+                                : index === 2 && userContext.role === "Dean"
                                 ? workload.disseminated3Points?.toString() || ""
                                 : workload.disseminated4Points?.toString() ||
                                   "";
@@ -776,9 +839,8 @@ function RemarksWorkload({
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  paddingLeft: 38,
-                                  paddingRight: 167
+                                  width: "100%",
+                                  justifyContent: "space-between"
                                 }}
                                 key={attachment}
                               >
@@ -810,6 +872,7 @@ function RemarksWorkload({
                                   userContext.role === "Dean") && (
                                   <div
                                     style={{
+                                      width: 170,
                                       display: "flex",
                                       marginRight: 15
                                     }}
@@ -935,368 +998,433 @@ function RemarksWorkload({
             workload.resourcePerson3Points
           ];
 
-          // let resourcePersonArrayPoints: string[] = [];
-
-          // for (let a = 0; a < workload.certificateFilePath?.length!; a++) {
-          //   const resourcePersonDeanPoints = workload.deanPoints?.find(item => {
-          //     return item.key === workload.certificateFilePath?.[a];
-          //   });
-          //   resourcePersonArrayPoints = [
-          //     ...resourcePersonArrayPoints!,
-          //     resourcePersonDeanPoints?.points!
-          //   ];
-          // }
-
-          // console.log(resourcePersonArrayPoints);
-
           return (
             <>
               <WorkloadHeaderContainer>
                 <WorkloadHeaderText>Extension Workload</WorkloadHeaderText>
               </WorkloadHeaderContainer>
               <ColumnParentContainer>
-                <ColumnContainer style={{ display: "flex", flex: 1 }}>
-                  <ThinText>Designation in Extension Activity:</ThinText>
-                  <ThinText>
-                    Number of Hours rendered in Extension Activity:
-                  </ThinText>
-                  <ThinText>Resource Person in an Extension Activity:</ThinText>
-                  {workload.extensionActivityFilePath && (
-                    <ThinText style={{ maxWidth: 350 }}>
-                      Extension Activity Accomplishment Report Attachment:
-                    </ThinText>
-                  )}
-                  {workload.certificateFilePath && (
-                    <ThinText>Certificate of Presentation Attachment:</ThinText>
-                  )}
-                  {workload.summaryOfHoursFilePath && (
-                    <ThinText style={{ maxWidth: 350 }}>
-                      Summary of hours rendered in extension activities
-                      Attachment:
-                    </ThinText>
-                  )}
-                </ColumnContainer>
-                <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                  <BoldText>{workload.designationExtensionActivity}</BoldText>
-                  <BoldText>{workload.totalNumberHours}</BoldText>
-                  <BoldText>{workload.resourcePerson}</BoldText>
-                  {workload.extensionActivityFilePath && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <a
-                        href={workload.extensionActivityFilePath}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          textDecoration: "none",
-                          alignItems: "flex-start",
-                          display: "flex"
-                        }}
-                      >
-                        <ThinText
-                          style={{
-                            color: "white",
-                            fontSize: 12,
-                            backgroundColor: Colors.buttonPrimary,
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                            cursor: "pointer"
-                          }}
-                          onClick={() => {}}
-                        >
-                          Attachment
-                        </ThinText>
-                      </a>
-                      {(userContext.role === "OVPAA" ||
-                        userContext.role === "Dean") && (
-                        <div
-                          style={{
-                            width: 170,
-                            display: "flex",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints
-                            type="number"
-                            min={0}
-                            onChange={e => {
-                              points = e.target.value;
-                              if (
-                                Number(points) > 0 ||
-                                Number(e.target.value) > 0
-                              ) {
-                                const hasData = ewlPointsRemarksInitial?.filter(
-                                  item =>
-                                    item.key ===
-                                    workload.extensionActivityFilePath
-                                );
-                                if (hasData) {
-                                  const filtered =
-                                    ewlPointsRemarksInitial?.filter(
-                                      item =>
-                                        item.key !==
-                                        workload.extensionActivityFilePath
-                                    );
-                                  setEwlPointsRemarksInitial(filtered);
-                                  if (Number(points) > 0) {
-                                    setEwlPointsRemarksInitial([
-                                      ...filtered!,
-                                      {
-                                        key: workload.extensionActivityFilePath!,
-                                        points: points
-                                      }
-                                    ]);
-                                  }
-                                } else {
-                                  setEwlPointsRemarksInitial([
-                                    {
-                                      key: workload.extensionActivityFilePath!,
-                                      points: points
-                                    }
-                                  ]);
+                <ParentLevelContainer>
+                  {workload.designationExtensionActivity && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>Designation in Extension Activity:</ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.designationExtensionActivity.map(
+                          designation => {
+                            return (
+                              <BoldText
+                                key={
+                                  designation +
+                                  Math.floor(Math.random()).toString()
                                 }
-                              } else {
-                                setEwlPointsRemarksInitial(
-                                  ewlPointsRemarksInitial?.filter(
-                                    item =>
-                                      item.key !==
-                                      workload.extensionActivityFilePath
-                                  )
-                                );
-                              }
-                            }}
-                            defaultValue={extensionActivityPoints}
-                          />
-                        </div>
-                      )}
-                    </div>
+                              >
+                                {workload.designationExtensionActivity}
+                              </BoldText>
+                            );
+                          }
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
                   )}
-                  {workload.certificateFilePath?.map((filePath, index) => {
-                    const resourcePersonDeanPoints = workload.deanPoints?.find(
-                      item => {
-                        return item.key === filePath;
-                      }
-                    );
-
-                    const hasDataResourcePerson = ewlPointsRemarksSetter.filter(
-                      item => item.key === filePath
-                    );
-                    if (!!!hasDataResourcePerson.length) {
-                      const data: PointsAndRemarks[] = [
-                        {
-                          key: filePath,
-                          points:
-                            resourcePersonDeanPoints?.points?.toString() ||
-                            resourcePersonAllPoints[index]?.toString() ||
-                            "0"
-                        }
-                      ];
-                      const merge = [...ewlPointsRemarksSetter, ...data];
-                      setEwlPointsRemarksSetter(merge);
-                    }
-
-                    return (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between"
-                        }}
-                        key={filePath}
-                      >
-                        <a
-                          href={filePath}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            alignItems: "flex-start",
-                            display: "flex"
-                          }}
-                        >
-                          <ThinText
-                            style={{
-                              color: "white",
-                              fontSize: 12,
-                              backgroundColor: Colors.buttonPrimary,
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              cursor: "pointer"
-                            }}
-                            onClick={() => {}}
-                          >
-                            Attachment
-                          </ThinText>
-                        </a>
-                        {(userContext.role === "OVPAA" ||
-                          userContext.role === "Dean") && (
+                  {workload.totalNumberHours && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>
+                          Number of Hours rendered in Extension Activity:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        <BoldText>{workload.totalNumberHours}</BoldText>
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.resourcePerson && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>
+                          Resource Person in an Extension Activity:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.resourcePerson.map(resource => {
+                          return (
+                            <BoldText
+                              key={
+                                resource + Math.floor(Math.random()).toString()
+                              }
+                            >
+                              {workload.resourcePerson}
+                            </BoldText>
+                          );
+                        })}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.extensionActivityFilePath && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText style={{ maxWidth: 350 }}>
+                          Extension Activity Accomplishment Report Attachment:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.extensionActivityFilePath && (
                           <div
                             style={{
-                              width: 170,
                               display: "flex",
-                              marginRight: 15
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
                             }}
                           >
-                            <InputPoints
-                              type="number"
-                              min={0}
-                              onChange={e => {
-                                points = e.target.value;
-                                if (
-                                  Number(points) > 0 ||
-                                  Number(e.target.value) > 0
-                                ) {
-                                  const hasData =
-                                    ewlPointsRemarksInitial?.filter(
-                                      item => item.key === filePath
-                                    );
-                                  if (hasData) {
-                                    const filtered =
-                                      ewlPointsRemarksInitial?.filter(
-                                        item => item.key !== filePath
-                                      );
-                                    setEwlPointsRemarksInitial(filtered);
-                                    if (Number(points) > 0) {
-                                      setEwlPointsRemarksInitial([
-                                        ...filtered!,
-                                        {
-                                          key: filePath,
-                                          points: points
-                                        }
-                                      ]);
-                                    }
-                                  } else {
-                                    setEwlPointsRemarksInitial([
-                                      {
-                                        key: filePath,
-                                        points: points
-                                      }
-                                    ]);
-                                  }
-                                } else {
-                                  setEwlPointsRemarksInitial(
-                                    ewlPointsRemarksInitial?.filter(
-                                      item => item.key !== filePath
-                                    )
-                                  );
-                                }
+                            <a
+                              href={workload.extensionActivityFilePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
                               }}
-                              defaultValue={
-                                resourcePersonDeanPoints?.points
-                                  ? resourcePersonDeanPoints?.points
-                                  : index === 0
-                                  ? workload.resourcePerson1Points
-                                  : index === 1
-                                  ? workload.resourcePerson2Points
-                                  : workload.resourcePerson3Points
-                              }
-                            />
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (
+                                      Number(points) > 0 ||
+                                      Number(e.target.value) > 0
+                                    ) {
+                                      const hasData =
+                                        ewlPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
+                                            workload.extensionActivityFilePath
+                                        );
+                                      if (hasData) {
+                                        const filtered =
+                                          ewlPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.extensionActivityFilePath
+                                          );
+                                        setEwlPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setEwlPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.extensionActivityFilePath!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
+                                        setEwlPointsRemarksInitial([
+                                          {
+                                            key: workload.extensionActivityFilePath!,
+                                            points: points
+                                          }
+                                        ]);
+                                      }
+                                    } else {
+                                      setEwlPointsRemarksInitial(
+                                        ewlPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.extensionActivityFilePath
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  defaultValue={extensionActivityPoints}
+                                />
+                              </div>
+                            )}
                           </div>
                         )}
-                      </div>
-                    );
-                  })}
-                  {workload.summaryOfHoursFilePath && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <a
-                        href={workload.summaryOfHoursFilePath}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          textDecoration: "none",
-                          alignItems: "flex-start",
-                          display: "flex"
-                        }}
-                      >
-                        <ThinText
-                          style={{
-                            color: "white",
-                            fontSize: 12,
-                            backgroundColor: Colors.buttonPrimary,
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                            cursor: "pointer"
-                          }}
-                          onClick={() => {}}
-                        >
-                          Attachment
-                        </ThinText>
-                      </a>
-                      {(userContext.role === "OVPAA" ||
-                        userContext.role === "Dean") && (
-                        <div
-                          style={{
-                            width: 170,
-                            display: "flex",
-                            marginRight: 15
-                          }}
-                        >
-                          <InputPoints
-                            type="number"
-                            min={0}
-                            onChange={e => {
-                              points = e.target.value;
-                              if (Number(points) > 0) {
-                                const hasData = ewlPointsRemarksInitial?.filter(
-                                  item =>
-                                    item.key === workload.summaryOfHoursFilePath
-                                );
-                                if (hasData) {
-                                  const filtered =
-                                    ewlPointsRemarksInitial?.filter(
-                                      item =>
-                                        item.key !==
-                                        workload.summaryOfHoursFilePath
-                                    );
-                                  setEwlPointsRemarksInitial(filtered);
-                                  if (Number(points) > 0) {
-                                    setEwlPointsRemarksInitial([
-                                      ...filtered!,
-                                      {
-                                        key: workload.summaryOfHoursFilePath!,
-                                        points: points
-                                      }
-                                    ]);
-                                  }
-                                } else {
-                                  setEwlPointsRemarksInitial([
-                                    {
-                                      key: workload.summaryOfHoursFilePath!,
-                                      points: points
-                                    }
-                                  ]);
-                                }
-                              } else {
-                                setEwlPointsRemarksInitial(
-                                  ewlPointsRemarksInitial?.filter(
-                                    item =>
-                                      item.key !==
-                                      workload.summaryOfHoursFilePath
-                                  )
-                                );
-                              }
-                            }}
-                            defaultValue={summaryOfHoursPoints}
-                          />
-                        </div>
-                      )}
-                    </div>
+                      </ColumnContainer>
+                    </LevelContainer>
                   )}
-                </ColumnContainer>
+                  {workload.certificateFilePath && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText>
+                          Certificate of Presentation Attachment:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.certificateFilePath?.map(
+                          (filePath, index) => {
+                            const resourcePersonDeanPoints =
+                              workload.deanPoints?.find(item => {
+                                return item.key === filePath;
+                              });
+
+                            const hasDataResourcePerson =
+                              ewlPointsRemarksSetter.filter(
+                                item => item.key === filePath
+                              );
+                            if (!!!hasDataResourcePerson.length) {
+                              const data: PointsAndRemarks[] = [
+                                {
+                                  key: filePath,
+                                  points:
+                                    resourcePersonDeanPoints?.points?.toString() ||
+                                    resourcePersonAllPoints[
+                                      index
+                                    ]?.toString() ||
+                                    "0"
+                                }
+                              ];
+                              const merge = [
+                                ...ewlPointsRemarksSetter,
+                                ...data
+                              ];
+                              setEwlPointsRemarksSetter(merge);
+                            }
+
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  width: "100%",
+                                  justifyContent: "space-between"
+                                }}
+                                key={filePath}
+                              >
+                                <a
+                                  href={filePath}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    textDecoration: "none",
+                                    alignItems: "flex-start",
+                                    display: "flex"
+                                  }}
+                                >
+                                  <ThinText
+                                    style={{
+                                      color: "white",
+                                      fontSize: 12,
+                                      backgroundColor: Colors.buttonPrimary,
+                                      paddingLeft: 5,
+                                      paddingRight: 5,
+                                      cursor: "pointer"
+                                    }}
+                                    onClick={() => {}}
+                                  >
+                                    Attachment
+                                  </ThinText>
+                                </a>
+                                {(userContext.role === "OVPAA" ||
+                                  userContext.role === "Dean") && (
+                                  <div
+                                    style={{
+                                      width: 170,
+                                      display: "flex",
+                                      marginRight: 15
+                                    }}
+                                  >
+                                    <InputPoints
+                                      type="number"
+                                      min={0}
+                                      onChange={e => {
+                                        points = e.target.value;
+                                        if (
+                                          Number(points) > 0 ||
+                                          Number(e.target.value) > 0
+                                        ) {
+                                          const hasData =
+                                            ewlPointsRemarksInitial?.filter(
+                                              item => item.key === filePath
+                                            );
+                                          if (hasData) {
+                                            const filtered =
+                                              ewlPointsRemarksInitial?.filter(
+                                                item => item.key !== filePath
+                                              );
+                                            setEwlPointsRemarksInitial(
+                                              filtered
+                                            );
+                                            if (Number(points) > 0) {
+                                              setEwlPointsRemarksInitial([
+                                                ...filtered!,
+                                                {
+                                                  key: filePath,
+                                                  points: points
+                                                }
+                                              ]);
+                                            }
+                                          } else {
+                                            setEwlPointsRemarksInitial([
+                                              {
+                                                key: filePath,
+                                                points: points
+                                              }
+                                            ]);
+                                          }
+                                        } else {
+                                          setEwlPointsRemarksInitial(
+                                            ewlPointsRemarksInitial?.filter(
+                                              item => item.key !== filePath
+                                            )
+                                          );
+                                        }
+                                      }}
+                                      defaultValue={
+                                        resourcePersonDeanPoints?.points
+                                          ? resourcePersonDeanPoints?.points
+                                          : index === 0
+                                          ? workload.resourcePerson1Points
+                                          : index === 1
+                                          ? workload.resourcePerson2Points
+                                          : workload.resourcePerson3Points
+                                      }
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                  {workload.summaryOfHoursFilePath && (
+                    <LevelContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 1 }}>
+                        <ThinText style={{ maxWidth: 350 }}>
+                          Summary of hours rendered in extension activities
+                          Attachment:
+                        </ThinText>
+                      </ColumnContainer>
+                      <ColumnContainer style={{ display: "flex", flex: 2 }}>
+                        {workload.summaryOfHoursFilePath && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <a
+                              href={workload.summaryOfHoursFilePath}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "none",
+                                alignItems: "flex-start",
+                                display: "flex"
+                              }}
+                            >
+                              <ThinText
+                                style={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  backgroundColor: Colors.buttonPrimary,
+                                  paddingLeft: 5,
+                                  paddingRight: 5,
+                                  cursor: "pointer"
+                                }}
+                                onClick={() => {}}
+                              >
+                                Attachment
+                              </ThinText>
+                            </a>
+                            {(userContext.role === "OVPAA" ||
+                              userContext.role === "Dean") && (
+                              <div
+                                style={{
+                                  width: 170,
+                                  display: "flex",
+                                  marginRight: 15
+                                }}
+                              >
+                                <InputPoints
+                                  type="number"
+                                  min={0}
+                                  onChange={e => {
+                                    points = e.target.value;
+                                    if (Number(points) > 0) {
+                                      const hasData =
+                                        ewlPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key ===
+                                            workload.summaryOfHoursFilePath
+                                        );
+                                      if (hasData) {
+                                        const filtered =
+                                          ewlPointsRemarksInitial?.filter(
+                                            item =>
+                                              item.key !==
+                                              workload.summaryOfHoursFilePath
+                                          );
+                                        setEwlPointsRemarksInitial(filtered);
+                                        if (Number(points) > 0) {
+                                          setEwlPointsRemarksInitial([
+                                            ...filtered!,
+                                            {
+                                              key: workload.summaryOfHoursFilePath!,
+                                              points: points
+                                            }
+                                          ]);
+                                        }
+                                      } else {
+                                        setEwlPointsRemarksInitial([
+                                          {
+                                            key: workload.summaryOfHoursFilePath!,
+                                            points: points
+                                          }
+                                        ]);
+                                      }
+                                    } else {
+                                      setEwlPointsRemarksInitial(
+                                        ewlPointsRemarksInitial?.filter(
+                                          item =>
+                                            item.key !==
+                                            workload.summaryOfHoursFilePath
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  defaultValue={summaryOfHoursPoints}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </ColumnContainer>
+                    </LevelContainer>
+                  )}
+                </ParentLevelContainer>
               </ColumnParentContainer>
             </>
           );
@@ -1317,6 +1445,21 @@ function RemarksWorkload({
       ) : (
         strategicFunctionWorkloads?.map(workload => {
           let points = "";
+          const sports1DeanPoints = workload.deanPoints?.find(item => {
+            return (
+              item.key === workload.designationAsSportTrainorAcademicFilePath
+            );
+          });
+          const sports2DeanPoints = workload.deanPoints?.find(item => {
+            return (
+              item.key === workload.designationAsSportTrainorAcademicFilePath1
+            );
+          });
+          const sports3DeanPoints = workload.deanPoints?.find(item => {
+            return (
+              item.key === workload.designationAsSportTrainorAcademicFilePath2
+            );
+          });
           let sports1Points =
             workload.designationAsSportTrainorAcademic ===
             DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[1]
@@ -1341,12 +1484,122 @@ function RemarksWorkload({
                 DROPDOWN_LISTS.DESIGNATION_SPORTS_TRAINOR[0]
               ? "3"
               : "0";
+          const adhocDeanPoints1 = workload.deanPoints?.find(item => {
+            return item.key === workload.designationAsMemberOfAdhocFilePath;
+          });
+          const adhocDeanPoints2 = workload.deanPoints?.find(item => {
+            return item.key === workload.designationAsMemberOfAdhocFilePath1;
+          });
+          const adhocDeanPoints3 = workload.deanPoints?.find(item => {
+            return item.key === workload.designationAsMemberOfAdhocFilePath2;
+          });
           let adhocPoints1 = "0.05";
           let adhocPoints2 = "0.05";
           let adhocPoints3 = "0.05";
+          const academicDeanPoints = workload.deanPoints?.find(item => {
+            return item.key === workload.academicAdviseesFilePath;
+          });
           let academicPoints = (
             Number(workload.academicAdvisees) * 0.023
           ).toString();
+
+          const hasDataSports1 = sfwPointsRemarksSetter.filter(
+            item =>
+              item.key === workload.designationAsSportTrainorAcademicFilePath
+          );
+          if (!!!hasDataSports1.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.designationAsSportTrainorAcademicFilePath!,
+                points: sports1DeanPoints?.points || sports1Points
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+          const hasDataSports2 = sfwPointsRemarksSetter.filter(
+            item =>
+              item.key === workload.designationAsSportTrainorAcademicFilePath1
+          );
+          if (!!!hasDataSports2.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.designationAsSportTrainorAcademicFilePath1!,
+                points: sports2DeanPoints?.points || sports2Points
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+          const hasDataSports3 = sfwPointsRemarksSetter.filter(
+            item =>
+              item.key === workload.designationAsSportTrainorAcademicFilePath2
+          );
+          if (!!!hasDataSports3.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.designationAsSportTrainorAcademicFilePath2!,
+                points: sports3DeanPoints?.points || sports3Points
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+
+          const hasDataAdhoc1 = sfwPointsRemarksSetter.filter(
+            item => item.key === workload.designationAsMemberOfAdhocFilePath
+          );
+          if (!!!hasDataAdhoc1.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.designationAsMemberOfAdhocFilePath!,
+                points: adhocDeanPoints1?.points || adhocPoints1
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+          const hasDataAdhoc2 = sfwPointsRemarksSetter.filter(
+            item => item.key === workload.designationAsMemberOfAdhocFilePath1
+          );
+          if (!!!hasDataAdhoc2.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.designationAsMemberOfAdhocFilePath1!,
+                points: adhocDeanPoints2?.points || adhocPoints2
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+          const hasDataAdhoc3 = sfwPointsRemarksSetter.filter(
+            item => item.key === workload.designationAsMemberOfAdhocFilePath2
+          );
+          if (!!!hasDataAdhoc3.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.designationAsMemberOfAdhocFilePath2!,
+                points: adhocDeanPoints3?.points || adhocPoints3
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+
+          const hasDataAcademic = sfwPointsRemarksSetter.filter(
+            item => item.key === workload.academicAdviseesFilePath
+          );
+          if (!!!hasDataAcademic.length) {
+            const data: PointsAndRemarks[] = [
+              {
+                key: workload.academicAdviseesFilePath!,
+                points: academicDeanPoints?.points || academicPoints
+              }
+            ];
+            const merge = [...sfwPointsRemarksSetter, ...data];
+            setSfwPointsRemarksSetter(merge);
+          }
+
           return (
             <>
               <WorkloadHeaderContainer>
@@ -1446,7 +1699,32 @@ function RemarksWorkload({
                           {workload.approvedUniversityDesignationFilePath &&
                             workload.approvedUniversityDesignationFilePath.map(
                               path => {
-                                let points = "18";
+                                const deanPoints = workload.deanPoints?.find(
+                                  item => {
+                                    return item.key === path;
+                                  }
+                                );
+                                let points = deanPoints?.points
+                                  ? deanPoints.points
+                                  : "18";
+
+                                const hasData = sfwPointsRemarksSetter.filter(
+                                  item => item.key === path
+                                );
+                                if (!!!hasData.length) {
+                                  const data: PointsAndRemarks[] = [
+                                    {
+                                      key: path!,
+                                      points: points || "0"
+                                    }
+                                  ];
+                                  const merge = [
+                                    ...sfwPointsRemarksSetter,
+                                    ...data
+                                  ];
+                                  setSfwPointsRemarksSetter(merge);
+                                }
+
                                 return (
                                   <div
                                     style={{
@@ -1562,7 +1840,32 @@ function RemarksWorkload({
                           {workload.approvedCollegeCampusDesignationFilePath &&
                             workload.approvedCollegeCampusDesignationFilePath.map(
                               path => {
-                                let points = "15";
+                                const deanPoints = workload.deanPoints?.find(
+                                  item => {
+                                    return item.key === path;
+                                  }
+                                );
+                                let points = deanPoints?.points
+                                  ? deanPoints.points
+                                  : "15";
+
+                                const hasData = sfwPointsRemarksSetter.filter(
+                                  item => item.key === path
+                                );
+                                if (!!!hasData.length) {
+                                  const data: PointsAndRemarks[] = [
+                                    {
+                                      key: path!,
+                                      points: points || "0"
+                                    }
+                                  ];
+                                  const merge = [
+                                    ...sfwPointsRemarksSetter,
+                                    ...data
+                                  ];
+                                  setSfwPointsRemarksSetter(merge);
+                                }
+
                                 return (
                                   <div
                                     style={{
@@ -1677,7 +1980,32 @@ function RemarksWorkload({
                           {workload.approvedDepartmentDesignationFilePath &&
                             workload.approvedDepartmentDesignationFilePath.map(
                               path => {
-                                let points = "12";
+                                const deanPoints = workload.deanPoints?.find(
+                                  item => {
+                                    return item.key === path;
+                                  }
+                                );
+                                let points = deanPoints?.points
+                                  ? deanPoints.points
+                                  : "12";
+
+                                const hasData = sfwPointsRemarksSetter.filter(
+                                  item => item.key === path
+                                );
+                                if (!!!hasData.length) {
+                                  const data: PointsAndRemarks[] = [
+                                    {
+                                      key: path!,
+                                      points: points || "0"
+                                    }
+                                  ];
+                                  const merge = [
+                                    ...sfwPointsRemarksSetter,
+                                    ...data
+                                  ];
+                                  setSfwPointsRemarksSetter(merge);
+                                }
+
                                 return (
                                   <div
                                     style={{
@@ -1882,7 +2210,11 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
-                                  defaultValue={sports1Points}
+                                  defaultValue={
+                                    sports1DeanPoints?.points
+                                      ? sports1DeanPoints.points
+                                      : sports1Points
+                                  }
                                 />
                               </div>
                             )}
@@ -1982,7 +2314,11 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
-                                  defaultValue={sports2Points}
+                                  defaultValue={
+                                    sports2DeanPoints?.points
+                                      ? sports2DeanPoints.points
+                                      : sports2Points
+                                  }
                                 />
                               </div>
                             )}
@@ -2079,7 +2415,11 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
-                                  defaultValue={sports3Points}
+                                  defaultValue={
+                                    sports3DeanPoints?.points
+                                      ? sports3DeanPoints.points
+                                      : sports3Points
+                                  }
                                 />
                               </div>
                             )}
@@ -2088,7 +2428,7 @@ function RemarksWorkload({
                       </ColumnContainer>
                     </LevelContainer>
                   )}
-                  {workload.memberAdhocFilePath && (
+                  {workload.designationAsMemberOfAdhocFilePath && (
                     <LevelContainer>
                       <ColumnContainer style={{ display: "flex", flex: 1 }}>
                         <ThinText>
@@ -2097,7 +2437,7 @@ function RemarksWorkload({
                         </ThinText>
                       </ColumnContainer>
                       <ColumnContainer style={{ display: "flex", flex: 2 }}>
-                        {workload.memberAdhocFilePath && (
+                        {workload.designationAsMemberOfAdhocFilePath && (
                           <div
                             style={{
                               display: "flex",
@@ -2107,7 +2447,7 @@ function RemarksWorkload({
                             }}
                           >
                             <a
-                              href={workload.memberAdhocFilePath}
+                              href={workload.designationAsMemberOfAdhocFilePath}
                               target="_blank"
                               rel="noopener noreferrer"
                               style={{
@@ -2149,21 +2489,21 @@ function RemarksWorkload({
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key ===
-                                            workload.memberAdhocFilePath
+                                            workload.designationAsMemberOfAdhocFilePath
                                         );
                                       if (hasData) {
                                         const filtered =
                                           sfPointsRemarksInitial?.filter(
                                             item =>
                                               item.key !==
-                                              workload.memberAdhocFilePath
+                                              workload.designationAsMemberOfAdhocFilePath
                                           );
                                         setSfPointsRemarksInitial(filtered);
                                         if (Number(points) > 0) {
                                           setSfPointsRemarksInitial([
                                             ...filtered!,
                                             {
-                                              key: workload.memberAdhocFilePath!,
+                                              key: workload.designationAsMemberOfAdhocFilePath!,
                                               points: points
                                             }
                                           ]);
@@ -2171,7 +2511,7 @@ function RemarksWorkload({
                                       } else {
                                         setSfPointsRemarksInitial([
                                           {
-                                            key: workload.memberAdhocFilePath!,
+                                            key: workload.designationAsMemberOfAdhocFilePath!,
                                             points: points
                                           }
                                         ]);
@@ -2181,18 +2521,22 @@ function RemarksWorkload({
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
-                                            workload.memberAdhocFilePath
+                                            workload.designationAsMemberOfAdhocFilePath
                                         )
                                       );
                                     }
                                   }}
-                                  defaultValue={adhocPoints1}
+                                  defaultValue={
+                                    adhocDeanPoints1?.points
+                                      ? adhocDeanPoints1.points
+                                      : adhocPoints1
+                                  }
                                 />
                               </div>
                             )}
                           </div>
                         )}
-                        {workload.memberAdhocFilePath1 && (
+                        {workload.designationAsMemberOfAdhocFilePath1 && (
                           <div
                             style={{
                               display: "flex",
@@ -2202,7 +2546,9 @@ function RemarksWorkload({
                             }}
                           >
                             <a
-                              href={workload.memberAdhocFilePath1}
+                              href={
+                                workload.designationAsMemberOfAdhocFilePath1
+                              }
                               target="_blank"
                               rel="noopener noreferrer"
                               style={{
@@ -2244,21 +2590,21 @@ function RemarksWorkload({
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key ===
-                                            workload.memberAdhocFilePath1
+                                            workload.designationAsMemberOfAdhocFilePath1
                                         );
                                       if (hasData) {
                                         const filtered =
                                           sfPointsRemarksInitial?.filter(
                                             item =>
                                               item.key !==
-                                              workload.memberAdhocFilePath1
+                                              workload.designationAsMemberOfAdhocFilePath1
                                           );
                                         setSfPointsRemarksInitial(filtered);
                                         if (Number(points) > 0) {
                                           setSfPointsRemarksInitial([
                                             ...filtered!,
                                             {
-                                              key: workload.memberAdhocFilePath1!,
+                                              key: workload.designationAsMemberOfAdhocFilePath1!,
                                               points: points
                                             }
                                           ]);
@@ -2266,7 +2612,7 @@ function RemarksWorkload({
                                       } else {
                                         setSfPointsRemarksInitial([
                                           {
-                                            key: workload.memberAdhocFilePath1!,
+                                            key: workload.designationAsMemberOfAdhocFilePath1!,
                                             points: points
                                           }
                                         ]);
@@ -2276,18 +2622,22 @@ function RemarksWorkload({
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
-                                            workload.memberAdhocFilePath1
+                                            workload.designationAsMemberOfAdhocFilePath1
                                         )
                                       );
                                     }
                                   }}
-                                  defaultValue={adhocPoints2}
+                                  defaultValue={
+                                    adhocDeanPoints2?.points
+                                      ? adhocDeanPoints2.points
+                                      : adhocPoints2
+                                  }
                                 />
                               </div>
                             )}
                           </div>
                         )}
-                        {workload.memberAdhocFilePath2 && (
+                        {workload.designationAsMemberOfAdhocFilePath2 && (
                           <div
                             style={{
                               display: "flex",
@@ -2297,7 +2647,9 @@ function RemarksWorkload({
                             }}
                           >
                             <a
-                              href={workload.memberAdhocFilePath2}
+                              href={
+                                workload.designationAsMemberOfAdhocFilePath2
+                              }
                               target="_blank"
                               rel="noopener noreferrer"
                               style={{
@@ -2339,21 +2691,21 @@ function RemarksWorkload({
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key ===
-                                            workload.memberAdhocFilePath2
+                                            workload.designationAsMemberOfAdhocFilePath2
                                         );
                                       if (hasData) {
                                         const filtered =
                                           sfPointsRemarksInitial?.filter(
                                             item =>
                                               item.key !==
-                                              workload.memberAdhocFilePath2
+                                              workload.designationAsMemberOfAdhocFilePath2
                                           );
                                         setSfPointsRemarksInitial(filtered);
                                         if (Number(points) > 0) {
                                           setSfPointsRemarksInitial([
                                             ...filtered!,
                                             {
-                                              key: workload.memberAdhocFilePath2!,
+                                              key: workload.designationAsMemberOfAdhocFilePath2!,
                                               points: points
                                             }
                                           ]);
@@ -2361,7 +2713,7 @@ function RemarksWorkload({
                                       } else {
                                         setSfPointsRemarksInitial([
                                           {
-                                            key: workload.memberAdhocFilePath2!,
+                                            key: workload.designationAsMemberOfAdhocFilePath2!,
                                             points: points
                                           }
                                         ]);
@@ -2371,12 +2723,16 @@ function RemarksWorkload({
                                         sfPointsRemarksInitial?.filter(
                                           item =>
                                             item.key !==
-                                            workload.memberAdhocFilePath2
+                                            workload.designationAsMemberOfAdhocFilePath2
                                         )
                                       );
                                     }
                                   }}
-                                  defaultValue={adhocPoints3}
+                                  defaultValue={
+                                    adhocDeanPoints3?.points
+                                      ? adhocDeanPoints3.points
+                                      : adhocPoints3
+                                  }
                                 />
                               </div>
                             )}
@@ -2482,7 +2838,11 @@ function RemarksWorkload({
                                       );
                                     }
                                   }}
-                                  defaultValue={academicPoints}
+                                  defaultValue={
+                                    academicDeanPoints?.points
+                                      ? academicDeanPoints.points
+                                      : academicPoints
+                                  }
                                 />
                               </div>
                             )}
@@ -2549,8 +2909,6 @@ const WorkloadHeaderContainer = styled.div`
 `;
 
 const ColumnParentContainer = styled.div`
-  display: flex;
-  flex-direction: row;
   margin-left: 35px;
   border-bottom: 1px solid black;
 `;
