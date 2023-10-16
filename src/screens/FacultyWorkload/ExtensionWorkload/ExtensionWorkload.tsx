@@ -121,7 +121,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             extensionWorkload.summaryOfHoursFilename)
         ) {
           let designationExtensionActivityPoints;
-          let resourcePersonPoints;
           let totalNumberHoursPoints;
           if (
             extensionWorkload.designationExtensionActivity.includes(
@@ -155,18 +154,6 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             designationExtensionActivityPoints =
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               Number(designationExtensionActivityPoints) + 1;
-          }
-
-          for (let i = 0; i > extensionWorkload.resourcePerson.length; i++) {
-            if (extensionWorkload.resourcePerson[i] === "International") {
-              resourcePersonPoints = Number(resourcePersonPoints) + 4;
-            } else if (extensionWorkload.resourcePerson[i] === "National") {
-              resourcePersonPoints = Number(resourcePersonPoints) + 3;
-            } else if (extensionWorkload.resourcePerson[i] === "Regional") {
-              resourcePersonPoints = Number(resourcePersonPoints) + 2;
-            } else {
-              resourcePersonPoints = Number(resourcePersonPoints) + 1;
-            }
           }
 
           if (Number(extensionWorkload.totalNumberHours) * 0.05556 >= 3) {
@@ -205,10 +192,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
           const { data: config } = await getConfig();
-          const isAbleToSubmit = !(
+          const isAbleToSubmit =
             new Date() >= new Date(config.submissionDateStart) &&
-            new Date() <= new Date(config.submissionDateEnd)
-          );
+            new Date() <= new Date(config.submissionDateEnd);
           actions.setHasPendingTeachingWorkload(
             !!teachingWorkloads.length && teachingWorkloads[0].isSubmitted
           );
@@ -738,6 +724,9 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
                       onChange={e => totalNumberHoursHandler(e.target.value)}
                       value={totalNumberHours}
                       min={0}
+                      style={{
+                        border: "1px solid black"
+                      }}
                     />
                   </InputsContainer>
                   <InputsContainer

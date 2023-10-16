@@ -178,10 +178,10 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
               user?.role === "Faculty" ? (
                 <ReviewFacultyScreen userEmail={user?.email} />
               ) : user?.role === "OVPAA" &&
-                !ovpaaTeachingWorkloads &&
-                !ovpaaResearchWorkloads &&
-                !ovpaaExtensionWorkloads &&
-                !ovpaaStrategicWorkloads ? (
+                ovpaaTeachingWorkloads &&
+                ovpaaResearchWorkloads &&
+                ovpaaExtensionWorkloads &&
+                ovpaaStrategicWorkloads ? (
                 <OvpaaWorkloadReview
                   teachingWorkload={ovpaaTeachingWorkloads}
                   researchWorkload={ovpaaResearchWorkloads}
@@ -190,7 +190,11 @@ const WorkloadReviewScreen = ({ UseLogout }: WorkloadReviewScreenProps) => {
                   isDataLoading={isDataLoading}
                   setIsDataLoading={setIsDataLoading}
                 />
-              ) : user?.role === "OVPAA" ? (
+              ) : user?.role === "OVPAA" &&
+                !ovpaaTeachingWorkloads &&
+                !ovpaaResearchWorkloads &&
+                !ovpaaExtensionWorkloads &&
+                !ovpaaStrategicWorkloads ? (
                 <div>
                   <ButtonText>No data.</ButtonText>
                 </div>

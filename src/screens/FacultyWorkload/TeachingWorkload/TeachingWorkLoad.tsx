@@ -86,10 +86,9 @@ const TeachingWorkLoad = ({ UseLogout }: TeachingWorkLoadProps) => {
             strategicFunctionWorkloads
           } = await GetAllUserPendingWorkloads(user.email);
           const { data: config } = await getConfig();
-          const isAbleToSubmit = !(
+          const isAbleToSubmit =
             new Date() >= new Date(config.submissionDateStart) &&
-            new Date() <= new Date(config.submissionDateEnd)
-          );
+            new Date() <= new Date(config.submissionDateEnd);
           actions.setHasPendingExtensionWorkload(
             !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
           );

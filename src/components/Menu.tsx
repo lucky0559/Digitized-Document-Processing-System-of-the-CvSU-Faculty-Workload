@@ -45,10 +45,10 @@ const Menu = ({ position }: MenuProps) => {
           </NavButtonText>
         </NavButtonContainer>
       )}
-      {((user.role !== "System Administrator" &&
+      {user.role !== "System Administrator" &&
         user.role !== "OVPAA" &&
-        user.role !== "Dean") ||
-        isAbleToSubmit) && (
+        user.role !== "Dean" &&
+        isAbleToSubmit && (
         <>
           <NavContainer>
             <NavButtonText

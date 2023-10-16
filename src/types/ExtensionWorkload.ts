@@ -22,4 +22,5 @@ export type ExtensionWorkloadType = {
   resourcePerson1Points?: number;
   resourcePerson2Points?: number;
   resourcePerson3Points?: number;
+  deanPoints?: PointsAndRemarks[];
 };

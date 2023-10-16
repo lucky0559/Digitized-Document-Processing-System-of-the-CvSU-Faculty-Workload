@@ -93,37 +93,29 @@ export const SaveResearchWorkload = async (
   let disseminatedResearchFile4;
 
   if (!!researchWorkload.cvsuFunded.length) {
-    let hasPath = false;
+    let paths: string[] = [];
     for (let i = 0; i < researchWorkload.cvsuFunded.length; i++) {
       if (researchWorkload.cvsuFunded[i].file) {
         const file = await rwlAwsConfigS3.uploadFile(
           researchWorkload.cvsuFunded[i].file!
         );
-        if (!!researchWorkload.cvsuFundedFilePath?.length && hasPath) {
-          researchWorkload.cvsuFundedFilePath![i] = file.location;
-          hasPath = true;
-        } else {
-          researchWorkload.cvsuFundedFilePath?.push(file.location);
-        }
+        paths = [...paths, file.location];
       }
     }
+    researchWorkload.cvsuFundedFilePath = paths;
   }
 
   if (!!researchWorkload.externallyFunded.length) {
-    let hasPath = false;
+    let paths: string[] = [];
     for (let i = 0; i < researchWorkload.externallyFunded.length; i++) {
       if (researchWorkload.externallyFunded[i].file) {
         const file = await rwl1AwsConfigS3.uploadFile(
           researchWorkload.externallyFunded[i].file!
         );
-        if (!!researchWorkload.externallyFundedFilePath?.length && hasPath) {
-          researchWorkload.externallyFundedFilePath![i] = file.location;
-          hasPath = true;
-        } else {
-          researchWorkload.externallyFundedFilePath?.push(file.location);
-        }
+        paths = [...paths, file.location];
       }
     }
+    researchWorkload.externallyFundedFilePath = paths;
   }
 
   if (
@@ -381,18 +373,12 @@ export const SaveStrategicFunctionWorkload = async (
     let approvedDepartmentDesignationFilename4 = "";
 
     let sportsTrainorAcademicFile;
-    let sportsTrainorAcademicFilename = "";
     let sportsTrainorAcademicFile1;
-    let sportsTrainorAcademicFilename1 = "";
     let sportsTrainorAcademicFile2;
-    let sportsTrainorAcademicFilename2 = "";
 
     let memberAdhocFile;
-    let memberAdhocFilename = "";
     let memberAdhocFile1;
-    let memberAdhocFilename1 = "";
     let memberAdhocFile2;
-    let memberAdhocFilename2 = "";
 
     let academicAdviseesFile;
 
@@ -990,44 +976,52 @@ export const ApproveTeachingWorkload = async (workloadId?: string) => {
 };
 
 export const OVPAAApproveTeachingWorkload = async (
-  remarks: PointsAndRemarks
+  remarks: PointsAndRemarks,
+  role: string,
+  deanPoints: PointsAndRemarks[]
 ) => {
   const { data } = await axios.patch(
-    `teaching-workload/ovpaa-approve-workload`,
-    remarks
+    `teaching-workload/${role}/ovpaa-approve-workload`,
+    { remarks, deanPoints }
   );
 
   return { data };
 };
 
 export const OVPAAApproveResearchWorkload = async (
-  remarks: PointsAndRemarks
+  remarks: PointsAndRemarks,
+  role: string,
+  deanPoints: PointsAndRemarks[]
 ) => {
   const { data } = await axios.patch(
-    `research-workload/ovpaa-approve-workload`,
-    remarks
+    `research-workload/${role}/ovpaa-approve-workload`,
+    { remarks, deanPoints }
   );
 
   return { data };
 };
 
 export const OVPAAApproveExtensionWorkload = async (
-  remarks: PointsAndRemarks
+  remarks: PointsAndRemarks,
+  role: string,
+  deanPoints: PointsAndRemarks[]
 ) => {
   const { data } = await axios.patch(
-    `extension-workload/ovpaa-approve-workload`,
-    remarks
+    `extension-workload/${role}/ovpaa-approve-workload`,
+    { remarks, deanPoints }
   );
 
   return { data };
 };
 
 export const OVPAAApproveStrategicFunctionWorkload = async (
-  remarks: PointsAndRemarks
+  remarks: PointsAndRemarks,
+  role: string,
+  deanPoints: PointsAndRemarks[]
 ) => {
   const { data } = await axios.patch(
-    `strategic-function-workload/ovpaa-approve-workload`,
-    remarks
+    `strategic-function-workload/${role}/ovpaa-approve-workload`,
+    { remarks, deanPoints }
   );
 
   return { data };

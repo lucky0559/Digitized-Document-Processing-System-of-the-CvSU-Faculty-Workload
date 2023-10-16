@@ -237,6 +237,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
             strategicFunctionWorkloads[0].isSubmitted
         );
       }
+      alert("You have successfully submitted your workload. Thank you.");
     } catch (error) {
       console.log(error);
     }
@@ -724,7 +725,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 </PointsContainer>
                 {ovpaaTotalTwlPoints ||
                 ovpaaTotalRwlPoints ||
-                ovpaaTotalEwlPoints ? (
+                ovpaaTotalEwlPoints ||
+                ovpaaTotalSfPoints ? (
                   isQualifyOverload && totalPoints > 25 ? (
                     <BoldText style={{ color: "green" }}>
                       You're qualified for an overload pay amounting to{" "}

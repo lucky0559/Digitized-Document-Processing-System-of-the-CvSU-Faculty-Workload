@@ -11,4 +11,5 @@ export type TeachingWorkLoadType = {
   remarks?: PointsAndRemarks;
   isSubmitted?: boolean;
   filename?: string;
+  deanPoints?: PointsAndRemarks[];
 };

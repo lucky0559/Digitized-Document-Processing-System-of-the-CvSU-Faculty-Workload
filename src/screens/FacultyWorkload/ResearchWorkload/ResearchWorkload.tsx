@@ -352,7 +352,10 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
             study4Points
           ).toFixed(2)
         );
-
+        researchWorkLoad!.disseminated1Points = study1Points;
+        researchWorkLoad!.disseminated2Points = study2Points;
+        researchWorkLoad!.disseminated3Points = study3Points;
+        researchWorkLoad!.disseminated4Points = study4Points;
         if (researchWorkLoad) {
           await SaveResearchWorkload(researchWorkLoad, WORKLOAD_STATUS.SAVE);
         }
@@ -363,10 +366,9 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
           strategicFunctionWorkloads
         } = await GetAllUserPendingWorkloads(user.email);
         const { data: config } = await getConfig();
-        const isAbleToSubmit = !(
+        const isAbleToSubmit =
           new Date() >= new Date(config.submissionDateStart) &&
-          new Date() <= new Date(config.submissionDateEnd)
-        );
+          new Date() <= new Date(config.submissionDateEnd);
         actions.setHasPendingExtensionWorkload(
           !!extensionWorkloads.length && extensionWorkloads[0].isSubmitted
         );

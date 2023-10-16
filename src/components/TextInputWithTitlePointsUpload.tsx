@@ -1,6 +1,4 @@
-import React from "react";
 import styled from "styled-components";
-import { DesignationWithTitleAndPoints } from "../screens/FacultyWorkload/StrategicFunction/StrategicFunction";
 import UploadFileButton from "./UploadFileButton";
 
 type TextInputWithTitlePointUploadProps = {
@@ -130,6 +128,7 @@ const UploadContainer = styled.div`
 
 const Input = styled.input`
   margin-left: 42px;
+  border: 1px solid black;
 `;
 
 const PointsContainer = styled.div`

@@ -17,4 +17,9 @@ export type ResearchWorkLoadType = {
   remarks?: PointsAndRemarks;
   status?: string;
   isSubmitted?: boolean;
+  disseminated1Points?: number;
+  disseminated2Points?: number;
+  disseminated3Points?: number;
+  disseminated4Points?: number;
+  deanPoints?: PointsAndRemarks[];
 };
