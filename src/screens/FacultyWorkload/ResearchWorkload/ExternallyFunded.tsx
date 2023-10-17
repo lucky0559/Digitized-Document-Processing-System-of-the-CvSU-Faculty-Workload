@@ -11,7 +11,7 @@ const FundedExternally = ({ externallyFunded }: ExternallyFundedProps) => {
       <Container>
         <SubContainer>
           <WorkloadTextContainer>
-            <WorkloadText>CvSU Funded Research</WorkloadText>
+            <WorkloadText>Externally Funded Research</WorkloadText>
           </WorkloadTextContainer>
           <InputsContainer>
             <TextInputContainer>

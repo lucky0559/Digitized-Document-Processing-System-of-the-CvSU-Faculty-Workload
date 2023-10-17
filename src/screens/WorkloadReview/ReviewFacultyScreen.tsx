@@ -520,40 +520,79 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
 
             {/* EXTENSION WORKLOAD */}
             <WorkloadDetailContainer>
-              {allExtensionWorkloads?.map(workload => {
+              {allExtensionWorkloads?.map((workload, index) => {
                 totalEwlPoints = Number(
                   (+totalEwlPoints + +workload.ewlPoints!).toFixed(2)
                 );
                 return (
-                  <>
+                  <div key={index}>
                     <BoldText>Extension Work Load (EWL)</BoldText>
                     <ColumnParentContainer>
-                      <ColumnContainer>
-                        {workload.designationExtensionActivity && (
-                          <ThinText>
-                            Designation in Extension Activity:
-                          </ThinText>
-                        )}
-                        {workload.totalNumberHours && (
-                          <ThinText>
-                            Number of Hours rendered in Extension Activity:
-                          </ThinText>
-                        )}
-                        {workload.resourcePerson && (
-                          <ThinText>
-                            Resource Person in an Extension Activity:
-                          </ThinText>
-                        )}
-                      </ColumnContainer>
-                      <ColumnContainer>
-                        <BoldText>
-                          {workload.designationExtensionActivity}
-                        </BoldText>
-                        <BoldText>{workload.totalNumberHours}</BoldText>
-                        <BoldText>
-                          {workload.resourcePerson?.join(", ")}
-                        </BoldText>
-                      </ColumnContainer>
+                      <ParentLevelContainer>
+                        {/* <ColumnContainer>
+                                <ThinText>Department Level:</ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationDepartmentLevel?.map(
+                                  designationDepartmentLevel => {
+                                    return (
+                                      <BoldText>
+                                        {designationDepartmentLevel}
+                                      </BoldText>
+                                    );
+                                  }
+                                )}
+                              </ColumnContainer> */}
+                        <LevelContainer>
+                          {!!workload.designationExtensionActivity?.length && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>
+                                  Designation in Extension Activity:
+                                </ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationExtensionActivity.map(
+                                  designation => {
+                                    return <BoldText>{designation}</BoldText>;
+                                  }
+                                )}
+                              </ColumnContainer>
+                            </>
+                          )}
+                        </LevelContainer>
+                        <LevelContainer>
+                          {workload.totalNumberHours && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>
+                                  Number of Hours rendered in Extension
+                                  Activity:
+                                </ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                <BoldText>{workload.totalNumberHours}</BoldText>
+                              </ColumnContainer>
+                            </>
+                          )}
+                        </LevelContainer>
+                        <LevelContainer>
+                          {!!workload.resourcePerson?.length && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>
+                                  Resource Person in an Extension Activity:
+                                </ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.resourcePerson.map(resource => {
+                                  return <BoldText>{resource}</BoldText>;
+                                })}
+                              </ColumnContainer>
+                            </>
+                          )}
+                        </LevelContainer>
+                      </ParentLevelContainer>
                     </ColumnParentContainer>
                     <div
                       style={{
@@ -572,7 +611,7 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                         </BoldText>
                       </ColumnContainer>
                     </div>
-                  </>
+                  </div>
                 );
               })}
             </WorkloadDetailContainer>
@@ -650,7 +689,68 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                             </>
                           )}
                         </LevelContainer>
-
+                        <LevelContainer>
+                          {workload.designationAsSportTrainorAcademic && (
+                            <>
+                              <ColumnContainer style={{ maxWidth: 300 }}>
+                                <ThinText>
+                                  Designation as Sports/Socio-Cultural Coach or
+                                  Trainor and Academic Organization Adviser:
+                                </ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationAsSportTrainorAcademic && (
+                                  <BoldText>
+                                    {workload.designationAsSportTrainorAcademic}
+                                  </BoldText>
+                                )}
+                                {workload.designationAsSportTrainorAcademic1 && (
+                                  <BoldText>
+                                    {
+                                      workload.designationAsSportTrainorAcademic1
+                                    }
+                                  </BoldText>
+                                )}
+                                {workload.designationAsSportTrainorAcademic2 && (
+                                  <BoldText>
+                                    {
+                                      workload.designationAsSportTrainorAcademic2
+                                    }
+                                  </BoldText>
+                                )}
+                              </ColumnContainer>
+                            </>
+                          )}
+                        </LevelContainer>
+                        <LevelContainer>
+                          {workload.designationAsMemberOfAdhoc && (
+                            <>
+                              <ColumnContainer>
+                                <ThinText>
+                                  Designation as Member of University-Wide AdHoc
+                                  Committee:
+                                </ThinText>
+                              </ColumnContainer>
+                              <ColumnContainer>
+                                {workload.designationAsMemberOfAdhoc && (
+                                  <BoldText>
+                                    {workload.designationAsMemberOfAdhoc}
+                                  </BoldText>
+                                )}
+                                {workload.designationAsMemberOfAdhoc1 && (
+                                  <BoldText>
+                                    {workload.designationAsMemberOfAdhoc1}
+                                  </BoldText>
+                                )}
+                                {workload.designationAsMemberOfAdhoc2 && (
+                                  <BoldText>
+                                    {workload.designationAsMemberOfAdhoc2}
+                                  </BoldText>
+                                )}
+                              </ColumnContainer>
+                            </>
+                          )}
+                        </LevelContainer>
                         <LevelContainer>
                           {workload.academicAdvisees && (
                             <>
