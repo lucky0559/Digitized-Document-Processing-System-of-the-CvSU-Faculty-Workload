@@ -196,21 +196,21 @@ function Profile({ UseLogout }: ProfileProps) {
                       ? DROPDOWN_LISTS.TANZA_DEPARTMENT
                       : editedUser!.campus === "Trece Campus"
                       ? DROPDOWN_LISTS.TRECE_DEPARTMENT
-                      : editedUser!.campus === "CAFENR_COLLEGE"
+                      : editedUser!.campus === "CAFENR"
                       ? DROPDOWN_LISTS.CAFENR_COLLEGE
-                      : editedUser!.campus === "CAS_COLLEGE"
+                      : editedUser!.campus === "CAS"
                       ? DROPDOWN_LISTS.CAS_COLLEGE
-                      : editedUser!.campus === "CCJ_COLLEGE"
+                      : editedUser!.campus === "CCJ"
                       ? DROPDOWN_LISTS.CCJ_COLLEGE
-                      : editedUser!.campus === "CED_COLLEGE"
+                      : editedUser!.campus === "CED"
                       ? DROPDOWN_LISTS.CED_COLLEGE
-                      : editedUser!.campus === "CEIT_COLLEGE"
+                      : editedUser!.campus === "CEIT"
                       ? DROPDOWN_LISTS.CEIT_COLLEGE
-                      : editedUser!.campus === "CEMDS_COLLEGE"
+                      : editedUser!.campus === "CEMD"
                       ? DROPDOWN_LISTS.CEMDS_COLLEGE
-                      : editedUser!.campus === "CON_COLLEGE"
+                      : editedUser!.campus === "CON"
                       ? DROPDOWN_LISTS.CON_COLLEGE
-                      : editedUser!.campus === "CSPEAR_COLLEGE"
+                      : editedUser!.campus === "CSPEAR"
                       ? DROPDOWN_LISTS.CSPEAR_COLLEGE
                       : DROPDOWN_LISTS.CVMBS_COLLEGE
                   }
