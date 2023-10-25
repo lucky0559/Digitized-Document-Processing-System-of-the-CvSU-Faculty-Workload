@@ -1,5 +1,4 @@
-import { Formik } from "formik";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import styled from "styled-components";
 import Button from "../../components/Button";
@@ -27,7 +26,6 @@ type ProfileProps = {
 };
 
 function Profile({ UseLogout }: ProfileProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const userId = localStorage.getItem("userId");
   const [user, setUser] = useState<User>();
@@ -52,8 +50,6 @@ function Profile({ UseLogout }: ProfileProps) {
     useState(false);
   const [responseMessage, setResponseMessage] = useState("");
 
-  const [isFacultySubmenuOpen, setIsFacultySubmenuOpen] = useState(false);
-
   let editedUser = user;
   useEffect(() => {
     (async () => {
@@ -72,6 +68,7 @@ function Profile({ UseLogout }: ProfileProps) {
         setIsLoading(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing, hasESignature]);
 
   const campusHandler = (campusValue: string) => {
@@ -94,16 +91,6 @@ function Profile({ UseLogout }: ProfileProps) {
     await EditUserProfile(userId, editedUser);
     setIsSubmitting(false);
     setIsEditing(false);
-  };
-
-  const eSignatureUploadHandler = async (eSignatureFile: File) => {
-    setIsSubmitting(true);
-    setESignature({
-      userId: userId!,
-      eSignatureFilePath: "",
-      fileName: ""
-    });
-    setESignatureFile(eSignatureFile);
   };
 
   useEffect(() => {
@@ -196,21 +183,21 @@ function Profile({ UseLogout }: ProfileProps) {
                       ? DROPDOWN_LISTS.TANZA_DEPARTMENT
                       : editedUser!.campus === "Trece Campus"
                       ? DROPDOWN_LISTS.TRECE_DEPARTMENT
-                      : editedUser!.campus === "CAFENR_COLLEGE"
+                      : editedUser!.campus === "CAFENR"
                       ? DROPDOWN_LISTS.CAFENR_COLLEGE
-                      : editedUser!.campus === "CAS_COLLEGE"
+                      : editedUser!.campus === "CAS"
                       ? DROPDOWN_LISTS.CAS_COLLEGE
-                      : editedUser!.campus === "CCJ_COLLEGE"
+                      : editedUser!.campus === "CCJ"
                       ? DROPDOWN_LISTS.CCJ_COLLEGE
-                      : editedUser!.campus === "CED_COLLEGE"
+                      : editedUser!.campus === "CED"
                       ? DROPDOWN_LISTS.CED_COLLEGE
-                      : editedUser!.campus === "CEIT_COLLEGE"
+                      : editedUser!.campus === "CEIT"
                       ? DROPDOWN_LISTS.CEIT_COLLEGE
-                      : editedUser!.campus === "CEMDS_COLLEGE"
+                      : editedUser!.campus === "CEMDS"
                       ? DROPDOWN_LISTS.CEMDS_COLLEGE
-                      : editedUser!.campus === "CON_COLLEGE"
+                      : editedUser!.campus === "CON"
                       ? DROPDOWN_LISTS.CON_COLLEGE
-                      : editedUser!.campus === "CSPEAR_COLLEGE"
+                      : editedUser!.campus === "CSPEAR"
                       ? DROPDOWN_LISTS.CSPEAR_COLLEGE
                       : DROPDOWN_LISTS.CVMBS_COLLEGE
                   }
@@ -427,35 +414,6 @@ function Profile({ UseLogout }: ProfileProps) {
               </DetailContainer>
             </UserDetailContainer>
             <ButtonsContainer>
-              {/* {hasESignature ? (
-                <ButtonStyled>
-                  {isSubmitting ? (
-                    <LoadingSpinner color={Colors.primary} />
-                  ) : (
-                    <ButtonText>
-                      <FileInput
-                        type="file"
-                        onChange={e => {
-                          eSignatureUploadHandler(e.target.files![0]);
-                        }}
-                      />
-                      Replace E-Signature
-                    </ButtonText>
-                  )}
-                </ButtonStyled>
-              ) : (
-                <ButtonStyled>
-                  <ButtonText>
-                    <FileInput
-                      type="file"
-                      onChange={e => {
-                        eSignatureUploadHandler(e.target.files![0]);
-                      }}
-                    />
-                    Upload E-Signature
-                  </ButtonText>
-                </ButtonStyled>
-              )} */}
               <ButtonStyled onClick={() => setIsChangingPassword(true)}>
                 <ButtonText>Change Password</ButtonText>
               </ButtonStyled>
@@ -596,12 +554,6 @@ const InputsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const FileInput = styled.input`
-  display: none;
-  width: 100%;
-  height: 100%;
 `;
 
 const ButtonStyled = styled.div`

@@ -529,20 +529,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                     <BoldText>Extension Work Load (EWL)</BoldText>
                     <ColumnParentContainer>
                       <ParentLevelContainer>
-                        {/* <ColumnContainer>
-                                <ThinText>Department Level:</ThinText>
-                              </ColumnContainer>
-                              <ColumnContainer>
-                                {workload.designationDepartmentLevel?.map(
-                                  designationDepartmentLevel => {
-                                    return (
-                                      <BoldText>
-                                        {designationDepartmentLevel}
-                                      </BoldText>
-                                    );
-                                  }
-                                )}
-                              </ColumnContainer> */}
                         <LevelContainer>
                           {!!workload.designationExtensionActivity?.length && (
                             <>
@@ -615,8 +601,6 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 );
               })}
             </WorkloadDetailContainer>
-
-            {/* STRATEGIC FUNCTION WORKLOAD */}
             <WorkloadDetailContainer>
               {allStrategicFunctionWorkloads?.map((workload, index) => {
                 totalSfPoints = Number(
@@ -829,8 +813,8 @@ const ReviewFacultyScreen = ({ userEmail }: ReviewFacultyScreenProps) => {
                 ovpaaTotalSfPoints ? (
                   isQualifyOverload && totalPoints > 25 ? (
                     <BoldText style={{ color: "green" }}>
-                      You're qualified for an overload pay amounting to{" "}
-                      {totalOverload}.
+                      You’ve qualified for an overload pay amounting to{" "}
+                      {totalOverload.toFixed(2)}.
                     </BoldText>
                   ) : (
                     <BoldText style={{ color: "red" }}>

@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Menu from "../../components/Menu";
 import ProfileTab from "../../components/ProfileTab";
 import ScreenTitle from "../../components/ScreenTitle";
 import TopNav from "../../components/TopNav";
-import { GetTotalWorkloadPoints } from "../../lib/faculty-workload.hooks";
+import {
+  GetTotalWorkloadDeptDeanPoints,
+  GetTotalWorkloadPoints
+} from "../../lib/faculty-workload.hooks";
 import { User } from "../../types/User";
 import ReportsLists from "./ReportsLists";
 import Colors from "../../constants/Colors";
 import FormButton from "../../components/FormButton";
 import { OvpaaWorkloads } from "../WorkloadReview/OvpaaWorkloadReview";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { UserContext } from "../../App";
 
 type ReportsScreenProps = {
   UseLogout: () => void;
@@ -27,14 +31,21 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { user } = useContext(UserContext);
+
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      const reports = await GetTotalWorkloadPoints();
-      setUsersReports(reports.data);
+      if (user.role !== "OVPAA") {
+        const { data } = await GetTotalWorkloadDeptDeanPoints(user);
+        setUserReportsList(data);
+      } else {
+        const { data } = await GetTotalWorkloadPoints();
+        setUsersReports(data);
+      }
       setIsLoading(false);
     })();
-  }, []);
+  }, [user]);
 
   return (
     <ParentContainer>
@@ -47,7 +58,7 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
         </div>
         {/* <ReportsLists usersReports={usersReports} /> */}
         <Container isWorkloadListReviewing={isWorkloadListReviewing}>
-          {isWorkloadListReviewing ? (
+          {isWorkloadListReviewing || user.role !== "OVPAA" ? (
             <SubContainer>
               <ReportsLists usersReports={userReportsList} />
               {isWorkloadBackButtonShow && (
