@@ -22,6 +22,7 @@ import { TeachingWorkLoadType } from "../types/TeachingWorkload";
 import { PointsAndRemarks } from "../screens/WorkloadReview/RemarksWorkload";
 import { WORKLOAD_STATUS } from "../enums/workloadEnums";
 import { pickBy, identity } from "lodash";
+import { User } from "@/types/User";
 
 export const SaveTeachingWorkload = async (
   teachingWorkload: TeachingWorkLoadType,
@@ -1141,6 +1142,18 @@ export const GetTeachingWorkloadRemarksFaculty = async (userId: string) => {
 
 export const GetTotalWorkloadPoints = async () => {
   const { data } = await axios.get(`extension-workload/workloads-approved`);
+
+  return { data };
+};
+
+export const GetTotalWorkloadDeptDeanPoints = async (user: User) => {
+  const role = user.role;
+  const campus = user.campus;
+  const department = user.department;
+
+  const { data } = await axios.get(
+    `extension-workload/${role}/${campus}/${department}/workloads-dept-dean-approved`
+  );
 
   return { data };
 };

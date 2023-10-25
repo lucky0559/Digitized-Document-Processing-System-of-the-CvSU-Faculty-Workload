@@ -158,84 +158,88 @@ const ResearchWorkload = ({ UseLogout }: ResearchWorkLoadProps) => {
     // CVSU FUNDED
     if (!isEditing) {
       setIsSetting(true);
-      if (!cvsuFunded1) {
-        setCvsuFunded1({
-          title: titleOfStudyCvsu,
-          typeOfStudy: typeOfStudy,
-          designationStudy: designationStudy!,
-          file: rwlFile,
-          points: studyCvsuPoints
-        });
-      } else if (!cvsuFunded2) {
-        setCvsuFunded2({
-          title: titleOfStudyCvsu,
-          typeOfStudy: typeOfStudy,
-          designationStudy: designationStudy!,
-          file: rwlFile,
-          points: studyCvsuPoints
-        });
-      } else if (!cvsuFunded3) {
-        setCvsuFunded3({
-          title: titleOfStudyCvsu,
-          typeOfStudy: typeOfStudy,
-          designationStudy: designationStudy!,
-          file: rwlFile,
-          points: studyCvsuPoints
-        });
-      } else if (!cvsuFunded4) {
-        setCvsuFunded4({
-          title: titleOfStudyCvsu,
-          typeOfStudy: typeOfStudy,
-          designationStudy: designationStudy!,
-          file: rwlFile,
-          points: studyCvsuPoints
-        });
-      } else if (!cvsuFunded5) {
-        setCvsuFunded5({
-          title: titleOfStudyCvsu,
-          typeOfStudy: typeOfStudy,
-          designationStudy: designationStudy!,
-          file: rwlFile,
-          points: studyCvsuPoints
-        });
+      if (studyCvsuPoints) {
+        if (!cvsuFunded1) {
+          setCvsuFunded1({
+            title: titleOfStudyCvsu,
+            typeOfStudy: typeOfStudy,
+            designationStudy: designationStudy!,
+            file: rwlFile,
+            points: studyCvsuPoints
+          });
+        } else if (!cvsuFunded2) {
+          setCvsuFunded2({
+            title: titleOfStudyCvsu,
+            typeOfStudy: typeOfStudy,
+            designationStudy: designationStudy!,
+            file: rwlFile,
+            points: studyCvsuPoints
+          });
+        } else if (!cvsuFunded3) {
+          setCvsuFunded3({
+            title: titleOfStudyCvsu,
+            typeOfStudy: typeOfStudy,
+            designationStudy: designationStudy!,
+            file: rwlFile,
+            points: studyCvsuPoints
+          });
+        } else if (!cvsuFunded4) {
+          setCvsuFunded4({
+            title: titleOfStudyCvsu,
+            typeOfStudy: typeOfStudy,
+            designationStudy: designationStudy!,
+            file: rwlFile,
+            points: studyCvsuPoints
+          });
+        } else if (!cvsuFunded5) {
+          setCvsuFunded5({
+            title: titleOfStudyCvsu,
+            typeOfStudy: typeOfStudy,
+            designationStudy: designationStudy!,
+            file: rwlFile,
+            points: studyCvsuPoints
+          });
+        }
       }
 
       // EXTERNALLY FUNDED
-      if (!externalFunded1) {
-        setExternalFunded1({
-          title: titleOfStudyExternally,
-          fundGenerated: fundGenerated!,
-          file: rwlFile1,
-          points: studyExternallyPoints
-        });
-      } else if (!externalFunded2) {
-        setExternalFunded2({
-          title: titleOfStudyExternally,
-          fundGenerated: fundGenerated!,
-          file: rwlFile1,
-          points: studyExternallyPoints
-        });
-      } else if (!externalFunded3) {
-        setExternalFunded3({
-          title: titleOfStudyExternally,
-          fundGenerated: fundGenerated!,
-          file: rwlFile1,
-          points: studyExternallyPoints
-        });
-      } else if (!externalFunded4) {
-        setExternalFunded4({
-          title: titleOfStudyExternally,
-          fundGenerated: fundGenerated!,
-          file: rwlFile1,
-          points: studyExternallyPoints
-        });
-      } else if (!externalFunded5) {
-        setExternalFunded5({
-          title: titleOfStudyExternally,
-          fundGenerated: fundGenerated!,
-          file: rwlFile1,
-          points: studyExternallyPoints
-        });
+      if (studyExternallyPoints) {
+        if (!externalFunded1) {
+          setExternalFunded1({
+            title: titleOfStudyExternally,
+            fundGenerated: fundGenerated!,
+            file: rwlFile1,
+            points: studyExternallyPoints
+          });
+        } else if (!externalFunded2) {
+          setExternalFunded2({
+            title: titleOfStudyExternally,
+            fundGenerated: fundGenerated!,
+            file: rwlFile1,
+            points: studyExternallyPoints
+          });
+        } else if (!externalFunded3) {
+          setExternalFunded3({
+            title: titleOfStudyExternally,
+            fundGenerated: fundGenerated!,
+            file: rwlFile1,
+            points: studyExternallyPoints
+          });
+        } else if (!externalFunded4) {
+          setExternalFunded4({
+            title: titleOfStudyExternally,
+            fundGenerated: fundGenerated!,
+            file: rwlFile1,
+            points: studyExternallyPoints
+          });
+        } else if (!externalFunded5) {
+          setExternalFunded5({
+            title: titleOfStudyExternally,
+            fundGenerated: fundGenerated!,
+            file: rwlFile1,
+            points: studyExternallyPoints
+          });
+        }
       }
       setIsSetting(false);
     } else {
