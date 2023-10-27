@@ -146,7 +146,7 @@ function Workload({
         }
       }
       if (researchWorkloads.length > 0) {
-        if (!isEmailSent) {
+        if (!isEmailSent && remarks) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
@@ -177,7 +177,7 @@ function Workload({
         }
       }
       if (extensionWorkloads.length > 0) {
-        if (!isEmailSent) {
+        if (!isEmailSent && remarks) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
@@ -210,7 +210,7 @@ function Workload({
         }
       }
       if (strategicFunctionWorkloads.length > 0) {
-        if (!isEmailSent) {
+        if (!isEmailSent && remarks) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
@@ -314,63 +314,74 @@ function Workload({
         researchWorkload?.length! > 0 ||
         extensionWorkload?.length! > 0 ||
         allStrategicWorkload?.length! > 0) &&
-        !isDataLoading &&
-        !isReviewing &&
-        users && (
-          <Table>
-            <TableCaption>
-              {user?.role === "Department Chairperson"
-                ? user.department
-                : user?.role === "OVPAA"
-                ? ""
-                : user?.campus}
-            </TableCaption>
-            <tbody>
-              <tr>
-                <ThStyle>Name of Faculty</ThStyle>
-                <ThStyle>Academic Rank</ThStyle>
-                <ThStyle>Status</ThStyle>
-                <ThStyle></ThStyle>
-              </tr>
+      !isDataLoading &&
+      !isReviewing &&
+      users ? (
+        <Table>
+          <TableCaption>
+            {user?.role === "Department Chairperson"
+              ? user.department
+              : user?.role === "OVPAA"
+              ? ""
+              : user?.campus}
+          </TableCaption>
+          <tbody>
+            <tr>
+              <ThStyle>Name of Faculty</ThStyle>
+              <ThStyle>Academic Rank</ThStyle>
+              <ThStyle>Status</ThStyle>
+              <ThStyle></ThStyle>
+            </tr>
 
-              {!isDataLoading &&
-                users &&
-                users?.map((item, index) => {
-                  return (
-                    item && (
-                      <tr key={index}>
-                        <TdStyle>
-                          <TdText>{item.firstName}</TdText>
-                        </TdStyle>
-                        <TdStyle>
-                          <TdText>{item.academicRank}</TdText>
-                        </TdStyle>
-                        <TdStyle>
-                          <TdText>In-Progress</TdText>
-                        </TdStyle>
-                        <TdStyle>
-                          <Button
-                            onClick={() => {
-                              setAccountReviewing(item);
-                              setReviewingId(item.id!);
-                              setIsReviewing(true);
-                              if (isWorkloadListReviewing) {
-                                setIsWorkloadBackButtonShow &&
-                                  setIsWorkloadBackButtonShow(false);
-                              }
-                            }}
-                          >
-                            <ButtonText>Review</ButtonText>
-                          </Button>
-                        </TdStyle>
-                      </tr>
-                    )
-                  );
-                  // }
-                })}
-            </tbody>
-          </Table>
-        )}
+            {!isDataLoading &&
+              users &&
+              users?.map((item, index) => {
+                return (
+                  item && (
+                    <tr key={index}>
+                      <TdStyle>
+                        <TdText>{item.firstName}</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <TdText>{item.academicRank}</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <TdText>In-Progress</TdText>
+                      </TdStyle>
+                      <TdStyle>
+                        <Button
+                          onClick={() => {
+                            setAccountReviewing(item);
+                            setReviewingId(item.id!);
+                            setIsReviewing(true);
+                            if (isWorkloadListReviewing) {
+                              setIsWorkloadBackButtonShow &&
+                                setIsWorkloadBackButtonShow(false);
+                            }
+                          }}
+                        >
+                          <ButtonText>Review</ButtonText>
+                        </Button>
+                      </TdStyle>
+                    </tr>
+                  )
+                );
+                // }
+              })}
+          </tbody>
+        </Table>
+      ) : !isDataLoading && !isReviewing ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30
+          }}
+        >
+          <LoadingSpinner color={Colors.primary} />
+        </div>
+      ) : null}
 
       {!isDataLoading &&
         teachingWorkload?.length! <= 0 &&

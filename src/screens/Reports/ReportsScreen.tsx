@@ -58,7 +58,8 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
         </div>
         {/* <ReportsLists usersReports={usersReports} /> */}
         <Container isWorkloadListReviewing={isWorkloadListReviewing}>
-          {isWorkloadListReviewing || user.role !== "OVPAA" ? (
+          {(isWorkloadListReviewing || user.role !== "OVPAA") &&
+          !!userReportsList?.length ? (
             <SubContainer>
               <ReportsLists usersReports={userReportsList} />
               {isWorkloadBackButtonShow && (
@@ -75,260 +76,301 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
               <LoadingSpinner color={Colors.primary} />
             </div>
           ) : !usersReports && !isLoading ? (
-            <div>
+            <>
               <ButtonText>No data.</ButtonText>
-            </div>
+            </>
           ) : (
             <>
               <SubContainer>
                 <ListHeaderText>List of Colleges</ListHeaderText>
                 <CollegesCampusesContainer>
-                  {usersReports?.CAFENR?.length! > 0 && (
+                  {!!usersReports?.CAFENR?.length ||
+                  !!usersReports?.CAS?.length ||
+                  !!usersReports?.CCJ?.length ||
+                  !!usersReports?.CED?.length ||
+                  !!usersReports?.CEIT?.length ||
+                  !!usersReports?.CEMDS?.length ||
+                  !!usersReports?.CON?.length ||
+                  !!usersReports?.CSPEAR?.length ||
+                  !!usersReports?.CVMBS?.length ? (
                     <>
-                      <Label>CAFENR</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CAFENR);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
+                      {usersReports?.CAFENR?.length! > 0 && (
+                        <>
+                          <Label>CAFENR</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CAFENR);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CAS?.length! > 0 && (
+                        <>
+                          <Label>CAS</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CAS);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CCJ?.length! > 0 && (
+                        <>
+                          <Label>CCJ</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CCJ);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CED?.length! > 0 && (
+                        <>
+                          <Label>CED</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CED);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CEIT?.length! && (
+                        <>
+                          <Label>CEIT</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CEIT);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CEMDS?.length! > 0 && (
+                        <>
+                          <Label>CEMDS</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CEMDS);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CON?.length! > 0 && (
+                        <>
+                          <Label>CON</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CON);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CSPEAR?.length! > 0 && (
+                        <>
+                          <Label>CSPEAR</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CSPEAR);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.CVMBS?.length! > 0 && (
+                        <>
+                          <Label>CVMBS</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.CVMBS);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
                     </>
-                  )}
-                  {usersReports?.CAS?.length! > 0 && (
-                    <>
-                      <Label>CAS</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CAS);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CCJ?.length! > 0 && (
-                    <>
-                      <Label>CCJ</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CCJ);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CED?.length! > 0 && (
-                    <>
-                      <Label>CED</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CED);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CEIT?.length! && (
-                    <>
-                      <Label>CEIT</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CEIT);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CEMDS?.length! > 0 && (
-                    <>
-                      <Label>CEMDS</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CEMDS);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CON?.length! > 0 && (
-                    <>
-                      <Label>CON</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CON);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CSPEAR?.length! > 0 && (
-                    <>
-                      <Label>CSPEAR</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CSPEAR);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.CVMBS?.length! > 0 && (
-                    <>
-                      <Label>CVMBS</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.CVMBS);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
+                  ) : (
+                    <div>
+                      <ButtonText>No data.</ButtonText>
+                    </div>
                   )}
                 </CollegesCampusesContainer>
               </SubContainer>
               <SubContainer>
                 <ListHeaderText>List of Campuses</ListHeaderText>
                 <CollegesCampusesContainer>
-                  {usersReports?.["Bacoor Campus"]?.length! > 0 && (
+                  {!!usersReports?.["Bacoor Campus"]?.length ||
+                  !!usersReports?.["Carmona Campus"]?.length ||
+                  !!usersReports?.["Cavite City Campus"]?.length ||
+                  !!usersReports?.["Gen. Trias Campus"]?.length ||
+                  !!usersReports?.["Imus Campus"]?.length ||
+                  !!usersReports?.["Silang Campus"]?.length ||
+                  !!usersReports?.["Tanza Campus"]?.length ||
+                  !!usersReports?.["Trece Campus"]?.length ? (
                     <>
-                      <Label>Bacoor Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.["Bacoor Campus"]);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
+                      {usersReports?.["Bacoor Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Bacoor Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Bacoor Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Carmona Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Carmona Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Carmona Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Cavite City Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Cavite City Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Cavite City Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Gen. Trias Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Gen. Trias Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Gen. Trias Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Imus Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Imus Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(usersReports?.["Imus Campus"]);
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Silang Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Silang Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Silang Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Tanza Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Tanza Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Tanza Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
+                      {usersReports?.["Trece Campus"]?.length! > 0 && (
+                        <>
+                          <Label>Trece Campus</Label>
+                          <Button
+                            onClick={() => {
+                              setUserReportsList(
+                                usersReports?.["Trece Campus"]
+                              );
+                              setIsWorkloadListReviewing(true);
+                              setIsWorkloadBackButtonShow(true);
+                            }}
+                          >
+                            <ButtonText>Review</ButtonText>
+                          </Button>
+                        </>
+                      )}
                     </>
-                  )}
-                  {usersReports?.["Carmona Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Carmona Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.["Carmona Campus"]);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.["Cavite City Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Cavite City Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(
-                            usersReports?.["Cavite City Campus"]
-                          );
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.["Gen. Trias Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Gen. Trias Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(
-                            usersReports?.["Gen. Trias Campus"]
-                          );
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.["Imus Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Imus Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.["Imus Campus"]);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.["Silang Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Silang Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.["Silang Campus"]);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.["Tanza Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Tanza Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.["Tanza Campus"]);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
-                  )}
-                  {usersReports?.["Trece Campus"]?.length! > 0 && (
-                    <>
-                      <Label>Trece Campus</Label>
-                      <Button
-                        onClick={() => {
-                          setUserReportsList(usersReports?.["Trece Campus"]);
-                          setIsWorkloadListReviewing(true);
-                          setIsWorkloadBackButtonShow(true);
-                        }}
-                      >
-                        <ButtonText>Review</ButtonText>
-                      </Button>
-                    </>
+                  ) : (
+                    <div>
+                      <ButtonText>No data.</ButtonText>
+                    </div>
                   )}
                 </CollegesCampusesContainer>
               </SubContainer>
