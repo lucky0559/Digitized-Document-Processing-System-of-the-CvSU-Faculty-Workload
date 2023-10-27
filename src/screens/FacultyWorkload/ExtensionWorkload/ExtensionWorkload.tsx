@@ -110,20 +110,20 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
     (async () => {
       if (isSubmitting) {
         if (
-          extensionWorkload?.designationExtensionActivity &&
-          (extensionWorkload.extensionActivityFile ||
-            extensionWorkload.extensionActivityFilename) &&
-          extensionWorkload.resourcePerson &&
-          (extensionWorkload.certificateFile ||
-            extensionWorkload.certificateFilenames) &&
-          extensionWorkload.totalNumberHours &&
-          (extensionWorkload.summaryOfHoursFile ||
-            extensionWorkload.summaryOfHoursFilename)
+          (extensionWorkload?.designationExtensionActivity &&
+            (extensionWorkload.extensionActivityFile ||
+              extensionWorkload.extensionActivityFilename)) ||
+          (extensionWorkload?.resourcePerson &&
+            (extensionWorkload.certificateFile ||
+              extensionWorkload.certificateFilenames)) ||
+          (extensionWorkload?.totalNumberHours &&
+            (extensionWorkload.summaryOfHoursFile ||
+              extensionWorkload.summaryOfHoursFilename))
         ) {
           let designationExtensionActivityPoints;
           let totalNumberHoursPoints;
           if (
-            extensionWorkload.designationExtensionActivity.includes(
+            extensionWorkload.designationExtensionActivity?.includes(
               "Project Leader"
             )
           ) {
@@ -131,7 +131,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               Number(designationExtensionActivityPoints) + 3;
           }
           if (
-            extensionWorkload.designationExtensionActivity.includes(
+            extensionWorkload.designationExtensionActivity?.includes(
               "Project Coordinator"
             )
           ) {
@@ -139,7 +139,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               Number(designationExtensionActivityPoints) + 2.5;
           }
           if (
-            extensionWorkload.designationExtensionActivity.includes(
+            extensionWorkload.designationExtensionActivity?.includes(
               "Project Facilitator"
             )
           ) {
@@ -147,7 +147,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               Number(designationExtensionActivityPoints) + 2;
           }
           if (
-            extensionWorkload.designationExtensionActivity.includes(
+            extensionWorkload.designationExtensionActivity?.includes(
               "Project Assistants"
             )
           ) {
@@ -161,7 +161,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
           } else {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             totalNumberHoursPoints =
-              parseFloat(extensionWorkload.totalNumberHours) * 0.05556;
+              parseFloat(extensionWorkload.totalNumberHours!) * 0.05556;
           }
 
           extensionWorkload.hoursRenderedPoints = !summaryOfHoursFile
@@ -184,6 +184,7 @@ const ExtensionWorkload = ({ UseLogout }: ExtensionWorkloadProps) => {
               : Number(totalNumberHours) * 0.05556 >= 3
               ? 3
               : Number((Number(totalNumberHours) * 0.05556).toFixed(2)));
+
           await SaveExtensionWorkload(extensionWorkload, WORKLOAD_STATUS.SAVE);
           const {
             teachingWorkloads,

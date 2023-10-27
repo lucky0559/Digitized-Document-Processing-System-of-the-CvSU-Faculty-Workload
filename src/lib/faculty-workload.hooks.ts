@@ -211,12 +211,12 @@ export const SaveExtensionWorkload = async (
   }
 
   if (
-    (extensionWorkload.certificateFile ||
-      extensionWorkload.certificateFilenames) &&
-    (extensionWorkload.extensionActivityFile ||
-      extensionWorkload.extensionActivityFilename) &&
-    (extensionWorkload.summaryOfHoursFile ||
-      extensionWorkload.summaryOfHoursFilename)
+    extensionWorkload.certificateFile ||
+    extensionWorkload.certificateFilenames ||
+    extensionWorkload.extensionActivityFile ||
+    extensionWorkload.extensionActivityFilename ||
+    extensionWorkload.summaryOfHoursFile ||
+    extensionWorkload.summaryOfHoursFilename
   ) {
     try {
       let certificateFile;
