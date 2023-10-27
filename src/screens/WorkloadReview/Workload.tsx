@@ -112,7 +112,7 @@ function Workload({
         user?.role!
       );
       if (teachingWorkloads.length > 0) {
-        if (!isEmailSent) {
+        if (!isEmailSent && remarks) {
           await SendRemarks(user?.role, reviewingId, remarks);
           isEmailSent = true;
           setRemarks("");
