@@ -22,8 +22,14 @@ export default function Dropdown({
   const [value, setValue] = useState("");
 
   useEffect(() => {
-    onSelect(value);
-  }, [value]);
+    if (value) {
+      onSelect(value);
+    }
+
+    return () => {
+      setValue("");
+    };
+  }, [onSelect, value]);
 
   return (
     <Container>
