@@ -93,9 +93,9 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                   !!usersReports?.CON?.length ||
                   !!usersReports?.CSPEAR?.length ||
                   !!usersReports?.CVMBS?.length ? (
-                    <>
+                    <div className="flex flex-col">
                       {usersReports?.CAFENR?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CAFENR</Label>
                           <Button
                             onClick={() => {
@@ -106,10 +106,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CAS?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CAS</Label>
                           <Button
                             onClick={() => {
@@ -120,10 +120,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CCJ?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CCJ</Label>
                           <Button
                             onClick={() => {
@@ -134,10 +134,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CED?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CED</Label>
                           <Button
                             onClick={() => {
@@ -148,10 +148,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CEIT?.length! && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CEIT</Label>
                           <Button
                             onClick={() => {
@@ -162,10 +162,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CEMDS?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CEMDS</Label>
                           <Button
                             onClick={() => {
@@ -176,10 +176,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CON?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CON</Label>
                           <Button
                             onClick={() => {
@@ -190,10 +190,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CSPEAR?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CSPEAR</Label>
                           <Button
                             onClick={() => {
@@ -204,10 +204,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.CVMBS?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>CVMBS</Label>
                           <Button
                             onClick={() => {
@@ -218,9 +218,9 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
-                    </>
+                    </div>
                   ) : (
                     <div>
                       <ButtonText>No data.</ButtonText>
@@ -239,9 +239,9 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                   !!usersReports?.["Silang Campus"]?.length ||
                   !!usersReports?.["Tanza Campus"]?.length ||
                   !!usersReports?.["Trece Campus"]?.length ? (
-                    <>
+                    <div className="flex flex-col">
                       {usersReports?.["Bacoor Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Bacoor Campus</Label>
                           <Button
                             onClick={() => {
@@ -254,10 +254,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Carmona Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Carmona Campus</Label>
                           <Button
                             onClick={() => {
@@ -270,10 +270,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Cavite City Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Cavite City Campus</Label>
                           <Button
                             onClick={() => {
@@ -286,10 +286,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Gen. Trias Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Gen. Trias Campus</Label>
                           <Button
                             onClick={() => {
@@ -302,10 +302,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Imus Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Imus Campus</Label>
                           <Button
                             onClick={() => {
@@ -316,10 +316,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Silang Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Silang Campus</Label>
                           <Button
                             onClick={() => {
@@ -332,10 +332,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Tanza Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Tanza Campus</Label>
                           <Button
                             onClick={() => {
@@ -348,10 +348,10 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
                       {usersReports?.["Trece Campus"]?.length! > 0 && (
-                        <>
+                        <div className="flex mt-6">
                           <Label>Trece Campus</Label>
                           <Button
                             onClick={() => {
@@ -364,9 +364,9 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                           >
                             <ButtonText>Review</ButtonText>
                           </Button>
-                        </>
+                        </div>
                       )}
-                    </>
+                    </div>
                   ) : (
                     <div>
                       <ButtonText>No data.</ButtonText>
@@ -425,7 +425,7 @@ const SubContainer = styled.div`
 `;
 
 const ListHeaderText = styled.span`
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-family: HurmeGeometricSans3;
   font-weight: 400;
   font-size: 17px;
