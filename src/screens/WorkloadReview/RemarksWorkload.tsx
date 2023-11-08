@@ -469,7 +469,8 @@ function RemarksWorkload({
                             style={{
                               display: "flex",
                               flexDirection: "column",
-                              marginRight: 15
+                              marginRight: 15,
+                              flex: 0.5
                             }}
                           >
                             <BoldText style={{ marginBottom: 10 }}>
@@ -489,7 +490,8 @@ function RemarksWorkload({
                             style={{
                               display: "flex",
                               flexDirection: "column",
-                              marginLeft: 15
+                              flex: 1,
+                              marginLeft: 5
                             }}
                           >
                             <BoldText style={{ marginBottom: 10 }}>
@@ -533,8 +535,9 @@ function RemarksWorkload({
                                 userContext.role === "Dean") && (
                                 <div
                                   style={{
+                                    width: 170,
                                     display: "flex",
-                                    marginLeft: 290
+                                    marginRight: 15
                                   }}
                                 >
                                   <InputPoints
@@ -650,7 +653,8 @@ function RemarksWorkload({
                             style={{
                               display: "flex",
                               flexDirection: "column",
-                              marginRight: 15
+                              marginRight: 15,
+                              flex: 0.5
                             }}
                           >
                             <BoldText style={{ marginBottom: 10 }}>
@@ -672,7 +676,8 @@ function RemarksWorkload({
                             style={{
                               display: "flex",
                               flexDirection: "column",
-                              marginLeft: 15
+                              marginLeft: 5,
+                              flex: 1
                             }}
                           >
                             <BoldText style={{ marginBottom: 10 }}>
@@ -717,8 +722,9 @@ function RemarksWorkload({
                                 userContext.role === "Dean") && (
                                 <div
                                   style={{
+                                    width: 170,
                                     display: "flex",
-                                    marginLeft: 290
+                                    marginRight: 15
                                   }}
                                 >
                                   <InputPoints
