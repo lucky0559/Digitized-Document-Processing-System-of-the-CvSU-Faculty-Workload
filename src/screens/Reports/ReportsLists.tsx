@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { User } from "../../types/User";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import Colors from "../../constants/Colors";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getConfig } from "../../lib/config.hooks";
 import { Config } from "../../types/Config";
+import { UserContext } from "../../App";
 
 type ReportListsProps = {
   usersReports?: User[];
@@ -13,6 +14,8 @@ type ReportListsProps = {
 const ReportsLists = ({ usersReports }: ReportListsProps) => {
   const [config, setConfig] = useState<Config>();
   const [isLoading, setIsLoading] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -40,8 +43,18 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
           </div>
           <div className="mb-5">
             <span>
-              College/Campus:{" "}
-              <span className="font-bold">{usersReports?.[0].campus}</span>
+              {user.role === "Department Chairman"
+                ? "Department: "
+                : user.role === "Dean"
+                ? "College/Campus: "
+                : ""}
+              <span className="font-bold">
+                {user.role === "Department Chairman"
+                  ? usersReports?.[0].department
+                  : user.role === "Dean"
+                  ? usersReports?.[0].campus
+                  : ""}
+              </span>
             </span>
           </div>
           <Table>
@@ -86,20 +99,24 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
                     {item.initialSfwPoints ? item.initialSfwPoints : 0}
                   </TdStyled>
                   <TdStyled>
-                    {(item.initialTwlPoints! ? +item.initialTwlPoints : 0) +
+                    {(
+                      (item.initialTwlPoints! ? +item.initialTwlPoints : 0) +
                       (item.initialRwlPoints! ? +item.initialRwlPoints! : 0) +
                       (item.initialEwlPoints! ? +item.initialEwlPoints! : 0) +
-                      (item.initialSfwPoints! ? +item.initialSfwPoints! : 0)}
+                      (item.initialSfwPoints! ? +item.initialSfwPoints! : 0)
+                    ).toFixed(2)}
                   </TdStyled>
                   <TdStyled>{item.twlPoints ? item.twlPoints : 0}</TdStyled>
                   <TdStyled>{item.rwlPoints ? item.rwlPoints : 0}</TdStyled>
                   <TdStyled>{item.ewlPoints ? item.ewlPoints : 0}</TdStyled>
                   <TdStyled>{item.sfwPoints ? item.sfwPoints : 0}</TdStyled>
                   <TdStyled>
-                    {(item.twlPoints! ? +item.twlPoints! : 0) +
+                    {(
+                      (item.twlPoints! ? +item.twlPoints! : 0) +
                       (item.rwlPoints! ? +item.rwlPoints! : 0) +
                       (item.ewlPoints! ? +item.ewlPoints! : 0) +
-                      (item.sfwPoints! ? +item.sfwPoints! : 0)}
+                      (item.sfwPoints! ? +item.sfwPoints! : 0)
+                    ).toFixed(2)}
                   </TdStyled>
                   <TdStyled>{item.remarks || "No remarks"}</TdStyled>
                 </TrStyled>

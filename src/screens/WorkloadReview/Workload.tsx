@@ -379,7 +379,7 @@ function Workload({
             marginTop: 30
           }}
         >
-          <LoadingSpinner color={Colors.primary} />
+          {/* <LoadingSpinner color={Colors.primary} /> */}
         </div>
       ) : null}
 
