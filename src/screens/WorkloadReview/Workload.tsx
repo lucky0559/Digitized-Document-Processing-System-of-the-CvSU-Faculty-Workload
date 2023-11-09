@@ -340,7 +340,14 @@ function Workload({
                   item && (
                     <tr key={index}>
                       <TdStyle>
-                        <TdText>{item.firstName}</TdText>
+                        <TdText>
+                          {item.surname.toUpperCase()},
+                          {" " +
+                            item.firstName.toUpperCase() +
+                            " " +
+                            item.middleInitial.toUpperCase() +
+                            "."}
+                        </TdText>
                       </TdStyle>
                       <TdStyle>
                         <TdText>{item.academicRank}</TdText>
