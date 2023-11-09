@@ -249,7 +249,9 @@ function App() {
             <Route
               path="/config"
               element={
-                <Protected isSignedIn={!!user && user.role === "OVPAA"}>
+                <Protected
+                  isSignedIn={!!user && user.role === "System Administrator"}
+                >
                   <Config UseLogout={UseLogout} />
                 </Protected>
               }
