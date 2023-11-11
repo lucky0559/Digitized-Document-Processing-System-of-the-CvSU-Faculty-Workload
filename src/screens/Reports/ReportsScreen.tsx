@@ -47,15 +47,19 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
     })();
   }, [user]);
 
+  const onPrint = () => {
+    window.print();
+  };
+
   return (
     <ParentContainer>
       <TopNav profileHandler={() => setIsProfileOpen(!isProfileOpen)} />
       <Menu />
       <ProfileTab isProfileOpen={isProfileOpen} UseLogout={UseLogout} />
       <BodyContainer>
-        <div className="ml-72">
+        <TitleContainer>
           <ScreenTitle title="Reports" />
-        </div>
+        </TitleContainer>
         {/* <ReportsLists usersReports={usersReports} /> */}
         <Container isWorkloadListReviewing={isWorkloadListReviewing}>
           {(isWorkloadListReviewing || user.role !== "OVPAA") &&
@@ -63,12 +67,13 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
             <SubContainer>
               <ReportsLists usersReports={userReportsList} />
               {isWorkloadBackButtonShow && (
-                <div className="mt-9">
+                <ButtonContainer className="mt-9">
                   <FormButton
                     text="Back"
                     onClicked={() => setIsWorkloadListReviewing(false)}
                   />
-                </div>
+                  <FormButton text="Print" onClicked={onPrint} />
+                </ButtonContainer>
               )}
             </SubContainer>
           ) : !usersReports && isLoading ? (
@@ -416,6 +421,10 @@ const Container = styled.div<{ isWorkloadListReviewing: boolean }>`
   margin: 20px 0;
   margin-left: 300px;
   margin-right: 50px;
+  @media print {
+    margin: 0px;
+    width: auto;
+  }
 `;
 
 const SubContainer = styled.div`
@@ -468,6 +477,25 @@ const ButtonText = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ButtonContainer = styled.div`
+  @media print {
+    display: none;
+  }
+  display: flex;
+  justify-content: space-between;
+  max-width: 280px;
+`;
+
+const TitleContainer = styled.div`
+  margin-left: 18rem;
+  @media print {
+    margin: 0px;
+  }
+  @page {
+    size: landscape;
+  }
 `;
 
 export default ReportsScreen;
