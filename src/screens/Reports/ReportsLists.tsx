@@ -125,6 +125,11 @@ const ReportsLists = ({ usersReports }: ReportListsProps) => {
           </Table>
         </>
       )}
+      <SignatureContainer className="flex flex-col mt-20">
+        <span className="mb-8">Reviewed and Recorded by:</span>
+        <span className="font-bold">Jefferson G. Rodriguez</span>
+        <span>Administrative Officer I</span>
+      </SignatureContainer>
     </Container>
   );
 };
@@ -149,6 +154,13 @@ const TdStyled = styled.td`
   border: 1px solid black;
   border-collapse: collapse;
   text-align: center;
+`;
+
+const SignatureContainer = styled.div`
+  display: none;
+  @media print {
+    display: flex;
+  }
 `;
 
 export default ReportsLists;
