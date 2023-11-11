@@ -137,7 +137,7 @@ const Menu = ({ position }: MenuProps) => {
           </NavButtonText>
         </NavButtonContainer>
       ) : null}
-      {user.role === "OVPAA" ? (
+      {user.role === "System Administrator" ? (
         <NavButtonContainer>
           <NavButtonText
             onClick={() => navigate("/config", { replace: true })}
