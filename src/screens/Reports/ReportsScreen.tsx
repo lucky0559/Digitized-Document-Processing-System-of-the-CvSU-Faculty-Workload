@@ -72,7 +72,9 @@ const ReportsScreen = ({ UseLogout }: ReportsScreenProps) => {
                     text="Back"
                     onClicked={() => setIsWorkloadListReviewing(false)}
                   />
-                  <FormButton text="Print" onClicked={onPrint} />
+                  {user.role === "OVPAA" && (
+                    <FormButton text="Print" onClicked={onPrint} />
+                  )}
                 </ButtonContainer>
               )}
             </SubContainer>
