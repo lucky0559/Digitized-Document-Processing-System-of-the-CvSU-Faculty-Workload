@@ -14,7 +14,7 @@ root.render(
   <div>
     <GlobalFonts />
     <BrowserRouter>
-      <App />
+     // <App /> 
     </BrowserRouter>
   </div>
 );
